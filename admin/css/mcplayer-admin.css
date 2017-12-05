@@ -1,0 +1,94 @@
+/**
+ * All of the CSS for your admin-specific functionality should be
+ * included in this file.
+ */
+
+ #metabox_music_upload_wrapper {
+    width: auto;
+    display: flex;
+}
+
+#metabox_audio_upload {
+    width: 35%;
+    padding-right: 1.75%;
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0 auto;
+    display: grid;
+    text-align: center;
+    padding-top: 25px;
+}
+
+#demo-meta-box h2 {
+    text-align: center;
+}
+
+.audio-preview {
+    text-align: center;
+}
+
+#meta_box_id h2 {
+    text-align: center;
+}
+
+#meta_box_cover_id h2 {
+    text-align: center;
+}
+
+#demo-meta-box .inside {
+    margin-left: auto;
+    margin-right: auto;
+    display: table;
+    width: auto;
+}
+
+#music_link_, #music_link_-remove {
+    margin-left: auto;
+    margin-right: auto;
+    display: inline;
+    margin: 15px 10% 0;
+    width: 27.5%;
+}
+
+#metabox_album_upload {
+    width: 49%;
+}
+
+#meta_box_id, #demo-meta-box {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+#meta_box_id .inside {
+    margin-left: auto;
+    margin-right: auto;
+    display: table;
+    width: 75%;
+    font-size: 18px;
+}
+
+.image-preview {
+    margin: 0 auto;
+    display: table;
+}
+
+.select2-container {
+    min-width: 225px;
+    margin: 0 25px;
+}
+
+.select2-dropdown {
+    margin: 0 -25px;
+}
+
+.attachment-details label.setting[data-setting=alt], .attachment-details label.setting[data-setting=caption], .attachment-details label.setting[data-setting=description] {
+    display: none;
+}
+
+.attachment-details::before {
+    content: attr(data-parent);
+  }
+
+#meta-box-media-cover_ {
+    margin-bottom: 5px;
+}

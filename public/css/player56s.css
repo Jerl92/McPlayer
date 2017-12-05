@@ -1,0 +1,268 @@
+/*!
+ * Player 56s v0.5.1
+ * Copyright 2015 by Ivan Dymkov (http://dymio.net)
+ *               and 56 STUFF (http://www.56stuff.com/)
+ * Licensed under the MIT license
+ */
+
+.player56s {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.player56s-invisible-object { height: 80px; }
+
+.player56s .player56s-button,
+.player56s .player56s-tracks .player56s-track-nav {
+  /*  background: url('player56s_sprite.png') no-repeat left top; */
+}
+
+.player56s.player56s-status-playing .player56s-button {
+  height: 55px;
+  border-style: double;
+  border-width: 0px 45px 0px 0px;
+  border-color: #000; 
+}
+
+.player56s .player56s-button {
+  border-top: 30px solid transparent;
+  border-bottom: 30px solid transparent;
+  border-left: 50px solid #000;
+}
+
+.player56s .player56s-content { position: relative; padding: 3px 0px; }
+
+/* == Title, Author and Timeline == */
+.player56s .player56s-title,
+.player56s .player56s-author, .player56s-album,
+.player56s .player56s-timeline {
+  margin-left: 100px;
+  margin-right: 100px;
+}
+
+.player56s .player56s-title {
+  overflow: hidden;
+  margin-top: 0px;
+  margin-bottom: 10px;
+  height: 22px;
+  font-size: 20px;
+  line-height: 22px;
+}
+.player56s .player56s-author {
+  overflow: hidden;
+  margin-top: 4px;
+  margin-bottom: 8px;
+  height: 14px;
+  font-size: 16px;
+  line-height: 14px;
+}
+
+.player56s .player56s-album {
+  overflow: hidden;
+  margin-top: 4px;
+  margin-bottom: 6px;
+  height: 14px;
+  font-size: 12px;
+  line-height: 14px;
+}
+
+.player56s .player56s-album-img {
+    float: right;
+    width: 82.5px;
+    box-shadow: -10px 5px 25px rgba(0,0,0,.4);
+}
+
+.player56s .player56s-album-img img {
+
+}
+
+.player56s .player56s-timeline {
+  position: relative;
+  margin-top: 7.5px;
+  margin-bottom: 2px;
+  height: 8px;
+  background: #a2a2a2;;
+  cursor: pointer;
+  }
+  .player56s .player56s-timeline .player56s-timeline-done {
+    position: absolute;
+    left: 0; top: 0;
+    background: #000000;
+    height: 8px;
+  }
+  .player56s .player56s-timeline .player56s-timeline-load {
+    position: absolute;
+    left: 0; top: 0;
+    height: 8px;
+    width: 0%;
+    background: #a2a2a2;
+  }
+
+/* == Button (play & pause) == */
+.player56s .player56s-button {
+  position: absolute;
+  top: 15px;
+  left: 37.5px;
+  cursor: pointer;
+}
+.player56s .player56s-button:hover { opacity: 0.8; }
+.player56s.player56s-status-playing .player56s-button {
+
+}
+
+/* == Volume == */
+.player56s .player56s-volume {
+  position: absolute;
+  top: 4px; left: 5px;
+  width: 13px; height: 81px;
+}
+.player56s .player56s-volume .player56s-vol-pin {
+  position: relative;
+  width: 13px; height: 12px;
+  cursor: pointer; }
+  .player56s .player56s-volume .player56s-vol-pin:before {
+    content: "";
+    display: block;
+    width: 13px; height: 9px;
+    background: #a2a2a2;
+    position: relative;
+    top: 3px; left: 0;
+    -webkit-transition: top 200ms, left 200ms;
+    -moz-transition: top 200ms, left 200ms;
+    -o-transition: top 200ms, left 200ms;
+    transition: top 200ms, left 200ms;
+  }
+.player56s .player56s-volume .player56s-vol-pin:hover:before { left: 2px; }
+.player56s .player56s-volume .player56s-vol-pin.active:before { background: #000000; }
+
+.player56s .player56s-volume .player56s-vol-pin.max-vol { height: 9px; }
+.player56s .player56s-volume .player56s-vol-pin.max-vol:before { top: 0; }
+
+.player56s .player56s-volume .player56s-vol-pin.zero-vol { height: 3px; }
+.player56s .player56s-volume .player56s-vol-pin.zero-vol:before { display: none; }
+
+/* == Track navigation (next & prev) == */
+.player56s .player56s-tracks {
+    position: absolute;
+    top: -47.5px;
+    left: 10px;
+    width: 100px;
+  }
+  .player56s .player56s-tracks .player56s-track-nav {
+    width: 25px; height: 25px;
+  }
+  .player56s .player56s-tracks .player56s-track-nav.enabled {
+    cursor: pointer;
+  }
+  .player56s .player56s-tracks .player56s-track-prev {
+    float: left;
+    border-top: 15px solid transparent;
+    border-bottom: 15px solid transparent;
+    border-right: 30px solid rgba(0,0,0,.5);
+  }
+  .player56s .player56s-tracks .player56s-track-next {
+    float: right;
+    border-top: 15px solid transparent;
+    border-bottom: 15px solid transparent;
+    border-left: 30px solid rgba(0,0,0,.5); 
+  }
+  .player56s .player56s-tracks .player56s-track-prev:hover {
+    opacity: 0.5;
+    transform: scale(0.9);
+  }
+  .player56s .player56s-tracks .player56s-track-next:hover {
+    opacity: 0.5;
+    transform: scale(0.9);
+  }
+  .player56s .player56s-tracks .player56s-track-prev.enabled {
+    border-top: 15px solid transparent;
+    border-bottom: 15px solid transparent;
+    border-right: 30px solid black;
+  }
+  .player56s .player56s-tracks .player56s-track-next.enabled {
+    border-top: 15px solid transparent;
+    border-bottom: 15px solid transparent;
+    border-left: 30px solid black;  
+  }
+
+/* == Devices without volume change ability == */
+.player56s.volumeless .player56s-volume { display: none; }
+.player56s.volumeless .player56s-title,
+.player56s.volumeless .player56s-author,
+.player56s.volumeless .player56s-album,
+.player56s.volumeless .player56s-timeline { margin-left: 57px; }
+.player56s.volumeless .player56s-button { left: 2px; }
+.player56s.volumeless .player56s-tracks { left: 0; }
+
+/* !=-=-=
+    MINIMALISTIC THEME
+   =-=-=! */
+
+.player56s.minimal {}
+
+.player56s.minimal .player56s-content { padding: 11px 9px; }
+
+/* == Timeline == */
+.player56s.minimal .player56s-timeline {
+  position: relative;
+  margin: 0 98px 0 33px;
+  height: 19px;
+  }
+  .player56s.minimal .player56s-timeline .player56s-timeline-done {
+    background: #95b377;
+    height: 19px;
+  }
+  .player56s.minimal .player56s-timeline .player56s-timeline-load {
+    height: 19px;
+  }
+
+/* == Button (play & pause) == */
+.player56s.minimal .player56s-button {
+  position: absolute;
+  top: 10px; left: 10px;
+  width: 19px; height: 20px;
+  background-position: -43px -48px;
+}
+.player56s.minimal.player56s-status-playing .player56s-button {
+  background-position: -43px -69px;
+}
+
+/* == Volume (play & pause) == */
+.player56s.minimal .player56s-volume {
+  position: absolute;
+  top: 10px; right: 9px; left: auto;
+  width: 50px; height: 20px;
+}
+.player56s.minimal .player56s-volume .player56s-vol-pin {
+  display: inline-block;
+  width: 10px; height: 20px;
+  }
+  .player56s.minimal .player56s-volume .player56s-vol-pin:before {
+    width: 6px; height: 20px;
+    top: 0; left: 4px;
+  }
+.player56s.minimal .player56s-volume .player56s-vol-pin:hover:before { top: -6px; left: 4px; }
+.player56s.minimal .player56s-volume .player56s-vol-pin.zero-vol { width: 4px; height: 20px; }
+.player56s.minimal .player56s-volume .player56s-vol-pin.zero-vol:before { display: none; }
+.player56s.minimal .player56s-volume .player56s-vol-pin.zero-vol + .player56s-vol-pin { width: 6px; height: 20px; }
+.player56s.minimal .player56s-volume .player56s-vol-pin.zero-vol + .player56s-vol-pin:before { left: 0; }
+.player56s.minimal .player56s-volume .player56s-vol-pin.zero-vol + .player56s-vol-pin:hover:before { top: -6px; left: 0; }
+.player56s.minimal .player56s-volume .player56s-vol-pin.max-vol { height: 20px; }
+.player56s.minimal .player56s-volume .player56s-vol-pin.max-vol:before { top: 0; }
+.player56s.minimal .player56s-volume .player56s-vol-pin.max-vol:hover:before { top: -6px; }
+
+/* == Time == */
+.player56s.minimal .player56s-time {
+  position: absolute;
+  top: 10px; right: 64px;
+  height: 20px;
+  line-height: 20px;
+  font-size: 12px;
+}
+
+/* == Devices without volume change ability == */
+.player56s.minimal.volumeless .player56s-volume { display: none; }
+.player56s.minimal.volumeless .player56s-timeline {
+  margin-right: 40px;
+  margin-left: 33px; }
+.player56s.minimal.volumeless .player56s-button { left: 10px; }
+.player56s.minimal.volumeless .player56s-time { right: 9px; }
