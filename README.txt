@@ -1,21 +1,19 @@
-=== Plugin Name ===
-Contributors: (this should be a list of wordpress.org userid's)
-Donate link: jerl92.tk
-Tags: comments, spam
-Requires at least: 3.0.1
-Tested up to: 3.4
-Stable tag: 4.3
+=== MCPlayer ===
+Tags: music player, full width, playlist
+Requires at least: 4.9
+Tested up to: 4.9.1
+Stable tag: 4.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Here is a short description of the plugin.  This should be no more than 150 characters.  No markup here.
+MCPlayer The frist full-width HTML5/JS/AJAX audio Player with Playlist, Plugin for Wordpress.
 
 == Description ==
 
-This is the long description.  No limit, and you can use Markdown (as well as in the following sections).
-
-For backwards compatibility, if this section is missing, the full length of the short description will be used, and
-Markdown parsed.
+MCPlayer is make with JS taken from,
+https://github.com/miguel-perez/smoothState.js: Unobtrusive page transitions with jQuery,
+https://github.com/dymio/player-56s: Web audio-player with playlist and minimalistic view as option,
+https://wordpress.org/plugins/rs-save-for-later/: Simplicity Save for Later will add a button to your posts/pages/custom post types so users can save that content so they can access it later.
 
 A few notes about the sections above:
 
