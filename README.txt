@@ -15,6 +15,8 @@ https://github.com/miguel-perez/smoothState.js: Unobtrusive page transitions wit
 https://github.com/dymio/player-56s: Web audio-player with playlist and minimalistic view as option,
 https://wordpress.org/plugins/rs-save-for-later/: Simplicity Save for Later will add a button to your posts/pages/custom post types so users can save that content so they can access it later.
 
+https://wordpress.org/plugins/categories-images/ is necessary with this plugin
+
 A few notes about the sections above:
 
 *   "Contributors" is a comma separated list of wp.org/wp-plugins.org usernames
