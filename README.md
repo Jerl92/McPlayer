@@ -65,7 +65,7 @@ Answer to foo bar dilemma.
 
 <img src="https://img15.hostingpics.net/pics/971888mcplayeradmin2.jpg" alt="MCPlayer" data-canonical-src="https://img15.hostingpics.net/pics/971888mcplayeradmin2.jpg" style="max-width:100%;">
 
-<img src="http://www.hostingpics.net/viewer.php?id=499681mcplayeradmin1.jpg" alt="MCPlayer" data-canonical-src="http://www.hostingpics.net/viewer.php?id=499681mcplayeradmin1.jpg" style="max-width:100%;">
+<img src="https://img15.hostingpics.net/pics/499681mcplayeradmin1.jpg" alt="MCPlayer" data-canonical-src="https://img15.hostingpics.net/pics/499681mcplayeradmin1.jpg" style="max-width:100%;">
 
 == Changelog ==
 
