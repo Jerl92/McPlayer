@@ -11,11 +11,11 @@ MCPlayer The frist full-width HTML5/JS/AJAX audio Player with Playlist, Plugin f
 == Description ==
 
 MCPlayer is make with JS taken from,
-https://github.com/miguel-perez/smoothState.js: Unobtrusive page transitions with jQuery,
-https://github.com/dymio/player-56s: Web audio-player with playlist and minimalistic view as option,
-https://wordpress.org/plugins/rs-save-for-later/: Simplicity Save for Later will add a button to your posts/pages/custom post types so users can save that content so they can access it later.
+https://github.com/miguel-perez/smoothState.js: Unobtrusive page transitions with jQuery,</br>
+https://github.com/dymio/player-56s: Web audio-player with playlist and minimalistic view as option,</br>
+https://wordpress.org/plugins/rs-save-for-later/: Simplicity Save for Later will add a button to your posts/pages/custom post types so users can save that content so they can access it later.</br>
 
-https://wordpress.org/plugins/categories-images/ is necessary with this plugin
+https://wordpress.org/plugins/categories-images/ is necessary with this plugin</br>
 
 A few notes about the sections above:
 
