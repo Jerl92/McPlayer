@@ -59,11 +59,13 @@ Answer to foo bar dilemma.
 
 == Screenshots ==
 
-1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from
-the /assets directory or the directory that contains the stable readme.txt (tags or trunk). Screenshots in the /assets
-directory take precedence. For example, `/assets/screenshot-1.png` would win over `/tags/4.3/screenshot-1.png`
-(or jpg, jpeg, gif).
-2. This is the second screen shot
+<img src="https://img15.hostingpics.net/pics/809953mcplayer1.jpg" alt="MCPlayer" data-canonical-src="https://img15.hostingpics.net/pics/809953mcplayer1.jpg" style="max-width:100%;">
+
+<img src="https://img15.hostingpics.net/pics/797972mcplayer2.jpg" alt="MCPlayer" data-canonical-src="https://img15.hostingpics.net/pics/797972mcplayer2.jpg" style="max-width:100%;">
+
+<img src="https://img15.hostingpics.net/pics/971888mcplayeradmin2.jpg" alt="MCPlayer" data-canonical-src="https://img15.hostingpics.net/pics/971888mcplayeradmin2.jpg" style="max-width:100%;">
+
+<img src="http://www.hostingpics.net/viewer.php?id=499681mcplayeradmin1.jpg" alt="MCPlayer" data-canonical-src="http://www.hostingpics.net/viewer.php?id=499681mcplayeradmin1.jpg" style="max-width:100%;">
 
 == Changelog ==
 
