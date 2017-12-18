@@ -864,19 +864,19 @@ jQuery( function player56s($) {
         }
         updateMetadata(event) {            
             if ('mediaSession' in navigator) {
-                if ( this.tracks[this.currentTrack].filename !== null ) {
-                    navigator.mediaSession.metadata = new MediaMetadata({
-                        title: getTrackTitle(this.tracks[this.currentTrack].filename),
-                        artist: getTrackAuthor(this.tracks[this.currentTrack].filename),
-                        album: getTrackAlbum(this.tracks[this.currentTrack].filename),
-                        artwork: [{ src: getTrackAlbumImg(this.tracks[this.currentTrack].filename) }]
-                    });
-                } else {
+                if ( this.tracks[this.currentTrack].filename == null ) {
                     navigator.mediaSession.metadata = new MediaMetadata({
                         title: getTrackTitle('You don’t have any saved content.'),
                         artist: getTrackAuthor('Music Player'),
                         album: getTrackAlbum('Just another WordPress site'),
                         artwork: [{ src: '#' }]
+                    });
+                } else {                    
+                    navigator.mediaSession.metadata = new MediaMetadata({
+                        title: getTrackTitle(this.tracks[this.currentTrack].filename),
+                        artist: getTrackAuthor(this.tracks[this.currentTrack].filename),
+                        album: getTrackAlbum(this.tracks[this.currentTrack].filename),
+                        artwork: [{ src: getTrackAlbumImg(this.tracks[this.currentTrack].filename) }]
                     });
                 }
             }

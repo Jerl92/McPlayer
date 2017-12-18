@@ -43,7 +43,9 @@
 			}
 		};
 
-		console.log(	$( "#page" ).smoothState( settings ).data("smoothState") );
+		if (!$("body").hasClass("elementor-editor-active")) {
+			console.log(	$( "#page" ).smoothState( settings ).data("smoothState") );
+		}
 
 	});
 

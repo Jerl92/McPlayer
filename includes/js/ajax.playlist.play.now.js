@@ -37,9 +37,11 @@ function play_now($) {
 
                         ajax_playlist($, object_id);
 
+                        sleep(50);
+
                         ajax_playlist_add_sidebar($, object_id);
 
-                        sleep(100);
+                        sleep(50);
 
                         ajax_playlist_play_now($, object_id);
 

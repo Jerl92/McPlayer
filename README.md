@@ -6,7 +6,7 @@ Stable tag: 4.9</br>
 License: GPLv2 or later</br>
 License URI: http://www.gnu.org/licenses/gpl-2.0.html</br>
 
-MCPlayer The frist full-width HTML5/JS/AJAX audio Player with Playlist, Plugin for Wordpress.
+MCPlayer The first full-width HTML5/JS/AJAX audio Player with Playlist, Plugin for Wordpress.
 
 == Description ==
 
@@ -66,6 +66,16 @@ Answer to foo bar dilemma.
 <img src="https://img15.hostingpics.net/pics/971888mcplayeradmin2.jpg" alt="MCPlayer" data-canonical-src="https://img15.hostingpics.net/pics/971888mcplayeradmin2.jpg" style="max-width:100%;">
 
 <img src="https://img15.hostingpics.net/pics/499681mcplayeradmin1.jpg" alt="MCPlayer" data-canonical-src="https://img15.hostingpics.net/pics/499681mcplayeradmin1.jpg" style="max-width:100%;">
+
+== Without cache ==
+<img src="https://img15.hostingpics.net/pics/608363waterfall.gif" alt="No cache" data-canonical-src="https://img15.hostingpics.net/pics/608363waterfall.gif" style="max-width:100%;">
+
+== With cache ==
+<img src="https://img15.hostingpics.net/pics/713595waterfall2.gif" alt="With cache" data-canonical-src="https://img15.hostingpics.net/pics/713595waterfall2.gif" style="max-width:100%;">
+
+<img src="https://img15.hostingpics.net/pics/323462console.png" alt="MCPlayer" data-canonical-src="https://img15.hostingpics.net/pics/323462console.png" style="max-width:100%;">
+
+<img src="https://img15.hostingpics.net/pics/878297console2.png" alt="MCPlayer" data-canonical-src="https://img15.hostingpics.net/pics/878297console2.png" style="max-width:100%;">
 
 == Changelog ==
 

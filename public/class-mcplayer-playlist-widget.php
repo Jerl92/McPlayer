@@ -35,9 +35,10 @@ class MCPlayer_bottom_playlist_widget extends WP_Widget {
 			$matches = get_user_meta( get_current_user_id(), 'rs_saved_for_later', true );
 			
 			$args = array( 
-				'posts_per_page' => '-1',	
+				'posts_per_page' => -1,	
 				'post_type' => 'music',
-				'post__in' => ($matches),
+				'post__in' => $matches,
+				'order'   => 'DESC',
 				'orderby'   => 'post__in',
 			);
 			
