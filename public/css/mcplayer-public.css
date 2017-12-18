@@ -64,6 +64,7 @@
 }
 
 .entry-meta-save-to-playlist {
+    display: flex;
     float: right;
     padding-right: 40px;
     margin-top: 25px;

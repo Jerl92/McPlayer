@@ -13,6 +13,7 @@ function ajax_playlist_remove_track($, object_id) {
                         $("#player56s-removetrack").html(data);  
                         $(".player56s").player56s($); 
                         $("#player56s-removetrack").html(null);
+                        $(".entry-save-for-later a").removeClass("saved");
                     },
                     error: function(errorThrown){
                         //error stuff here

@@ -36,7 +36,7 @@ function rs_save_for_later_album($) {
 				data: {
 					// 'nonce': nonce,
 					'object_id': object_id,
-					'action': 'save_unsave_for_later_album',
+					'action': 'save_unsave_for_later_album'
                 },
                 dataType: 'JSON',
 				success: function(data) {
@@ -59,10 +59,10 @@ function rs_save_for_later_album($) {
 				//			ajax_playlist_remove_page_btn($, object_id);
 						}
 						ajax_playlist_remove_album($, object_id);
-					//	ajax_playlist_add_sidebar($,  object_id);	
+					//	ajax_playlist_remove_album_sidebar($, object_id);
 						$this.parent().find('.rs-see-saved').remove();
 						$('.rs-saved-trigger span').text(data.count);
-						$('.rs-saved-trigger').addClass('empty');			
+						$('.rs-saved-trigger').addClass('empty');	
 					} else {	
 						$this.addClass('saved');
 						$this.attr('data-title', rs_save_for_later_ajax.unsave_txt);

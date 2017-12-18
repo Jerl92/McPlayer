@@ -284,44 +284,40 @@ add_shortcode('simplicity-save-for-later-loop', 'get_save_for_later_button_displ
 function get_save_for_later_album_button_display($atts) {
 	
 				// Check cookie if object is saved
-				$saved = false;
 		
 				if ( is_user_logged_in() ) {
-					$matches = get_user_meta( get_current_user_id(), 'rs_saved_for_later_album', true );
-					if ( empty( $matches ) ) {
-						$matches = array();
+					$saved_album = false;
+
+					$save = __( 'Add to Playlist', 'rs-save-for-later' );
+					$unsave = __( 'Remove', 'rs-save-for-later' );
+					$saved_txt = __( 'See Playlist', 'rs-save-for-later' );
+					$number = __( 'Playlist: ', 'rs-save-for-later' );
+
+					$matches_album = get_user_meta( get_current_user_id(), 'rs_saved_for_later_album', true );
+					if ( empty( $matches_album ) ) {
+						$matches_album = array();
 					}
-					if ( in_array( esc_attr( $atts['album_id'] ), $matches ) ) {
-						$saved = true;
+					if ( in_array( esc_attr( $atts['album_id'] ), $matches_album ) ) {
+						$saved_album = true;
 					} else {
-						$saved = false;
+						$saved_album = false;
 					}
-				}
+				
+
+					if ( empty( $matches_album ) ) {
+						$matches_album = array();
+					}
+					$count = count( $matches_album );
+
+
+
 		
-				$save = __( 'Add to Playlist', 'rs-save-for-later' );
-				$unsave = __( 'Remove', 'rs-save-for-later' );
-				$saved_txt = __( 'See Playlist', 'rs-save-for-later' );
-				$number = __( 'Playlist: ', 'rs-save-for-later' );
-			
-				if ( is_user_logged_in() ) {
-					$matches = get_user_meta( get_current_user_id(), 'rs_saved_for_later_album', true );
-					if ( empty( $matches ) ) {
-						$matches = array();
-					}
-					$count = count( $matches );
-				} else {
-					$count = 0;
-				}
-
-
-
-				if ( is_user_logged_in() ) {
 			
 											
-						if ( $saved == true ) {
-							return '<a href="#" class="rs-save-for-later-button-album saved" data-toggle="tooltip" data-placement="top" data-title="' . esc_attr( $unsave ) . '" data-nonce="' . wp_create_nonce( 'rs_object_save_for_later' ) . '" data-object-id="' . esc_attr( $atts['album_id'] ) . '"></a><a href="#" class="rs-see-saved" data-toggle="tooltip" data-placement="top" data-title="' . esc_attr( $number ) . ' ' . esc_attr( $count ) . '"></a>';
+						if ( $saved_album == true ) {
+							return '<a href="#" class="rs-save-for-later-button-album saved" data-toggle="tooltip" data-placement="top" data-title="' . esc_attr( $unsave ) . '" data-nonce="' . wp_create_nonce( 'rs_object_save_for_later_album' ) . '" data-object-id="' . esc_attr( $atts['album_id'] ) . '"></a><a href="#" class="rs-see-saved" data-toggle="tooltip" data-placement="top" data-title="' . esc_attr( $number ) . ' ' . esc_attr( $count ) . '"></a>';
 						} else {
-							return '<a href="#" class="rs-save-for-later-button-album" data-toggle="tooltip" data-placement="top" data-title="' . esc_attr( $save ) . '" data-nonce="' . wp_create_nonce( 'rs_object_save_for_later' ) . '" data-object-id="' . esc_attr( $atts['album_id'] ) . '">️</a>';
+							return '<a href="#" class="rs-save-for-later-button-album" data-toggle="tooltip" data-placement="top" data-title="' . esc_attr( $save ) . '" data-nonce="' . wp_create_nonce( 'rs_object_save_for_later_album' ) . '" data-object-id="' . esc_attr( $atts['album_id'] ) . '">️</a>';
 						} 
 			
 				} else  {

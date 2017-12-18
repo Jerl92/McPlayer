@@ -82,32 +82,31 @@ function rs_save_for_later($) {
 	/**
 	 * Remove All from Saved for Later
 	 */
-	$('.rs-save-for-later-remove-all').on('click', function(event) {
+	$('a.rs-save-for-later-remove-all').on('click', function(event) {
 		event.preventDefault();
 
-		var anchor = $(this);
-		if(anchor.data('disabled')) {
-			return false;
-		}
-		anchor.data('disabled', 'disabled');
-
 		var $this = $(this);
-			// nonce = $this.data('nonce');
 
 		$.ajax({
 			type: 'post',
 			url: rs_save_for_later_ajax.ajax_url,
 			data: {
-				'action': 'save_for_later_remove_all',
+				'action': 'save_for_later_remove_all'
 			},
 			success: function(data) {
-				$(".entry-save-for-later a").removeClass("saved");
-				$(".rs-save-for-later-button a").removeClass("saved");
-				$(".rs-save-for-later-button-album a").removeClass("saved");
 				$("#player56s-removetracks-all").html("1");  
 				$(".player56s").player56s($);
 				$("#player56s-removetracks-all").html(null); 
+
 				ajax_playlist_add_sidebar($);
+
+				rs_save_for_later($);
+				
+				scroll_to_album($);
+
+				$(".entry-save-for-later a").removeClass("saved");
+				$(".rs-save-for-later-button").removeClass("saved");
+				$(".rs-save-for-later-button-album").removeClass("saved");
 			},
 			error: function(error) {
 				console.log(error);

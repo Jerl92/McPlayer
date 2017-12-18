@@ -36,10 +36,10 @@ function play_now($) {
                         $this.attr('data-original-title', play_now_ajax_url.unsave_txt);
 
                         ajax_playlist($, object_id);
-                        
-                        sleep(100);
 
                         ajax_playlist_add_sidebar($, object_id);
+
+                        sleep(100);
 
                         ajax_playlist_play_now($, object_id);
 
@@ -96,11 +96,6 @@ function play_now($) {
             });
         }
     
-}
-
-function sleep(delay) {
-    var start = new Date().getTime();
-    while (new Date().getTime() < start + delay);
 }
 
 jQuery(document).ready(function($) {

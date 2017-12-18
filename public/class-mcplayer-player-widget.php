@@ -70,15 +70,14 @@ class MCPlayer_bottom_player_widget extends WP_Widget {
 				}
 			}
 
-			$matches_r = array_reverse($matches, true);
-
-			if ( ! empty( $matches_r ) ) {
+			if ( ! empty( $matches ) ) {
 
 				$saved_args = array(
 					'post_type'      => 'music',
 					'posts_per_page' => -1,
-					'post__in'       => ($matches_r),
+					'post__in'       => $matches,
 					'orderby'   => 'post__in',
+					'order'   => 'DESC',
 				);
 
 				$saved_loop = new WP_Query( $saved_args );

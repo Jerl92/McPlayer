@@ -37,6 +37,7 @@ function ajax_playlist_remove_page_btn($, object_id)  {
             //error stuff here
         },
 });
-            
 
 }
+            
+

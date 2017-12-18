@@ -1,8 +1,8 @@
 function ajax_playlist($, object_id)  {
 
             $.ajax({    
-                url: add_track_ajax_url,
                 type: 'post',
+                url: add_track_ajax_url,
                 data: {
                     'object_id': object_id,
                     'action': 'add_track'
@@ -18,7 +18,7 @@ function ajax_playlist($, object_id)  {
                 },
                 error: function(errorThrown){
                     //error stuff here.text
-                },
+                }
         });
 
 }

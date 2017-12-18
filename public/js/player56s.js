@@ -441,8 +441,7 @@ jQuery( function player56s($) {
         }
         sleep(delay) {
             var start = new Date().getTime();
-            while (new Date().getTime() < start + delay)
-                ;
+            while (new Date().getTime() < start + delay);
         }
         addTrack(audiofileLink, filename, trackOptions, postid) {
             this.tracks.push({
@@ -899,7 +898,7 @@ jQuery( function player56s($) {
                     self.switchTrack(true);
                 });
                 navigator.mediaSession.setActionHandler('seekforward', function () {
-                    willSeekTo(self, (self.seekTime + 0.5) );
+                    willSeekTo(self, (self.seekTime + 1) );
                 });
             }
             $(document).on("keydown." + uniqueID, function (event) {

@@ -1,8 +1,7 @@
 function ajax_playlist_add_album($, object_id)  {
-    
                 $.ajax({    
-                    url: add_album_ajax_url,
                     type: 'post',
+                    url: add_album_ajax_url,
                     data: {
                         'object_id': object_id,
                         'action': 'add_track_album'
@@ -10,11 +9,15 @@ function ajax_playlist_add_album($, object_id)  {
                     dataType: 'JSON',
                     success: function(data){
                         //print stuff heres  
-                        data.forEach(function(element) {
-                            ajax_playlist($, element); 
-                            sleep(50);
-                        }, this);
-                        console.log( ajax_playlist_add_sidebar($, object_id));                     
+                        var i = 0;
+                        data.forEach(function(element, index) {
+                                if (index == i)  {
+                                    ajax_playlist($, element); 
+                                    sleep(125);
+                                    $("#album-class-artist-list-id-"+element+" a").addClass("saved");
+                                    [i++];
+                                }
+                        }, this);                 
                     },
                     error: function(errorThrown){
                         //error stuff here.text
@@ -22,9 +25,4 @@ function ajax_playlist_add_album($, object_id)  {
                     }
             });
     
-    }
-
-    function sleep(delay) {
-        var start = new Date().getTime();
-        while (new Date().getTime() < start + delay);
     }

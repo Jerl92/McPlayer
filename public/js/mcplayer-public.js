@@ -149,6 +149,12 @@ function sortable_playlist($) {
     }); 
 }
 
+
+function sleep(delay) {
+    var start = new Date().getTime();
+    while (new Date().getTime() < start + delay);
+}
+
 jQuery(document).ready(function($) {
     scroll_to_album($);
     sortable_playlist($);

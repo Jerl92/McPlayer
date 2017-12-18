@@ -130,13 +130,21 @@ function ajax_add_track_album($post) {
 
 			$object_id = $_POST['object_id'];
 
+			// $matches = get_user_meta( get_current_user_id(), 'rs_saved_for_later', true );			
+
 			$get_songs_args = array( 
 				'post_type' => 'music',
 				'posts_per_page' => -1,
-				'meta_key' => 'meta-box-media-cover_',
-				'meta_value' => $object_id,
+				'meta_key' => 'meta-box-track-number',
+				'orderby' => 'meta_value_num',
 				'order' => 'ASC',
-				'orderby' => 'meta-box-track-number'
+				'meta_query' => array(
+					array(
+						'key' => 'meta-box-media-cover_',
+						'value'   => ($object_id),
+						'compare' => 'IN'
+					)
+				)
 			); 
 
 			$get_songs = get_posts( $get_songs_args );
@@ -161,20 +169,39 @@ function ajax_remove_track_album($post) {
 
 			$object_id = $_POST['object_id'];
 
+		 	$matches = get_user_meta( get_current_user_id(), 'rs_saved_for_later', true );
+
+			$matches_album = get_user_meta( get_current_user_id(), 'rs_saved_for_later_album', true );
+			
+
 			$get_songs_args = array( 
 				'post_type' => 'music',
 				'posts_per_page' => -1,
+				'post__in' => $matches,
 				'meta_key' => 'meta-box-media-cover_',
-				'meta_value' => $object_id,
-				'order' => 'ASC',
-				'orderby' => 'meta-box-track-number'
+				'meta_value' => $object_id
 			); 
 
 			$get_songs = get_posts( $get_songs_args );
 
-			foreach($get_songs as $get_song) {
-				$html[] = $get_song->ID;
+			if ( in_array( $object_id, $matches_album ) ) {
+				unset( $matches_album[array_search( $object_id, $matches_album )] );
 			}
+
+			foreach($get_songs as $get_song) {
+				if ( empty( $matches ) ) {
+					$matches = array();
+				}
+				// array_reverse($matches);
+				if ( in_array( $get_song->ID, $matches ) ) {
+					unset( $matches[array_search( $get_song->ID, $matches )] );
+				} 
+				$html[] = $get_song->ID;
+
+			}
+
+			update_user_meta( get_current_user_id(), 'rs_saved_for_later', $matches );	
+			update_user_meta( get_current_user_id(), 'rs_saved_for_later_album', $matches_album );			
 
 			return wp_send_json ( $html ); 
 			
@@ -407,41 +434,48 @@ function save_unsave_for_later_album($post) {
 	if ( is_user_logged_in() ) {
 	
 		$object_id = $_POST['object_id'];
+
+		// $matches_ = get_user_meta( get_current_user_id(), 'rs_saved_for_later', true );
 	
 		$get_songs_args = array( 
 			'post_type' => 'music',
 			'posts_per_page' => -1,
-			'meta_key' => 'meta-box-media-cover_',
-			'meta_value' => $object_id,
+			'meta_key' => 'meta-box-track-number',
+			'orderby' => 'meta_value_num',
 			'order' => 'ASC',
-			'orderby' => 'meta-box-track-number',
+			'meta_query' => array(
+				array(
+					'key' => 'meta-box-media-cover_',
+					'value'   => ($object_id),
+					'compare' => 'IN'
+				)
+			)
 		); 
 
 		$get_songs = get_posts( $get_songs_args );
 
 		// Check cookie if object is saved
-		$saved = false;
+		$saved_album = false;
 
 		if ($get_songs) {
-			
-			$count_album = 0;
 
 			if ( is_user_logged_in() ) {
 				$matches_album = get_user_meta( get_current_user_id(), 'rs_saved_for_later_album', true );
+				$count_album =  count( $matches_album );
 				if ( empty( $matches_album ) ) {
 					$matches_album = array();
 				}
 				// array_reverse($matches);
 				if ( in_array( $object_id, $matches_album ) ) {
-					$saved = true;
-					unset( $matches_album[array_search( $object_id, $matches_album )] );
+				//	$saved_album = true;
+				//	unset( $matches_album[array_search( $object_id, $matches_album )] );
 				} else {
-					$saved = false;
+					$saved_album = false;
 					array_unshift( $matches_album, $object_id );
 				}
 				update_user_meta( get_current_user_id(), 'rs_saved_for_later_album', $matches_album );
 
-				if ( $saved == true ) {
+				if ( $saved_album == true ) {
 					$count_album = $count_album - 1;
 				} else {
 					$count_album = $count_album + 1;
@@ -460,8 +494,8 @@ function save_unsave_for_later_album($post) {
 					}
 					// array_reverse($matches);
 					if ( in_array( $get_song->ID, $matches ) ) {
-						$saved = true;
-						unset( $matches[array_search( $get_song->ID, $matches )] );
+					//	$saved = true;
+					//	unset( $matches[array_search( $get_song->ID, $matches )] );
 					} else {
 						$saved = false;
 						array_unshift( $matches, $get_song->ID );
@@ -477,12 +511,11 @@ function save_unsave_for_later_album($post) {
 				}
 
 			}
-
+			return wp_send_json ( $count );
 		}
 
 	} 
 
-	return wp_send_json ( $get_songs );
 }
 
 add_action( 'wp_ajax_nopriv_save_for_later_remove_all', 'save_for_later_remove_all' );
