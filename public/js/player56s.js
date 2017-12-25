@@ -392,7 +392,7 @@ jQuery( function player56s($) {
         volume: 0.5,
         length: 1,
         scrollOnSpace: false,
-        pauseOnSpace: false,
+        pauseOnSpace: true,
         hideTimelineOnPause: false,
         playlistOptions: {
             enableRemoveControls: true
@@ -431,12 +431,7 @@ jQuery( function player56s($) {
             this.createDOM();
             this.initPlayerPlugin();
             this.bindEvents();
-            if (this.$link.attr("href") !== "") {
-                this.insertDOM();
-            }
-            else {
-                this.insertDOM();
-            }
+            this.insertDOM();
         }
         sleep(delay) {
             var start = new Date().getTime();

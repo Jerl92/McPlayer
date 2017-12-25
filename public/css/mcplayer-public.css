@@ -437,11 +437,17 @@ ul.rs-saved-for-later > li.rs-item-saved-for-later > .rs-item-content > .rs-item
 .entry-save-for-later .rs-item-save-for-later {
     width: 50%;
     text-align: center;
+    display: table;
+    float: left;
+    cursor: pointer;
 }
 
 .entry-save-for-later .rs-item-nav-play-now {
     width: 50%;
     text-align: center;
+    display: table;
+    float: right;
+    cursor: pointer;
 }
 
 a.add-play-now-button:hover, a.add-play-now-button:active, a.add-play-now-button:focus {

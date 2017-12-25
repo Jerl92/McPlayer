@@ -1,4 +1,4 @@
-=== MCPlayer ===</br>
+=== McPlayer ===</br>
 Tags: Music Player, Full Width, Playlist,</br>
 Requires at least: 4.9</br>
 Tested up to: 4.9.1</br>
@@ -6,11 +6,11 @@ Stable tag: 4.9</br>
 License: GPLv2 or later</br>
 License URI: http://www.gnu.org/licenses/gpl-2.0.html</br>
 
-MCPlayer The first full-width HTML5/JS/AJAX audio Player with Playlist, Plugin for Wordpress.</br>
+McPlayer The first full-width HTML5/JS/AJAX audio Player with Playlist, Plugin for Wordpress.</br>
 
 == Description ==</br>
 
-MCPlayer is make with JS taken from</br>
+McPlayer is make with JS taken from</br>
 https://github.com/miguel-perez/smoothState.js: Unobtrusive page transitions with jQuery,</br>
 https://github.com/dymio/player-56s: Web audio-player with playlist and minimalistic view as option,</br>
 https://wordpress.org/plugins/rs-save-for-later/: Simplicity Save for Later will add a button to your posts/pages/custom post types so users can save that content so they can access it later.</br>
@@ -21,7 +21,7 @@ https://wordpress.org/plugins/categories-images/ is necessary with this plugin</
 
 This section describes how to install the plugin and get it working.
 
-1. Upload `mcplayer.php` to the `/wp-content/plugins/` directory
+1. Upload `McPlayer.php` to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
 3. Check for shortcode in php
 
