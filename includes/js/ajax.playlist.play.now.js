@@ -26,14 +26,9 @@ function play_now($) {
                         'object_id': object_id,
                         'action': 'save_and_play_now'
                     },
-                    dataType: 'JSON',
                     success: function(data) {
 
                      if( ! $("#postid-"+object_id+" a").hasClass('saved') ) {
-
-                        $this.attr('data-title', play_now_ajax_url.unsave_txt);
-
-                        $this.attr('data-original-title', play_now_ajax_url.unsave_txt);
 
                         ajax_playlist($, object_id);
 
@@ -45,31 +40,35 @@ function play_now($) {
 
                         ajax_playlist_play_now($, object_id);
 
-                        ajax_playlist_update_sidebar($, object_id);   
+                        ajax_playlist_update_sidebar($, object_id); 
+                        
+                        $this.attr('data-title', play_now_ajax_url.unsave_txt);
+
+                        $this.attr('data-original-title', play_now_ajax_url.unsave_txt);
+
+                        $("#album-class-artist-list-id-"+object_id+" a").addClass("saved");
+
+                        $("#album-class-artist-list-id-"+object_id+" a").attr("data-original-title", "Remove");
 
                     } else if ( $this.hasClass('onplay') ) {
+
+                        ajax_playlist_play_now($, object_id);
                         
-                        $('.add-play-now-button[data-toggle="tooltip"]').tooltip();
+                        ajax_playlist_update_sidebar($, object_id);   
 
                         $this.attr('data-title', 'Play');
                         
                         $this.attr('data-original-title', 'Play');
 
+                    } else if ( $this.hasClass('onpause') ) {  
+
                         ajax_playlist_play_now($, object_id);
                         
                         ajax_playlist_update_sidebar($, object_id);   
 
-                    } else if ( $this.hasClass('onpause') ) {  
-                
-                        $('.add-play-now-button[data-toggle="tooltip"]').tooltip();                        
-                        
                         $this.attr('data-title', play_now_ajax_url.unsave_txt);
                         
                         $this.attr('data-original-title', play_now_ajax_url.unsave_txt);
-
-                        ajax_playlist_play_now($, object_id);
-                        
-                        ajax_playlist_update_sidebar($, object_id);   
                     }
 
            //         $('.add-play-now-button[data-toggle="tooltip"]').tooltip();

@@ -15,6 +15,7 @@ function ajax_playlist_add_album($, object_id)  {
                                     ajax_playlist($, element); 
                                     sleep(125);
                                     $("#album-class-artist-list-id-"+element+" a").addClass("saved");
+                                    $("#album-class-artist-list-id-"+element+" a").attr("data-original-title", "Remove");
                                     [i++];
                                 }
                         }, this);                 
