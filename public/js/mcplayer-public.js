@@ -30,7 +30,7 @@ jQuery(document).ready(function () {
     var colophonHeight_ = jQuery('#colophon').height();
     var playerHeight_ = jQuery('#wrap-player').height();
 
-    jQuery('#page').css('padding-bottom', jQuery('#wrap-player').height() +'px');
+    jQuery('#smooth').css('padding-bottom', jQuery('#wrap-player').height() +'px');
 
     if ( windowHeight_ >= documentHeight_ ) {
         jQuery('#colophon').css('position', 'fixed');

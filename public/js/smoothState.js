@@ -26,19 +26,19 @@
 				
 				mysticky($);
 
-				tooltip($);	
+//				tooltip($);	
 				
 				scroll_to_album($);
 				
 				play_now($);
                     
-				rs_save_for_later($);
+//				rs_save_for_later($);
 				
-				rs_save_for_later_album($); 
+//				rs_save_for_later_album($); 
 
 				ajax_playlist_add_sidebar($);
 
-				sortable_playlist($);
+//				sortable_playlist($);
 				
 			}
 		};

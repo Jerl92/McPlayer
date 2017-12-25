@@ -475,6 +475,11 @@ jQuery( function player56s($) {
             return this.$link;
         }
         pause() {
+            $("#player56s-currenttrack").html(this.tracks[this.currentTrack].postid);
+            $("#play-now-id-" + this.tracks[this.currentTrack].postid + "").removeClass('onplay');
+            $("#play-now-id-" + this.tracks[this.currentTrack].postid + "").addClass('onpause');
+            $("#add-play-now-id-" + this.tracks[this.currentTrack].postid + "").addClass('onpause');
+            $("#add-play-now-id-" + this.tracks[this.currentTrack].postid + "").removeClass('onplay');
             hidePreloader(this);
             if (!this.seekTime) {
                 this.waitForLoad = false;
@@ -495,15 +500,9 @@ jQuery( function player56s($) {
             if (!this.tracks[this.currentTrack]) {
                 this.currentTrack = 0;
             }
-            $("#player56s-currenttrack").html(this.tracks[this.currentTrack].postid);
-            $("#play-now-id-" + this.tracks[this.currentTrack].postid + "").removeClass('onplay');
-            $("#play-now-id-" + this.tracks[this.currentTrack].postid + "").addClass('onpause');
-            $("#add-play-now-id-" + this.tracks[this.currentTrack].postid + "").addClass('onpause');
-            $("#add-play-now-id-" + this.tracks[this.currentTrack].postid + "").removeClass('onplay');
             this.$container.removeClass("player56s-status-playing");
         }
         stop() {
-            $("#player56s-currenttrack").html(this.tracks[this.currentTrack].postid);
             $("#rs-item-" + this.tracks[this.currentTrack].postid + "").removeClass('playing');
             $("#player56s-currenttrack").html(null);
             if (typeof this.$jPlayer !== "undefined" && this.$jPlayer.jPlayer) {
@@ -514,6 +513,8 @@ jQuery( function player56s($) {
             return this;
         }
         play() {
+            $("#rs-item-" + this.tracks[this.currentTrack].postid + "").addClass('playing');
+            $("#player56s-currenttrack").html(this.tracks[this.currentTrack].postid);
             showPreloader(this, this.seekTime ? false : 500); // 500 is enough to play the loaded fragment, if it's loaded; if isn't — preloader will appear after 500ms
             this.isPlayed = true;
             if (typeof this.$jPlayer !== "undefined" && this.$jPlayer.jPlayer) {
@@ -524,7 +525,6 @@ jQuery( function player56s($) {
             return this;
         }
         pseudoPlay() {
-            $("#player56s-currenttrack").html(this.tracks[this.currentTrack].postid);
             $(document).trigger("player56s-pause", this);
             $("#rs-item-" + this.tracks[this.currentTrack].postid + "").addClass("playing");
             $("#play-now-id-" + this.tracks[this.currentTrack].postid + "").addClass('onplay');
@@ -596,6 +596,13 @@ jQuery( function player56s($) {
                 to_next = true;
             } // next by default
             if (typeof this.$jPlayer !== "undefined" && this.$jPlayer.jPlayer) {
+
+                if (this.$container.hasClass("player56s-status-playing")) {
+                    this.$container.addClass("status-playing");
+                } else  {
+                    this.$container.removeClass("status-playing");
+                }
+
                 this.pseudoPause();
                 this.pause();
                 this.stop();
@@ -654,9 +661,16 @@ jQuery( function player56s($) {
                 //   audiofileLink_currenttrack.html(track.postid);
                 // var audiofileLink_currenttrack_item = $("#rs-item-" + track.postid + "");
                 // console.log( audiofileLink_currenttrack_item.addClass("playing") ); 
-                this.waitForLoad = true;
-                this.pseudoPlay();
-                this.play();
+               
+
+                if (this.$container.hasClass("status-playing")) {
+                    this.waitForLoad = true;
+                    this.pseudoPlay();
+                    this.play();
+                } else {
+                    $("#rs-item-" + this.tracks[this.currentTrack].postid + "").addClass('playing');
+                }
+
                 this.$container.find(".player56s-track-prev").addClass("enabled");
                 this.$container.find(".player56s-track-next").addClass("enabled");
 

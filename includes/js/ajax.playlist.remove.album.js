@@ -18,8 +18,8 @@ function ajax_playlist_remove_album($, object_id)  {
                             $("#rs-item-"+element).remove();
                             $("#album-class-artist-list-id-"+element+" a").removeClass("saved");
                             $(".album-"+element+" li a").removeClass("saved");
-                        }, this);         
-                      //  ajax_playlist_add_sidebar($, object_id);     
+                        }, this); 
+                        ajax_playlist_update_sidebar($, object_id);
                     },
                     error: function(errorThrown){
                         //error stuff here.text

@@ -443,3 +443,7 @@ ul.rs-saved-for-later > li.rs-item-saved-for-later > .rs-item-content > .rs-item
     width: 50%;
     text-align: center;
 }
+
+a.add-play-now-button:hover, a.add-play-now-button:active, a.add-play-now-button:focus {
+    outline: none;
+}

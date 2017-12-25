@@ -40,7 +40,11 @@ function play_now($) {
 
                         ajax_playlist_play_now($, object_id);
 
-                        ajax_playlist_update_sidebar($, object_id); 
+                        ajax_playlist_update_sidebar($, object_id);
+
+                        $("#postid-"+object_id+" a").addClass('saved');
+
+                        $("#postid-"+object_id+" a").attr("data-original-title", "Remove");
                         
                         $this.attr('data-title', play_now_ajax_url.unsave_txt);
 
