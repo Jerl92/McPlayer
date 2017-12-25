@@ -108,12 +108,12 @@ class Mcplayer_Public {
 		if ( is_user_logged_in() ) {
 
 			wp_enqueue_script( 'jquery-ui', plugin_dir_url( __FILE__ ) . 'js/jquery-ui.js', array( 'jquery' ), $this->version, false );	
+			
+			wp_enqueue_script( 'aim',  plugin_dir_url( __FILE__ ) . 'js/jquery.aim.js', array( 'jquery' ), $this->version, false );
 
-			wp_enqueue_script( 'network-information',  plugin_dir_url( __FILE__ ) . 'js/network-information.js', array( 'jquery' ), $this->version, false );	
+		//	wp_enqueue_script( 'network-information',  plugin_dir_url( __FILE__ ) . 'js/network-information.js', array( 'jquery' ), $this->version, false );	
 
 		//	wp_enqueue_script( 'transition',  plugin_dir_url( __FILE__ ) . 'js/transition.js', array( 'jquery' ), $this->version, false );
-
-			wp_enqueue_script( 'aim',  plugin_dir_url( __FILE__ ) . 'js/jquery.aim.js', array( 'jquery' ), $this->version, false );
 			
 			wp_enqueue_script( 'jplayer',  plugin_dir_url( __FILE__ ) . 'js/jplayer.js', array( 'jquery' ), $this->version, false );
 

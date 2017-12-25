@@ -255,11 +255,10 @@ jQuery( function player56s($) {
                                 }
                             }, this);
                             if ( allready === 0 ) { 
-                                console.log(audiofileLink_add[3].innerText);
                                 player56sInstance.addTrack(audiofileLink_add[0].innerText, audiofileLink_add[1].innerText,  $.extend({}, audiofileLink_add[3].innerText), audiofileLink_add[2].innerText);
                             }
                         }
-                        console.log( "Add Track: " + getTrackTitle(audiofileLink_add[1].innerText) );
+                        console.log( "Add Track: " + getTrackTitle(audiofileLink_add[1].innerText) + " - " + audiofileLink_add[3].innerText );
                     }
 
                     if ( audiofileLink_remove_all[0].innerHTML == "1") {

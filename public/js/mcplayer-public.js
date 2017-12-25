@@ -38,7 +38,7 @@ jQuery(document).ready(function () {
         jQuery('#colophon').css('width', '100%');
     } else {
         jQuery('#colophon').css('position', 'absolute');
-        jQuery('#colophon').css('bottom', 'auto');
+        jQuery('#colophon').css('bottom', '0');
         jQuery('#colophon').css('width', '100%');
     }
 });
@@ -55,7 +55,7 @@ jQuery(window).resize(function () {
         jQuery('#colophon').css('width', '100%');
     } else {
         jQuery('#colophon').css('position', 'absolute');
-        jQuery('#colophon').css('bottom', 'auto');
+        jQuery('#colophon').css('bottom', '0');
         jQuery('#colophon').css('width', '100%');
     }
     

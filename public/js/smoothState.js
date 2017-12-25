@@ -29,14 +29,14 @@
 //				tooltip($);	
 				
 				scroll_to_album($);
-				
-				play_now($);
                     
 //				rs_save_for_later($);
 				
 //				rs_save_for_later_album($); 
 
 				ajax_playlist_add_sidebar($);
+								
+				play_now($);
 
 //				sortable_playlist($);
 				

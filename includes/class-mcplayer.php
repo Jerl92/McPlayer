@@ -121,9 +121,9 @@ class Mcplayer {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-mcplayer-admin.php';
 
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-mcplayer-admin-meta-box.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/mcplayer-admin-meta-box.php';
 
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-mcplayer-admin-upload-meta-box.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/mcplayer-admin-upload-meta-box.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
@@ -131,13 +131,13 @@ class Mcplayer {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-mcplayer-public.php';
 
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/partials/mcplayer-public-display.php';
+
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/partials/mcplayer-player-widget.php';
+
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/partials/mcplayer-playlist-widget.php';
+
 		$this->loader = new Mcplayer_Loader();
-		
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-mcplayer-widget.php';
-
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-mcplayer-player-widget.php';
-
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-mcplayer-playlist-widget.php';
 
 	}
 
