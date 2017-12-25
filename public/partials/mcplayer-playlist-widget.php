@@ -6,7 +6,7 @@ function mcplayer_register_playlist_widgets() {
 add_action( 'widgets_init', 'mcplayer_register_playlist_widgets' );
 
 class MCPlayer_bottom_playlist_widget extends WP_Widget {
-	 function MCPlayer_bottom_playlist_widget() {	
+	function MCPlayer_bottom_playlist_widget() {	
 		// Instantiate the parent object
 		parent::__construct(
 
@@ -34,43 +34,37 @@ class MCPlayer_bottom_playlist_widget extends WP_Widget {
 	
 			$matches = get_user_meta( get_current_user_id(), 'rs_saved_for_later', true );
 			
-			$args = array( 
-				'posts_per_page' => -1,	
-				'post_type' => 'music',
-				'post__in' => $matches,
-				'order'   => 'DESC',
-				'orderby'   => 'post__in',
-			);
+			if ( ! empty( $matches ) ) {
+				$args = array( 
+					'posts_per_page' => -1,	
+					'post_type' => 'music',
+					'post__in' => $matches,
+					'order'   => 'DESC',
+					'orderby'   => 'post__in',
+				);
+			} else {
+				$args = 0;
+			}
 			
 			$loop = new WP_Query( $args );
-	
-			ob_start();
 
 			if ( $loop->have_posts() ) : ?>
-			
-				<?php if ($matches) { ?>
+
+				<?php ob_start(); ?>
 				
-					<?php while ( $loop->have_posts() ) : $loop->the_post(); ?>
-
-						<?php if ( in_array( get_the_ID(), $matches ) ) {  ?>
-							
-							<?php get_template_part( 'template-parts/page-music-archive-sidebar', get_post_format() ); ?>
-
-						<?php } ?>
-					
-					<?php endwhile; // end of the loop. ?>
-			
-					<?php // woocommerce_product_loop_end(); ?>
-			
-					<?php wp_reset_postdata(); ?>
-
-					<?php } ?>
+				<?php while ( $loop->have_posts() ) : $loop->the_post(); ?>
+						
+						<?php get_template_part( 'template-parts/page-music-archive-sidebar', get_post_format() ); ?>
+				
+				<?php endwhile; // end of the loop. ?>
+		
+				<?php wp_reset_postdata(); ?>
 
 				<?php echo '<div id="rs-saved-for-later-wrapper" class="noselect"><ul id="rs-saved-for-later" class="rs-saved-for-later">' . ob_get_clean() . '</ul></div>'; ?>
 
 			<?php else : ?>
 
-			<?php echo '<div id="rs-saved-for-later-wrapper" class="noselect"><ul id="rs-saved-for-later" class="rs-saved-for-later"><li style="text-align: center;">Nothing in the playlist</li></ul></div>'; ?>
+				<?php echo '<div id="rs-saved-for-later-wrapper" class="noselect"><ul id="rs-saved-for-later" class="rs-saved-for-later"><li style="text-align: center; padding:15px 0;">Nothing in the playlist</li></ul></div>'; ?>
 
 			<?php endif;
 			

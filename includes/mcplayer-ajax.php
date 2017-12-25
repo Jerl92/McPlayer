@@ -230,43 +230,43 @@ function ajax_add_track_sidebar($post) {
 		$matches = get_user_meta( get_current_user_id(), 'rs_saved_for_later', true );
 
 		//	array_reverse($matches);
-				
+			
+		if ( ! empty( $matches ) ) {
 			$args = array( 
 				'posts_per_page' => '-1',	
 				'post_type' => 'music',
 				'post__in' => ($matches),
-				'orderby'   => 'post__in',
+				'orderby'   => 'post__in'
 			);
-					
-			$loop = new WP_Query( $args );
+		} else {
+			$args = 0;
+		}		
 
-			ob_start();
+		$loop = new WP_Query( $args );
 
 			if ( $loop->have_posts() ) : ?>
 
-				<?php if ($matches) { ?>
-					
-					<?php // do_action( "woocommerce_shortcode_before_featured_products_loop" ); ?>
+				<?php ob_start(); ?>
 
-					<?php // woocommerce_product_loop_start(); ?>
+				<?php // do_action( "woocommerce_shortcode_before_featured_products_loop" ); ?>
 
-					<?php while ( $loop->have_posts() ) : $loop->the_post(); ?>
-					
-						<?php echo get_template_part( 'template-parts/page-music-archive-sidebar', get_post_format() ); ?>
+				<?php // woocommerce_product_loop_start(); ?>
 
-					<?php endwhile; // end of the loop. ?>
+				<?php while ( $loop->have_posts() ) : $loop->the_post(); ?>
 
-					<?php // woocommerce_product_loop_end(); ?>
+					<?php echo get_template_part( 'template-parts/page-music-archive-sidebar', get_post_format() ); ?>
 
-					<?php  wp_reset_postdata(); ?>
+				<?php endwhile; // end of the loop. ?>
 
-				<?php } ?>
+				<?php // woocommerce_product_loop_end(); ?>
+
+				<?php  wp_reset_postdata(); ?>
 
 				<?php $html = ob_get_clean(); ?>
 
 			<?php else : ?>
 
-			<?php $html = '<li style="text-align: center;">Nothing in the playlist</li>'; ?>
+				<?php $html = '<li style="text-align: center; padding:15px 0;">Nothing in the playlist</li>'; ?>
 
 			<?php endif;
 				
@@ -385,7 +385,7 @@ function save_and_play_now() {
 		$count = count( $matches );
 	}
 
-	// $no_content = '<li style="text-align: center;">Nothing in the playlist</li>';
+	$no_content = '<li style="text-align: center;">Nothing in the playlist</li>';
 
 	// Object ID
 	$object_id = isset( $_REQUEST['object_id'] ) ? intval( $_REQUEST['object_id'] ) : 0;
@@ -412,7 +412,7 @@ function save_and_play_now() {
 	$return = array(
 		'status'  => is_user_logged_in(),
 		'update'  => $saved,
-		// 'message' => $no_content,
+		'message' => $no_content,
 		'count'   => esc_attr( $count )
 	);
 

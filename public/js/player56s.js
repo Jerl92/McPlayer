@@ -598,8 +598,10 @@ jQuery( function player56s($) {
 
                 if (this.$container.hasClass("player56s-status-playing")) {
                     this.$container.addClass("status-playing");
+                    this.$container.removeClass("status-onpause");
                 } else  {
                     this.$container.removeClass("status-playing");
+                    this.$container.addClass("status-onpause");
                 }
 
                 this.pseudoPause();
@@ -660,14 +662,13 @@ jQuery( function player56s($) {
                 //   audiofileLink_currenttrack.html(track.postid);
                 // var audiofileLink_currenttrack_item = $("#rs-item-" + track.postid + "");
                 // console.log( audiofileLink_currenttrack_item.addClass("playing") ); 
-               
-
-                if (this.$container.hasClass("status-playing")) {
+            
+                if (this.$container.hasClass("status-onpause")) {
+                    $("#rs-item-" + this.tracks[this.currentTrack].postid + "").addClass('playing');
+                } else if (this.$container.hasClass("status-playing")) {
                     this.waitForLoad = true;
                     this.pseudoPlay();
                     this.play();
-                } else {
-                    $("#rs-item-" + this.tracks[this.currentTrack].postid + "").addClass('playing');
                 }
 
                 this.$container.find(".player56s-track-prev").addClass("enabled");
@@ -837,6 +838,7 @@ jQuery( function player56s($) {
                     self.onStop.call(self);
                 },
                 ended: function () {
+                    self.$container.addClass("player56s-status-playing");
                     self.switchTrack(true);
                 },
                 play: function () {

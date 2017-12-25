@@ -99,29 +99,23 @@ class MCPlayer_bottom_player_widget extends WP_Widget {
 			} else {
 				echo '<audio href="" class="player56s" postid="0"></audio>';
 			}
-			
+		
 			echo '<div id="player56s-ajax-wrap" style="display: none;">';
-				echo '<div id="player56s-currenttrack">
-				</div>';
-				echo '<div id="player56s-addtrack">
-				</div>';
-				echo '<div id="player56s-removetrack">
-				</div>';
-				echo '<div id="player56s-removetracks-all">
-				</div>';
-				echo '<div id="player56s-playnow">
-				</div>';
-				echo '<div id="player56s-sortable">
-				</div>';
+				echo '<div id="player56s-currenttrack"></div>';
+				echo '<div id="player56s-addtrack"></div>';
+				echo '<div id="player56s-removetrack"></div>';
+				echo '<div id="player56s-removetracks-all"></div>';
+				echo '<div id="player56s-playnow"></div>';
+				echo '<div id="player56s-sortable"></div>';
 			echo '</div>';
 
 			echo '</div>';
 
-			} else {
-				echo '<p id="notlogin" class="nothing-saved">You don’t have access to the Player, You need to <a href="';
-				echo wp_login_url( home_url() );
-				echo '" title="Login">Login</a></br>This site is for personal use and development purposes.</p>';
-			}
+		} else {
+			echo '<p id="notlogin" class="nothing-saved">You don’t have access to the Player, You need to <a href="';
+			echo wp_login_url( home_url() );
+			echo '" title="Login">Login</a></br>This site is for personal use and development purposes.</p>';
+		}
 
 		echo $args['after_widget']; 
 
