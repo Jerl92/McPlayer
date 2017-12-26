@@ -68,7 +68,7 @@ class Mcplayer {
 	 */
 	public function __construct() {
 
-		$this->plugin_name = 'mcplayer';
+		$this->plugin_name = 'McPlayer';
 		$this->version = '1.0.0';
 
 		$this->load_dependencies();
@@ -100,42 +100,42 @@ class Mcplayer {
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-mcplayer-loader.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-McPlayer-loader.php';
 
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/mcplayer-cpt.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/McPlayer-cpt.php';
 
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/mcplayer-functions.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/McPlayer-functions.php';
 
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/mcplayer-ajax.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/McPlayer-ajax.php';
 
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/mcplayer-shortcode.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/McPlayer-shortcode.php';
 
 		/**
 		 * The class responsible for defining internationalization functionality
 		 * of the plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-mcplayer-i18n.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-McPlayer-i18n.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-mcplayer-admin.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-McPlayer-admin.php';
 
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/mcplayer-admin-meta-box.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/McPlayer-admin-meta-box.php';
 
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/mcplayer-admin-upload-meta-box.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/McPlayer-admin-upload-meta-box.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-mcplayer-public.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-McPlayer-public.php';
 
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/partials/mcplayer-public-display.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/partials/McPlayer-public-display.php';
 
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/partials/mcplayer-player-widget.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/partials/McPlayer-player-widget.php';
 
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/partials/mcplayer-playlist-widget.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/partials/McPlayer-playlist-widget.php';
 
 		$this->loader = new Mcplayer_Loader();
 

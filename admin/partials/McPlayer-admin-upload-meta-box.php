@@ -16,7 +16,7 @@ class Meta_Box_Media_Upload {
     }
     
 	function setup_box() {
-		add_meta_box( 'meta_box_id', __( 'Select a audio file to link to the music post', 'mcplayer' ), array( $this, 'meta_box_contents' ), 'music', 'normal' );
+		add_meta_box( 'meta_box_id', __( 'Select a audio file to link to the music post', 'McPlayer' ), array( $this, 'meta_box_contents' ), 'music', 'normal' );
     }
     
 	function meta_box_contents() {

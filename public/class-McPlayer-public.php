@@ -73,7 +73,7 @@ class Mcplayer_Public {
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/mcplayer-public.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/McPlayer-public.css', array(), $this->version, 'all' );
 
 		wp_enqueue_style( 'player56s', plugin_dir_url( __FILE__ ) . 'css/player56s.css', array(), $this->version, 'all' );
 
@@ -119,7 +119,7 @@ class Mcplayer_Public {
 
 			wp_enqueue_script( 'player56s',  plugin_dir_url( __FILE__ ) . 'js/player56s.js', array( 'jplayer' ), $this->version, false );
 
-			wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/mcplayer-public.js', array( 'jquery' ), $this->version, false );
+			wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/McPlayer-public.js', array( 'jquery' ), $this->version, false );
 			
 			wp_enqueue_script( 'smoothState',  plugin_dir_url( __FILE__ ) . 'js/jquery.smoothState.min.js', array( 'jquery' ), $this->version, false );
 

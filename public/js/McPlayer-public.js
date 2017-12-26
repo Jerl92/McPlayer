@@ -12,7 +12,7 @@ jQuery(document).ready(function() {
     });
     jQuery('#btn_player_toggle').click(function() {
         jQuery('#player56s-ui-zone').toggleClass('hide-player');
-        jQuery('#page').css('padding-bottom', jQuery('#wrap-player').height() +'px');
+        jQuery('#smooth').css('padding-bottom', jQuery('#wrap-player').height() +'px');
         jQuery('#btn_player_toggle').toggleClass('up-arrow');
     });
 });

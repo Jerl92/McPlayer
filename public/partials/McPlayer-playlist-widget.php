@@ -1,9 +1,9 @@
 <?php
 
-function mcplayer_register_playlist_widgets() {
+function McPlayer_register_playlist_widgets() {
 	register_widget( 'MCPlayer_bottom_playlist_widget');
 }
-add_action( 'widgets_init', 'mcplayer_register_playlist_widgets' );
+add_action( 'widgets_init', 'McPlayer_register_playlist_widgets' );
 
 class MCPlayer_bottom_playlist_widget extends WP_Widget {
 	function MCPlayer_bottom_playlist_widget() {	
@@ -14,7 +14,7 @@ class MCPlayer_bottom_playlist_widget extends WP_Widget {
 			'MCPlayer_bottom_playlist_widget', 
 
 			// Widget name will appear in UI
-			__('MC Playlist Widget', 'mcplayer'), 
+			__('MC Playlist Widget', 'McPlayer'), 
 
 			// Widget description
 			array( 'description' => __( 'Sample widget based on WPBeginner Tutorial', 'sidr_widget_domain' ), ) 

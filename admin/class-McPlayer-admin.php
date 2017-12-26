@@ -73,7 +73,7 @@ class Mcplayer_Admin {
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->Mcplayer, plugin_dir_url( __FILE__ ) . 'css/mcplayer-admin.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->Mcplayer, plugin_dir_url( __FILE__ ) . 'css/McPlayer-admin.css', array(), $this->version, 'all' );
 
 	}
 
@@ -98,7 +98,7 @@ class Mcplayer_Admin {
 
 		wp_enqueue_script( 'wp-media-uploader', plugin_dir_url( __FILE__ ) . 'js/wp-media-uploader.js', array( 'jquery' ), $this->version, false );
 
-		wp_enqueue_script( $this->Mcplayer, plugin_dir_url( __FILE__ ) . 'js/mcplayer-admin.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->Mcplayer, plugin_dir_url( __FILE__ ) . 'js/McPlayer-admin.js', array( 'jquery' ), $this->version, false );
 
 	}
 
