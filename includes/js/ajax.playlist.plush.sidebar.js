@@ -97,13 +97,10 @@ function  ajax_playlist_remove_sidebar_btn($, object_id)  {
                 dataType: 'JSON',
                 success: function(data){
                     //   console.log(data);
-     
-                           
-        
-
+                /*
                 postdata = $("#album-class-artist-list-id-"+data+" a").toggleClass('saved');
 
-                    postdata;
+                    postdata; */
 
                     postdata_ = $("#postid-"+data+" a").toggleClass('saved');
                     

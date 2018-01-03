@@ -270,11 +270,11 @@ function ajax_add_track_sidebar($post) {
 
 			<?php endif;
 				
-			}
-	
-		return wp_send_json ( $html );
-
 	}
+	
+	return wp_send_json ( $html );
+
+}
 
 
 add_action( 'wp_ajax_remove_track_sidebar', 'ajax_remove_track_sidebar' );

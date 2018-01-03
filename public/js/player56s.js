@@ -469,16 +469,16 @@ jQuery( function player56s($) {
             return this.$link;
         }
         pause() {
-            $("#player56s-currenttrack").html(this.tracks[this.currentTrack].postid);
-            $("#play-now-id-" + this.tracks[this.currentTrack].postid + "").removeClass('onplay');
-            $("#play-now-id-" + this.tracks[this.currentTrack].postid + "").addClass('onpause');
-            $("#add-play-now-id-" + this.tracks[this.currentTrack].postid + "").addClass('onpause');
-            $("#add-play-now-id-" + this.tracks[this.currentTrack].postid + "").removeClass('onplay');
             hidePreloader(this);
             if (!this.seekTime) {
                 this.waitForLoad = false;
             }
             if (typeof this.$jPlayer !== "undefined" && this.$jPlayer.jPlayer) {
+                $("#player56s-currenttrack").html(this.tracks[this.currentTrack].postid);
+                $("#play-now-id-" + this.tracks[this.currentTrack].postid + "").removeClass('onplay');
+                $("#play-now-id-" + this.tracks[this.currentTrack].postid + "").addClass('onpause');
+                $("#add-play-now-id-" + this.tracks[this.currentTrack].postid + "").addClass('onpause');
+                $("#add-play-now-id-" + this.tracks[this.currentTrack].postid + "").removeClass('onplay');
                 if (this.isPlaying || this.waitForLoad) {
                     this.isPlaying = false;
                     this.waitForLoad = false;
@@ -547,6 +547,10 @@ jQuery( function player56s($) {
                     this.pseudoPause();
                     this.pause();
                     this.stop();
+                } else {
+                    this.tracks.forEach(function(element) {
+                        $("#rs-item-" + element.postid + "").removeClass('playing');
+                    }, this)
                 }
                 this.$jPlayer.jPlayer("clearMedia");
                 this.currentTrack = index;

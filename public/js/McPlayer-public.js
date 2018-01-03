@@ -12,7 +12,7 @@ jQuery(document).ready(function() {
     });
     jQuery('#btn_player_toggle').click(function() {
         jQuery('#player56s-ui-zone').toggleClass('hide-player');
-        jQuery('#smooth').css('padding-bottom', jQuery('#wrap-player').height() +'px');
+        jQuery('#page').css('padding-bottom', jQuery('#wrap-player').height() +'px');
         jQuery('#btn_player_toggle').toggleClass('up-arrow');
     });
 });
@@ -30,7 +30,7 @@ jQuery(document).ready(function () {
     var colophonHeight_ = jQuery('#colophon').height();
     var playerHeight_ = jQuery('#wrap-player').height();
 
-    jQuery('#smooth').css('padding-bottom', jQuery('#wrap-player').height() +'px');
+    jQuery('#page').css('padding-bottom', jQuery('#wrap-player').height() +'px');
 
     if ( windowHeight_ >= documentHeight_ ) {
         jQuery('#colophon').css('position', 'fixed');

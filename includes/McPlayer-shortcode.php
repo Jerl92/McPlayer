@@ -232,8 +232,7 @@ function get_save_for_later_button_display() {
 			global $post;
 	
 			// Object ID
-			$object_id = get_queried_object_id();
-	
+			$object_id = get_queried_object_id();	
 	
 			// Check cookie if object is saved
 			$saved = false;
@@ -243,7 +242,7 @@ function get_save_for_later_button_display() {
 				if ( empty( $matches ) ) {
 					$matches = array();
 				}
-				if ( in_array( esc_attr( get_the_ID() ), $matches ) ) {
+				if ( in_array( get_the_ID(), $matches ) ) {
 					$saved = true;
 				} else {
 					$saved = false;
@@ -267,7 +266,7 @@ function get_save_for_later_button_display() {
 
 			if (is_user_logged_in() ) {
 				if ( $saved == true ) {
-					return '<a href="#" class="rs-save-for-later-button saved" data-toggle="tooltip" data-placement="top" data-title="' . esc_attr( $unsave ) . '" data-nonce="' . wp_create_nonce( 'rs_object_save_for_later' ) . '" data-object-id="' . esc_attr( get_the_ID() ) . '"></a><a href="#" class="rs-see-saved" data-toggle="tooltip" data-placement="top" data-title="' . esc_attr( $number ) . ' ' . esc_attr( $count ) . '"></a>';
+					return '<a href="#" class="rs-save-for-later-button saved" data-toggle="tooltip" data-placement="top" data-title="' . esc_attr( $unsave ) . '" data-nonce="' . wp_create_nonce( 'ajax_object_save_for_later' ) . '" data-object-id="' . esc_attr( get_the_ID() ) . '"></a>';
 				} else {
 					return '<a href="#" class="rs-save-for-later-button" data-toggle="tooltip" data-placement="top" data-title="' . esc_attr( $save ) . '" data-nonce="' . wp_create_nonce( 'rs_object_save_for_later' ) . '" data-object-id="' . esc_attr( get_the_ID() ) . '">️</a>';
 				}
@@ -315,7 +314,7 @@ function get_save_for_later_album_button_display($atts) {
 			
 											
 						if ( $saved_album == true ) {
-							return '<a href="#" class="rs-save-for-later-button-album saved" data-toggle="tooltip" data-placement="top" data-title="' . esc_attr( $unsave ) . '" data-nonce="' . wp_create_nonce( 'rs_object_save_for_later_album' ) . '" data-object-id="' . esc_attr( $atts['album_id'] ) . '"></a><a href="#" class="rs-see-saved" data-toggle="tooltip" data-placement="top" data-title="' . esc_attr( $number ) . ' ' . esc_attr( $count ) . '"></a>';
+							return '<a href="#" class="rs-save-for-later-button-album saved" data-toggle="tooltip" data-placement="top" data-title="' . esc_attr( $unsave ) . '" data-nonce="' . wp_create_nonce( 'rs_object_save_for_later_album' ) . '" data-object-id="' . esc_attr( $atts['album_id'] ) . '"></a>';
 						} else {
 							return '<a href="#" class="rs-save-for-later-button-album" data-toggle="tooltip" data-placement="top" data-title="' . esc_attr( $save ) . '" data-nonce="' . wp_create_nonce( 'rs_object_save_for_later_album' ) . '" data-object-id="' . esc_attr( $atts['album_id'] ) . '">️</a>';
 						} 

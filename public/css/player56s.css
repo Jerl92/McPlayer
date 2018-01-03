@@ -147,6 +147,9 @@
     left: 10px;
     width: 100px;
   }
+  .player56s .player56s-tracks:focus {
+    outline: none;
+  }
   .player56s .player56s-tracks .player56s-track-nav {
     width: 25px; height: 25px;
   }
