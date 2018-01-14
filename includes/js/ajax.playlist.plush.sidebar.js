@@ -105,6 +105,8 @@ function  ajax_playlist_remove_sidebar_btn($, object_id)  {
                     $("#postid-"+data+" a").removeClass('saved');
 
                     $("#album-class-artist-list-id-"+data+" a").removeClass('saved');
+                            
+                    $("#post-"+data+" a.rs-save-for-later-button").removeClass('saved');
 
                 },
                 error: function(errorThrown){
