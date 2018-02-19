@@ -715,9 +715,7 @@
               // Call the onReady callback and set delay
               options.onBefore($form, $container);
 
-              if(b === false) return false;
-              	      
-		          load(request, undefined, options.allowFormCaching);
+              load(request, undefined, options.allowFormCaching);
             }
           }
         },
