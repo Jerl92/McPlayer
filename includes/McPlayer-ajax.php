@@ -266,7 +266,7 @@ function ajax_add_track_sidebar($post) {
 
 			<?php else : ?>
 
-				<?php $html = '<li style="text-align: center; padding:15px 0;">Nothing in the playlist</li>'; ?>
+				<?php $html = '<li style="text-align: center; padding: 15px 0;">Nothing in the playlist</li>'; ?>
 
 			<?php endif;
 				
@@ -316,7 +316,7 @@ function save_unsave_for_later() {
 		$count = count( $matches );
 	}
 
-	$no_content = '<li style="text-align: center;">Nothing in the playlist</li>';
+	$no_content = '<li style="text-align: center; padding: 15px 0;">Nothing in the playlist</li>';
 
 	// Object ID
 	$object_id = isset( $_REQUEST['object_id'] ) ? intval( $_REQUEST['object_id'] ) : 0;
@@ -385,7 +385,7 @@ function save_and_play_now() {
 		$count = count( $matches );
 	}
 
-	$no_content = '<li style="text-align: center;">Nothing in the playlist</li>';
+	$no_content = '<li style="text-align: center; padding: 15px 0;">Nothing in the playlist</li>';
 
 	// Object ID
 	$object_id = isset( $_REQUEST['object_id'] ) ? intval( $_REQUEST['object_id'] ) : 0;
@@ -533,7 +533,7 @@ function save_for_later_remove_all() {
 			// die;
 	}
 
-	$no_content = '<li style="text-align: center;">Nothing in the playlist</li>';
+	$no_content = '<li style="text-align: center; padding: 15px 0;">Nothing in the playlist</li>';
 
 	if ( is_user_logged_in() ) {
 		$saved_items = get_user_meta( get_current_user_id(), 'rs_saved_for_later', true );
