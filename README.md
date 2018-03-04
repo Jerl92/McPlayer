@@ -1,7 +1,5 @@
 # McPlayer-Core</br>
 
-<img style="max-width: 100%;" src="https://image.ibb.co/iJoftS/mcplayer_index.gif" alt="MCPlayer" data-canonical-src="https://image.ibb.co/iJoftS/mcplayer_index.gif" />
-
 Tags: Music Player, Full Width, Playlist,</br>
 Requires at least: 4.9</br>
 Tested up to: 4.9.1</br>
@@ -10,6 +8,8 @@ License: GPLv2 or later</br>
 License URI: http://www.gnu.org/licenses/gpl-2.0.html</br>
 
 ## A Full-width Audio Player With Playlist, Plugin for WordPress.</br>
+
+<img style="max-width: 100%;" src="https://image.ibb.co/iJoftS/mcplayer_index.gif" alt="MCPlayer" data-canonical-src="https://image.ibb.co/iJoftS/mcplayer_index.gif" />
 
 McPlayer is a full-width HTML5/JS/AJAX audio Player with Playlist, Plugin for WordPress.</br>
 
