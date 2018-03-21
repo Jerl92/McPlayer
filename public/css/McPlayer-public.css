@@ -104,12 +104,6 @@ ul.rs-saved-for-later {
     clear: both;
 }
 
-.page-music {
-    width: 19.75%;    
-    padding: 0 0.25%;    
-    display: inline-block;
-}
-
 #colophon.site-footer.hide {
     bottom: -100px !important;
 }
@@ -155,13 +149,15 @@ ul.rs-saved-for-later {
 }
 
 .rs-save-for-later-remove-all {
-    margin: 0 auto;    
-    display: table;    
-    padding: 7.5px 20px;    
-    border-radius: 25px;    
-    background-color: rgba(0,0,0,.85);    
-    cursor: pointer;    
-    color: white;
+    margin: auto;
+    display: block;
+    padding: 7.5px 20px;
+    border-radius: 25px;
+    background-color: rgba(0,0,0,.85);
+    cursor: pointer;
+    color: #fff;
+    width: 150px;
+    text-align: center;
 }
 
 .rs-save-for-later-remove-all:hover {
@@ -273,6 +269,27 @@ a.rs-save-for-later-button.saved:after, a.rs-save-for-later-button-album.saved:a
     display: table !important;
 }
 */
+
+@media only screen and (min-width: 1367px) {
+
+    .page-music {
+        width: 19.75%;    
+        padding: 0 0.25%;    
+        display: inline-block;
+    }
+
+}
+
+@media only screen and (min-width: 730px) and (max-width: 1366px) {
+
+    .page-music {
+        width: 13.5%;
+        padding: 0 0.5%;
+        display: inline-block;
+    }
+
+}
+
 @media only screen and (max-width: 729px) {
 
     .page-music {
