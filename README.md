@@ -81,6 +81,9 @@ https://github.com/miguel-perez/smoothState.js#faq
 Init version of this plugin, a lots of QA hours have been done with Chrome and Firefox, both work great.
 
 ## Screenshots
+<p align="center">
+  <img width="300" src="https://image.ibb.co/mrUzhx/5982479604122284539.png">
+</p>
 <img style="max-width: 100%;" src="https://img15.hostingpics.net/pics/809953mcplayer1.jpg" alt="MCPlayer" data-canonical-src="https://img15.hostingpics.net/pics/809953mcplayer1.jpg" />
 <img style="max-width: 100%;" src="https://img15.hostingpics.net/pics/797972mcplayer2.jpg" alt="MCPlayer" data-canonical-src="https://img15.hostingpics.net/pics/797972mcplayer2.jpg" />
 <img style="max-width: 100%;" src="https://img15.hostingpics.net/pics/971888mcplayeradmin2.jpg" alt="MCPlayer" data-canonical-src="https://img15.hostingpics.net/pics/971888mcplayeradmin2.jpg" />
