@@ -98,7 +98,7 @@ function rs_save_for_later($) {
 				$(".player56s").player56s($);
 				$("#player56s-removetracks-all").html(null); 
 
-				ajax_playlist_add_sidebar($);
+				ajax_playlist_add_sidebar($, data);
 
 				rs_save_for_later($);
 				

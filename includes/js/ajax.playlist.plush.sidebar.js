@@ -12,8 +12,12 @@ function ajax_playlist_add_sidebar($, object_id)  {
 
             var currenttrack = $("#player56s-currenttrack")[0].innerText;
 
-            $("#rs-saved-for-later").html(data); 
-            
+            if (data) {
+                $("#rs-saved-for-later").html(data); 
+            } else {
+                $("#rs-saved-for-later").html('<li style="text-align: center; padding:15px 0;">Nothing in the playlist</li>');
+            }
+
             tooltip($);
 
             rs_save_for_later($);

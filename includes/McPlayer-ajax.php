@@ -542,8 +542,7 @@ function save_for_later_remove_all() {
 				delete_user_meta( get_current_user_id(), 'rs_saved_for_later_album' );
 		}
 	}
-
-	 return wp_send_json( $no_content );
+	return wp_send_json( $no_content );
 }
 	
 /* AJAX action callback */
