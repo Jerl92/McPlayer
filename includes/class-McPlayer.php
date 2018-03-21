@@ -102,6 +102,8 @@ class Mcplayer {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-McPlayer-loader.php';
 
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/McPlayer-setings.php';
+
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/McPlayer-cpt.php';
 
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/McPlayer-functions.php';

@@ -75,14 +75,34 @@
 		global $current_user;
 		get_currentuserinfo();
 
+		$sox_file = '/usr/bin/sox';
+
 		$attachment_post = get_post( $attachment_ID );
 
 		$type = get_post_mime_type($attachment_ID);
 
+		$musics_option = get_option( 'musics_option_name' ); // Array
+
+		$rate_value =  $musics_option ['audio_rate']; // Option value
+
+		$channel_value =  $musics_option ['audio_channel']; // Option value
+		
+		if ($rate_value == null) {
+			$channel_value = 3200;
+		} 
+
+		if ($channel_value == 1) {
+			$channel_value = 1;
+		} elseif ($channel_value == 2 || $channel_value == null) {
+			$channel_value = 2;
+		}		
+
 		if(strpos($type, 'audio') === 0)
 		{
-			echo exec('sox ' . get_attached_file($attachment_ID) . ' -r 32000 -c 1 --norm -C -1 ' . get_attached_file($attachment_ID) . '.ogg' );
-			chmod( get_attached_file($attachment_ID) . '.ogg', 0666 );
+			if (file_exists($sox_file)) {
+				echo exec('sox ' . get_attached_file($attachment_ID) . ' -r ' . $rate_value . ' -c ' . $channel_value . ' --norm -C -1 ' . get_attached_file($attachment_ID) . '.ogg' );
+				chmod( get_attached_file($attachment_ID) . '.ogg', 0666 );
+			}
 		}
 	}
 	add_action('add_attachment', 'add_ogg_attachment');
@@ -109,20 +129,20 @@
 		}
 	}
 	add_action('delete_attachment', 'remove_ogg_attachment');
-
+	
 	/**
 	* Join posts and postmeta tables
 	*
 	* http://codex.wordpress.org/Plugin_API/Filter_Reference/posts_join
 	*/
 	function cf_search_join( $join ) {
-		global $wpdb;
+    global $wp_query, $wpdb;
 
-		if ( is_search() ) {    
-			$join .=' LEFT JOIN '.$wpdb->postmeta. ' ON '. $wpdb->posts . '.ID = ' . $wpdb->postmeta . '.post_id ';
-		}
+    if (!empty($wp_query->query_vars['s'])) {
+        $join .= "LEFT JOIN $wpdb->postmeta ON $wpdb->posts.ID = $wpdb->postmeta.post_id ";
+    }
 
-		return $join;
+    return $join;
 	}
 	add_filter('posts_join', 'cf_search_join' );
 
