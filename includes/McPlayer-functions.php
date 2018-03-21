@@ -86,6 +86,8 @@
 		$rate_value =  $musics_option ['audio_rate']; // Option value
 
 		$channel_value =  $musics_option ['audio_channel']; // Option value
+
+		$codec_value =  $musics_option ['audio_codec']; // Option value
 		
 		if ($rate_value == null) {
 			$channel_value = 3200;
@@ -95,13 +97,25 @@
 			$channel_value = 1;
 		} elseif ($channel_value == 2 || $channel_value == null) {
 			$channel_value = 2;
-		}		
+		}	
+		
+		$norm_ = ' ';
+		if ($codec_value == 1) {
+			$codec_value = '.ogg';
+			$norm_ = ' --norm -C -1 ';
+		} elseif ( $codec_value == 2 ) {
+			$codec_value = '.wma';
+		} elseif ( $codec_value == 3 ) {
+			$codec_value = '.mp3';
+		} elseif ( $codec_value == 4 ) {
+			$codec_value = '.acc';
+		}
 
 		if(strpos($type, 'audio') === 0)
 		{
 			if (file_exists($sox_file)) {
-				echo exec('sox ' . get_attached_file($attachment_ID) . ' -r ' . $rate_value . ' -c ' . $channel_value . ' --norm -C -1 ' . get_attached_file($attachment_ID) . '.ogg' );
-				chmod( get_attached_file($attachment_ID) . '.ogg', 0666 );
+				echo exec('sox ' . get_attached_file($attachment_ID) . ' -r ' . $rate_value . ' -c ' . $channel_value . $norm_ . get_attached_file($attachment_ID) . $codec_value);
+				chmod( get_attached_file($attachment_ID) . $codec_value , 0666 );
 			}
 		}
 	}
@@ -122,10 +136,24 @@
 		$attachment_post = get_post( $attachment_ID );
 
 		$type = get_post_mime_type($attachment_ID);
+		
+		$musics_option = get_option( 'musics_option_name' ); // Array
+
+		$codec_value =  $musics_option ['audio_codec']; // Option value
+
+		if ($codec_value == null || $codec_value == 1) {
+			$codec_value = '.ogg';
+		} elseif ( $codec_value == 2 ) {
+			$codec_value = '.wma';
+		} elseif ( $codec_value == 3 ) {
+			$codec_value = '.mp3';
+		} elseif ( $codec_value == 4 ) {
+			$codec_value = '.acc';
+		}
 
 		if(strpos($type, 'audio') === 0)
 		{
-			echo exec('rm -f ' . get_attached_file($attachment_ID) . '.ogg' );
+			echo exec('rm -f ' . get_attached_file($attachment_ID) . $codec_value);
 		}
 	}
 	add_action('delete_attachment', 'remove_ogg_attachment');

@@ -84,7 +84,15 @@ class MusicSettingsPage
             array( $this, 'channel_callback' ), 
             'my-setting-admin', 
             'setting_section_id'
-        );      
+        );    
+        
+        add_settings_field(
+            'audio_codec', 
+            'Chose the audio codec for 3G/LTE',
+            array( $this, 'codec_callback' ), 
+            'my-setting-admin', 
+            'setting_section_id'
+        );  
     }
 
     /**
@@ -98,8 +106,11 @@ class MusicSettingsPage
         if( isset( $input['audio_rate'] ) )
             $new_input['audio_rate'] = sanitize_text_field( $input['audio_rate'] );
 
-        if( isset( $input['audio_channel'] ) )
-            $new_input['audio_channel'] = sanitize_text_field( $input['audio_channel'] );
+        if ( isset( $input['audio_channel'] ) )
+            $new_input['audio_channel'] = $input['audio_channel'];
+
+        if ( isset( $input['audio_codec'] ) ) 
+            $new_input['audio_codec'] = $input['audio_codec'];
 
         return $new_input;
     }
@@ -139,10 +150,23 @@ class MusicSettingsPage
      */
     public function channel_callback()
     {
-        printf(
-            '<input type="text" id="audio_channel" name="musics_option_name[audio_channel]" value="%s" />',
-            isset( $this->options['audio_channel'] ) ? esc_attr( $this->options['audio_channel']) : ''
-        );
+        ?>
+        <select name='musics_option_name[audio_channel]'>
+            <option value='2' <?php selected( $this->options['audio_channel'], 2 ); ?>>Stereo</option>
+            <option value='1' <?php selected( $this->options['audio_channel'], 1 ); ?>>Mono</option>
+        </select>
+        <?php
+    }
+
+    public function codec_callback() {
+        ?>
+        <select name='musics_option_name[audio_codec]'>
+            <option value='1' <?php selected( $this->options['audio_codec'], 1 ); ?>>OGG</option>
+            <option value='2' disabled <?php selected( $this->options['audio_codec'], 2 ); ?>>WMA</option>
+            <option value='3' disabled <?php selected( $this->options['audio_codec'], 3 ); ?>>MP3</option>
+            <option value='4' disabled <?php selected( $this->options['audio_codec'], 4 ); ?>>AAC</option>
+        </select>
+        <?php
     }
 }
 
