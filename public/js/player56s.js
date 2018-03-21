@@ -594,7 +594,6 @@ jQuery( function player56s($) {
             }
         }
         switchTrack(to_next) {
-            this.setVolume(0, 0); // set volume to 0
             if (to_next === undefined) {
                 to_next = true;
             } // next by default
@@ -682,7 +681,6 @@ jQuery( function player56s($) {
                 //   this.$container.find(".player56s-track-next").toggleClass('enabled', this.currentTrack < (this.tracks.length - 1));
                 // checkAndRunTicker(this);
             }
-          this.setVolume(1, 1); // set maximum volume
         }
         onPause() {
             this.isPlaying = false;
