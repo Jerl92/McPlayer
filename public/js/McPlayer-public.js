@@ -140,10 +140,13 @@ function sortable_playlist($) {
     }); 
 }
 
-
-function sleep(delay) {
+function sleep(milliseconds) {
     var start = new Date().getTime();
-    while (new Date().getTime() < start + delay);
+    for (var i = 0; i < 1e7; i++) {
+        if ((new Date().getTime() - start) > milliseconds){
+            break;
+        }
+    }
 }
 
 jQuery(document).ready(function($) {

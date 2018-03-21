@@ -32,15 +32,13 @@ function play_now($) {
 
                         ajax_playlist($, object_id);
 
-                        sleep(250);
-
                         ajax_playlist_add_sidebar($, object_id);
 
-                        sleep(250);
+                        ajax_playlist_update_sidebar($, object_id);
+
+                        sleep(150);
 
                         ajax_playlist_play_now($, object_id);
-
-                        ajax_playlist_update_sidebar($, object_id);
 
                         $("#postid-"+object_id+" a").addClass('saved');
 

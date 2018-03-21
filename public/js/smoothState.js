@@ -16,10 +16,10 @@
 		var settings = { 
 			anchors: "a",
 			blacklist: ".no-smoothState",
-			cache: true,
-			prefetchOn: $( "#page" ).aim({className: "site"}),
-			locationHeader: "X-SmoothState-Location",
+			cache: false,
+			prefetchOn: $( "#page" ).smoothState({ prefetchOn: 'aim' }),
 			scroll: true,
+			locationHeader: "X-SmoothState-Location",
 			onAfter: function( $container , $newcontainer ) {
 																
 				stickIt_($);	

@@ -254,7 +254,7 @@ jQuery( function player56s($) {
                                     allready = 1;
                                 }
                             }, this);
-                            if ( allready === 0 ) { 
+                            if ( allready == 0 ) { 
                                 player56sInstance.addTrack(audiofileLink_add[0].innerText, audiofileLink_add[1].innerText,  $.extend({}, audiofileLink_add[3].innerText), audiofileLink_add[2].innerText);
                             }
                         }
@@ -304,14 +304,14 @@ jQuery( function player56s($) {
                                         player56sInstance.pause();
                                     }
                                     else {
-                                        player56sInstance.waitForLoad = true;
+                                        player56sInstance.waitForLoad = false;
                                         player56sInstance.pseudoPlay();
                                         player56sInstance.play();
                                     }
                                 } else {
                                 //    player56sInstance.sleep();
-                                    player56sInstance.playNow(index);  
-                                    player56sInstance.waitForLoad = true;
+                                    player56sInstance.playNow(index);
+                                    player56sInstance.waitForLoad = false;
                                     player56sInstance.pseudoPlay();
                                     player56sInstance.play();
                                     console.log( "Play Track: " + getTrackTitle(element.filename) );
@@ -433,9 +433,13 @@ jQuery( function player56s($) {
             this.bindEvents();
             this.insertDOM();
         }
-        sleep(delay) {
+        sleep(milliseconds) {
             var start = new Date().getTime();
-            while (new Date().getTime() < start + delay);
+            for (var i = 0; i < 1e7; i++) {
+                if ((new Date().getTime() - start) > milliseconds){
+                    break;
+                }
+            }
         }
         addTrack(audiofileLink, filename, trackOptions, postid) {
             this.tracks.push({
@@ -563,7 +567,7 @@ jQuery( function player56s($) {
 
                 if ('connection' in navigator) {
                     if (navigator.connection.type == 'cellular') {
-                        this.sleep(500);
+                        this.sleep(100);
                         $("#ogg_player_toggle").css('display', 'block');
                         this.$jPlayer.jPlayer("setMedia", {
                             oga: track.audiofileLink + '.ogg'
@@ -638,7 +642,7 @@ jQuery( function player56s($) {
 
                 if ('connection' in navigator) {
                     if (navigator.connection.type == 'cellular') {
-                        this.sleep(500);
+                        this.sleep(100);
                         $("#ogg_player_toggle").css('display', 'block');
                         this.$jPlayer.jPlayer("setMedia", {
                             oga: track.audiofileLink + '.ogg'
@@ -757,7 +761,7 @@ jQuery( function player56s($) {
                     // check if the android device is on carrier network then use ogg file, otherwise use mp3 file.
                     if ('connection' in navigator) {
                         if (navigator.connection.type == 'cellular') {
-                            self.sleep(500);
+                            self.sleep(100);
                             $("#ogg_player_toggle").css('display', 'block');
                             self.$jPlayer.jPlayer("setMedia", {
                                 oga: audiofileLink + '.ogg'
@@ -777,8 +781,8 @@ jQuery( function player56s($) {
                         });
                     }
                     self.$container.find(".player56s-button").on("click", function (event) {
-                        event.preventDefault();
                         event.stopPropagation();
+                        event.preventDefault();
                         if (self.isPlaying) {
                             self.pseudoPause.call(self);
                             self.pause.call(self);
@@ -790,8 +794,8 @@ jQuery( function player56s($) {
                         }
                     });
                     self.$container.find(".player56s-volume .player56s-vol-pin").on("click", function (event) {
-                        event.preventDefault();
                         event.stopPropagation();
+                        event.preventDefault();
                         var $pin = $(this);
                         var $pinsBefore = self.minimal ? $pin.prevAll() : $pin.nextAll();
                         var lvl = $pinsBefore.length;
@@ -804,8 +808,8 @@ jQuery( function player56s($) {
                         }
                     });
                     self.$container.find(".player56s-track-nav").on("click", function (event) {
-                        event.preventDefault();
                         event.stopPropagation();
+                        event.preventDefault();
                         self.switchTrack.call(self, $(this).hasClass('player56s-track-next'));
                     });
                     self.$container.find(".player56s-timeline").on("mousedown." + uniqueID, function (event) {
