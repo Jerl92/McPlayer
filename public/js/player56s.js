@@ -304,14 +304,14 @@ jQuery( function player56s($) {
                                         player56sInstance.pause();
                                     }
                                     else {
-                                        player56sInstance.waitForLoad = false;
+                                        player56sInstance.waitForLoad = true;
                                         player56sInstance.pseudoPlay();
                                         player56sInstance.play();
                                     }
                                 } else {
                                 //    player56sInstance.sleep();
                                     player56sInstance.playNow(index);
-                                    player56sInstance.waitForLoad = false;
+                                    player56sInstance.waitForLoad = true;
                                     player56sInstance.pseudoPlay();
                                     player56sInstance.play();
                                     console.log( "Play Track: " + getTrackTitle(element.filename) );
@@ -841,8 +841,10 @@ jQuery( function player56s($) {
                     self.onStop.call(self);
                 },
                 ended: function () {
-                    self.$container.addClass("player56s-status-playing");
                     self.switchTrack(true);
+                    self.waitForLoad = true;
+                    self.pseudoPlay.call(self);
+                    self.play.call(self);
                 },
                 play: function () {
                     self.onPlay.call(self);
