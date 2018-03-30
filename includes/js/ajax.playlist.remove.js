@@ -13,7 +13,7 @@ function ajax_playlist_remove_track($, object_id) {
                         $("#player56s-removetrack").html(data);  
                         $(".player56s").player56s($); 
                         $("#player56s-removetrack").html(null);
-                        $(".entry-save-for-later a").removeClass("saved");
+                        $("#postid-"+object_id+" rs-item-nav a").removeClass("saved");
                         ajax_playlist_add_sidebar($, object_id);
                     },
                     error: function(errorThrown){
