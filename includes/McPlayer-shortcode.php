@@ -266,7 +266,7 @@ function get_save_for_later_button_display() {
 
 			if (is_user_logged_in() ) {
 				if ( $saved == true ) {
-					return '<a href="#" class="rs-save-for-later-button saved" data-toggle="tooltip" data-placement="top" data-title="' . esc_attr( $unsave ) . '" data-nonce="' . wp_create_nonce( 'ajax_object_save_for_later' ) . '" data-object-id="' . esc_attr( get_the_ID() ) . '"></a>';
+					return '<a href="#" class="rs-save-for-later-button saved" data-toggle="tooltip" data-placement="top" data-title="' . esc_attr( $unsave ) . '" data-nonce="' . wp_create_nonce( 'rs_object_save_for_later' ) . '" data-object-id="' . esc_attr( get_the_ID() ) . '"></a>';
 				} else {
 					return '<a href="#" class="rs-save-for-later-button" data-toggle="tooltip" data-placement="top" data-title="' . esc_attr( $save ) . '" data-nonce="' . wp_create_nonce( 'rs_object_save_for_later' ) . '" data-object-id="' . esc_attr( get_the_ID() ) . '">️</a>';
 				}

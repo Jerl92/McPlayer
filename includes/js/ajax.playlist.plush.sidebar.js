@@ -14,8 +14,6 @@ function ajax_playlist_add_sidebar($, object_id)  {
 
             if (data) {
                 $("#rs-saved-for-later").html(data); 
-            } else {
-                $("#rs-saved-for-later").html('<li style="text-align: center; padding:15px 0;">Nothing in the playlist</li>');
             }
 
             tooltip($);

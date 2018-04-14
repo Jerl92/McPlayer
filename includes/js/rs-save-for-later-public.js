@@ -60,7 +60,7 @@ function rs_save_for_later($) {
 						ajax_playlist_remove_track($, object_id);
 						$this.parent().find('.rs-see-saved').remove();
 						$('.rs-saved-trigger span').text(data.count);
-						$('.rs-saved-trigger').addClass('empty');			
+						$('.rs-saved-trigger').addClass('empty');		
 					} else {	
 						$this.addClass('saved');
 						$this.attr('data-title', rs_save_for_later_ajax.unsave_txt);

@@ -13,11 +13,11 @@ function play_now($) {
     
             $('.add-play-now-button').on('click', function(event) {
                 event.preventDefault();
-
-               $('.add-play-now-button[data-toggle="tooltip"]').tooltip('hide');
     
                 var $this = $(this),
                     object_id = $this.data('object-id');
+
+                $('.add-play-now-button[data-toggle="tooltip"]').tooltip('hide');
     
                 $.ajax({
                     type: 'post',
@@ -28,17 +28,17 @@ function play_now($) {
                     },
                     success: function(data) {
 
-                     if( ! $("#postid-"+object_id+" a").hasClass('saved') ) {
+                     if( ! $("#postid-"+object_id+" a").hasClass('saved') || ! $("#add-play-now-id-"+object_id).hasClass('saved') ) {
 
                         ajax_playlist($, object_id);
+                        
+                        sleep(250);
+
+                        ajax_playlist_play_now($, object_id);
 
                         ajax_playlist_add_sidebar($, object_id);
 
                         ajax_playlist_update_sidebar($, object_id);
-
-                        sleep(150);
-
-                        ajax_playlist_play_now($, object_id);
 
                         $("#postid-"+object_id+" a").addClass('saved');
 
