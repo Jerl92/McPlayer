@@ -86,27 +86,25 @@ function rs_save_for_later($) {
 		event.preventDefault();
 
 		var $this = $(this);
+		nonce = $this.data('nonce');
 
 		$.ajax({
 			type: 'post',
 			url: rs_save_for_later_ajax.ajax_url,
 			data: {
+				'nonce': nonce,
 				'action': 'save_for_later_remove_all'
 			},
 			success: function(data) {
-				$("#player56s-removetracks-all").html("1");  
-				$(".player56s").player56s($);
-				$("#player56s-removetracks-all").html(null); 
-
-				ajax_playlist_add_sidebar($, data);
-
-				rs_save_for_later($);
-				
-				scroll_to_album($);
-
 				$(".entry-save-for-later a").removeClass("saved");
 				$(".rs-save-for-later-button").removeClass("saved");
 				$(".rs-save-for-later-button-album").removeClass("saved");
+
+				ajax_playlist_flush_sidebar($);
+
+				$("#player56s-removetracks-all").html("1");  
+				$(".player56s").player56s($);
+				$("#player56s-removetracks-all").html(null);
 			},
 			error: function(error) {
 				console.log(error);

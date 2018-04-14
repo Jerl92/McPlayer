@@ -62,6 +62,10 @@ function ajax_playlist_add_sidebar($, object_id)  {
 
 }
 
+function ajax_playlist_flush_sidebar($)  {
+    $("#rs-saved-for-later").html('<li style="text-align: center; padding:15px 0;">Nothing in the playlist</li>');
+}
+
 function  ajax_playlist_sortable_sidebar($){
         // var currenttrack = $("#player56s-currenttrack")[0].innerText;
 }

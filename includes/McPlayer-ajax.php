@@ -530,7 +530,7 @@ add_action( 'wp_ajax_save_for_later_remove_all', 'save_for_later_remove_all' );
 function save_for_later_remove_all() {
 
 	if ( ! wp_verify_nonce( $_REQUEST['nonce'], 'rs_save_for_later_remove_all' ) ) {
-			// die;
+		die;
 	}
 
 	$no_content = '<li style="text-align: center; padding: 15px 0;">Nothing in the playlist</li>';
@@ -541,8 +541,8 @@ function save_for_later_remove_all() {
 				delete_user_meta( get_current_user_id(), 'rs_saved_for_later' );
 				delete_user_meta( get_current_user_id(), 'rs_saved_for_later_album' );
 		}
+		return wp_send_json( 0 );
 	}
-	return wp_send_json( $no_content );
 }
 	
 /* AJAX action callback */
