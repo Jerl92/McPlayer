@@ -923,11 +923,6 @@ jQuery( function player56s($) {
                 });
             }
             $(document).on("keydown." + uniqueID, function (event) {
-                if (event.keyCode === 32) {
-                    if (self.isPlaying && self.options.pauseOnSpace) {
-                        self.$jPlayer.jPlayer("pause");
-                    }
-                }
                 if (event.keyCode === 176) {
                     event.preventDefault();
                     event.stopPropagation();
