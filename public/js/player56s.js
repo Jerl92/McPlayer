@@ -304,14 +304,14 @@ jQuery( function player56s($) {
                                         player56sInstance.pause();
                                     }
                                     else {
-                                        player56sInstance.waitForLoad = true;
+                                        player56sInstance.waitForLoad = false;
                                         player56sInstance.pseudoPlay();
                                         player56sInstance.play();
                                     }
                                 } else {
                                 //    player56sInstance.sleep();
                                     player56sInstance.playNow(index);
-                                    player56sInstance.waitForLoad = true;
+                                    player56sInstance.waitForLoad = false;
                                     player56sInstance.pseudoPlay();
                                     player56sInstance.play();
                                     console.log( "Play Track: " + getTrackTitle(element.filename) );
@@ -373,7 +373,7 @@ jQuery( function player56s($) {
                         relGroups.push({ group: thisRel, pl56s: pl56si });                         
                     } else {
                         audiofileLink_currenttrack.html(null);   
-                        pl56si.$container.find(".player56s-title").html('<span>You don’t have any saved content.</span>');
+                        pl56si.$container.find(".player56s-title").html('<span>Nothing in the playlist</span>');
                         pl56si.$container.find(".player56s-author").html('<span>Music Player</span>');
                         pl56si.$container.find(".player56s-album").html('<span>Just another WordPress site</span>');
                         pl56si.$container.find(".player56s-album-img").html('<span></span>');                   
@@ -457,9 +457,10 @@ jQuery( function player56s($) {
             this.stop();
             this.$jPlayer.jPlayer("clearMedia");
             this.tracks = [];
-            this.addTrack("#", "You don’t have any saved content.", "0", "0");
+            this.addTrack("#", "Nothing in the playlist", "0", "0");
             audiofileLink_currenttrack.html("0");
-            this.$container.find(".player56s-title").html('<span>You don’t have any saved content.</span>');
+            this.seekTime = 0;
+            this.$container.find(".player56s-title").html('<span>Nothing in the playlist</span>');
             this.$container.find(".player56s-author").html('<span>Music Player</span>');
             this.$container.find(".player56s-album").html('<span>Just another WordPress site</span>');
             this.$container.find(".player56s-album-img").html('<span></span>');
@@ -659,8 +660,6 @@ jQuery( function player56s($) {
                     });
                 }
 
-                this.updateMetadata();
-
                 //   var audiofileLink_currenttrack = $("#player56s-currenttrack");
                 //   audiofileLink_currenttrack.html(track.postid);
                 // var audiofileLink_currenttrack_item = $("#rs-item-" + track.postid + "");
@@ -669,10 +668,12 @@ jQuery( function player56s($) {
                 if (this.$container.hasClass("status-onpause")) {
                     $("#rs-item-" + this.tracks[this.currentTrack].postid + "").addClass('playing');
                 } else if (this.$container.hasClass("status-playing")) {
-                    this.waitForLoad = true;
+                    this.waitForLoad = false;
                     this.pseudoPlay();
                     this.play();
                 }
+
+                this.updateMetadata();
 
                 this.$container.find(".player56s-track-prev").addClass("enabled");
                 this.$container.find(".player56s-track-next").addClass("enabled");
@@ -786,7 +787,7 @@ jQuery( function player56s($) {
                             self.pause.call(self);
                         }
                         else {
-                            self.waitForLoad = true;
+                            self.waitForLoad = false;
                             self.pseudoPlay.call(self);
                             self.play.call(self);
                         }
@@ -841,8 +842,8 @@ jQuery( function player56s($) {
                     self.onStop.call(self);
                 },
                 ended: function () {
-                    self.switchTrack(true);
-                    self.waitForLoad = true;
+                    self.switchTrack.call(self);
+                    self.waitForLoad = false;
                     self.pseudoPlay.call(self);
                     self.play.call(self);
                 },

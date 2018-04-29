@@ -62,13 +62,13 @@ function rs_save_for_later($) {
 						$('.rs-saved-trigger span').text(data.count);
 						$('.rs-saved-trigger').addClass('empty');		
 					} else {	
+						ajax_playlist($, object_id);
+						ajax_playlist_add_sidebar($, object_id);
 						$this.addClass('saved');
 						$this.attr('data-title', rs_save_for_later_ajax.unsave_txt);
 						$this.attr('data-original-title', rs_save_for_later_ajax.unsave_txt);
 						$('.rs-saved-trigger span').text(data.count);
-						$('.rs-saved-trigger').removeClass('empty');	
-						ajax_playlist($, object_id);
-						ajax_playlist_add_sidebar($, object_id);													
+						$('.rs-saved-trigger').removeClass('empty');													
 					}
 					anchor.removeData('disabled');
 				},

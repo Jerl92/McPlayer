@@ -32,7 +32,7 @@ function play_now($) {
 
                         ajax_playlist($, object_id);
                         
-                        sleep(250);
+                        sleep(125);
 
                         ajax_playlist_play_now($, object_id);
 

@@ -21,6 +21,10 @@
 			scroll: true,
 			locationHeader: "X-SmoothState-Location",
 			onAfter: function( $container , $newcontainer ) {
+
+				ajax_playlist_add_sidebar($);
+								
+				play_now($);
 																
 				stickIt_($);	
 				
@@ -33,10 +37,6 @@
 //				rs_save_for_later($);
 				
 //				rs_save_for_later_album($); 
-
-				ajax_playlist_add_sidebar($);
-								
-				play_now($);
 
 //				sortable_playlist($);
 				

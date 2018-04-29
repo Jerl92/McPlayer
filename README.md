@@ -16,7 +16,6 @@ McPlayer is a full-width HTML5/JS/AJAX audio Player with Playlist, Plugin for Wo
 Why McPlayer instead of WP-Player, WPPlayer, WpPlayer or Wp-Player. Good question?</br>
 Maybe because of girlfriend, or maybe Mc more like rapper, or Mc like McDonald's ?</br>
 NO... Mc is for "Media Center". That It !</br>
-Someday the name of the plugin will change, because McPlayer is more like a beta code name.</br>
 
 ## Description</br>
 
