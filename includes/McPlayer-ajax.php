@@ -108,7 +108,7 @@ function ajax_add_track($post) {
 			$attachment_title = get_the_title($value);
 			$delimeter_player56s = esc_attr(' | ');		
 			
-			$get_music_meta_length = get_post_meta( $matche, "meta-box-track-length", true );
+			$get_music_meta_length = get_post_meta( $matche, 'meta-box-track-length', true );
 			
 			foreach($terms as $term) {
 				$html[] = '<ul><li>' . $posts . '</li><li>' . $attachment_title . $delimeter_player56s . $term->name . $delimeter_player56s . get_the_title( $matche ) . $delimeter_player56s . wp_get_attachment_image_url( $value , 'thumbnail' ) . '</li><li>' . $matche . '</li><li>' . $get_music_meta_length . '</li></ul>';
@@ -565,6 +565,6 @@ function ajax_add_play_now($post) {
 		$html = $_POST['object_id'];
 		return wp_send_json ( $html );
 	} 
-}	
+}		
 
 ?>

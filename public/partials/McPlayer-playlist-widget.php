@@ -69,9 +69,7 @@ class MCPlayer_bottom_playlist_widget extends WP_Widget {
 			<?php endif;
 			
 			echo '<div id="remove-all-btn"><a href="#" class="rs-save-for-later-remove-all" data-nonce="' . wp_create_nonce( 'rs_save_for_later_remove_all' ) . '">Flush Playlist</a></div>';
-			
-			echo '</section>';
-			
+
         } else {
 			echo '<p class="nothing-saved">You don’t have access to the Playlist, You need to <a href="';
 			echo wp_login_url( home_url() );

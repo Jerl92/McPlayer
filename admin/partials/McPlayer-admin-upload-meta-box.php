@@ -7,8 +7,8 @@
 //  And one image can be set for one album.
 //
 ///////////////////////////////////
-$meta_box_media_upload = new Meta_Box_Media_Upload();
-class Meta_Box_Media_Upload {
+$meta_box_audio_upload = new Meta_Box_audio_Upload();
+class Meta_Box_audio_Upload {
     
 	function __construct() {
 		add_action( 'add_meta_boxes', array( $this, 'setup_box' ) );
@@ -32,7 +32,11 @@ class Meta_Box_Media_Upload {
 
         echo '<br />';
 
-        echo "<div class='audio-preview'>$link_url</div>";
+        if ($link_url != null) {
+            echo "<div class='audio-preview'>$link_url</div>";
+        } else {
+            echo "<div class='audio-preview'>No audio file</div>";
+        }
 
         echo '<br />';
                 
@@ -43,7 +47,9 @@ class Meta_Box_Media_Upload {
             'preload' => 'metadata',
         );
 
-        echo wp_audio_shortcode( $attr );
+        echo '<div id="meta_box_audio_shortcode">';
+            echo wp_audio_shortcode( $attr );
+        echo '</div>';
 
         echo '<br />';
         echo "<input type='hidden' id='$name-value'  class='small-text'       name='meta-box-media[$name]'            value='$value' />";
@@ -109,7 +115,6 @@ class Meta_Box_Media_Upload {
             return; 
 
         update_post_meta( $post_id, "meta-box-track-length", $_POST['meta-box-media-track-length'] ); 
-
         
         if( ! isset( $_POST['meta-box-track-number'] ) )
             return; 
@@ -150,7 +155,13 @@ class meta_box_cover_upload {
         
         echo '<div id="metabox_music_upload_wrapper">';
             echo '<div id="metabox_audio_upload">';
-                echo $attachment_title;
+                echo '<div id="metabox_cover_title">';
+                    if ($attachment_title != null) {
+                        echo $attachment_title;
+                    } else {
+                        echo 'No album image';
+                    }
+                echo '</div>';
                 echo '</br>';
                 echo '</br>';
                 echo get_post_meta( $value, 'meta-box-year', true );
@@ -163,9 +174,11 @@ class meta_box_cover_upload {
                 echo '</br>';
                 echo get_post_meta( $value, 'meta-box-album-artist', true );
                 echo '</br>';
-                echo '<a href="';
-                echo get_edit_post_link( $rawvalue );
-                echo '">Edit image</a>';
+                echo '<div id="metabox_cover_link">';
+                    echo '<a href="';
+                    echo get_edit_post_link( $rawvalue );
+                    echo '">Edit image</a>';
+                echo '</div>';
                 echo '</br>';
                 echo "<input type='hidden' id='$name-value'  class='small-text'       name='meta-box-media[$name]'            value='$value' />";
                 echo "<input type='button' id='$name'        class='button meta-box-upload-button'        value='Upload' />";
@@ -173,7 +186,7 @@ class meta_box_cover_upload {
                 echo '</div>';
                 echo '<div id="metabox_album_upload">';
 
-                $image = ! $rawvalue ? '' : wp_get_attachment_image( $rawvalue, 'full', false, array('style' => 'max-width:350px;height:auto;') );
+                $image = ! $rawvalue ? '' : wp_get_attachment_image( $rawvalue, 'full', false, array('style' => 'max-width:100%;height:auto;') );
 
                 echo '<br />';
 

@@ -13,10 +13,6 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html</br>
 
 McPlayer is a full-width HTML5/JS/AJAX audio Player with Playlist, Plugin for WordPress.</br>
 
-Why McPlayer instead of WP-Player, WPPlayer, WpPlayer or Wp-Player. Good question?</br>
-Maybe because of girlfriend, or maybe Mc more like rapper, or Mc like McDonald's ?</br>
-NO... Mc is for "Media Center". That It !</br>
-
 ## Description</br>
 
 McPlayer is build with JS from</br>
@@ -39,8 +35,12 @@ jQuery plugin anticipates on which element user is going to hover/click.</br>
 https://github.com/jquery/jquery-ui</br>
 Interactions and Widgets for the web. jQuery UI is a curated set of user interface interactions, effects, widgets, and themes built on top of jQuery.</br>
 
+### Recommended plugins
 https://WordPress.org/plugins/categories-images/</br>
 This plugin is dependency for McPlayer-Core</br>
+
+https://wordpress.org/plugins/search-everything/</br>
+This plugin is very usefull for add searching in taxonomie and meta post</br>
 
 ## Installation
 

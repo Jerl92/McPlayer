@@ -62,7 +62,7 @@
 #meta_box_id .inside {
     margin-left: auto;
     margin-right: auto;
-    display: table;
+    display: block;
     width: 75%;
     font-size: 18px;
 }
@@ -95,4 +95,8 @@
 
 input[type=text], input[type=search], input[type=radio], input[type=tel], input[type=time], input[type=url], input[type=week], input[type=password], input[type=checkbox], input[type=color], input[type=date], input[type=datetime], input[type=datetime-local], input[type=email], input[type=month], input[type=number], select, textarea {
     box-shadow: inset -2.5px 2.5px 10px rgba(0,0,0,.07) !important;
+}
+
+#meta_box_audio_shortcode {
+    width: 100%;
 }

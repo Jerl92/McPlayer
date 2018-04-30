@@ -123,6 +123,8 @@ class Mcplayer {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-McPlayer-admin.php';
 
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/McPlayer-admin-display.php';
+
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/McPlayer-admin-meta-box.php';
 
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/McPlayer-admin-upload-meta-box.php';
