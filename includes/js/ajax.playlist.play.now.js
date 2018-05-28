@@ -30,10 +30,6 @@ function play_now($) {
 
                      if( ! $("#postid-"+object_id+" a").hasClass('saved') || ! $("#add-play-now-id-"+object_id).hasClass('saved') ) {
 
-                        ajax_playlist($, object_id);
-                        
-                        sleep(125);
-
                         ajax_playlist_play_now($, object_id);
 
                         ajax_playlist_add_sidebar($, object_id);
