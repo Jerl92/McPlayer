@@ -73,7 +73,7 @@ class MCPlayer_bottom_player_widget extends WP_Widget {
 					$value = $rawvalue = get_post_meta( $post->ID, $name, true );
 					$attachment_title = get_the_title($value);
 					$get_feat = get_post_meta( get_the_id(), "meta-box-artist-feat", true);
-					$delimeter_player56s = esc_attr(' | ');
+					$delimeter_player56s = esc_attr(' || ');
 
 					$get_music_meta_length = get_post_meta( $post->ID, "meta-box-track-length", true );
 					

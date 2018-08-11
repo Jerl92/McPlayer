@@ -21,7 +21,11 @@
 			scroll: true,
 			locationHeader: "X-SmoothState-Location",
 			onAfter: function( $container , $newcontainer ) {
-				
+
+				stickIt_($);
+
+				mysticky($);
+
 				ajax_playlist_add_sidebar($);
 								
 				play_now($);

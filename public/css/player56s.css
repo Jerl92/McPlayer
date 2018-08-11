@@ -101,7 +101,7 @@
 .player56s .player56s-button {
   position: absolute;
   top: 15px;
-  left: 37.5px;
+  left: 35px;
   cursor: pointer;
 }
 .player56s .player56s-button:hover { opacity: 0.8; }

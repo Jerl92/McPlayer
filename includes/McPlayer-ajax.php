@@ -107,7 +107,7 @@ function ajax_add_track($post) {
 			$name = esc_attr( 'meta-box-media-cover_' );
 			$value = $rawvalue = get_post_meta( $matche, $name, true );
 			$attachment_title = get_the_title($value);
-			$delimeter_player56s = esc_attr(' | ');		
+			$delimeter_player56s = esc_attr(' || ');		
 			
 			$get_music_meta_length = get_post_meta( $matche, 'meta-box-track-length', true );
 			
@@ -125,7 +125,7 @@ add_action( 'wp_ajax_add_track_album', 'ajax_add_track_album' );
 add_action( 'wp_ajax_nopriv_add_track_album', 'ajax_add_track_album' );
 
 function ajax_add_track_album($post) {
-		$posts  = array();
+		$posts = array();
 
 		if ( is_user_logged_in() ) {
 
@@ -150,9 +150,10 @@ function ajax_add_track_album($post) {
 
 			$get_songs = get_posts( $get_songs_args );
 
-			foreach($get_songs as $get_song) {
+			foreach ( $get_songs as $get_song ) :
 				$html[] = $get_song->ID;
-			}
+			endforeach;
+			wp_reset_postdata();
 
 			return wp_send_json ( $html ); 
 			
@@ -189,7 +190,7 @@ function ajax_remove_track_album($post) {
 				unset( $matches_album[array_search( $object_id, $matches_album )] );
 			}
 
-			foreach($get_songs as $get_song) {
+			foreach($get_songs as $get_song) :
 				if ( empty( $matches ) ) {
 					$matches = array();
 				}
@@ -198,8 +199,8 @@ function ajax_remove_track_album($post) {
 					unset( $matches[array_search( $get_song->ID, $matches )] );
 				} 
 				$html[] = $get_song->ID;
-
-			}
+			endforeach;
+			wp_reset_postdata();
 
 			update_user_meta( get_current_user_id(), 'rs_saved_for_later', $matches );	
 			update_user_meta( get_current_user_id(), 'rs_saved_for_later_album', $matches_album );			

@@ -24,7 +24,7 @@ var setSVGSupport = function() {
 };
 
 var splitFilenameToTrackAndAuthor = function(filename) {
-    var delimeter = ' | ';
+    var delimeter = ' || ';
     if (filename.indexOf(' \u2014 ') > -1) { delimeter = ' \u2014 '; }
     return filename.toString().split(delimeter);
 }
