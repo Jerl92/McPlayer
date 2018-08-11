@@ -30,13 +30,15 @@
 								
 				play_now($);
 
-				stickIt_($);	
+				// stickIt_($);
 				
 				mysticky($);
 
 //				tooltip($);	
 				
 				scroll_to_album($);
+				
+				footer_stick($);
                     
 //				rs_save_for_later($);
 				

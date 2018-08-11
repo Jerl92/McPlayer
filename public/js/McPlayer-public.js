@@ -24,7 +24,7 @@ jQuery(document).ready(function() {
     });
 });
 
-jQuery(document).ready(function () {
+function footer_stick($) {
     var windowHeight_ = jQuery(window).height();
     var documentHeight_ = jQuery(document).height();
     var colophonHeight_ = jQuery('#colophon').height();
@@ -41,7 +41,7 @@ jQuery(document).ready(function () {
         jQuery('#colophon').css('bottom', '0');
         jQuery('#colophon').css('width', '100%');
     }
-});
+}
 
 jQuery(window).resize(function () {
     var windowHeight_ = jQuery(window).height();
@@ -152,6 +152,7 @@ function sleep(milliseconds) {
 jQuery(document).ready(function($) {
     scroll_to_album($);
     sortable_playlist($);
+    footer_stick($);
     jQuery(function() {
         
       var mysticky_sidebar_id = document.querySelector(mystickyside_name.mystickyside_string),
