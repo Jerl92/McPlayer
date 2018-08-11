@@ -16,16 +16,16 @@
 		var settings = { 
 			anchors: "a",
 			blacklist: ".no-smoothState",
-			cache: false,
+			cache: true,
 			prefetchOn: $( "#page" ).aim({className: "site"}),
 			scroll: true,
 			locationHeader: "X-SmoothState-Location",
 			onAfter: function( $container , $newcontainer ) {
-
+				
 				ajax_playlist_add_sidebar($);
 								
 				play_now($);
-																
+
 				stickIt_($);	
 				
 				mysticky($);

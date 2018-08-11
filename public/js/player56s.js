@@ -869,11 +869,11 @@ jQuery( function player56s($) {
             });
             // Remove volume changer and add special class if have
             //   no ability to change a volume
-            if (this.$jPlayer.data('jPlayer').status.noVolume) {
-                self.$container.addClass("volumeless");
-                self.$container.find(".player56s-volume").remove();
-                this.setVolume(1, 1); // set maximum volume
-            }
+            // if (this.$jPlayer.data('jPlayer').status.noVolume) {
+            //    self.$container.addClass("volumeless");
+            //    self.$container.find(".player56s-volume").remove();
+            //    this.setVolume(1, 1); // set maximum volume
+            // }
             return this;
         }
         insertDOM() {

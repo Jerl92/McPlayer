@@ -9,7 +9,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html</br>
 
 ## A Full-width Audio Player With Playlist, Plugin for WordPress.</br>
 
-<img style="max-width: 100%;" src="https://image.ibb.co/iJoftS/mcplayer_index.gif" alt="MCPlayer" data-canonical-src="https://image.ibb.co/iJoftS/mcplayer_index.gif" />
+<img style="max-width: 100%;" src="https://i.imgur.com/DT9laf2.jpg" alt="MCPlayer" data-canonical-src="https://i.imgur.com/DT9laf2.jpg" />
 
 McPlayer is a full-width HTML5/JS/AJAX audio Player with Playlist, Plugin for WordPress.</br>
 

@@ -333,9 +333,6 @@ a.rs-save-for-later-button.saved:after, a.rs-save-for-later-button-album.saved:a
     .entry-meta .entry-meta-cover img {
         width: 100%
     }
-    .player56s .player56s-volume {
-        display: none;
-    }
     #album-class-artist-list {
         margin: 15px 0px;
     }
@@ -409,7 +406,7 @@ a.add-play-now-button {
 
 a.add-play-now-button.onplay::before, a.add-play-now-button.onplay::after {
     position: absolute;
-    display: grid;
+    display: block;
     content: '';
     height: 30px;
     width: 25px;
@@ -454,19 +451,21 @@ ul.rs-saved-for-later > li.rs-item-saved-for-later > .rs-item-content > .rs-item
 .entry-save-for-later .rs-item-save-for-later {
     width: 50%;
     text-align: center;
-    display: table;
+    position: relative;
     float: left;
-    cursor: pointer;
 }
 
 .entry-save-for-later .rs-item-nav-play-now {
     width: 50%;
     text-align: center;
-    display: table;
+    position: relative;
     float: right;
-    cursor: pointer;
 }
 
 a.add-play-now-button:hover, a.add-play-now-button:active, a.add-play-now-button:focus {
     outline: none;
+}
+
+#page {
+    overflow-x: hidden;
 }

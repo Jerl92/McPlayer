@@ -33,6 +33,7 @@ function wp_playlist_ajax_scripts() {
 				'number_txt'        => $number
 			)
 		);
+		wp_enqueue_script( 'rs-save-for-later' );
 			
 		/* AJAX Play now */
 		wp_register_script( 'wp-playlist-ajax-play-now', $url . "js/ajax.playlist.play.now.js", array( 'jquery' ), '1.0.0', true );
