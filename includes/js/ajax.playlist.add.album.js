@@ -17,7 +17,7 @@ function ajax_playlist_add_album($, object_id)  {
                                 $("#album-class-artist-list-id-"+element+" a").attr("data-original-title", "Remove");
                                 [i++];
                             }
-                            sleep(1);
+                            sleep(25);
                         }, this);                 
                     },
                     error: function(errorThrown){

@@ -22,17 +22,15 @@
 			locationHeader: "X-SmoothState-Location",
 			onAfter: function( $container , $newcontainer ) {
 
-				stickIt_($);
+				if ($.isFunction(stickIt_)) {
+					stickIt_($);
+				}
 
 				mysticky($);
 
 				ajax_playlist_add_sidebar($);
 								
 				play_now($);
-
-				// stickIt_($);
-				
-				mysticky($);
 
 //				tooltip($);	
 				

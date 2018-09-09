@@ -152,6 +152,47 @@ add_shortcode('artist_get_shortcode', 'artist_get_loop');
 
 /***************************************************************************/
 /***************************************************************************/
+/******************** Short code to display year list ********************/
+
+function year_get_loop( $atts ) {
+
+	if ( is_user_logged_in() ) {
+
+		// Gets every "category" (term) in this taxonomy to get the respective posts
+		$get_years_args = array( 
+			'post_type' => 'attachment',
+			'posts_per_page' => -1,
+			'post_mime_type' => 'image',
+			'meta_key' => 'meta-box-year',
+			'orderby' => 'meta_value_num',
+			'order' => 'ASC'
+		); 
+
+		$get_years = get_posts( $get_years_args );
+
+		$i = -1;
+
+		foreach($get_years as $get_year) {
+			$last_year = get_post_meta( $get_years[$i++]->ID, "meta-box-year", true);
+			if ( $last_year != get_post_meta( $get_year->ID,  "meta-box-year", true) ) {
+				echo '<li>';
+					echo get_post_meta( $get_year->ID,  "meta-box-year", true);
+				echo '</li>';
+				wp_reset_postdata();
+			}
+		}
+
+	} else  {
+		echo '<p id="notlogin" class="nothing-saved">You don’t have access to the years list, You need to <a href="';
+		echo wp_login_url( home_url() );
+		echo '" title="Login">Login</a></p>';
+	}
+}
+
+add_shortcode('year_get_shortcode', 'year_get_loop');
+
+/***************************************************************************/
+/***************************************************************************/
 /******************** Short code to display genre list ********************/
 
 function genre_get_loop( $atts ) {
