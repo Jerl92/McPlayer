@@ -175,26 +175,26 @@ var checkAndRunTicker = function(instance) {
     var titleCont = instance.$container.find(".player56s-title");
     if (!titleCont.length) { return instance; }
     var innerSpan = titleCont.children("span");
-    if (innerSpan.length && ((innerSpan.height() - 10)  < titleCont.height())) {
+    if (innerSpan.length && ((innerSpan.height() - 10) > titleCont.height())) {
         // we need to activate ticker for title
         innerSpan.css({ 'display': 'block', 'position' : 'relative' }).width(titleCont.width());
         while ((innerSpan.height() - 10) > titleCont.height()) {
-            innerSpan.width( innerSpan.width() + 20 );
+            innerSpan.width( innerSpan.width() + 5 );
         }
 
         var treset = function() {
             if (!this) { return false; }
-            var $this = $(this);
+            var $this = jQuery(this);
             var parCont = $this.parent();
             if (!parCont.length) { return false; }
             var diff = $this.width() - parCont.width();
             $this.animate({ "left": $this.css("left") }, 1000, function() {
-                $this.css("left", "0");
-                $this.animate({ "left": "0" }, 2000, function() {
+                $this.animate({ "left": "0" }, 3000, function() {
                     $this.animate({
                         "left": "-" + diff + "px"
-                    }, (diff * 40), 'linear', treset);
+                    }, (diff * 40), 'linear', treset);   
                 });
+                $this.delay( 1000 );
             });
         };
 
@@ -280,13 +280,13 @@ jQuery( function player56s($) {
                                     } else {
                                         if ( player56sInstance.currentTrack === (player56sInstance.tracks.length - 1) ) {
                                             player56sInstance.$container.find(".player56s-timeline-done").css("width", "0%");
-                                            player56sInstance.switchTrack(false);
+                                            player56sInstance.switchTrack.call(player56sInstance, $(this).hasClass('player56s-track-prev'));
                                             player56sInstance.tracks.splice(index, 1);     
                                     //        player56sInstance.$container.find(".player56s-timeline-done").css("width", "auto");                                           
                                         } else {
-                                            player56sInstance.switchTrack(true); 
+                                            player56sInstance.switchTrack(player56sInstance); 
                                             player56sInstance.tracks.splice(index, 1);
-                                            player56sInstance.switchTrack(false);
+                                            player56sInstance.switchTrack.call(player56sInstance, $(this).hasClass('player56s-track-prev'));
                                         }
                                     }                        
                                 }
@@ -412,7 +412,7 @@ jQuery( function player56s($) {
             this.totalTime = 0;
             this.fullyLoaded = false;
             this.fullTimeDisplayed = false;
-            this.waitForLoad = false;
+            this.waitForLoad = true;
             this.seekTime = 0;
             this.preloaderTimeout = 1;
             this.isSeeking = false;
@@ -476,7 +476,7 @@ jQuery( function player56s($) {
         pause() {
             hidePreloader(this);
             if (!this.seekTime) {
-                this.waitForLoad = false;
+                this.waitForLoad = true;
             }
             if (typeof this.$jPlayer !== "undefined" && this.$jPlayer.jPlayer) {
                 $("#player56s-currenttrack").html(this.tracks[this.currentTrack].postid);
@@ -486,7 +486,7 @@ jQuery( function player56s($) {
                 $("#add-play-now-id-" + this.tracks[this.currentTrack].postid + "").removeClass('onplay');
                 if (this.isPlaying || this.waitForLoad) {
                     this.isPlaying = false;
-                    this.waitForLoad = false;
+                    this.waitForLoad = true;
                     this.$jPlayer.jPlayer("pause");
                 }
             }
@@ -588,10 +588,9 @@ jQuery( function player56s($) {
 
                 this.updateMetadata();
 
-                this.$container.find(".player56s-track-prev").addClass("enabled");
-                this.$container.find(".player56s-track-next").addClass("enabled");
-
-                // checkAndRunTicker(this);
+                this.$container.find(".player56s-track-prev").toggleClass('enabled', this.currentTrack >= 0);
+                this.$container.find(".player56s-track-next").toggleClass('enabled', this.currentTrack <= (this.tracks.length - 1));
+                checkAndRunTicker(this);
             }
         }
         switchTrack(to_next) {
@@ -613,7 +612,7 @@ jQuery( function player56s($) {
                 this.stop();
                 this.$jPlayer.jPlayer("clearMedia");
                 var timelinedone = this.$container.find(".player56s-timeline-done").css("width");
-                if (!to_next && (timelinedone > "5%")) {
+                if (!to_next && (timelinedone >= "5%")) {
                     this.currentTrack = this.currentTrack;
                 } else {
                     if (to_next && (this.currentTrack === (this.tracks.length - 1))) {
@@ -626,19 +625,21 @@ jQuery( function player56s($) {
                         this.currentTrack = this.currentTrack + (to_next ? 1 : -1);
                     }
                 }
-                /*
-                } else if (to_next && this.currentTrack === 0 && (this.tracks.length === 2)) {
-                    this.currentTrack = 1;
-                */
+
                 if (this.tracks[this.currentTrack] === undefined) {
                     this.currentTrack = 0;
                     $("#player56s-currenttrack").html(this.tracks[this.currentTrack].postid);
                 }
+
                 var track = this.tracks[this.currentTrack];
-                this.$container.find(".player56s-title").html('<span>' + getTrackTitle(track.filename) + '</span>');
-                this.$container.find(".player56s-author").html('<span>' + getTrackAuthor(track.filename) + '</span>');
-                this.$container.find(".player56s-album").html('<span>' + getTrackAlbum(track.filename) + '</span>');
-                this.$container.find(".player56s-album-img").html('<span><img src="' + getTrackAlbumImg(track.filename) + '"></img></span>');
+
+                if (this.$container.hasClass("status-onpause")) {
+                    $("#rs-item-" + this.tracks[this.currentTrack].postid + "").addClass('playing');
+                } else if (this.$container.hasClass("status-playing")) {
+                    this.waitForLoad = true;
+                    this.pseudoPlay();
+                    this.play();
+                }
 
                 if ('connection' in navigator) {
                     if (navigator.connection.type == 'cellular') {
@@ -660,33 +661,22 @@ jQuery( function player56s($) {
                     });
                 }
 
-                //   var audiofileLink_currenttrack = $("#player56s-currenttrack");
-                //   audiofileLink_currenttrack.html(track.postid);
-                // var audiofileLink_currenttrack_item = $("#rs-item-" + track.postid + "");
-                // console.log( audiofileLink_currenttrack_item.addClass("playing") ); 
-            
-                if (this.$container.hasClass("status-onpause")) {
-                    $("#rs-item-" + this.tracks[this.currentTrack].postid + "").addClass('playing');
-                } else if (this.$container.hasClass("status-playing")) {
-                    this.waitForLoad = false;
-                    this.pseudoPlay();
-                    this.play();
-                }
+                this.$container.find(".player56s-title").html('<span>' + getTrackTitle(track.filename) + '</span>');
+                this.$container.find(".player56s-author").html('<span>' + getTrackAuthor(track.filename) + '</span>');
+                this.$container.find(".player56s-album").html('<span>' + getTrackAlbum(track.filename) + '</span>');
+                this.$container.find(".player56s-album-img").html('<span><img src="' + getTrackAlbumImg(track.filename) + '"></img></span>');
 
                 this.updateMetadata();
 
-                this.$container.find(".player56s-track-prev").addClass("enabled");
-                this.$container.find(".player56s-track-next").addClass("enabled");
-
-                //   this.$container.find(".player56s-track-prev").toggleClass('enabled', this.currentTrack > 0);
-                //   this.$container.find(".player56s-track-next").toggleClass('enabled', this.currentTrack < (this.tracks.length - 1));
-                // checkAndRunTicker(this);
+                this.$container.find(".player56s-track-prev").toggleClass('enabled', this.currentTrack >= 0);
+                this.$container.find(".player56s-track-next").toggleClass('enabled', this.currentTrack <= (this.tracks.length - 1));
+                checkAndRunTicker(this);
             }
         }
         onPause() {
             this.isPlaying = false;
             this.isSeeking = false;
-            this.waitForLoad = false;
+            this.waitForLoad = true;
             this.$container.removeClass("player56s-status-playing");
         }
         onStop() {
@@ -694,13 +684,13 @@ jQuery( function player56s($) {
             this.isPlaying = false;
             this.seekTime = 0;
             this.isSeeking = false;
-            this.waitForLoad = false;
+            this.waitForLoad = true;
             this.$container.removeClass("player56s-status-playing");
         }
         onPlay() {
             $(document).trigger("player56s-pause", this);
             this.$container.addClass("player56s-status-playing");
-            this.waitForLoad = false;
+            this.waitForLoad = true;
             this.isPlaying = true;
             this.isPlayed = true;
         }
@@ -841,11 +831,8 @@ jQuery( function player56s($) {
                 stop: function () {
                     self.onStop.call(self);
                 },
-                ended: function () {
+                ended: function() {
                     self.switchTrack.call(self);
-                    self.waitForLoad = false;
-                    self.pseudoPlay.call(self);
-                    self.play.call(self);
                 },
                 play: function () {
                     self.onPlay.call(self);
@@ -913,10 +900,10 @@ jQuery( function player56s($) {
             // Android mediasession nodification for extrenal btn while the mobile device screen is off
             if ('mediaSession' in navigator) {
                 navigator.mediaSession.setActionHandler('previoustrack', function () {
-                    self.switchTrack(false);
+                    self.switchTrack.call(self, $(this).hasClass('player56s-track-prev'));
                 });
                 navigator.mediaSession.setActionHandler('nexttrack', function () {
-                    self.switchTrack(true);
+                    self.switchTrack.call(self);
                 });
                 navigator.mediaSession.setActionHandler('seekforward', function () {
                     willSeekTo(self, (self.seekTime + 1) );
