@@ -36,6 +36,9 @@ https://github.com/jquery/jquery-ui</br>
 Interactions and Widgets for the web. jQuery UI is a curated set of user interface interactions, effects, widgets, and themes built on top of jQuery.</br>
 
 ### Recommended plugins
+https://github.com/Jerl92/McPlayer-mystickysidebar/</br>
+This plugin glues McPlayer sidebar, making it permanently visible while scrolling.</br>
+
 https://WordPress.org/plugins/categories-images/</br>
 This plugin is dependency for McPlayer-Core</br>
 

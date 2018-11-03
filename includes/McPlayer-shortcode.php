@@ -176,7 +176,9 @@ function year_get_loop( $atts ) {
 			$last_year = get_post_meta( $get_years[$i++]->ID, "meta-box-year", true);
 			if ( $last_year != get_post_meta( $get_year->ID,  "meta-box-year", true) ) {
 				echo '<li>';
+					echo '<a href="' . get_post_meta( $get_year->ID,  "meta-box-year", true) . '">';
 					echo get_post_meta( $get_year->ID,  "meta-box-year", true);
+					echo '</a>';
 				echo '</li>';
 				wp_reset_postdata();
 			}

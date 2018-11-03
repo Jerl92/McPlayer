@@ -22,9 +22,7 @@
 			locationHeader: "X-SmoothState-Location",
 			onAfter: function( $container , $newcontainer ) {
 
-				if ($.isFunction(stickIt_)) {
-					stickIt_($);
-				}
+				stickIt_($);
 
 				mysticky($);
 

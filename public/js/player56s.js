@@ -155,6 +155,7 @@ var willSeekTo = function(instance, seekPercent) {
     showPreloader(instance);
 
     instance.waitForLoad = true;
+
     instance.$jPlayer.jPlayer("playHead", percent);
     instance.pseudoPlay();
 
@@ -188,19 +189,48 @@ var checkAndRunTicker = function(instance) {
             var parCont = $this.parent();
             if (!parCont.length) { return false; }
             var diff = $this.width() - parCont.width();
-            $this.animate({ "left": $this.css("left") }, 1000, function() {
-                $this.animate({ "left": "0" }, 3000, function() {
+            $this.animate({ "left": $this.css("left") }, 500, function() {
+                $this.animate({ "left": "0" }, 2000, function() {
                     $this.animate({
                         "left": "-" + diff + "px"
                     }, (diff * 40), 'linear', treset);   
                 });
-                $this.delay( 1000 );
+                $this.delay( 500 );
             });
         };
 
         treset.call(innerSpan[0]);
     }
     return instance;
+};
+
+var updateMediaSessionNull = function() {
+    if ('mediaSession' in navigator) {     
+        navigator.mediaSession.metadata = new MediaMetadata({
+            title: null,
+            artist: null,
+            album: null,
+            artwork: [{ src: null }]
+        });
+    }
+};
+var initMediaSession = function(filename) {
+    if ('mediaSession' in navigator) {                
+        navigator.mediaSession.metadata = new MediaMetadata({
+            title: getTrackTitle(filename),
+            artist: getTrackAuthor(filename),
+            album: getTrackAlbum(filename),
+            artwork: [{ src: getTrackAlbumImg(filename) }]
+        });
+    }
+};
+var updateMediaSession = function(filename) {
+    if ('mediaSession' in navigator) {
+        navigator.mediaSession.metadata.title = getTrackTitle(filename);
+        navigator.mediaSession.metadata.artist = getTrackAuthor(filename);
+        navigator.mediaSession.metadata.album = getTrackAlbum(filename);
+        navigator.mediaSession.metadata.artwork = [{ src: getTrackAlbumImg(filename) }];
+    }
 };
 
 jQuery( function player56s($) { 
@@ -271,8 +301,8 @@ jQuery( function player56s($) {
                             if (element.postid == audiofileLink_remove_id) {
                                 if (element.postid !== audiofileLink_currenttrack[0].innerText && player56sInstance.currentTrack !== index) {
                                     player56sInstance.tracks.splice(index, 1);                
-                                    if (player56sInstance.currentTrack > index ) {
-                                        player56sInstance.currentTrack = player56sInstance.currentTrack - 1;
+                                    if (player56sInstance.currentTrack > index ) { 
+                                        player56sInstance.switchTrack(false);
                                     }
                                 } else {
                                     if (player56sInstance.tracks.length === 1) {
@@ -280,13 +310,13 @@ jQuery( function player56s($) {
                                     } else {
                                         if ( player56sInstance.currentTrack === (player56sInstance.tracks.length - 1) ) {
                                             player56sInstance.$container.find(".player56s-timeline-done").css("width", "0%");
-                                            player56sInstance.switchTrack.call(player56sInstance, $(this).hasClass('player56s-track-prev'));
+                                            player56sInstance.switchTrack(false);
                                             player56sInstance.tracks.splice(index, 1);     
                                     //        player56sInstance.$container.find(".player56s-timeline-done").css("width", "auto");                                           
                                         } else {
-                                            player56sInstance.switchTrack(player56sInstance); 
+                                            player56sInstance.switchTrack(true);
                                             player56sInstance.tracks.splice(index, 1);
-                                            player56sInstance.switchTrack.call(player56sInstance, $(this).hasClass('player56s-track-prev'));
+                                            player56sInstance.switchTrack(false);
                                         }
                                     }                        
                                 }
@@ -311,9 +341,6 @@ jQuery( function player56s($) {
                                 } else {
                                 //    player56sInstance.sleep();
                                     player56sInstance.playNow(index);
-                                    player56sInstance.waitForLoad = false;
-                                    player56sInstance.pseudoPlay();
-                                    player56sInstance.play();
                                     console.log( "Play Track: " + getTrackTitle(element.filename) );
                                 }
                             }
@@ -412,7 +439,7 @@ jQuery( function player56s($) {
             this.totalTime = 0;
             this.fullyLoaded = false;
             this.fullTimeDisplayed = false;
-            this.waitForLoad = true;
+            this.waitForLoad = false;
             this.seekTime = 0;
             this.preloaderTimeout = 1;
             this.isSeeking = false;
@@ -449,6 +476,7 @@ jQuery( function player56s($) {
                 postid: postid
             });
             this.$container.find(".player56s-track-next").addClass('enabled');
+            this.$container.find(".player56s-track-prev").addClass('enabled');
         }
         removeAll() {
             var audiofileLink_currenttrack = $("#player56s-currenttrack");
@@ -458,13 +486,13 @@ jQuery( function player56s($) {
             this.$jPlayer.jPlayer("clearMedia");
             this.tracks = [];
             this.addTrack("#", "Nothing in the playlist", "0", "0");
+            updateMediaSessionNull();
             audiofileLink_currenttrack.html("0");
             this.seekTime = 0;
             this.$container.find(".player56s-title").html('<span>Nothing in the playlist</span>');
             this.$container.find(".player56s-author").html('<span>Music Player</span>');
             this.$container.find(".player56s-album").html('<span>Just another WordPress site</span>');
             this.$container.find(".player56s-album-img").html('<span></span>');
-            this.updateMetadata();
         }
         destroy() {
             var uniqueID = this.$container.attr("id");
@@ -476,7 +504,7 @@ jQuery( function player56s($) {
         pause() {
             hidePreloader(this);
             if (!this.seekTime) {
-                this.waitForLoad = true;
+                this.waitForLoad = false;
             }
             if (typeof this.$jPlayer !== "undefined" && this.$jPlayer.jPlayer) {
                 $("#player56s-currenttrack").html(this.tracks[this.currentTrack].postid);
@@ -486,7 +514,7 @@ jQuery( function player56s($) {
                 $("#add-play-now-id-" + this.tracks[this.currentTrack].postid + "").removeClass('onplay');
                 if (this.isPlaying || this.waitForLoad) {
                     this.isPlaying = false;
-                    this.waitForLoad = true;
+                    this.waitForLoad = false;
                     this.$jPlayer.jPlayer("pause");
                 }
             }
@@ -548,24 +576,14 @@ jQuery( function player56s($) {
         }
         playNow(index) {
             if (typeof this.$jPlayer !== "undefined" && this.$jPlayer.jPlayer) {
-                if (this.isPlaying) {
-                    this.pseudoPause();
-                    this.pause();
-                    this.stop();
-                } else {
-                    this.tracks.forEach(function(element) {
-                        $("#rs-item-" + element.postid + "").removeClass('playing');
-                    }, this)
-                }
+                this.pseudoPause();
+                this.pause();
+                this.stop();
                 this.$jPlayer.jPlayer("clearMedia");
                 this.currentTrack = index;
                 var track = this.tracks[this.currentTrack];
-                $("#player56s-currenttrack").html(this.tracks[this.currentTrack].postid);
-                this.$container.find(".player56s-title").html('<span>' + getTrackTitle(track.filename) + '</span>');
-                this.$container.find(".player56s-author").html('<span>' + getTrackAuthor(track.filename) + '</span>');
-                this.$container.find(".player56s-album").html('<span>' + getTrackAlbum(track.filename) + '</span>');
-                this.$container.find(".player56s-album-img").html('<span><img src="' + getTrackAlbumImg(track.filename) + '"></img></span>');
-
+                updateMediaSession(track.filename);
+                $("#player56s-currenttrack").html(track.postid);
                 if ('connection' in navigator) {
                     if (navigator.connection.type == 'cellular') {
                         this.sleep(100);
@@ -585,11 +603,18 @@ jQuery( function player56s($) {
                         mp3: track.audiofileLink
                     });
                 }
+                this.$container.find(".player56s-title").html('<span>' + getTrackTitle(track.filename) + '</span>');
+                this.$container.find(".player56s-author").html('<span>' + getTrackAuthor(track.filename) + '</span>');
+                this.$container.find(".player56s-album").html('<span>' + getTrackAlbum(track.filename) + '</span>');
+                this.$container.find(".player56s-album-img").html('<span><img src="' + getTrackAlbumImg(track.filename) + '"></img></span>');
 
-                this.updateMetadata();
+                this.waitForLoad = true;
+                this.pseudoPlay();
+                this.play();
 
                 this.$container.find(".player56s-track-prev").toggleClass('enabled', this.currentTrack >= 0);
                 this.$container.find(".player56s-track-next").toggleClass('enabled', this.currentTrack <= (this.tracks.length - 1));
+
                 checkAndRunTicker(this);
             }
         }
@@ -598,7 +623,9 @@ jQuery( function player56s($) {
                 to_next = true;
             } // next by default
             if (typeof this.$jPlayer !== "undefined" && this.$jPlayer.jPlayer) {
-
+                var timelinedonepx = this.$container.find(".player56s-timeline-done").css("width");
+                var timelinedoneplay = 0;
+                var timelinedone = timelinedonepx.replace('px','');
                 if (this.$container.hasClass("player56s-status-playing")) {
                     this.$container.addClass("status-playing");
                     this.$container.removeClass("status-onpause");
@@ -606,13 +633,12 @@ jQuery( function player56s($) {
                     this.$container.removeClass("status-playing");
                     this.$container.addClass("status-onpause");
                 }
-
                 this.pseudoPause();
                 this.pause();
                 this.stop();
                 this.$jPlayer.jPlayer("clearMedia");
-                var timelinedone = this.$container.find(".player56s-timeline-done").css("width");
-                if (!to_next && (timelinedone >= "5%")) {
+                if (!to_next && (parseInt(timelinedone) > 5)) {
+                    timelinedoneplay = 1;
                     this.currentTrack = this.currentTrack;
                 } else {
                     if (to_next && (this.currentTrack === (this.tracks.length - 1))) {
@@ -633,13 +659,7 @@ jQuery( function player56s($) {
 
                 var track = this.tracks[this.currentTrack];
 
-                if (this.$container.hasClass("status-onpause")) {
-                    $("#rs-item-" + this.tracks[this.currentTrack].postid + "").addClass('playing');
-                } else if (this.$container.hasClass("status-playing")) {
-                    this.waitForLoad = true;
-                    this.pseudoPlay();
-                    this.play();
-                }
+                updateMediaSession(track.filename);
 
                 if ('connection' in navigator) {
                     if (navigator.connection.type == 'cellular') {
@@ -666,7 +686,13 @@ jQuery( function player56s($) {
                 this.$container.find(".player56s-album").html('<span>' + getTrackAlbum(track.filename) + '</span>');
                 this.$container.find(".player56s-album-img").html('<span><img src="' + getTrackAlbumImg(track.filename) + '"></img></span>');
 
-                this.updateMetadata();
+                if (this.$container.hasClass("status-onpause")) {
+                    $("#rs-item-" + track.postid + "").addClass('playing');
+                } else if (this.$container.hasClass("status-playing") || (timelinedoneplay == 1)) {
+                    this.waitForLoad = false;
+                    this.pseudoPlay();
+                    this.play();
+                }
 
                 this.$container.find(".player56s-track-prev").toggleClass('enabled', this.currentTrack >= 0);
                 this.$container.find(".player56s-track-next").toggleClass('enabled', this.currentTrack <= (this.tracks.length - 1));
@@ -676,7 +702,7 @@ jQuery( function player56s($) {
         onPause() {
             this.isPlaying = false;
             this.isSeeking = false;
-            this.waitForLoad = true;
+            this.waitForLoad = false;
             this.$container.removeClass("player56s-status-playing");
         }
         onStop() {
@@ -684,13 +710,13 @@ jQuery( function player56s($) {
             this.isPlaying = false;
             this.seekTime = 0;
             this.isSeeking = false;
-            this.waitForLoad = true;
+            this.waitForLoad = false;
             this.$container.removeClass("player56s-status-playing");
         }
         onPlay() {
             $(document).trigger("player56s-pause", this);
             this.$container.addClass("player56s-status-playing");
-            this.waitForLoad = true;
+            this.waitForLoad = false;
             this.isPlaying = true;
             this.isPlayed = true;
         }
@@ -727,13 +753,13 @@ jQuery( function player56s($) {
             var createContentAreaDOM = function () {
                 return (self.minimal ? createMinimanContentDOM() : createNormalContentDOM());
             };
-            this.updateMetadata();
             this.$container = $container
                 .data("player56s", this)
                 .addClass("player56s")
                 .addClass(self.minimal ? "minimal" : "normal")
                 .attr("id", "player56s-ui-zone")
                 .append($invisibleObject.addClass("player56s-invisible-object"), $infoArea.addClass("player56s-content").append(createContentAreaDOM()));
+            initMediaSession(this.tracks[this.currentTrack].filename);
             return this;
         }
         initPlayerPlugin() {
@@ -777,7 +803,7 @@ jQuery( function player56s($) {
                             self.pause.call(self);
                         }
                         else {
-                            self.waitForLoad = false;
+                            self.waitForLoad = true;
                             self.pseudoPlay.call(self);
                             self.play.call(self);
                         }
@@ -831,8 +857,11 @@ jQuery( function player56s($) {
                 stop: function () {
                     self.onStop.call(self);
                 },
-                ended: function() {
-                    self.switchTrack.call(self);
+                ended: function () {
+                    self.switchTrack(true);
+                    self.waitForLoad = false;
+                    self.pseudoPlay();
+                    self.play();
                 },
                 play: function () {
                     self.onPlay.call(self);
@@ -853,6 +882,7 @@ jQuery( function player56s($) {
                         hidePreloader(self);
                     }
                 }
+                
             });
             // Remove volume changer and add special class if have
             //   no ability to change a volume
@@ -867,28 +897,8 @@ jQuery( function player56s($) {
             this.$link.after(this.$container);
             this.$link.data("player56s", this);
             this.$link.detach();
-            // checkAndRunTicker(this);
+            checkAndRunTicker(this);
             return this;
-        }
-        updateMetadata(event) {            
-            if ('mediaSession' in navigator) {
-                if ( this.tracks[this.currentTrack].filename == null ) {
-                    navigator.mediaSession.metadata = new MediaMetadata({
-                        title: getTrackTitle('You don’t have any saved content.'),
-                        artist: getTrackAuthor('Music Player'),
-                        album: getTrackAlbum('Just another WordPress site'),
-                        artwork: [{ src: '#' }]
-                    });
-                } else {                    
-                    navigator.mediaSession.metadata = new MediaMetadata({
-                        title: getTrackTitle(this.tracks[this.currentTrack].filename),
-                        artist: getTrackAuthor(this.tracks[this.currentTrack].filename),
-                        album: getTrackAlbum(this.tracks[this.currentTrack].filename),
-                        artwork: [{ src: getTrackAlbumImg(this.tracks[this.currentTrack].filename) }]
-                    });
-                }
-            }
-        
         }
         bindEvents() {
             var self = this, uniqueID = self.$container.attr("id");
@@ -900,25 +910,34 @@ jQuery( function player56s($) {
             // Android mediasession nodification for extrenal btn while the mobile device screen is off
             if ('mediaSession' in navigator) {
                 navigator.mediaSession.setActionHandler('previoustrack', function () {
-                    self.switchTrack.call(self, $(this).hasClass('player56s-track-prev'));
+                    self.switchTrack(false);
                 });
                 navigator.mediaSession.setActionHandler('nexttrack', function () {
-                    self.switchTrack.call(self);
+                    self.switchTrack(true);
                 });
                 navigator.mediaSession.setActionHandler('seekforward', function () {
-                    willSeekTo(self, (self.seekTime + 1) );
+                    var timelinedonepx = self.$container.find(".player56s-timeline-done").css("width");
+                    var timelinedone = timelinedonepx.replace('px','');
+                    var timeSeek = (parseInt(timelinedone) / 2) + 2.5;
+                    willSeekTo(self, timeSeek);
+                });
+                navigator.mediaSession.setActionHandler('seekbackward', function () {
+                    var timelinedonepx = self.$container.find(".player56s-timeline-done").css("width");
+                    var timelinedone = timelinedonepx.replace('px','');
+                    var timeSeek = (parseInt(timelinedone) / 2) - 2.5;
+                    willSeekTo(self, timeSeek);
                 });
             }
             $(document).on("keydown." + uniqueID, function (event) {
                 if (event.keyCode === 176) {
                     event.preventDefault();
                     event.stopPropagation();
-                    self.switchTrack.call(self);
+                    self.switchTrack(true);
                 }
                 if (event.keyCode === 177) {
                     event.preventDefault();
                     event.stopPropagation();
-                    self.switchTrack.call(self, $(this).hasClass('player56s-track-prev'));
+                    self.switchTrack(false);
                 }
                 if (event.keyCode === 179) {
                     if (self.isPlaying) {

@@ -155,7 +155,6 @@ jQuery(document).ready(function($) {
     footer_stick($);
     jQuery(function() {
 
-        if ($.isFunction(stickIt_)) {
             var mysticky_sidebar_id = document.querySelector(mystickyside_name.mystickyside_string),
             mystickyside_content_id = (mystickyside_name.mystickyside_content_string),
             mystickyside_margin_top = parseInt(mystickyside_name.mystickyside_margin_top_string),
@@ -170,6 +169,5 @@ jQuery(document).ready(function($) {
                 updateSidebarHeight: mystickyside_update_sidebar_height,
                 minWidth: mystickyside_min_width
             });  
-        }
     });
   });

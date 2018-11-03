@@ -77,7 +77,7 @@ class MCPlayer_bottom_player_widget extends WP_Widget {
 
 					$get_music_meta_length = get_post_meta( $post->ID, "meta-box-track-length", true );
 					
-					?><audio href="<?php echo $music_playlist; ?>" class="player56s" rel="playlist" data-length="<?php echo esc_attr($get_music_meta_length); ?>" postid="<?php echo $post->ID; ?>"><?php
+					?><audio href="<?php echo $music_playlist; ?>" class="player56s" rel="playlist" data-length="<?php echo $get_music_meta_length; ?>" postid="<?php echo $post->ID; ?>"><?php
 						echo $attachment_title;
 						echo $delimeter_player56s;
 						foreach($terms as $term) {
