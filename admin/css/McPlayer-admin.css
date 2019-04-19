@@ -100,3 +100,7 @@ input[type=text], input[type=search], input[type=radio], input[type=tel], input[
 #meta_box_audio_shortcode {
     width: 100%;
 }
+
+.column-track {
+    width: 15px;
+}

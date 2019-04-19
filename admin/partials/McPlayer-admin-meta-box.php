@@ -157,7 +157,11 @@
     ///////////////////////////
     function my_column_width() {
         echo '<style type="text/css">';
-        echo '.column-track { display: block; width:50px; }';
+        echo '.column-track { display: table-cell; width: 35px; }';
+        echo '@media only screen and (max-width: 782px) {';
+        echo 'td:not(.column-primary)::before { display: none !important; }';
+        echo '.column-track { display: none !important; }';
+        echo '}';
         echo '</style>';
     }
     add_action('admin_head', 'my_column_width');

@@ -171,12 +171,17 @@ function year_get_loop( $atts ) {
 		$get_years = get_posts( $get_years_args );
 
 		$i = -1;
+		
+		if ($_GET['year']) {
+			$year_meta = $_GET['year']; 
+			echo $year_meta;
+		}
 
 		foreach($get_years as $get_year) {
 			$last_year = get_post_meta( $get_years[$i++]->ID, "meta-box-year", true);
 			if ( $last_year != get_post_meta( $get_year->ID,  "meta-box-year", true) ) {
 				echo '<li>';
-					echo '<a href="' . get_post_meta( $get_year->ID,  "meta-box-year", true) . '">';
+					echo '<a href="?year=' . get_post_meta( $get_year->ID,  "meta-box-year", true) . '">';
 					echo get_post_meta( $get_year->ID,  "meta-box-year", true);
 					echo '</a>';
 				echo '</li>';

@@ -81,7 +81,11 @@ function wp_playlist_ajax_scripts() {
 		wp_register_script( 'wp-playlist-ajax-add-play-now-scripts', $url . "js/ajax.playlist.add.play.now.js", array( 'jquery' ), '1.0.0', true );
 		wp_localize_script( 'wp-playlist-ajax-add-play-now-scripts', 'add_play_now_ajax_url', admin_url( 'admin-ajax.php' ) );
 		wp_enqueue_script( 'wp-playlist-ajax-add-play-now-scripts' );	
-		
+
+		/* AJAX playlist */
+		wp_register_script( 'wp-playlist-ajax-shuffle-scripts', $url . "js/ajax.playlist.shuffle.js", array( 'jquery' ), '1.0.0', true );
+		wp_localize_script( 'wp-playlist-ajax-shuffle-scripts', 'shuffle_ajax_url', admin_url( 'admin-ajax.php' ) );
+		wp_enqueue_script( 'wp-playlist-ajax-shuffle-scripts' );
 	}
 
 }
@@ -568,5 +572,66 @@ function ajax_add_play_now($post) {
 		return wp_send_json ( $html );
 	} 
 }		
+
+/* AJAX action callback */
+add_action( 'wp_ajax_shuffle_playlist', 'shuffle_playlist' );
+add_action( 'wp_ajax_nopriv_shuffle_playlist', 'shuffle_playlist' );
+
+function shuffle_playlist($post) {
+	$posts  = array();
+	if ( is_user_logged_in() ) {
+		$shuffle = get_user_meta( get_current_user_id(), 'user_playlist_shuffle', true );
+		if ( $shuffle == "1" ) {
+			update_user_meta( get_current_user_id(), 'user_playlist_shuffle', 0 );
+			$html = 0;
+		} elseif ( $shuffle == "0" ) {
+			update_user_meta( get_current_user_id(), 'user_playlist_shuffle', 1 );
+			$html = 1;
+		} elseif ( $shuffle == null ) {
+			add_user_meta( get_current_user_id(), 'user_playlist_shuffle', 1, true );
+			$html = 1;
+		}
+		return wp_send_json ($html);
+	} 
+}
+
+/* AJAX action callback */
+add_action( 'wp_ajax_no_shuffle', 'no_shuffle' );
+add_action( 'wp_ajax_nopriv_no_shuffle', 'no_shuffle' );
+
+function no_shuffle($post) {
+	$posts  = array();
+
+	if ( is_user_logged_in() ) {
+		$matches = get_user_meta( get_current_user_id(), 'rs_saved_for_later', true );
+		
+		if ( ! empty( $matches ) ) {
+			$saved_args = array(
+				'post_type'      => 'music',
+				'posts_per_page' => -1,
+				'orderby' => 'post__in',
+				'post__in'       => array_reverse( $matches, true )
+			);
+		} else {
+			$saved_args = null;
+		}
+
+		$saved_loop = get_posts( $saved_args );
+
+		if ($saved_loop) {
+			$html[] .= '<ul>';
+			foreach ($saved_loop as $post) {
+				$html[] .= '<li>' . $post->ID . '</li>';
+			}
+			$html[] .= '</ul>';
+		} else {
+			$html = 0;
+		}
+
+		$arr = implode("", $html);
+
+		return wp_send_json ($arr);
+	} 
+}
 
 ?>

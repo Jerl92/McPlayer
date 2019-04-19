@@ -1,8 +1,8 @@
 function ajax_playlist_remove_track($, object_id) {
                 
                 $.ajax({    
+                    type: 'post',
                     url: remove_track_ajax_url,
-                    type: 'POST',
                     data: {
                         'object_id': object_id,
                         'action': 'remove_track',

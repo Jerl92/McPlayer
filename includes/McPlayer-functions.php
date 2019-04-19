@@ -269,4 +269,9 @@ function disable_emojis_remove_dns_prefetch( $urls, $relation_type ) {
    return $urls;
 }
 
+add_action('wp_head', 'your_function_name');
+function your_function_name(){
+	echo '<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">';
+};
+
 ?>

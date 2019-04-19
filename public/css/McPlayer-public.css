@@ -469,3 +469,7 @@ a.add-play-now-button:hover, a.add-play-now-button:active, a.add-play-now-button
 #page {
     overflow-x: hidden;
 }
+
+.player_shuffle_btn::before {
+    content: "\f503";
+}

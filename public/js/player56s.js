@@ -233,6 +233,25 @@ var updateMediaSession = function(filename) {
     }
 };
 
+function shuffle(arra1) {
+    let ctr = arra1.length;
+    let temp;
+    let index;
+
+    // While there are elements in the array
+    while (ctr > 0) {
+// Pick a random index
+        index = Math.floor(Math.random() * ctr);
+// Decrease ctr by 1
+        ctr--;
+// And swap the last element with it
+        temp = arra1[ctr];
+        arra1[ctr] = arra1[index];
+        arra1[index] = temp;
+    }
+    return arra1;
+}
+
 jQuery( function player56s($) { 
     
     $.fn.player56s = function(options) {
@@ -251,6 +270,8 @@ jQuery( function player56s($) {
                 audiofileLink_currenttrack = $("#player56s-currenttrack"),
                 audiofileLink_play_now = $("#player56s-playnow"),
                 currenttrack_index = $("#player56s-sortable ul li"),
+                playlist_shuffle = $("#player56s-shuffle"),
+                playlist_no_shuffle = $("#player56s-no-shuffle ul li"),
                 skin = "",
                 goAndCreate = true;
 
@@ -347,6 +368,34 @@ jQuery( function player56s($) {
                         }, this);
                     }
 
+                    if (playlist_shuffle[0].innerText == "1") {
+                        var currentTrack = player56sInstance.tracks[player56sInstance.currentTrack];
+                        shuffle(player56sInstance.tracks);
+                        player56sInstance.tracks.forEach(function(element, index) {
+                            if (element == currentTrack) {
+                                player56sInstance.currentTrack = index;
+                            } 
+                        });                        
+                    }
+                     
+                    if (playlist_shuffle[0].innerText == "0") {
+                        var tracks = [],               
+                        currentTrack = player56sInstance.tracks[player56sInstance.currentTrack];
+                        player56sInstance.tracks.forEach(function(element_, index) {
+                            player56sInstance.tracks.forEach(function(element, index_) {
+                                if ( playlist_no_shuffle[index_].innerHTML == player56sInstance.tracks[index].postid ) {                                 
+                                    tracks[index_] = player56sInstance.tracks[index];
+                                }
+                            });
+                        });
+                        tracks.forEach(function(element, index) {
+                            if ( currentTrack == tracks[index] ) {
+                                player56sInstance.currentTrack = index;
+                            }
+                        });
+                        player56sInstance.tracks = tracks;
+                    }
+
                     if (currenttrack_index[0] !== undefined ) {
 
                        player56sInstance.tracks.reverse();
@@ -388,6 +437,8 @@ jQuery( function player56s($) {
 
                         player56sInstance.tracks.reverse();
                     } 
+
+                    console.log(player56sInstance); 
 
                 } else {
                     /* Create new instance */

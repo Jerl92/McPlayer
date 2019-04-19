@@ -28,6 +28,14 @@ class MCPlayer_bottom_player_widget extends WP_Widget {
 
 		$title_i = "<div id='current_music_name'></div>";
 
+		$shuffle = get_user_meta( get_current_user_id(), 'user_playlist_shuffle', true );
+
+		if ( $shuffle == 1 ) {
+			$shuffle_toggle = "<div style='padding-right: 5px; right: 40px; float: right;' ><i class='shuffle_player_toggle material-icons' style='box-shadow: 2.5px 2.5px 2.5px #000'>shuffle</i></div>";
+		} else {
+			$shuffle_toggle = "<div style='padding-right: 5px; right: 40px; float: right;' ><i class='shuffle_player_toggle material-icons'>shuffle</i></div>";
+		}
+
 		$btn_toggle = "<div id='btn_player_toggle' class='player_widget_name_hide_btn' style='padding-right: 5px' >&#129035;</div>";	
 		
 		$ogg_toggle = "<div id='ogg_player_toggle' class='player_widget_name_ogg' style='padding-right: 10px' >.OGG</div>";	
@@ -37,7 +45,7 @@ class MCPlayer_bottom_player_widget extends WP_Widget {
 		// before and after widget arguments are defined by themes
 		echo $args['before_widget'];
 		if ( ! empty( $title ) )
-		echo $args['before_title'] . $title_toggle . $btn_toggle . $ogg_toggle . $args['after_title'];
+		echo $args['before_title'] . $title_toggle . $btn_toggle . $shuffle_toggle . $ogg_toggle . $args['after_title'];
 
 		// This is where you run the code and display the output
 		if ( is_user_logged_in() ) {
@@ -49,12 +57,21 @@ class MCPlayer_bottom_player_widget extends WP_Widget {
 			echo '<div id="player-container">';
 
 			if ( ! empty( $matches ) ) {
-				$saved_args = array(
-					'post_type'      => 'music',
-					'posts_per_page' => -1,
-					'orderby' => 'post__in',
-					'post__in'       => array_reverse( $matches, true )
-				);
+				if ( $shuffle == 1 ) {
+					$saved_args = array(
+						'post_type'      => 'music',
+						'posts_per_page' => -1,
+						'orderby' => 'rand',
+						'post__in'       => array_reverse( $matches, true )
+					);
+				} else {
+					$saved_args = array(
+						'post_type'      => 'music',
+						'posts_per_page' => -1,
+						'orderby' => 'post__in',
+						'post__in'       => array_reverse( $matches, true )
+					);
+				}
 			} else {
 				$saved_args = 0;
 			}
@@ -107,6 +124,8 @@ class MCPlayer_bottom_player_widget extends WP_Widget {
 				echo '<div id="player56s-removetracks-all"></div>';
 				echo '<div id="player56s-playnow"></div>';
 				echo '<div id="player56s-sortable"></div>';
+				echo '<div id="player56s-shuffle"></div>';
+				echo '<div id="player56s-no-shuffle"></div>';
 			echo '</div>';
 
 			echo '</div>';

@@ -17,7 +17,7 @@
 			anchors: "a",
 			blacklist: ".no-smoothState",
 			cache: true,
-			prefetchOn: $( "#page" ).aim({className: "site"}),
+			prefetchOn: 'aim',
 			scroll: true,
 			locationHeader: "X-SmoothState-Location",
 			onAfter: function( $container , $newcontainer ) {

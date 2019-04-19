@@ -1,13 +1,16 @@
 a.rs-save-for-later-button {
-	box-shadow: none !important;
-	text-shadow: none;
-	border: none;
-	outline: none !important;
-	margin: auto; 
-	padding: 0;
-	cursor: pointer;
-	text-decoration: none;
-	padding-right: 10px;
+    box-shadow: none!important;
+    text-shadow: none;
+    border: none;
+    outline: none!important;
+    margin: auto;
+    padding: 0;
+    cursor: pointer;
+    text-decoration: none;
+    padding-right: 10px;
+    width: 50px;
+    display: block;
+    height: 30px;
 }
 
 a.rs-save-for-later-button svg {

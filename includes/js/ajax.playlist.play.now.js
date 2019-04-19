@@ -32,6 +32,7 @@ function play_now($) {
                         'object_id': object_id,
                         'action': 'save_and_play_now'
                     },
+                    dataType: 'JSON',
                     success: function(data) {
 
                      if( ! $('#postid-'+object_id+' a').hasClass('saved') || ! $('#add-play-now-id-'+object_id).hasClass('saved') ) {
