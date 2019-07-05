@@ -307,6 +307,15 @@ jQuery( function player56s($) {
                             }, this);
                             if ( allready == 0 ) { 
                                 player56sInstance.addTrack(audiofileLink_add[0].innerText, audiofileLink_add[1].innerText,  $.extend({}, audiofileLink_add[3].innerText), audiofileLink_add[2].innerText);
+                                if (playlist_shuffle[0].innerText == "1") {
+                                    var currentTrack = player56sInstance.tracks[player56sInstance.currentTrack];
+                                    shuffle(player56sInstance.tracks);
+                                    player56sInstance.tracks.forEach(function(element, index) {
+                                        if (element == currentTrack) {
+                                            player56sInstance.currentTrack = index;
+                                        } 
+                                    });                        
+                                }
                             }
                         }
                         console.log( "Add Track: " + getTrackTitle(audiofileLink_add[1].innerText) + " - " + audiofileLink_add[3].innerText );
@@ -316,15 +325,16 @@ jQuery( function player56s($) {
                         player56sInstance.removeAll();
                     }
 
+                    
                     if ( audiofileLink_remove !== null ) {
                         var audiofileLink_remove_id = audiofileLink_remove[0].innerText; 
                         player56sInstance.tracks.forEach(function(element, index) {
                             if (element.postid == audiofileLink_remove_id) {
                                 if (element.postid !== audiofileLink_currenttrack[0].innerText && player56sInstance.currentTrack !== index) {
-                                    player56sInstance.tracks.splice(index, 1);                
-                                    if (player56sInstance.currentTrack > index ) { 
-                                        player56sInstance.switchTrack(false);
+                                    if (player56sInstance.currentTrack > index) {
+                                        player56sInstance.currentTrack = player56sInstance.currentTrack-1;
                                     }
+                                    player56sInstance.tracks.splice(index, 1);                
                                 } else {
                                     if (player56sInstance.tracks.length === 1) {
                                         player56sInstance.removeAll();
@@ -345,7 +355,7 @@ jQuery( function player56s($) {
                             }
                         }, this);
                     }
-                                                    
+
                     if (audiofileLink_play_now[0] !== null ) {
                         player56sInstance.tracks.forEach(function(element, index) {
                             if (audiofileLink_play_now[0].innerText == element.postid) {

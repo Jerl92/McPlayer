@@ -36,9 +36,9 @@
 				
 				footer_stick($);
                     
-//				rs_save_for_later($);
+				rs_save_for_later($);
 				
-//				rs_save_for_later_album($); 
+				rs_save_for_later_album($); 
 
 //				sortable_playlist($);
 				

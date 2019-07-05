@@ -10,6 +10,7 @@ function ajax_playlist_remove_track($, object_id) {
                     dataType: 'JSON',
                     success: function(data){
                         //print stuff heres
+                        console.log(data);
                         $("#player56s-removetrack").html(data);  
                         $(".player56s").player56s($); 
                         $("#player56s-removetrack").html(null);

@@ -134,8 +134,6 @@ jQuery(document).ready(function() {
 
 				$('.mejs-mediaelement a').html( attachment.url );
 				
-				ajax_track_length($, attachment.id);
-							
 			} );
 	
 			// Finally, open the modal

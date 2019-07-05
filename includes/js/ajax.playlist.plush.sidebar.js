@@ -10,6 +10,8 @@ function ajax_playlist_add_sidebar($, object_id)  {
         dataType: 'JSON',
         success: function(data){
 
+            console.log(data);
+
             var currenttrack = $("#player56s-currenttrack")[0].innerText;
 
             if (data) {

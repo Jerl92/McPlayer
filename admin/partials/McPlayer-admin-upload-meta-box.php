@@ -64,14 +64,14 @@ class Meta_Box_audio_Upload {
         echo '<br />';
 
         // track_length
-        $track_length = get_post_meta( get_the_id(), "meta-box-track-length", true );
-        if ( $track_length == null || $track_length != gmdate( "i:s", $metadata['length'] ) )
-            $track_length = gmdate( "i:s", $metadata['length'] );
+        $get_track_length = get_post_meta( get_the_id(), "meta-box-track-length", true );
+        if ( $get_track_length == null || $get_track_length != gmdate( "i:s", $metadata['length'] ) )
+            $get_track_length = gmdate( "i:s", $metadata['length'] );
         
         echo '<ul><li style="float: right;">';
         echo '<label for="meta-box-track-number">Track length</label>';
         echo '<br />';
-        echo "<input type='text' readonly='readonly' id='track-length-value' class='text' name='meta-box-media-track-length'  value='$track_length' />";
+        echo "<input type='text' readonly='readonly' id='track-length-value' class='text' name='meta-box-media-track-length'  value='$get_track_length' />";
 
         // track_number
         $track_number = get_post_meta(get_the_id(), "meta-box-track-number", true ); 
@@ -111,10 +111,16 @@ class Meta_Box_audio_Upload {
 			update_post_meta( $post_id, $k, $v ); //save
         }
 
-        if( ! isset( $_POST['meta-box-media-track-length'] ) )
+        $name = esc_attr('music_link_');        
+        $value = $rawvalue = esc_attr(get_post_meta( get_the_id(), $name, true ));
+        $image = ! $rawvalue ? '' : get_attached_file( $rawvalue );
+        $metadata = array();
+        $metadata = wp_read_audio_metadata( $image );
+
+        if( ! gmdate( "i:s", $metadata['length']  ) )
             return; 
 
-        update_post_meta( $post_id, "meta-box-track-length", $_POST['meta-box-media-track-length'] ); 
+        update_post_meta( $post_id, "meta-box-track-length", gmdate( "i:s", $metadata['length'] ) ); 
         
         if( ! isset( $_POST['meta-box-track-number'] ) )
             return; 

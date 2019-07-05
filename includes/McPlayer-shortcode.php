@@ -171,22 +171,147 @@ function year_get_loop( $atts ) {
 		$get_years = get_posts( $get_years_args );
 
 		$i = -1;
-		
-		if ($_GET['year']) {
-			$year_meta = $_GET['year']; 
-			echo $year_meta;
+
+		$classes = array(
+			'page-music',
+		);
+
+		global $wp;
+		$current_slug = add_query_arg( array(), $wp->request );
+		if (preg_match("/\/(\d+)$/",$current_slug ,$matches) == 0) {
+			foreach($get_years as $get_year) {
+				$last_year = get_post_meta( $get_years[$i++]->ID, "meta-box-year", true);
+				if ( $last_year != get_post_meta( $get_year->ID,  "meta-box-year", true) ) {
+					echo '<li style="float: left;list-style: none;margin: 15px;font-weight: 600;font-size: 25px;">';
+						echo '<a href="' . get_site_url(null, '/years/', 'https') . get_post_meta( $get_year->ID,  "meta-box-year", true) . '">';
+						echo get_post_meta( $get_year->ID,  "meta-box-year", true);
+						echo '</a>';
+						echo '<br>';
+					echo '</li>';
+					wp_reset_postdata();
+				}
+			}
 		}
 
-		foreach($get_years as $get_year) {
-			$last_year = get_post_meta( $get_years[$i++]->ID, "meta-box-year", true);
-			if ( $last_year != get_post_meta( $get_year->ID,  "meta-box-year", true) ) {
-				echo '<li>';
-					echo '<a href="?year=' . get_post_meta( $get_year->ID,  "meta-box-year", true) . '">';
-					echo get_post_meta( $get_year->ID,  "meta-box-year", true);
-					echo '</a>';
-				echo '</li>';
+		if(preg_match("/\/(\d+)$/",$current_slug ,$matches) == 1) {
+
+			if ($_GET['album']) {
+
+				$args = array( 
+				'post_type' => 'music',
+				'meta_query' => array(
+					array(
+						'key' => 'meta-box-media-cover_',
+						'value' => $_GET['album'],
+					)
+				),
+				'orderby' => 		'meta_value_num',
+				'order' => 			'ASC',
+				'posts_per_page'  => -1
+				);
+				
+				$loop = new WP_Query( $args );
+				$columns = absint( $args['columns'] );
+				$woocommerce_loop['columns'] = $columns;
+		
+				ob_start();
+		
+				if ( $loop->have_posts() ) : ?>
+		
+					<?php // do_action( "woocommerce_shortcode_before_featured_products_loop" ); ?>
+		
+					<?php // woocommerce_product_loop_start(); ?>
+		
+						<?php while ( $loop->have_posts() ) : $loop->the_post(); ?>
+		
+							<?php get_template_part( 'template-parts/page-music-archive', get_post_format() ); ?>
+		
+						<?php endwhile; // end of the loop. ?>
+		
+					<?php // woocommerce_product_loop_end(); ?>
+		
+					<?php  // do_action( "woocommerce_shortcode_after_featured_products_loop" ); ?>
+		
+				<?php endif;
+		
+				// woocommerce_reset_loop();
 				wp_reset_postdata();
+		
+				return '<div class="columns-' . $columns . '">' . ob_get_clean() . '</div>';
+			
 			}
+
+		}
+
+
+		$end=$matches[1];
+		$get_songs_args = array( 
+			'post_type' => 'attachment',
+			'posts_per_page' => -1,
+			'post_mime_type' => 'image',
+			'meta_query' => array(
+				array(
+					'key' => 'meta-box-year',
+					'value' => $end
+				)
+			),
+			'orderby' => 'meta_value_num',
+			'order' => 'ASC'
+		); 
+		$get_songs_cover = get_posts( $get_songs_args );
+
+		foreach ( $get_songs_cover as $get_song_cover ) {
+			$getslugid = wp_get_post_terms( $get_song_cover->ID, 'artist' );
+			foreach( $getslugid as $thisslug ) {
+				$artist_slug_name = $thisslug->name; // Added a space between the slugs with . ' '
+			}
+
+			
+			$get_songs_args = array( 
+				'post_type' => 'music',
+				'posts_per_page' => -1,
+				'meta_key' => 'meta-box-media-cover_',
+				'meta_value' => $get_song_cover->ID,
+				'order' => 'DESC',
+				'tax_query' => array(
+					array(
+						'taxonomy' => 'artist',
+						'field'    => 'name',
+						'terms'    => $artist_slug_name
+					)
+				)
+			); 
+
+			$get_songs = get_posts( $get_songs_args );
+
+			$i = 0; 
+			$get_songs_calc = [];
+
+			foreach ( $get_songs as $get_songs_time ) {
+				$get_songs_calc[$i++] =  seconds_from_time( get_post_meta( $get_songs_time->ID , 'meta-box-track-length' , true ));
+			}
+
+			?>
+			<ul id="album-class-artist" class="page-music" style="display: inline-block;">
+				<li>
+					<?php echo '<h2 class="entry-title"><a href="' . esc_url( get_permalink($get_song_cover->ID) ) . '" rel="bookmark">';
+							echo get_the_title($get_song_cover->ID);
+						echo '</a></h2>' ?>
+					<a href="?album=<?php echo $get_song_cover->ID; ?>"><?php echo wp_get_attachment_image( $get_song_cover->ID, array('350', '350') ); ?></a>
+					<li style="float: left; max-width: calc(100% - 40px);">
+						<?php echo $artist_slug_name ?>
+						</br>
+						<?php echo count( $get_songs ); ?>
+						</br>
+						<?php echo time_from_seconds ( array_sum($get_songs_calc) ); ?>
+					</li>
+					<li style="float: right; margin: 25px 15px 0 0;">
+						<?php echo do_shortcode( '[simplicity-save-for-later-loop-album album_id="' . $get_song_cover->ID . '"]' ); ?>
+					</li>
+				</li>
+			</ul>
+			<?php
+
 		}
 
 	} else  {
@@ -275,7 +400,7 @@ function add_play_now_loop( $atts ) {
 /***************************************************************************/
 /******************** Short code to display genre list ********************/
 
-function get_save_for_later_button_display() {
+function get_save_for_later_button_display($atts) {
 
 			global $post;
 	
@@ -290,7 +415,7 @@ function get_save_for_later_button_display() {
 				if ( empty( $matches ) ) {
 					$matches = array();
 				}
-				if ( in_array( get_the_ID(), $matches ) ) {
+				if ( in_array( esc_attr( $atts['id'] ), $matches ) ) {
 					$saved = true;
 				} else {
 					$saved = false;
@@ -314,9 +439,9 @@ function get_save_for_later_button_display() {
 
 			if (is_user_logged_in() ) {
 				if ( $saved == true ) {
-					return '<a href="#" class="rs-save-for-later-button saved" data-toggle="tooltip" data-placement="top" data-title="' . esc_attr( $unsave ) . '" data-nonce="' . wp_create_nonce( 'rs_object_save_for_later' ) . '" data-object-id="' . esc_attr( get_the_ID() ) . '"></a>';
+					return '<a href="#" class="rs-save-for-later-button saved" data-toggle="tooltip" data-placement="top" data-title="' . esc_attr( $unsave ) . '" data-nonce="' . wp_create_nonce( 'rs_object_save_for_later' ) . '" data-object-id="' . esc_attr( $atts['id'] ) . '"></a>';
 				} else {
-					return '<a href="#" class="rs-save-for-later-button" data-toggle="tooltip" data-placement="top" data-title="' . esc_attr( $save ) . '" data-nonce="' . wp_create_nonce( 'rs_object_save_for_later' ) . '" data-object-id="' . esc_attr( get_the_ID() ) . '">️</a>';
+					return '<a href="#" class="rs-save-for-later-button" data-toggle="tooltip" data-placement="top" data-title="' . esc_attr( $save ) . '" data-nonce="' . wp_create_nonce( 'rs_object_save_for_later' ) . '" data-object-id="' . esc_attr( $atts['id'] ) . '">️</a>';
 				}
 			} else {
 				$login_url = wp_login_url( get_permalink() );

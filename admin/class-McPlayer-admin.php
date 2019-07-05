@@ -97,8 +97,6 @@ class Mcplayer_Admin {
 		 */
 
 		/* Ajax remove all track from playlist */
-		wp_enqueue_script( 'wp_ajax_track_length', plugin_dir_url( __FILE__ ) . 'js/wp.ajax.track.length.js', array( 'jquery' ), '1.0.0', true );
-		wp_localize_script( 'wp_ajax_track_length', 'wp_ajax_track_length', admin_url( 'admin-ajax.php' ) );
 
 		wp_enqueue_script( 'wp-media-uploader', plugin_dir_url( __FILE__ ) . 'js/wp-media-uploader.js', array( 'jquery' ), $this->version, false );
 
