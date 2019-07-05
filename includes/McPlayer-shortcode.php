@@ -215,7 +215,33 @@ function year_get_loop( $atts ) {
 				$woocommerce_loop['columns'] = $columns;
 		
 				ob_start();
-		
+
+				echo '<div style="float: left;">';
+				
+					$post = get_post( $_GET['album'] ); 
+					$title = $post->post_title;
+
+					echo $title;
+
+					echo '<br>';
+
+					$getslugid = wp_get_post_terms( $_GET['album'], 'artist' );
+					foreach( $getslugid as $thisslug ) {
+							echo $thisslug->name; // Added a space between the slugs with . ' '
+					}
+					
+					echo '<br>';
+
+					echo get_post_meta( $_GET['album'], "meta-box-year", true);
+
+				echo '</div>';
+
+				?> <div class="entry-meta-cover">
+					<?php echo wp_get_attachment_image( $_GET['album'], 'full', false, array('style' => 'max-width:450px;height:auto;margin-left: auto;display: grid;margin-right: 15px;') ); ?>
+				</div> <?php
+
+				echo "<table id='album-class-artist-list'>";
+
 				if ( $loop->have_posts() ) : ?>
 		
 					<?php // do_action( "woocommerce_shortcode_before_featured_products_loop" ); ?>
@@ -224,7 +250,7 @@ function year_get_loop( $atts ) {
 		
 						<?php while ( $loop->have_posts() ) : $loop->the_post(); ?>
 		
-							<?php get_template_part( 'template-parts/page-music-archive', get_post_format() ); ?>
+							<?php get_template_part( 'template-parts/page-music-table', get_post_format() ); ?>
 		
 						<?php endwhile; // end of the loop. ?>
 		
@@ -236,8 +262,10 @@ function year_get_loop( $atts ) {
 		
 				// woocommerce_reset_loop();
 				wp_reset_postdata();
+
+				echo "</table>";
 		
-				return '<div class="columns-' . $columns . '">' . ob_get_clean() . '</div>';
+				return ob_get_clean();
 			
 			}
 
@@ -292,24 +320,24 @@ function year_get_loop( $atts ) {
 			}
 
 			?>
-			<ul id="album-class-artist" class="page-music" style="display: inline-block;">
-				<li>
-					<?php echo '<h2 class="entry-title"><a href="' . esc_url( get_permalink($get_song_cover->ID) ) . '" rel="bookmark">';
-							echo get_the_title($get_song_cover->ID);
-						echo '</a></h2>' ?>
+			<article id="album-class-year" class="page-music music type-music status-publish hentry">
+				<div class="entry-header">
+						<h2><a href="?album=<?php echo $get_song_cover->ID; ?>" rel="bookmark">
+							<?php echo get_the_title($get_song_cover->ID); ?>
+						</a></h2>
 					<a href="?album=<?php echo $get_song_cover->ID; ?>"><?php echo wp_get_attachment_image( $get_song_cover->ID, array('350', '350') ); ?></a>
-					<li style="float: left; max-width: calc(100% - 40px);">
+					<div style="float: left; max-width: calc(100% - 40px);">
 						<?php echo $artist_slug_name ?>
 						</br>
 						<?php echo count( $get_songs ); ?>
 						</br>
 						<?php echo time_from_seconds ( array_sum($get_songs_calc) ); ?>
-					</li>
-					<li style="float: right; margin: 25px 15px 0 0;">
+					</div>
+					<div style="float: right; margin: 25px 15px 0 0;">
 						<?php echo do_shortcode( '[simplicity-save-for-later-loop-album album_id="' . $get_song_cover->ID . '"]' ); ?>
-					</li>
-				</li>
-			</ul>
+					</div>
+				</div>
+			</article>
 			<?php
 
 		}
