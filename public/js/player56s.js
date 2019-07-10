@@ -507,6 +507,8 @@ jQuery( function player56s($) {
             this.tracks = [];
             this.currentTrack = 0;
             this.init();
+            this.pseudoPause();
+            this.pause();
         }
         init() {
             this.tracks.push({
@@ -588,7 +590,10 @@ jQuery( function player56s($) {
             if (!this.tracks[this.currentTrack]) {
                 this.currentTrack = 0;
             }
+            this.$container.removeClass("status-playing");
+            this.$container.addClass("status-onpause");
             this.$container.removeClass("player56s-status-playing");
+            $("#rs-item-" + this.tracks[this.currentTrack].postid + "").addClass('playing');
         }
         stop() {
             $("#rs-item-" + this.tracks[this.currentTrack].postid + "").removeClass('playing');
@@ -619,6 +624,8 @@ jQuery( function player56s($) {
             $("#play-now-id-" + this.tracks[this.currentTrack].postid + "").removeClass('onpause');
             $("#add-play-now-id-" + this.tracks[this.currentTrack].postid + "").addClass('onplay');
             $("#add-play-now-id-" + this.tracks[this.currentTrack].postid + "").removeClass('onpause');
+            this.$container.addClass("status-playing");
+            this.$container.removeClass("status-onpause");
             this.isPlayed = true;
             this.$container.addClass("player56s-status-playing");
         }
@@ -647,7 +654,6 @@ jQuery( function player56s($) {
                 $("#player56s-currenttrack").html(track.postid);
                 if ('connection' in navigator) {
                     if (navigator.connection.type == 'cellular') {
-                        this.sleep(100);
                         $("#ogg_player_toggle").css('display', 'block');
                         this.$jPlayer.jPlayer("setMedia", {
                             oga: track.audiofileLink + '.ogg'
@@ -684,20 +690,20 @@ jQuery( function player56s($) {
                 to_next = true;
             } // next by default
             if (typeof this.$jPlayer !== "undefined" && this.$jPlayer.jPlayer) {
-                var timelinedonepx = this.$container.find(".player56s-timeline-done").css("width");
+                var timelinedone = $(".player56s-timeline-done").width() / $('.player56s-timeline-done').parent().width() * 100;
                 var timelinedoneplay = 0;
-                var timelinedone = timelinedonepx.replace('px','');
-                if (this.$container.hasClass("player56s-status-playing")) {
-                    this.$container.addClass("status-playing");
-                    this.$container.removeClass("status-onpause");
-                } else  {
-                    this.$container.removeClass("status-playing");
-                    this.$container.addClass("status-onpause");
+                var status = null;
+                if (this.$container.hasClass("status-onpause")) {
+                    status = 0;
+                }
+                if (this.$container.hasClass("status-playing")) {
+                    status = 1;
                 }
                 this.pseudoPause();
                 this.pause();
                 this.stop();
                 this.$jPlayer.jPlayer("clearMedia");
+
                 if (!to_next && (parseInt(timelinedone) > 5)) {
                     timelinedoneplay = 1;
                     this.currentTrack = this.currentTrack;
@@ -715,16 +721,12 @@ jQuery( function player56s($) {
 
                 if (this.tracks[this.currentTrack] === undefined) {
                     this.currentTrack = 0;
-                    $("#player56s-currenttrack").html(this.tracks[this.currentTrack].postid);
                 }
-
+                
                 var track = this.tracks[this.currentTrack];
-
-                updateMediaSession(track.filename);
 
                 if ('connection' in navigator) {
                     if (navigator.connection.type == 'cellular') {
-                        this.sleep(100);
                         $("#ogg_player_toggle").css('display', 'block');
                         this.$jPlayer.jPlayer("setMedia", {
                             oga: track.audiofileLink + '.ogg'
@@ -742,15 +744,25 @@ jQuery( function player56s($) {
                     });
                 }
 
+                updateMediaSession(track.filename);
+
+                $("#player56s-currenttrack").html(this.tracks[this.currentTrack].postid);
+
+                willSeekTo(this, 0);
+
                 this.$container.find(".player56s-title").html('<span>' + getTrackTitle(track.filename) + '</span>');
                 this.$container.find(".player56s-author").html('<span>' + getTrackAuthor(track.filename) + '</span>');
                 this.$container.find(".player56s-album").html('<span>' + getTrackAlbum(track.filename) + '</span>');
                 this.$container.find(".player56s-album-img").html('<span><img src="' + getTrackAlbumImg(track.filename) + '"></img></span>');
 
-                if (this.$container.hasClass("status-onpause")) {
+                if (status == 0) {
+                    this.pseudoPause();
+                    this.pause();
+                    this.stop();
                     $("#rs-item-" + track.postid + "").addClass('playing');
-                } else if (this.$container.hasClass("status-playing") || (timelinedoneplay == 1)) {
-                    this.waitForLoad = false;
+                }
+                if (status == 1) {
+                    this.waitForLoad = true;
                     this.pseudoPlay();
                     this.play();
                 }
@@ -919,7 +931,7 @@ jQuery( function player56s($) {
                     self.onStop.call(self);
                 },
                 ended: function () {
-                    self.switchTrack(true);
+                    self.switchTrack.call(self);
                     self.waitForLoad = false;
                     self.pseudoPlay();
                     self.play();
@@ -970,22 +982,29 @@ jQuery( function player56s($) {
             });
             // Android mediasession nodification for extrenal btn while the mobile device screen is off
             if ('mediaSession' in navigator) {
+                navigator.mediaSession.setActionHandler('play', function() {
+                    self.waitForLoad = true;
+                    self.pseudoPlay();
+                    self.play();
+                });
+                navigator.mediaSession.setActionHandler('pause', function() {
+                    self.pseudoPause();
+                    self.pause();
+                });
                 navigator.mediaSession.setActionHandler('previoustrack', function () {
-                    self.switchTrack(false);
+                    self.switchTrack.call(self, $(this).hasClass('player56s-track-next'));
                 });
                 navigator.mediaSession.setActionHandler('nexttrack', function () {
-                    self.switchTrack(true);
+                    self.switchTrack.call(self);
                 });
                 navigator.mediaSession.setActionHandler('seekforward', function () {
-                    var timelinedonepx = self.$container.find(".player56s-timeline-done").css("width");
-                    var timelinedone = timelinedonepx.replace('px','');
-                    var timeSeek = (parseInt(timelinedone) / 2) + 2.5;
+                    var timelinedone = $(".player56s-timeline-done").width() / $('.player56s-timeline-done').parent().width() * 100;
+                    var timeSeek = parseInt(timelinedone) + 5;
                     willSeekTo(self, timeSeek);
                 });
                 navigator.mediaSession.setActionHandler('seekbackward', function () {
-                    var timelinedonepx = self.$container.find(".player56s-timeline-done").css("width");
-                    var timelinedone = timelinedonepx.replace('px','');
-                    var timeSeek = (parseInt(timelinedone) / 2) - 2.5;
+                    var timelinedone = $(".player56s-timeline-done").width() / $('.player56s-timeline-done').parent().width() * 100;
+                    var timeSeek = parseInt(timelinedone) - 5;
                     willSeekTo(self, timeSeek);
                 });
             }
