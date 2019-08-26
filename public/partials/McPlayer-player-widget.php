@@ -36,7 +36,7 @@ class MCPlayer_bottom_player_widget extends WP_Widget {
 			$shuffle_toggle = "<div style='padding-right: 5px; right: 40px; float: right;' ><i class='shuffle_player_toggle material-icons'>shuffle</i></div>";
 		}
 
-		$btn_toggle = "<div id='btn_player_toggle' class='player_widget_name_hide_btn' style='padding-right: 5px' >&#129035;</div>";	
+		$btn_toggle = "<div id='btn_player_toggle' class='player_widget_name_hide_btn' style='padding-right: 5px' ><i class='material-icons'>keyboard_arrow_down</i></div>";	
 		
 		$ogg_toggle = "<div id='ogg_player_toggle' class='player_widget_name_ogg' style='padding-right: 10px' >.OGG</div>";	
 
@@ -117,6 +117,8 @@ class MCPlayer_bottom_player_widget extends WP_Widget {
 				echo '<audio href="" class="player56s" postid="0"></audio>';
 			}
 		
+			echo '</div>';
+
 			echo '<div id="player56s-ajax-wrap" style="display: none;">';
 				echo '<div id="player56s-currenttrack"></div>';
 				echo '<div id="player56s-addtrack"></div>';
@@ -126,8 +128,8 @@ class MCPlayer_bottom_player_widget extends WP_Widget {
 				echo '<div id="player56s-sortable"></div>';
 				echo '<div id="player56s-shuffle"></div>';
 				echo '<div id="player56s-no-shuffle"></div>';
-			echo '</div>';
-
+				echo '<div id="player56s-connection-type"></div>';
+				echo '<div id="player56s-seek-percent"></div>';
 			echo '</div>';
 
 		} else {

@@ -250,31 +250,31 @@ function ajax_add_track_sidebar($post) {
 
 		$loop = new WP_Query( $args );
 
-			if ( $loop->have_posts() ) : ?>
+		if ( $loop->have_posts() ) : ?>
 
-				<?php ob_start(); ?>
+			<?php ob_start(); ?>
 
-				<?php // do_action( "woocommerce_shortcode_before_featured_products_loop" ); ?>
+			<?php // do_action( "woocommerce_shortcode_before_featured_products_loop" ); ?>
 
-				<?php // woocommerce_product_loop_start(); ?>
+			<?php // woocommerce_product_loop_start(); ?>
 
-				<?php while ( $loop->have_posts() ) : $loop->the_post(); ?>
+			<?php while ( $loop->have_posts() ) : $loop->the_post(); ?>
 
-					<?php echo get_template_part( 'template-parts/page-music-archive-sidebar', get_post_format() ); ?>
+				<?php echo get_template_part( 'template-parts/page-music-archive-sidebar', get_post_format() ); ?>
 
-				<?php endwhile; // end of the loop. ?>
+			<?php endwhile; // end of the loop. ?>
 
-				<?php // woocommerce_product_loop_end(); ?>
+			<?php // woocommerce_product_loop_end(); ?>
 
-				<?php  wp_reset_postdata(); ?>
+			<?php  wp_reset_postdata(); ?>
 
-				<?php $html = ob_get_clean(); ?>
+			<?php $html = ob_get_clean(); ?>
 
-			<?php else : ?>
+		<?php else : ?>
 
-				<?php $html = '<li style="text-align: center; padding: 15px 0;">Nothing in the playlist</li>'; ?>
+			<?php $html = '<li style="text-align: center; padding: 15px 0;">Nothing in the playlist</li>'; ?>
 
-			<?php endif;
+		<?php endif;
 				
 	}
 	

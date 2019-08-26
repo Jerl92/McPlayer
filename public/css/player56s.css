@@ -144,8 +144,7 @@
 .player56s .player56s-tracks {
     position: absolute;
     top: -47.5px;
-    left: 10px;
-    width: 100px;
+    width: 75px;
   }
   .player56s .player56s-tracks:focus {
     outline: none;

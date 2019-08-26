@@ -111,7 +111,6 @@ ul.rs-saved-for-later {
 #btn_player_toggle.up-arrow {   
     transform: rotate(-180deg);
     -webkit-transform: rotate(-180deg);
-    padding-left: 15px;
 }
 
 #ogg_player_toggle  {   
@@ -344,7 +343,7 @@ a.rs-save-for-later-button.saved:after, a.rs-save-for-later-button-album.saved:a
         margin: 15px 0px;
     }
     .player_widget_name {
-        padding-left: 15%;
+        padding-left: 25%;
     }
 }
 

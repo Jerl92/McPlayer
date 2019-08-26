@@ -49,7 +49,6 @@ var getTrackAlbumImg = function(filename) {
     return parts.length > 1 ? ('' + parts[3]) : ""
 }
 
-
 var getTrackID = function(filename) {
     var parts = splitFilenameToTrackAndAuthor(filename);
     return parts.length > 1 ? ('' + parts[4]) : ""
@@ -205,32 +204,33 @@ var checkAndRunTicker = function(instance) {
 };
 
 var updateMediaSessionNull = function() {
-    if ('mediaSession' in navigator) {     
-        navigator.mediaSession.metadata = new MediaMetadata({
-            title: null,
-            artist: null,
-            album: null,
-            artwork: [{ src: null }]
-        });
-    }
+    navigator.mediaSession.metadata = new MediaMetadata({
+        title: null,
+        artist: null,
+        album: null,
+        artwork: [{ src: null }]
+    });
+    return navigator.mediaSession.metadata;
 };
-var initMediaSession = function(filename) {
-    if ('mediaSession' in navigator) {                
-        navigator.mediaSession.metadata = new MediaMetadata({
-            title: getTrackTitle(filename),
-            artist: getTrackAuthor(filename),
-            album: getTrackAlbum(filename),
-            artwork: [{ src: getTrackAlbumImg(filename) }]
-        });
-    }
+
+var initMediaSession = function(filename) {     
+    navigator.mediaSession.metadata = new MediaMetadata({
+        title: getTrackTitle(filename),
+        artist: getTrackAuthor(filename),
+        album: getTrackAlbum(filename),
+        artwork: [{ src: getTrackAlbumImg(filename) }]
+    });
+    return navigator.mediaSession.metadata;
 };
+
 var updateMediaSession = function(filename) {
-    if ('mediaSession' in navigator) {
-        navigator.mediaSession.metadata.title = getTrackTitle(filename);
-        navigator.mediaSession.metadata.artist = getTrackAuthor(filename);
-        navigator.mediaSession.metadata.album = getTrackAlbum(filename);
-        navigator.mediaSession.metadata.artwork = [{ src: getTrackAlbumImg(filename) }];
-    }
+    navigator.mediaSession.metadata = new MediaMetadata({
+        title: getTrackTitle(filename),
+        artist: getTrackAuthor(filename),
+        album: getTrackAlbum(filename),
+        artwork: [{ src: getTrackAlbumImg(filename) }]
+    });
+    return navigator.mediaSession.metadata;
 };
 
 function shuffle(arra1) {
@@ -250,6 +250,18 @@ function shuffle(arra1) {
         arra1[index] = temp;
     }
     return arra1;
+}
+
+function fileExists(url) {
+    if(url){
+        var req = new XMLHttpRequest();
+        req.open('GET', url, false);
+        req.send();
+        req.status == 200;
+        return true;
+    } else {
+        return false;
+    }
 }
 
 jQuery( function player56s($) { 
@@ -365,7 +377,7 @@ jQuery( function player56s($) {
                                         player56sInstance.pause();
                                     }
                                     else {
-                                        player56sInstance.waitForLoad = false;
+                                        player56sInstance.waitForLoad = true;
                                         player56sInstance.pseudoPlay();
                                         player56sInstance.play();
                                     }
@@ -477,7 +489,7 @@ jQuery( function player56s($) {
         swfFilename: "",
         solution: "html",
         supplied: "mp3, oga",
-        volume: 0.5,
+        volume: 1,
         length: 1,
         scrollOnSpace: false,
         pauseOnSpace: true,
@@ -500,9 +512,9 @@ jQuery( function player56s($) {
             this.totalTime = 0;
             this.fullyLoaded = false;
             this.fullTimeDisplayed = false;
-            this.waitForLoad = false;
+            this.waitForLoad = true;
             this.seekTime = 0;
-            this.preloaderTimeout = 1;
+            this.preloaderTimeout = 0;
             this.isSeeking = false;
             this.tracks = [];
             this.currentTrack = 0;
@@ -531,6 +543,12 @@ jQuery( function player56s($) {
                 }
             }
         }
+        GetSeek() {
+            var audiofileLink_add = $("#player56s-seek-percent");
+            var timelinedone = $(".player56s-timeline-done").width() / $('.player56s-timeline-done').parent().width() * 100;
+            audiofileLink_add.html(timelinedone);
+            return timelinedone;
+        }
         addTrack(audiofileLink, filename, trackOptions, postid) {
             this.tracks.push({
                 audiofileLink: audiofileLink,
@@ -549,7 +567,9 @@ jQuery( function player56s($) {
             this.$jPlayer.jPlayer("clearMedia");
             this.tracks = [];
             this.addTrack("#", "Nothing in the playlist", "0", "0");
-            updateMediaSessionNull();
+            if ('mediaSession' in navigator) {
+                updateMediaSessionNull();
+            }
             audiofileLink_currenttrack.html("0");
             this.seekTime = 0;
             this.$container.find(".player56s-title").html('<span>Nothing in the playlist</span>');
@@ -566,23 +586,17 @@ jQuery( function player56s($) {
         }
         pause() {
             hidePreloader(this);
-            if (!this.seekTime) {
-                this.waitForLoad = false;
-            }
             if (typeof this.$jPlayer !== "undefined" && this.$jPlayer.jPlayer) {
                 $("#player56s-currenttrack").html(this.tracks[this.currentTrack].postid);
                 $("#play-now-id-" + this.tracks[this.currentTrack].postid + "").removeClass('onplay');
                 $("#play-now-id-" + this.tracks[this.currentTrack].postid + "").addClass('onpause');
                 $("#add-play-now-id-" + this.tracks[this.currentTrack].postid + "").addClass('onpause');
                 $("#add-play-now-id-" + this.tracks[this.currentTrack].postid + "").removeClass('onplay');
-                if (this.isPlaying || this.waitForLoad) {
+                if (this.isPlaying) {
                     this.isPlaying = false;
                     this.waitForLoad = false;
                     this.$jPlayer.jPlayer("pause");
                 }
-            }
-            if (!this.isPlaying) {
-                this.pseudoPause();
             }
             return this;
         }
@@ -644,20 +658,39 @@ jQuery( function player56s($) {
         }
         playNow(index) {
             if (typeof this.$jPlayer !== "undefined" && this.$jPlayer.jPlayer) {
+                var audiofileLink_add = $("#player56s-seek-percent");
+                var TimeSeek = audiofileLink_add[0].innerText;
+                var status = null;
+                if (this.$container.hasClass("status-onpause")) {
+                    status = 0;
+                }
+                if (this.$container.hasClass("status-playing")) {
+                    status = 1;
+                }
                 this.pseudoPause();
                 this.pause();
                 this.stop();
                 this.$jPlayer.jPlayer("clearMedia");
-                this.currentTrack = index;
-                var track = this.tracks[this.currentTrack];
-                updateMediaSession(track.filename);
+                if (index == -1){
+                    var track = this.tracks[this.currentTrack];
+                } else {
+                    this.currentTrack = index;
+                    var track = this.tracks[this.currentTrack];
+                }
                 $("#player56s-currenttrack").html(track.postid);
                 if ('connection' in navigator) {
                     if (navigator.connection.type == 'cellular') {
-                        $("#ogg_player_toggle").css('display', 'block');
-                        this.$jPlayer.jPlayer("setMedia", {
-                            oga: track.audiofileLink + '.ogg'
-                        });
+                        if (fileExists(track.audiofileLink + '.ogg')) {
+                            $("#ogg_player_toggle").css('display', 'block');
+                            this.$jPlayer.jPlayer("setMedia", {
+                                oga: track.audiofileLink + '.ogg'
+                            });
+                        } else {
+                            $("#ogg_player_toggle").css('display', 'none');
+                            this.$jPlayer.jPlayer("setMedia", {
+                                mp3: track.audiofileLink
+                            });
+                        }
                     } else {
                         $("#ogg_player_toggle").css('display', 'none');
                         this.$jPlayer.jPlayer("setMedia", {
@@ -670,19 +703,37 @@ jQuery( function player56s($) {
                         mp3: track.audiofileLink
                     });
                 }
+
                 this.$container.find(".player56s-title").html('<span>' + getTrackTitle(track.filename) + '</span>');
                 this.$container.find(".player56s-author").html('<span>' + getTrackAuthor(track.filename) + '</span>');
                 this.$container.find(".player56s-album").html('<span>' + getTrackAlbum(track.filename) + '</span>');
                 this.$container.find(".player56s-album-img").html('<span><img src="' + getTrackAlbumImg(track.filename) + '"></img></span>');
 
-                this.waitForLoad = true;
-                this.pseudoPlay();
-                this.play();
+                if ('mediaSession' in navigator) {  
+                    updateMediaSession(track.filename);
+                }
 
-                this.$container.find(".player56s-track-prev").toggleClass('enabled', this.currentTrack >= 0);
-                this.$container.find(".player56s-track-next").toggleClass('enabled', this.currentTrack <= (this.tracks.length - 1));
+                // checkAndRunTicker(this);
 
-                checkAndRunTicker(this);
+                if (index == -1) {
+                    willSeekTo(this, parseInt(TimeSeek));
+                }
+                if (status == 0) {
+                    $("#rs-item-" + this.tracks[this.currentTrack].postid + "").addClass('playing');
+                    this.pseudoPause();
+                    this.pause();
+                }
+                if (status == 1) {
+                    this.waitForLoad = false;
+                    this.pseudoPlay();
+                    this.play();
+                }
+                if (index != -1) {
+                    this.waitForLoad = false;
+                    this.pseudoPlay();
+                    this.play();
+                }
+
             }
         }
         switchTrack(to_next) {
@@ -691,7 +742,6 @@ jQuery( function player56s($) {
             } // next by default
             if (typeof this.$jPlayer !== "undefined" && this.$jPlayer.jPlayer) {
                 var timelinedone = $(".player56s-timeline-done").width() / $('.player56s-timeline-done').parent().width() * 100;
-                var timelinedoneplay = 0;
                 var status = null;
                 if (this.$container.hasClass("status-onpause")) {
                     status = 0;
@@ -705,7 +755,6 @@ jQuery( function player56s($) {
                 this.$jPlayer.jPlayer("clearMedia");
 
                 if (!to_next && (parseInt(timelinedone) > 5)) {
-                    timelinedoneplay = 1;
                     this.currentTrack = this.currentTrack;
                 } else {
                     if (to_next && (this.currentTrack === (this.tracks.length - 1))) {
@@ -727,10 +776,17 @@ jQuery( function player56s($) {
 
                 if ('connection' in navigator) {
                     if (navigator.connection.type == 'cellular') {
-                        $("#ogg_player_toggle").css('display', 'block');
-                        this.$jPlayer.jPlayer("setMedia", {
-                            oga: track.audiofileLink + '.ogg'
-                        });
+                        if (fileExists(track.audiofileLink + '.ogg')) {
+                            $("#ogg_player_toggle").css('display', 'block');
+                            this.$jPlayer.jPlayer("setMedia", {
+                                oga: track.audiofileLink + '.ogg'
+                            });
+                        } else {
+                            $("#ogg_player_toggle").css('display', 'none');
+                            this.$jPlayer.jPlayer("setMedia", {
+                                mp3: track.audiofileLink
+                            });
+                        }
                     } else {
                         $("#ogg_player_toggle").css('display', 'none');
                         this.$jPlayer.jPlayer("setMedia", {
@@ -744,32 +800,27 @@ jQuery( function player56s($) {
                     });
                 }
 
-                updateMediaSession(track.filename);
+                if ('mediaSession' in navigator) {  
+                    updateMediaSession(track.filename);
+                }
 
                 $("#player56s-currenttrack").html(this.tracks[this.currentTrack].postid);
-
-                willSeekTo(this, 0);
 
                 this.$container.find(".player56s-title").html('<span>' + getTrackTitle(track.filename) + '</span>');
                 this.$container.find(".player56s-author").html('<span>' + getTrackAuthor(track.filename) + '</span>');
                 this.$container.find(".player56s-album").html('<span>' + getTrackAlbum(track.filename) + '</span>');
                 this.$container.find(".player56s-album-img").html('<span><img src="' + getTrackAlbumImg(track.filename) + '"></img></span>');
 
+                // checkAndRunTicker(this);
+
                 if (status == 0) {
-                    this.pseudoPause();
-                    this.pause();
-                    this.stop();
                     $("#rs-item-" + track.postid + "").addClass('playing');
                 }
                 if (status == 1) {
-                    this.waitForLoad = true;
+                    this.waitForLoad = false;
                     this.pseudoPlay();
                     this.play();
                 }
-
-                this.$container.find(".player56s-track-prev").toggleClass('enabled', this.currentTrack >= 0);
-                this.$container.find(".player56s-track-next").toggleClass('enabled', this.currentTrack <= (this.tracks.length - 1));
-                checkAndRunTicker(this);
             }
         }
         onPause() {
@@ -789,7 +840,7 @@ jQuery( function player56s($) {
         onPlay() {
             $(document).trigger("player56s-pause", this);
             this.$container.addClass("player56s-status-playing");
-            this.waitForLoad = false;
+            this.waitForLoad = true;
             this.isPlaying = true;
             this.isPlayed = true;
         }
@@ -819,7 +870,7 @@ jQuery( function player56s($) {
                     $(document.createElement("div")).addClass("player56s-album").html('<span>' + getTrackAlbum(filename) + '</span>'),
                     $(document.createElement("div")).addClass("player56s-timeline").append($(document.createElement("div")).addClass("player56s-timeline-load"), $(document.createElement("div")).addClass("player56s-timeline-done")),
                     $(document.createElement("div")).addClass("player56s-button"),
-                    $(document.createElement("div")).addClass("player56s-volume").append($(document.createElement("div")).addClass("player56s-vol-pin").addClass("max-vol"), $(document.createElement("div")).addClass("player56s-vol-pin"), $(document.createElement("div")).addClass("player56s-vol-pin"), $(document.createElement("div")).addClass("player56s-vol-pin").addClass("active"), $(document.createElement("div")).addClass("player56s-vol-pin").addClass("active"), $(document.createElement("div")).addClass("player56s-vol-pin").addClass("active"), $(document.createElement("div")).addClass("player56s-vol-pin").addClass("active"), $(document.createElement("div")).addClass("player56s-vol-pin").addClass("active").addClass("zero-vol")),
+                    $(document.createElement("div")).addClass("player56s-volume").append($(document.createElement("div")).addClass("player56s-vol-pin").addClass("max-vol").addClass("active"), $(document.createElement("div")).addClass("player56s-vol-pin").addClass("active"), $(document.createElement("div")).addClass("player56s-vol-pin").addClass("active"), $(document.createElement("div")).addClass("player56s-vol-pin").addClass("active"), $(document.createElement("div")).addClass("player56s-vol-pin").addClass("active"), $(document.createElement("div")).addClass("player56s-vol-pin").addClass("active"), $(document.createElement("div")).addClass("player56s-vol-pin").addClass("active"), $(document.createElement("div")).addClass("player56s-vol-pin").addClass("active").addClass("zero-vol")),
                     $(document.createElement("div")).addClass("player56s-tracks").append($(document.createElement("div")).addClass("player56s-track-nav").addClass("player56s-track-prev"), $(document.createElement("div")).addClass("player56s-track-nav").addClass("player56s-track-next"))
                 ];
             };
@@ -832,7 +883,9 @@ jQuery( function player56s($) {
                 .addClass(self.minimal ? "minimal" : "normal")
                 .attr("id", "player56s-ui-zone")
                 .append($invisibleObject.addClass("player56s-invisible-object"), $infoArea.addClass("player56s-content").append(createContentAreaDOM()));
-            initMediaSession(this.tracks[this.currentTrack].filename);
+            if ('mediaSession' in navigator) {
+                initMediaSession(this.tracks[this.currentTrack].filename);
+            }
             return this;
         }
         initPlayerPlugin() {
@@ -849,13 +902,18 @@ jQuery( function player56s($) {
                     // check if the android device is on carrier network then use ogg file, otherwise use mp3 file.
                     if ('connection' in navigator) {
                         if (navigator.connection.type == 'cellular') {
-                            self.sleep(100);
-                            $("#ogg_player_toggle").css('display', 'block');
-                            self.$jPlayer.jPlayer("setMedia", {
-                                oga: audiofileLink + '.ogg'
-                            });
-                        }
-                        else {
+                            if (fileExists(audiofileLink + '.ogg')) {
+                                $("#ogg_player_toggle").css('display', 'block');
+                                self.$jPlayer.jPlayer("setMedia", {
+                                    oga: audiofileLink + '.ogg'
+                                });
+                            } else {
+                                $("#ogg_player_toggle").css('display', 'none');
+                                self.$jPlayer.jPlayer("setMedia", {
+                                    mp3: audiofileLink
+                                });
+                            }
+                        } else {
                             $("#ogg_player_toggle").css('display', 'none');
                             self.$jPlayer.jPlayer("setMedia", {
                                 mp3: audiofileLink
@@ -932,9 +990,6 @@ jQuery( function player56s($) {
                 },
                 ended: function () {
                     self.switchTrack.call(self);
-                    self.waitForLoad = false;
-                    self.pseudoPlay();
-                    self.play();
                 },
                 play: function () {
                     self.onPlay.call(self);
@@ -951,11 +1006,16 @@ jQuery( function player56s($) {
                     if (self.waitForLoad) {
                         self.waitForLoad = false;
                         self.seekTime = 0;
-                        self.play();
                         hidePreloader(self);
                     }
+                    if (self.isPlaying) {
+                        self.pseudoPlay();
+                        self.play();
+                    } else {
+                        self.pseudoPause();
+                        self.pause();
+                    }
                 }
-                
             });
             // Remove volume changer and add special class if have
             //   no ability to change a volume
@@ -970,7 +1030,7 @@ jQuery( function player56s($) {
             this.$link.after(this.$container);
             this.$link.data("player56s", this);
             this.$link.detach();
-            checkAndRunTicker(this);
+            // checkAndRunTicker(this);
             return this;
         }
         bindEvents() {
@@ -1007,6 +1067,26 @@ jQuery( function player56s($) {
                     var timeSeek = parseInt(timelinedone) - 5;
                     willSeekTo(self, timeSeek);
                 });
+            } 
+            // Get the connection type. 
+            if ('connection' in navigator) {
+                $("#player56s-connection-type").html(navigator.connection.type);
+                navigator.connection.addEventListener('change', changeHandler);
+                function changeHandler(event) {
+                    var connection_type = $("#player56s-connection-type");
+                    if (connection_type[0].innerText == "wifi" && navigator.connection.type == "cellular") {
+                        console.log(self.GetSeek());
+                        self.playNow(-1);
+                        console.log('type :' + navigator.connection.type);
+                        $("#player56s-connection-type").html(navigator.connection.type);
+                    }
+                    if (connection_type[0].innerText == "cellular" && navigator.connection.type == "wifi") {
+                        console.log(self.GetSeek());
+                        self.playNow(-1);
+                        console.log('type :' + navigator.connection.type);
+                        $("#player56s-connection-type").html(navigator.connection.type);
+                    }
+                }
             }
             $(document).on("keydown." + uniqueID, function (event) {
                 if (event.keyCode === 176) {
@@ -1022,8 +1102,7 @@ jQuery( function player56s($) {
                 if (event.keyCode === 179) {
                     if (self.isPlaying) {
                         self.$jPlayer.jPlayer("pause");
-                    }
-                    else {
+                    } else {
                         self.$jPlayer.jPlayer("play");
                     }
                 }
