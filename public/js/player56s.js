@@ -713,9 +713,12 @@ jQuery( function player56s($) {
                     updateMediaSession(track.filename);
                 }
 
-                // checkAndRunTicker(this);
+                checkAndRunTicker(this);
 
                 if (index == -1) {
+                    this.waitForLoad = true;
+                    this.pseudoPlay();
+                    this.play(); 
                     willSeekTo(this, parseInt(TimeSeek));
                 }
                 if (status == 0) {
@@ -723,13 +726,8 @@ jQuery( function player56s($) {
                     this.pseudoPause();
                     this.pause();
                 }
-                if (status == 1) {
-                    this.waitForLoad = false;
-                    this.pseudoPlay();
-                    this.play();
-                }
-                if (index != -1) {
-                    this.waitForLoad = false;
+                if (index != -1 || status == 1 ) {
+                    this.waitForLoad = true;
                     this.pseudoPlay();
                     this.play();
                 }
@@ -800,6 +798,12 @@ jQuery( function player56s($) {
                     });
                 }
 
+                if (status == 1) {
+                    this.waitForLoad = true;
+                    this.pseudoPlay();
+                    this.play();
+                }
+
                 if ('mediaSession' in navigator) {  
                     updateMediaSession(track.filename);
                 }
@@ -811,16 +815,7 @@ jQuery( function player56s($) {
                 this.$container.find(".player56s-album").html('<span>' + getTrackAlbum(track.filename) + '</span>');
                 this.$container.find(".player56s-album-img").html('<span><img src="' + getTrackAlbumImg(track.filename) + '"></img></span>');
 
-                // checkAndRunTicker(this);
-
-                if (status == 0) {
-                    $("#rs-item-" + track.postid + "").addClass('playing');
-                }
-                if (status == 1) {
-                    this.waitForLoad = false;
-                    this.pseudoPlay();
-                    this.play();
-                }
+                checkAndRunTicker(this);
             }
         }
         onPause() {
@@ -1009,11 +1004,9 @@ jQuery( function player56s($) {
                         hidePreloader(self);
                     }
                     if (self.isPlaying) {
+                        self.waitForLoad = true;
                         self.pseudoPlay();
                         self.play();
-                    } else {
-                        self.pseudoPause();
-                        self.pause();
                     }
                 }
             });
@@ -1030,7 +1023,7 @@ jQuery( function player56s($) {
             this.$link.after(this.$container);
             this.$link.data("player56s", this);
             this.$link.detach();
-            // checkAndRunTicker(this);
+            checkAndRunTicker(this);
             return this;
         }
         bindEvents() {
@@ -1052,10 +1045,10 @@ jQuery( function player56s($) {
                     self.pause();
                 });
                 navigator.mediaSession.setActionHandler('previoustrack', function () {
-                    self.switchTrack.call(self, $(this).hasClass('player56s-track-next'));
+                    self.switchTrack(false);
                 });
                 navigator.mediaSession.setActionHandler('nexttrack', function () {
-                    self.switchTrack.call(self);
+                    self.switchTrack(true);
                 });
                 navigator.mediaSession.setActionHandler('seekforward', function () {
                     var timelinedone = $(".player56s-timeline-done").width() / $('.player56s-timeline-done').parent().width() * 100;
@@ -1072,7 +1065,7 @@ jQuery( function player56s($) {
             if ('connection' in navigator) {
                 $("#player56s-connection-type").html(navigator.connection.type);
                 navigator.connection.addEventListener('change', changeHandler);
-                function changeHandler(event) {
+                function changeHandler() {
                     var connection_type = $("#player56s-connection-type");
                     if (connection_type[0].innerText == "wifi" && navigator.connection.type == "cellular") {
                         console.log(self.GetSeek());
