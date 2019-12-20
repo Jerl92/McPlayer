@@ -619,7 +619,7 @@ function no_shuffle($post) {
 		$saved_loop = get_posts( $saved_args );
 
 		if ($saved_loop) {
-			$html[] .= '<ul>';
+			$html[] = '<ul>';
 			foreach ($saved_loop as $post) {
 				$html[] .= '<li>' . $post->ID . '</li>';
 			}

@@ -75,7 +75,9 @@ function artist_get_loop($atts)
 	if (is_user_logged_in()) {
 
 		// Gets every "category" (term) in this taxonomy to get the respective posts
-		$terms = get_terms('artist');
+		$terms = get_terms( array(
+			'taxonomy' => 'artist'
+		) );
 
 		if ($terms) {
 			foreach ($terms as $term) {
@@ -142,7 +144,6 @@ function artist_get_loop($atts)
 
 				wp_reset_postdata();
 			}
-
 			//	return ob_get_clean();
 		}
 	} else {

@@ -772,6 +772,12 @@ jQuery( function player56s($) {
                 
                 var track = this.tracks[this.currentTrack];
 
+                if ('mediaSession' in navigator) {  
+                    updateMediaSession(track.filename);
+                }
+                
+                $("#player56s-currenttrack").html(track.postid);
+                
                 if ('connection' in navigator) {
                     if (navigator.connection.type == 'cellular') {
                         if (fileExists(track.audiofileLink + '.ogg')) {
@@ -803,12 +809,6 @@ jQuery( function player56s($) {
                     this.pseudoPlay();
                     this.play();
                 }
-
-                if ('mediaSession' in navigator) {  
-                    updateMediaSession(track.filename);
-                }
-
-                $("#player56s-currenttrack").html(this.tracks[this.currentTrack].postid);
 
                 this.$container.find(".player56s-title").html('<span>' + getTrackTitle(track.filename) + '</span>');
                 this.$container.find(".player56s-author").html('<span>' + getTrackAuthor(track.filename) + '</span>');
@@ -887,8 +887,8 @@ jQuery( function player56s($) {
             var self = this, $jPlayer = self.$container.find(".player56s-invisible-object");
             this.$jPlayer = $jPlayer.jPlayer({
                 solution: "html",
-                wmode: "window",
-                preload: "metadata",
+                wmode: "gpu",
+                preload: "auto",
                 swfPath: self.options.swfPath + self.options.swfFilename,
                 supplied: self.options.supplied,
                 volume: self.options.volume,
@@ -951,7 +951,7 @@ jQuery( function player56s($) {
                     self.$container.find(".player56s-track-nav").on("click", function (event) {
                         event.stopPropagation();
                         event.preventDefault();
-                        self.switchTrack.call(self, $(this).hasClass('player56s-track-next'));
+                        self.switchTrack($(this).hasClass('player56s-track-next'));
                     });
                     self.$container.find(".player56s-timeline").on("mousedown." + uniqueID, function (event) {
                         if (event.which !== 1) {
@@ -978,16 +978,16 @@ jQuery( function player56s($) {
                     });
                 },
                 pause: function () {
-                    self.onPause.call(self);
+                    self.onPause();
                 },
                 stop: function () {
-                    self.onStop.call(self);
+                    self.onStop();
                 },
                 ended: function () {
-                    self.switchTrack.call(self);
+                    self.switchTrack();
                 },
                 play: function () {
-                    self.onPlay.call(self);
+                    self.onPlay();
                 },
                 progress: function (event) {
                     updateLoadBar(self, event.jPlayer.status);
@@ -1059,7 +1059,7 @@ jQuery( function player56s($) {
                     var timelinedone = $(".player56s-timeline-done").width() / $('.player56s-timeline-done').parent().width() * 100;
                     var timeSeek = parseInt(timelinedone) - 5;
                     willSeekTo(self, timeSeek);
-                });
+                });                  
             } 
             // Get the connection type. 
             if ('connection' in navigator) {
@@ -1105,7 +1105,7 @@ jQuery( function player56s($) {
     }
 
     /* It's time to know if SVG supported */
-    setSVGSupport();
+    // setSVGSupport();
 
 });
 

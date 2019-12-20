@@ -58,25 +58,6 @@ jQuery(window).resize(function () {
         jQuery('#colophon').css('bottom', '0');
         jQuery('#colophon').css('width', '100%');
     }
-    
-    jQuery(function() {
-    
-        var mysticky_sidebar_id = document.querySelector(mystickyside_name.mystickyside_string),
-        mystickyside_content_id = (mystickyside_name.mystickyside_content_string),
-        mystickyside_margin_top = parseInt(mystickyside_name.mystickyside_margin_top_string),
-        mystickyside_margin_bot = parseInt(mystickyside_name.mystickyside_margin_bot_string),
-        mystickyside_update_sidebar_height = Boolean(mystickyside_name.mystickyside_update_sidebar_height_string),
-        mystickyside_min_width = parseInt(mystickyside_name.mystickyside_min_width_string);
-    
-        jQuery(mysticky_sidebar_id).theiaStickySidebar({
-            containerSelector: mystickyside_content_id,
-            additionalMarginTop: mystickyside_margin_top,
-            additionalMarginBottom: mystickyside_margin_bot,
-            updateSidebarHeight: mystickyside_update_sidebar_height,
-            minWidth: mystickyside_min_width
-        });  
-        
-    });
 
 });
 
@@ -149,25 +130,34 @@ function sleep(milliseconds) {
     }
 }
 
+function stickysidebar($) {
+    var sidebar = new StickySidebar('#secondary', {
+        containerSelector: '#content',
+        resizeSensor: true,
+        minWidth: 630,
+        topSpacing: 75,
+        bottomSpacing: 200
+    });
+}
+
 jQuery(document).ready(function($) {
     scroll_to_album($);
     sortable_playlist($);
     footer_stick($);
-    jQuery(function() {
+    stickysidebar($)
+  });
 
-            var mysticky_sidebar_id = document.querySelector(mystickyside_name.mystickyside_string),
-            mystickyside_content_id = (mystickyside_name.mystickyside_content_string),
-            mystickyside_margin_top = parseInt(mystickyside_name.mystickyside_margin_top_string),
-            mystickyside_margin_bot = parseInt(mystickyside_name.mystickyside_margin_bot_string),
-            mystickyside_update_sidebar_height = Boolean(mystickyside_name.mystickyside_update_sidebar_height_string),
-            mystickyside_min_width = parseInt(mystickyside_name.mystickyside_min_width_string);
-        
-            jQuery(mysticky_sidebar_id).theiaStickySidebar({
-                containerSelector: mystickyside_content_id,
-                additionalMarginTop: mystickyside_margin_top,
-                additionalMarginBottom: mystickyside_margin_bot,
-                updateSidebarHeight: mystickyside_update_sidebar_height,
-                minWidth: mystickyside_min_width
-            });  
-    });
+  var doVisualUpdates = true;
+
+  function update() {
+    if (!doVisualUpdates) {
+        console.log("Tab not visible");
+      return;
+    }
+    console.log("Tab visible");
+  }
+
+  document.addEventListener('visibilitychange', function(){
+    doVisualUpdates = !document.hidden;
+    update();
   });

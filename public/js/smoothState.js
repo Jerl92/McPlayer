@@ -24,7 +24,7 @@
 
 				stickIt_($);
 
-				mysticky($);
+				stickysidebar($);
 
 				ajax_playlist_add_sidebar($);
 								

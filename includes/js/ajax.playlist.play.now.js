@@ -23,8 +23,7 @@ function play_now($) {
                 var $this = $(this),
                     object_id = $this.data('object-id');
 
-                $('.add-play-now-button[data-toggle="tooltip"]').tooltip('hide');
-    
+                $('.add-play-now-button[data-toggle="tooltip"]').tooltip("hide");
                 $.ajax({
                     type: 'post',
                     url: play_now_ajax_url.ajax_url,
