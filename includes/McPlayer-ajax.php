@@ -233,9 +233,9 @@ function ajax_add_track_sidebar($post) {
 
 	if ( is_user_logged_in() ) {
 		
-		// $matches = get_user_meta( get_current_user_id(), 'rs_saved_for_later', true );
+		$matches = get_user_meta( get_current_user_id(), 'rs_saved_for_later', true );
 
-		$matches[] = $_POST['object_id'];
+		// $matches[] = $_POST['object_id'];
 
 		//	array_reverse($matches);
 			

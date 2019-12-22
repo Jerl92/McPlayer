@@ -356,10 +356,10 @@ jQuery( function player56s($) {
                         }, this);
                     }
 
-                    if ( audiofileLink_remove_all[0].innerHTML == "1") {
-                        player56sInstance.removeAll();
-                    }
-
+                    player56sInstance.tracks.forEach(function(element, index) {
+                        var postid = element.postid;
+                        $('.rs-save-for-later-button[data-object-id="'+postid+'"]').addClass('saved');
+                    }, this);
 
                     if ( audiofileLink_remove !== null ) {
                         var audiofileLink_remove_id = audiofileLink_remove[0].innerText; 

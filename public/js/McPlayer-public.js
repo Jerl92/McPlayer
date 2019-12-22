@@ -92,6 +92,7 @@ function scroll_to_album($) {
                 }
             }
         });
+
   //  }
 }
 

@@ -22,11 +22,13 @@
 			locationHeader: "X-SmoothState-Location",
 			onAfter: function( $container , $newcontainer ) {
 
+				jQuery(".player56s").player56s($);
+
 				stickIt_($);
 
 				stickysidebar($);
 
-			//	ajax_playlist_add_sidebar($);
+				ajax_playlist_add_sidebar($);
 								
 				play_now($);
 

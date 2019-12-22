@@ -10,10 +10,8 @@ function ajax_playlist_add_sidebar($, object_id)  {
         dataType: 'JSON',
         success: function(data){
 
-           var rsitem = document.getElementById('rs-item-'+object_id);
-
-            if ( ! rsitem ) {
-                $("#rs-saved-for-later").prepend(data);
+            if ( data ) {
+                $("#rs-saved-for-later").html(data);
             }
 
             if($('.play-now-button').length) {
