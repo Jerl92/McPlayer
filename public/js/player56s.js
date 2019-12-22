@@ -333,11 +333,34 @@ jQuery( function player56s($) {
                         console.log( "Add Track: " + getTrackTitle(audiofileLink_add[1].innerText) + " - " + audiofileLink_add[3].innerText );
                     }
 
+                    if (audiofileLink_play_now[0] !== null ) {
+                        player56sInstance.tracks.forEach(function(element, index) {
+                            if (audiofileLink_play_now[0].innerText == element.postid) {
+                                player56sInstance.sleep(50);
+                                if (index == player56sInstance.currentTrack) {
+                                    if (!player56sInstance.isPlaying) {
+                                        player56sInstance.waitForLoad = true;
+                                        player56sInstance.pseudoPlay();
+                                        player56sInstance.play();
+                                    }
+                                    if (player56sInstance.isPlaying) {
+                                        player56sInstance.pseudoPause();
+                                        player56sInstance.pause();
+                                    }  
+                                } else {
+                                    player56sInstance.sleep(100);
+                                    player56sInstance.playNow(index);
+                                    console.log( "Play Track: " + getTrackTitle(element.filename) );
+                                }
+                            }
+                        }, this);
+                    }
+
                     if ( audiofileLink_remove_all[0].innerHTML == "1") {
                         player56sInstance.removeAll();
                     }
 
-                    
+
                     if ( audiofileLink_remove !== null ) {
                         var audiofileLink_remove_id = audiofileLink_remove[0].innerText; 
                         player56sInstance.tracks.forEach(function(element, index) {
@@ -364,28 +387,6 @@ jQuery( function player56s($) {
                                     }                        
                                 }
                                     console.log("Remove Track: " + getTrackTitle(element.filename));
-                            }
-                        }, this);
-                    }
-
-                    if (audiofileLink_play_now[0] !== null ) {
-                        player56sInstance.tracks.forEach(function(element, index) {
-                            if (audiofileLink_play_now[0].innerText == element.postid) {
-                                if (index == player56sInstance.currentTrack) {
-                                    if (player56sInstance.isPlaying) {
-                                        player56sInstance.pseudoPause();
-                                        player56sInstance.pause();
-                                    }
-                                    else {
-                                        player56sInstance.waitForLoad = true;
-                                        player56sInstance.pseudoPlay();
-                                        player56sInstance.play();
-                                    }
-                                } else {
-                                //    player56sInstance.sleep();
-                                    player56sInstance.playNow(index);
-                                    console.log( "Play Track: " + getTrackTitle(element.filename) );
-                                }
                             }
                         }, this);
                     }
@@ -747,10 +748,6 @@ jQuery( function player56s($) {
                 if (this.$container.hasClass("status-playing")) {
                     status = 1;
                 }
-                this.pseudoPause();
-                this.pause();
-                this.stop();
-                this.$jPlayer.jPlayer("clearMedia");
 
                 if (!to_next && (parseInt(timelinedone) > 5)) {
                     this.currentTrack = this.currentTrack;
@@ -777,7 +774,12 @@ jQuery( function player56s($) {
                 }
                 
                 $("#player56s-currenttrack").html(track.postid);
-                
+
+                this.pseudoPause();
+                this.pause();
+                this.stop();
+                this.$jPlayer.jPlayer("clearMedia");
+                this.sleep(250);               
                 if ('connection' in navigator) {
                     if (navigator.connection.type == 'cellular') {
                         if (fileExists(track.audiofileLink + '.ogg')) {

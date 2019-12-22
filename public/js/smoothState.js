@@ -26,9 +26,11 @@
 
 				stickysidebar($);
 
-				ajax_playlist_add_sidebar($);
+			//	ajax_playlist_add_sidebar($);
 								
 				play_now($);
+
+				play_pause($);
 
 //				tooltip($);	
 				

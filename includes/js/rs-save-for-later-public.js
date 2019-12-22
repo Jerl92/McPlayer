@@ -44,30 +44,22 @@ function rs_save_for_later($) {
                         Cookies.set('rs_save_for_later', data.cookie, { expires: 365 });
 					}
 					if(data.update == true) {
-						if($this.hasClass('saved-in-list')) {
-							var $parent = $this.parent().parent().parent();
-							var $parent_deeper = $this.parent().parent().parent().parent();
-							$parent.delay(200).fadeOut(300).remove();
+						if($this.hasClass('saved')) {
 							ajax_playlist_remove_sidebar($, object_id);
-							ajax_playlist_remove_sidebar_btn($, object_id);
-						} else {
+							ajax_playlist_remove_track($, object_id);
 							$this.removeClass('saved');
 							$this.attr('data-title', rs_save_for_later_ajax.save_txt);
 							$this.attr('data-original-title', rs_save_for_later_ajax.save_txt);
-							ajax_playlist_remove_sidebar($, object_id);
-							ajax_playlist_remove_page_btn($, object_id);
-						}
-						ajax_playlist_remove_track($, object_id);
-						$this.parent().find('.rs-see-saved').remove();
-						$('.rs-saved-trigger span').text(data.count);
-						$('.rs-saved-trigger').addClass('empty');		
+							$this.parent().find('.rs-see-saved').remove();
+							$('.rs-saved-trigger span').text(data.count);
+							$('.rs-saved-trigger').addClass('empty');	
+						}	
 					} else {	
 						ajax_playlist($, object_id);
 						ajax_playlist_add_sidebar($, object_id);
 						$this.addClass('saved');
 						$this.attr('data-title', rs_save_for_later_ajax.unsave_txt);
 						$this.attr('data-original-title', rs_save_for_later_ajax.unsave_txt);
-						$('.rs-saved-trigger span').text(data.count);
 						$('.rs-saved-trigger').removeClass('empty');													
 					}
 					anchor.removeData('disabled');

@@ -14,7 +14,7 @@ function ajax_playlist($, object_id)  {
 
                     $(".player56s").player56s($);
                     
-                    $("#player56s-addtrack").html(null);                         
+                    $("#player56s-addtrack").html(null);
                 },
                 error: function(errorThrown){
                     //error stuff here.text
