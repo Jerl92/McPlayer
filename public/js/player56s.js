@@ -749,6 +749,10 @@ jQuery( function player56s($) {
                     status = 1;
                 }
 
+                this.pseudoPause();
+                this.pause();
+                this.stop();
+
                 if (!to_next && (parseInt(timelinedone) > 5)) {
                     this.currentTrack = this.currentTrack;
                 } else {
@@ -775,11 +779,12 @@ jQuery( function player56s($) {
                 
                 $("#player56s-currenttrack").html(track.postid);
 
-                this.pseudoPause();
-                this.pause();
-                this.stop();
-                this.$jPlayer.jPlayer("clearMedia");
-                this.sleep(250);               
+                this.$container.find(".player56s-title").html('<span>' + getTrackTitle(track.filename) + '</span>');
+                this.$container.find(".player56s-author").html('<span>' + getTrackAuthor(track.filename) + '</span>');
+                this.$container.find(".player56s-album").html('<span>' + getTrackAlbum(track.filename) + '</span>');
+                this.$container.find(".player56s-album-img").html('<span><img src="' + getTrackAlbumImg(track.filename) + '"></img></span>');
+
+                this.$jPlayer.jPlayer("clearMedia");            
                 if ('connection' in navigator) {
                     if (navigator.connection.type == 'cellular') {
                         if (fileExists(track.audiofileLink + '.ogg')) {
@@ -811,11 +816,6 @@ jQuery( function player56s($) {
                     this.pseudoPlay();
                     this.play();
                 }
-
-                this.$container.find(".player56s-title").html('<span>' + getTrackTitle(track.filename) + '</span>');
-                this.$container.find(".player56s-author").html('<span>' + getTrackAuthor(track.filename) + '</span>');
-                this.$container.find(".player56s-album").html('<span>' + getTrackAlbum(track.filename) + '</span>');
-                this.$container.find(".player56s-album-img").html('<span><img src="' + getTrackAlbumImg(track.filename) + '"></img></span>');
 
                 checkAndRunTicker(this);
             }

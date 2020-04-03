@@ -136,8 +136,8 @@ function stickysidebar($) {
         containerSelector: '#content',
         resizeSensor: true,
         minWidth: 630,
-        topSpacing: 75,
-        bottomSpacing: 200
+        topSpacing: jQuery('#masthead').height(),
+        bottomSpacing: jQuery('#wrap-player').height() + jQuery('#colophon').height() * 1.075
     });
 }
 
