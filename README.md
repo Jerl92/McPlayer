@@ -1,15 +1,6 @@
-# McPlayer-Core</br>
+# McPlayer</br>
 
-Tags: Music Player, Full Width, Playlist,</br>
-Requires at least: 4.9</br>
-Tested up to: 4.9.1</br>
-Stable tag: 4.9</br>
-License: GPLv2 or later</br>
-License URI: http://www.gnu.org/licenses/gpl-2.0.html</br>
-
-## A Full-width Audio Player With Playlist, Plugin for WordPress.</br>
-
-<img style="max-width: 100%;" src="https://i.imgur.com/DT9laf2.jpg" alt="MCPlayer" data-canonical-src="https://i.imgur.com/DT9laf2.jpg" />
+<img style="max-width: 100%;" src="https://i.ibb.co/7Ygsf5K/maplyer456.jpg" alt="MCPlayer" />
 
 McPlayer is a full-width HTML5/JS/AJAX audio Player with Playlist, Plugin for WordPress.</br>
 
@@ -53,6 +44,20 @@ This section describes how to install the plugin and get it working.
 4. Set shortcode in page ['artist_get_shortcode'] [pre_order_products per_page="50" columns="5" order="'rand" orderby="rand"]
 5. Don't froget to add the player and playlist widget with the child theme.
 
+## Screenshot
+
+<img style="max-width: 100%;" src="https://i.ibb.co/LvxW3Z5/mcplayer1.jpg" />
+
+<img style="max-width: 100%;" src="https://i.ibb.co/tPNyMcN/mcplayer0.jpg" />
+
+<img style="max-width: 100%;" src="https://i.ibb.co/YXZ5cvB/mcplayer2.jpg" />
+
+<img style="max-width: 100%;" src="https://i.ibb.co/9G1DDFm/mcplayeradmin0.jpg" />
+
+<img style="max-width: 100%;" src="https://i.ibb.co/rdL9T5S/mcplayeradmin1.jpg" />
+
+<img style="max-width: 100%;" src="https://i.ibb.co/LJFCh3h/mcplayeradmin2.jpg" />
+
 ## Frequently Asked Questions
 
 Help! My $(document).ready() plugins work fine when I refresh but break on the second page load.
@@ -78,115 +83,3 @@ https://github.com/miguel-perez/smoothState.js#faq
 ### 0.1 - iPhone/Safari is working with some few issue, no device to test with.
 
 Init version of this plugin, a lots of QA hours have been done with Chrome and Firefox, both work great.
-
-## Admin Columns
-```js
-    ////////////////////////////
-    //
-    //  my_edit_music_columns( $columns )
-    //  Music CPT admin colums
-    //
-    ///////////////////////////
-    function my_edit_music_columns( $columns ) {
-        $columns = array(
-            'cb' => '<input type="checkbox" />',
-            'track' => __( 'Track' ),
-            'title' => __( 'Music' ),
-            'artist' => __( 'Artist' ),
-            'feat' => __( 'Feat.' ),
-            'album' => __( 'Album' ),
-            'year' => __( 'Year' ),
-            'cover' => __( 'Cover' ),
-            'ifaudio' => __( 'File' ),
-            'date' => __( 'Date' )
-        );
-        return $columns;
-    }
-    add_filter( 'manage_edit-music_columns', 'my_edit_music_columns' ) ;
-    ////////////////////////////
-    //
-    //  Style for admin CPT music colums track
-    //  width 50px
-    //
-    ///////////////////////////
-    function my_column_width() {
-        echo '<style type="text/css">';
-        echo '.column-track { display: block; width:50px; }';
-        echo '</style>';
-    }
-    add_action('admin_head', 'my_column_width');
-    ////////////////////////////
-    //
-    //  my_manage_music_columns( $column, $post_id )
-    //  Music CPT admin colums, case
-    //
-    ///////////////////////////
-    function my_manage_music_columns( $column, $post_id ) {
-        global $post;
-        $cover_media_id = get_post_meta( get_the_id(), "meta-box-media-cover_", true );
-        switch( $column ) {
-            case 'track' :
-            // Retrieve post meta
-            $tracknb = get_post_meta( $post->ID, 'meta-box-track-number', true );
-            
-            // Echo output and then include break statement
-            echo '#' . $tracknb;
-            break;
-            /* If displaying the 'duration' column. */
-            case 'artist' :
-                /* Get the genres for the post. */
-                $terms = get_the_terms( $post_id, 'artist' );
-                /* If terms were found. */
-                if ( !empty( $terms ) ) {
-                    $out = array();
-                    /* Loop through each term, linking to the 'edit posts' page for the specific term. */
-                    foreach ( $terms as $term ) {
-                        $out[] = sprintf( '<a href="%s">%s</a>',
-                            esc_url( add_query_arg( array( 'post_type' => $post->post_type, 'artist' => $term->slug ), 'edit.php' ) ),
-                            esc_html( sanitize_term_field( 'name', $term->name, $term->term_id, 'artist', 'display' ) )
-                        );
-                    }
-                    /* Join the terms, separating them with a comma. */
-                    echo join( ', ', $out );
-                }
-                /* If no terms were found, output a default message. */
-                else {
-                    _e( 'No artists' );
-                }
-            break;
-            case 'feat' :
-                // Retrieve post meta
-                $feat_meta = get_post_meta( $post->ID, 'meta-box-artist-feat', true );
-                
-                // Echo output and then include break statement
-                echo $feat_meta;
-            break;
-            case 'album' :
-                echo get_the_title( $cover_media_id );
-            break;
-            case 'year' :
-                echo get_post_meta( $cover_media_id, 'meta-box-year', true );
-            break;
-            case 'cover' :
-                echo wp_get_attachment_image( $cover_media_id, 'thumbnail', false, array('style' => 'max-width:450px;height:auto;') );
-            break;
-            case 'ifaudio' :
-                // echo wp_get_attachment_image( $cover_media_id, 'thumbnail', false, array('style' => 'max-width:450px;height:auto;') );
-                $get_music_link_id = get_post_meta( $post->ID, 'music_link_', true );
-                if ($get_music_link_id != '' && $get_music_link_id != '0') {
-                    echo '✔️';
-                    echo '</br>';
-                    echo $get_music_link_id;
-                    echo '</br>';
-                    echo get_the_title( $get_music_link_id );
-                } else {
-                    echo '❌️️';
-                }
-            break;
-            /* Just break out of the switch statement for everything else. */
-            default :
-                break;
-        }
-    }
-    add_action( 'manage_music_posts_custom_column', 'my_manage_music_columns', 10, 2 );
-   ```
