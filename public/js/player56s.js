@@ -499,6 +499,7 @@ jQuery( function player56s($) {
             enableRemoveControls: true
         },
         smoothPlayBar: true,
+        keyEnabled: true,
         skin: ""
     };
 
@@ -889,8 +890,10 @@ jQuery( function player56s($) {
             var self = this, $jPlayer = self.$container.find(".player56s-invisible-object");
             this.$jPlayer = $jPlayer.jPlayer({
                 solution: "html",
-                wmode: "gpu",
-                preload: "auto",
+                wmode: "window",
+                preload: "metadata",
+                smoothPlayBar: true,
+                keyEnabled: true,
                 swfPath: self.options.swfPath + self.options.swfFilename,
                 supplied: self.options.supplied,
                 volume: self.options.volume,
