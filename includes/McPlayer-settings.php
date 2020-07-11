@@ -130,7 +130,12 @@ class MusicSettingsPage
             print "SOX is install";
         } else {
             print "SOX is not install";
-            print "apt-get install sox";
+            print '<br />';
+            print "sudo apt-get install sox";
+            print '<br />';
+            print 'and';
+            print '<br />';
+            print 'sudo apt-get install libsox-fmt-mp3';
         }
     }
 

@@ -91,7 +91,9 @@
 		
 		if ($rate_value == null) {
 			$channel_value = 3200;
-		} 
+		} else {
+			$channel_value = $rate_value;
+		}
 
 		if ($channel_value == 1) {
 			$channel_value = 1;
