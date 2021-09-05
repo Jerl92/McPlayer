@@ -86,6 +86,11 @@ function wp_playlist_ajax_scripts() {
 		wp_register_script( 'wp-playlist-ajax-shuffle-scripts', $url . "js/ajax.playlist.shuffle.js", array( 'jquery' ), '1.0.0', true );
 		wp_localize_script( 'wp-playlist-ajax-shuffle-scripts', 'shuffle_ajax_url', admin_url( 'admin-ajax.php' ) );
 		wp_enqueue_script( 'wp-playlist-ajax-shuffle-scripts' );
+
+		/* AJAX playlist */
+		wp_register_script( 'wp-playlist-ajax-save-order-scripts', $url . "js/ajax.playlist.order.js", array( 'jquery' ), '1.0.0', true );
+		wp_localize_script( 'wp-playlist-ajax-save-order-scripts', 'save_order_ajax_url', admin_url( 'admin-ajax.php' ) );
+		wp_enqueue_script( 'wp-playlist-ajax-save-order-scripts' );
 	}
 
 }
@@ -328,6 +333,7 @@ function save_unsave_for_later() {
 
 	// Object ID
 	$object_id = isset( $_REQUEST['object_id'] ) ? intval( $_REQUEST['object_id'] ) : 0;
+	$neworder = isset( $_REQUEST['neworder'] ) ? intval( $_REQUEST['neworder'] ) : 0;
 
 	// Check cookie if object is saved
 	$saved = false;
@@ -360,6 +366,13 @@ function save_unsave_for_later() {
 		'message' => $no_content,
 		'count'   => esc_attr( $count )
 	);
+
+	if ($neworder) {
+		delete_user_meta( get_current_user_id(), 'rs_saved_for_later' );
+		add_user_meta( get_current_user_id(), 'rs_saved_for_later', $neworder );
+		$matches_ = get_user_meta( get_current_user_id(), 'rs_saved_for_later', true );
+		$return .= print_r($neworder);
+	}
 
 	return wp_send_json( $return );
 
@@ -635,5 +648,23 @@ function no_shuffle($post) {
 		return wp_send_json ($arr);
 	} 
 }
+
+/* AJAX action callback */
+add_action( 'wp_ajax_new_order', 'ajax_new_order' );
+add_action( 'wp_ajax_nopriv_new_order', 'ajax_new_order' );
+
+function ajax_new_order($post) {
+	$posts  = array();
+	if ( is_user_logged_in() ) {
+		$i = 0;
+		$posts = $_POST['object_id'];
+		foreach ($posts as $post) {
+			$postid[$i] = $post['postid'];
+			$i++;
+		}
+		update_user_meta( get_current_user_id(), 'rs_saved_for_later', $postid );
+		return wp_send_json ( $postid );
+	} 
+}	
 
 ?>

@@ -98,28 +98,41 @@ function scroll_to_album($) {
 
 function sortable_playlist($) {
 
-    $(function() {
-        $( "#rs-saved-for-later" ).sortable({    
-            start: function(e, ui) {
-                // creates a temporary attribute on the element with the old index
-                $(this).attr('data-previndex', ui.item.index());
-                ui.item.index();
-            },
-            update: function(e, ui) {
-                // gets the new and old index then removes the temporary attribute
-                var newIndex = ui.item.index();
-                var oldIndex = $(this).attr('data-previndex');
-                $("#player56s-sortable").html('<ul><li>' + oldIndex + '</li><li>' + newIndex + '</li></ul>');
+    $( "#rs-saved-for-later" ).sortable({    
+        start: function(e, ui) {
+            var i = 0;
+            const playlist_array = [];
+            $(".rs-item-saved-for-later").each(function () {
+                playlist_array[i] = $(this);
+                i++;
+            });
+            playlist_array.reverse();
+            var array = playlist_array[ui.item.index()];
+            $(this).attr('data-previndex', parseInt(array.index()-1));
+        },
+        update: function(e, ui) {
+            var i = 0;
+            const playlist_array = [];
+            $(".rs-item-saved-for-later").each(function () {
+                playlist_array[i] = $(this);
+                i++;
+            });
+            playlist_array.reverse();
+            var array = playlist_array[ui.item.index()];
+            var newIndex = parseInt(array.index());
+            var oldIndex = $(this).attr('data-previndex');
+            $("#player56s-sortable").html('<ul><li>' + oldIndex + '</li><li>' + newIndex + '</li></ul>');
 
-                $(".player56s").player56s($);
-                
-                $("#player56s-sortable").html(null);      
+            $(".player56s").player56s($);
+            
+            $("#player56s-sortable").html(null);      
 
-                $(this).removeAttr('data-previndex');
-            }
-        });
-        $( "#rs-saved-for-later" ).disableSelection();
-    }); 
+            $(this).removeAttr('data-previndex');
+
+            sortable_playlist($);
+        }
+    });
+    $("#rs-saved-for-later").disableSelection();
 }
 
 function sleep(milliseconds) {

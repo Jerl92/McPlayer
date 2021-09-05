@@ -264,6 +264,17 @@ function fileExists(url) {
     }
 }
 
+function array_move(arr, old_index, new_index) {
+    if (new_index >= arr.length) {
+        var k = new_index - arr.length + 1;
+        while (k--) {
+            arr.push(undefined);
+        }
+    }
+    arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
+    return arr; // for testing
+};
+
 jQuery( function player56s($) { 
     
     $.fn.player56s = function(options) {
@@ -420,48 +431,32 @@ jQuery( function player56s($) {
                     }
 
                     if (currenttrack_index[0] !== undefined ) {
-
-                       player56sInstance.tracks.reverse();
-
-                        console.log( currenttrack_index[0].innerText );
-                        
-                        console.log( currenttrack_index[1].innerText );
-
-                        if ( parseInt(currenttrack_index[0].innerText) <= parseInt(currenttrack_index[1].innerText) ) {
-                            
-                            player56sInstance.tracks.forEach(function(element, index) {
-                                if ( player56sInstance.tracks[currenttrack_index[0].innerText].postid == element.postid )  {
-                                    player56sInstance.currentTrack = parseInt(currenttrack_index[1].innerText)+1;
-                                } 
-                            }, this);
-
-                            
-                        var temp_track = player56sInstance.tracks[currenttrack_index[0].innerText];
-                        
-                                                player56sInstance.tracks.splice(currenttrack_index[0].innerText, 1);
-                        
-                                                player56sInstance.tracks.splice(currenttrack_index[1].innerText, 0, temp_track );
-
-                        } else {
-
-                            player56sInstance.tracks.forEach(function(element, index) {
-                                if ( player56sInstance.tracks[currenttrack_index[0].innerText].postid == element.postid )  {
-                                    player56sInstance.currentTrack = parseInt(currenttrack_index[1].innerText)+1;
-                                } 
-                            }, this);
-                            
-                        var temp_track = player56sInstance.tracks[currenttrack_index[0].innerText];
-                        
-                                                player56sInstance.tracks.splice(currenttrack_index[0].innerText, 1);
-                        
-                                                player56sInstance.tracks.splice(currenttrack_index[1].innerText, 0, temp_track );
-
-                        } 
-
+                        console.log(player56sInstance.currentTrack);
+                        console.log(currenttrack_index[0].innerText);
+                        if (player56sInstance.currentTrack == parseInt(currenttrack_index[0].innerText)) {
+                            player56sInstance.currentTrack = parseInt(currenttrack_index[1].innerText);
+                        }
+                        array_move(player56sInstance.tracks, currenttrack_index[0].innerText, currenttrack_index[1].innerText);
                         player56sInstance.tracks.reverse();
-                    } 
+                        $.ajax({
+                            type: 'post',
+                            url: save_order_ajax_url,
+                            data: {
+                            //	'nonce': nonce,
+                                'object_id': player56sInstance.tracks,
+                                'action': 'new_order'
+                            },
+                            success: function(data) {
+                                console.log(data);
+                            },
+                            error: function(error) {
+                                console.log(error);
+                            }
+                        });
+                        player56sInstance.tracks.reverse();
+                    }
 
-                    console.log(player56sInstance); 
+                console.log(player56sInstance); 
 
                 } else {
                     /* Create new instance */

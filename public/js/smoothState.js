@@ -44,7 +44,7 @@
 				
 				rs_save_for_later_album($); 
 
-//				sortable_playlist($);
+				sortable_playlist($);
 				
 			}
 		};

@@ -54,7 +54,7 @@ function rs_save_for_later($) {
 						$this.addClass('saved');
 						$this.attr('data-title', rs_save_for_later_ajax.unsave_txt);
 						$this.attr('data-original-title', rs_save_for_later_ajax.unsave_txt);
-						$('.rs-saved-trigger').removeClass('empty');													
+						$('.rs-saved-trigger').removeClass('empty');									
 					}
 					anchor.removeData('disabled');
 				},

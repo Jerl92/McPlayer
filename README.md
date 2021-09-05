@@ -80,6 +80,7 @@ https://github.com/miguel-perez/smoothState.js#faq
 
 ## Changelog
 
+### 0.2 - Sortable playlist.
 ### 0.1 - iPhone/Safari is working with some few issue, no device to test with.
 
 Init version of this plugin, a lots of QA hours have been done with Chrome and Firefox, both work great.
