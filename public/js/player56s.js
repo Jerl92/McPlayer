@@ -253,15 +253,10 @@ function shuffle(arra1) {
 }
 
 function fileExists(url) {
-    if(url){
-        var req = new XMLHttpRequest();
-        req.open('GET', url, false);
-        req.send();
-        req.status == 200;
-        return true;
-    } else {
-        return false;
-    }
+    var http = new XMLHttpRequest();
+    http.open('HEAD', url, false);
+    http.send();
+    return http.status;
 }
 
 function array_move(arr, old_index, new_index) {
@@ -677,7 +672,7 @@ jQuery( function player56s($) {
                 $("#player56s-currenttrack").html(track.postid);
                 if ('connection' in navigator) {
                     if (navigator.connection.type == 'cellular') {
-                        if (fileExists(track.audiofileLink + '.ogg')) {
+                        if (fileExists(track.audiofileLink + '.ogg') == 200 || fileExists(track.audiofileLink + '.ogg') == 206) {
                             $("#ogg_player_toggle").css('display', 'block');
                             this.$jPlayer.jPlayer("setMedia", {
                                 oga: track.audiofileLink + '.ogg'
@@ -783,7 +778,7 @@ jQuery( function player56s($) {
                 this.$jPlayer.jPlayer("clearMedia");            
                 if ('connection' in navigator) {
                     if (navigator.connection.type == 'cellular') {
-                        if (fileExists(track.audiofileLink + '.ogg')) {
+                        if (fileExists(track.audiofileLink + '.ogg') == 200 || fileExists(track.audiofileLink + '.ogg') == 206 ) {
                             $("#ogg_player_toggle").css('display', 'block');
                             this.$jPlayer.jPlayer("setMedia", {
                                 oga: track.audiofileLink + '.ogg'
@@ -897,7 +892,7 @@ jQuery( function player56s($) {
                     // check if the android device is on carrier network then use ogg file, otherwise use mp3 file.
                     if ('connection' in navigator) {
                         if (navigator.connection.type == 'cellular') {
-                            if (fileExists(audiofileLink + '.ogg')) {
+                            if (fileExists(track.audiofileLink + '.ogg') == 200 || fileExists(track.audiofileLink + '.ogg') == 206 ) {
                                 $("#ogg_player_toggle").css('display', 'block');
                                 self.$jPlayer.jPlayer("setMedia", {
                                     oga: audiofileLink + '.ogg'
@@ -1069,13 +1064,23 @@ jQuery( function player56s($) {
                     var connection_type = $("#player56s-connection-type");
                     if (connection_type[0].innerText == "wifi" && navigator.connection.type == "cellular") {
                         console.log(self.GetSeek());
-                        self.playNow(-1);
+                        if (self.isPlaying) {
+                            self.playNow(-1);
+                        } else {
+                            self.playNow(-1);
+                            self.$jPlayer.jPlayer("pause");
+                        }
                         console.log('type :' + navigator.connection.type);
                         $("#player56s-connection-type").html(navigator.connection.type);
                     }
                     if (connection_type[0].innerText == "cellular" && navigator.connection.type == "wifi") {
                         console.log(self.GetSeek());
-                        self.playNow(-1);
+                        if (self.isPlaying) {
+                            self.playNow(-1);
+                        } else {
+                            self.playNow(-1);
+                            self.$jPlayer.jPlayer("pause");
+                        }
                         console.log('type :' + navigator.connection.type);
                         $("#player56s-connection-type").html(navigator.connection.type);
                     }
