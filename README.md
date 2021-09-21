@@ -58,26 +58,6 @@ This section describes how to install the plugin and get it working.
 
 <img style="max-width: 100%;" src="https://i.ibb.co/LJFCh3h/mcplayeradmin2.jpg" />
 
-## Frequently Asked Questions
-
-Help! My $(document).ready() plugins work fine when I refresh but break on the second page load.
-
-```js
-function myFonction($) {
-
-    $.fn.ready();
-      'use strict';
-
-      // js Code using $ as usual goes here
-}
-
-jQuery(document).ready(function($) {
-  myFonction($);
-});
-```
-
-https://github.com/miguel-perez/smoothState.js#faq
-
 ## Changelog
 
 ### 0.2 - Sortable playlist.
