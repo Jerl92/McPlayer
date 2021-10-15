@@ -147,9 +147,9 @@ function sleep(milliseconds) {
 function stickysidebar($) {
     var sidebar = new StickySidebar('#secondary', {
         containerSelector: '#content',
-        resizeSensor: true,
+        resizeSensor: false,
         minWidth: 630,
-        topSpacing: jQuery('.original').height(),
+        topSpacing: jQuery('#masthead').height(),
         bottomSpacing: jQuery('#wrap-player').height() + jQuery('#colophon').height()
     });
 }

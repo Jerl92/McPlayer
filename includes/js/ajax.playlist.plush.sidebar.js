@@ -12,6 +12,7 @@ function ajax_playlist_add_sidebar($, object_id)  {
 
             if ( data ) {
                 $("#rs-saved-for-later").html(data);
+                stickysidebar($);
             }
 
             if($('.play-now-button').length) {
