@@ -1105,7 +1105,6 @@ jQuery( function player56s($) {
                     }
                 }
             });
-            return this;
         }
     }
 

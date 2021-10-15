@@ -149,29 +149,34 @@ function stickysidebar($) {
         containerSelector: '#content',
         resizeSensor: true,
         minWidth: 630,
-        topSpacing: jQuery('#masthead').height(),
-        bottomSpacing: jQuery('#wrap-player').height() + jQuery('#colophon').height() * 1.075
+        topSpacing: jQuery('.original').height(),
+        bottomSpacing: jQuery('#wrap-player').height() + jQuery('#colophon').height()
     });
 }
 
+var doVisualUpdates = true;
+
+function update() {
+    if (!doVisualUpdates) {
+        console.log("Tab not visible");
+    }
+    navigator.wakeLock.request('screen')
+    .then((wakeLock) => {
+        console.log(wakeLock);
+        console.log('acquired');
+    })
+}
+
+document.addEventListener('visibilitychange', function(){
+    doVisualUpdates = !document.hidden;
+    update();
+});
+
 jQuery(document).ready(function($) {
+    doVisualUpdates = !document.hidden;
+    update();
     scroll_to_album($);
     sortable_playlist($);
     footer_stick($);
     stickysidebar($)
-  });
-
-  var doVisualUpdates = true;
-
-  function update() {
-    if (!doVisualUpdates) {
-        console.log("Tab not visible");
-      return;
-    }
-    console.log("Tab visible");
-  }
-
-  document.addEventListener('visibilitychange', function(){
-    doVisualUpdates = !document.hidden;
-    update();
   });
