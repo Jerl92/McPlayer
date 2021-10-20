@@ -433,21 +433,24 @@ jQuery( function player56s($) {
                         }
                         array_move(player56sInstance.tracks, currenttrack_index[0].innerText, currenttrack_index[1].innerText);
                         player56sInstance.tracks.reverse();
-                        $.ajax({
-                            type: 'post',
-                            url: save_order_ajax_url,
-                            data: {
-                            //	'nonce': nonce,
-                                'object_id': player56sInstance.tracks,
-                                'action': 'new_order'
-                            },
-                            success: function(data) {
-                                console.log(data);
-                            },
-                            error: function(error) {
-                                console.log(error);
-                            }
-                        });
+
+                        if (playlist_shuffle[0].innerText == "0") {
+                            $.ajax({
+                                type: 'post',
+                                url: save_order_ajax_url,
+                                data: {
+                                //	'nonce': nonce,
+                                    'object_id': player56sInstance.tracks,
+                                    'action': 'new_order'
+                                },
+                                success: function(data) {
+                                    console.log(data);
+                                },
+                                error: function(error) {
+                                    console.log(error);
+                                }
+                            });
+                        }
                         player56sInstance.tracks.reverse();
                     }
 
@@ -892,7 +895,7 @@ jQuery( function player56s($) {
                     // check if the android device is on carrier network then use ogg file, otherwise use mp3 file.
                     if ('connection' in navigator) {
                         if (navigator.connection.type == 'cellular') {
-                            if (fileExists(track.audiofileLink + '.ogg') == 200 || fileExists(track.audiofileLink + '.ogg') == 206 ) {
+                            if (fileExists(audiofileLink + '.ogg') == 200 || fileExists(audiofileLink + '.ogg') == 206 ) {
                                 $("#ogg_player_toggle").css('display', 'block');
                                 self.$jPlayer.jPlayer("setMedia", {
                                     oga: audiofileLink + '.ogg'
@@ -1109,7 +1112,7 @@ jQuery( function player56s($) {
     }
 
     /* It's time to know if SVG supported */
-    // setSVGSupport();
+    setSVGSupport();
 
 });
 

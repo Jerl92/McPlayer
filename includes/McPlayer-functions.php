@@ -75,7 +75,7 @@
 		global $current_user;
 		get_currentuserinfo();
 
-		$sox_file = '/usr/bin/sox';
+		$ffmpeg_file = '/usr/bin/ffmpeg';
 
 		$attachment_post = get_post( $attachment_ID );
 
@@ -90,9 +90,9 @@
 		$codec_value =  $musics_option ['audio_codec']; // Option value
 		
 		if ($rate_value == null) {
-			$channel_value = 3200;
+			$rate_value = '44100';
 		} else {
-			$channel_value = $rate_value;
+			$rate_value = $rate_value;
 		}
 
 		if ($channel_value == 1) {
@@ -104,7 +104,7 @@
 		$norm_ = ' ';
 		if ($codec_value == 1) {
 			$codec_value = '.ogg';
-			$norm_ = ' --norm -C -1 ';
+			$norm_ = ' -c:a libvorbis -qscale:a 5 ';
 		} elseif ( $codec_value == 2 ) {
 			$codec_value = '.wma';
 		} elseif ( $codec_value == 3 ) {
@@ -115,8 +115,8 @@
 
 		if(strpos($type, 'audio') === 0)
 		{
-			if (file_exists($sox_file)) {
-				echo exec('sox ' . get_attached_file($attachment_ID) . ' -r ' . $rate_value . ' -c ' . $channel_value . $norm_ . get_attached_file($attachment_ID) . $codec_value);
+			if (file_exists($ffmpeg_file)) {
+				echo exec('ffmpeg -i ' . get_attached_file($attachment_ID) . $norm_ .' -r ' . $rate_value .' -ac ' . $channel_value .' -b:a 192k '. get_attached_file($attachment_ID) . $codec_value);
 				chmod( get_attached_file($attachment_ID) . $codec_value , 0666 );
 			}
 		}

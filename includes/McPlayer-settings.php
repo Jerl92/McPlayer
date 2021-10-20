@@ -120,22 +120,19 @@ class MusicSettingsPage
      */
     public function print_section_info()
     {
-        $sox_file = '/usr/bin/sox';
+        $sox_file = '/usr/bin/ffmpeg';
 
-        print 'If SOX is istalled on the host, you can change audio encoding settings';
+        print 'If FFMPEG is istalled on the host, you can change audio encoding settings';
 
         echo '<br /><br />';
 
         if (file_exists($sox_file)) {
-            print "SOX is install";
+            print "FFMPEG is install";
         } else {
-            print "SOX is not install";
+            print "FFMPEG is not install";
             print '<br />';
-            print "sudo apt-get install sox";
+            print "sudo apt-get install ffmpeg";
             print '<br />';
-            print 'and';
-            print '<br />';
-            print 'sudo apt-get install libsox-fmt-mp3';
         }
     }
 

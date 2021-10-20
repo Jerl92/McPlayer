@@ -71,7 +71,7 @@ class Meta_Box_audio_Upload {
         echo '<ul><li style="float: right;">';
         echo '<label for="meta-box-track-number">Track length</label>';
         echo '<br />';
-        echo "<input type='text' readonly='readonly' id='track-length-value' class='text' name='meta-box-media-track-length'  value='$get_track_length' />";
+        echo "<input type='text' readonly='readonly' id='track-length-value' class='text' name='meta-box-media-track-length'  value='" . gmdate("i:s", $metadata['length']) . "' />";
 
         // track_number
         $track_number = get_post_meta(get_the_id(), "meta-box-track-number", true ); 

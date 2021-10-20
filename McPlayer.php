@@ -13,10 +13,10 @@
  * @package           McPlayer
  *
  * @wordpress-plugin
- * Plugin Name:       McPlayer-Core
+ * Plugin Name:       McPlayer
  * Plugin URI:        https://mcplayer.jerl92.tk
  * Description:       MCPlayer, A full-width audio player with playlist build with HTML5/JS/AJAX, Plugin for Wordpress.
- * Version:           0.1
+ * Version:           0.3
  * Author:            Jerl92
  * Author URI:        https://jerl92.tk
  * License:           GPL-2.0+
