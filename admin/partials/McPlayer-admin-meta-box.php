@@ -141,6 +141,7 @@
             'year' => __( 'Year' ),
             'cover' => __( 'Cover' ),
             'ifaudio' => __( 'File' ),
+            'time' => __( 'Time' ),
             'date' => __( 'Date' )
         );
 
@@ -234,7 +235,7 @@
             break;
 
             case 'cover' :
-                echo wp_get_attachment_image( $cover_media_id, 'thumbnail', false, array('style' => 'max-width:450px;height:auto;') );
+                echo wp_get_attachment_image( $cover_media_id, 'thumbnail', false, array('style' => 'max-width:100%;height:auto;') );
             break;
 
             case 'ifaudio' :
@@ -249,6 +250,10 @@
                 } else {
                     echo '❌️️';
                 }
+            break;
+
+            case 'time' :
+                echo get_post_meta( $post->ID, 'meta-box-track-length', true );
             break;
 
             /* Just break out of the switch statement for everything else. */

@@ -16,13 +16,12 @@
 		var settings = { 
 			anchors: "a",
 			blacklist: ".no-smoothState",
-			cache: true,
-			prefetchOn: 'aim',
+			cache: false,
+			prefetch: true,
+			prefetchOn: "aim",
 			scroll: true,
 			locationHeader: "X-SmoothState-Location",
 			onAfter: function( $container , $newcontainer ) {
-
-				jQuery(".player56s").player56s($);
 
 				stickIt_($);
 

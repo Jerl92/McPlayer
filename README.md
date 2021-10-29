@@ -75,6 +75,7 @@ Your can have FFMPEG installed on it, to get compresed track over cellulair netw
 <img style="max-width: 100%;" src="https://i.ibb.co/9G1DDFm/mcplayeradmin0.jpg" />
 <img style="max-width: 100%;" src="https://i.ibb.co/rdL9T5S/mcplayeradmin1.jpg" />
 <img style="max-width: 100%;" src="https://i.ibb.co/LJFCh3h/mcplayeradmin2.jpg" />
+<img style="max-width: 100%;" src="https://i.ibb.co/NYH1PpD/bulk-add-album.png" />
 
 ## Changelog
 

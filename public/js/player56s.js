@@ -111,9 +111,6 @@ var updateLoadBar = function(instance, status) {
 };
 
 var updatePlayBar = function(instance, percents) {
-    if (instance.seekTime && !instance.isSeeking) {
-        return instance;
-    }
 
     // instance.$container.find(".player56s-play-lift").css("left", percents  + "%");
     instance.$container.find(".player56s-timeline-done").css("width", percents + "%");
@@ -122,21 +119,8 @@ var updatePlayBar = function(instance, percents) {
 };
 
 var updateTimeDisplay = function(instance, seconds) {
-    if (instance.$container.find(".player56s-time").length < 1) {
-        return instance;
-    }
-
-    if (instance.totalTime <= 0 && !instance.options.length) {
-        return instance;
-    }
-
-    var totalSeconds = instance.totalTime || makeSeconds(instance.options.length);
-
     // we haven't total time info
-
-    if ((instance.isPlaying || instance.waitForLoad) && (totalSeconds || instance.seekTime)) {
-        instance.$container.find(".player56s-time").html(formatTime(totalSeconds - (instance.seekTime ? instance.seekTime : seconds)));
-    }
+    instance.$container.find(".player56s-time-done").html(formatTime(seconds));
 
     return instance;
 };
@@ -153,10 +137,7 @@ var willSeekTo = function(instance, seekPercent) {
     updatePlayBar(instance, percent);
     showPreloader(instance);
 
-    instance.waitForLoad = true;
-
     instance.$jPlayer.jPlayer("playHead", percent);
-    instance.pseudoPlay();
 
     if (instance.fullTimeDisplayed) {
         instance.seekTime = (instance.totalTime / 100) * percent;
@@ -165,7 +146,8 @@ var willSeekTo = function(instance, seekPercent) {
         instance.seekTime = (makeSeconds(instance.options.length) / 100) * percent;
         updateTimeDisplay(instance, instance.seekTime);
     } else {
-        instance.seekTime = 0.01;
+        instance.seekTime = (makeSeconds(instance.options.length) / 100) * percent;
+        updateTimeDisplay(instance, instance.seekTime);
     }
 
     return instance;
@@ -309,43 +291,43 @@ jQuery( function player56s($) {
 
             if (goAndCreate) {
                 if (player56sInstance) {
-
                     if (audiofileLink_add[0] !== undefined ) {
-                        if ( player56sInstance.tracks[0].postid == 0 ) {   
-                            player56sInstance.tracks = [];
+                        var allready = 0;
+                        player56sInstance.tracks.forEach(function(element, index) {
+                            if (audiofileLink_add[2].innerText == element.postid) {
+                                allready = 1;
+                            }
+                        }, this);
+                        if ( allready == 0 ) {
+                            if (player56sInstance.tracks.length === 1){
+                                if (player56sInstance.tracks[0].postid === '0') {
+                                    player56sInstance.tracks = [];
+                                }
+                            }
                             player56sInstance.addTrack(audiofileLink_add[0].innerText, audiofileLink_add[1].innerText,  $.extend({}, audiofileLink_add[3].innerText), audiofileLink_add[2].innerText);
-                            audiofileLink_currenttrack.html(audiofileLink_add[2].innerText);
-                            player56sInstance.playNow(0);
-                        } else { 
-                            var allready = 0;
-                            player56sInstance.tracks.forEach(function(element, index) {
-                                if (audiofileLink_add[2].innerText == element.postid) {
-                                    allready = 1;
-                                }
-                            }, this);
-                            if ( allready == 0 ) { 
-                                player56sInstance.addTrack(audiofileLink_add[0].innerText, audiofileLink_add[1].innerText,  $.extend({}, audiofileLink_add[3].innerText), audiofileLink_add[2].innerText);
-                                if (playlist_shuffle[0].innerText == "1") {
-                                    var currentTrack = player56sInstance.tracks[player56sInstance.currentTrack];
-                                    shuffle(player56sInstance.tracks);
-                                    player56sInstance.tracks.forEach(function(element, index) {
-                                        if (element == currentTrack) {
-                                            player56sInstance.currentTrack = index;
-                                        } 
-                                    });                        
-                                }
+                            if (player56sInstance.tracks.length === 1){
+                                player56sInstance.$container.addClass("status-onpause");
+                                player56sInstance.switchTrack(true);
+                            }
+                            if (playlist_shuffle[0].innerText == "1") {
+                                var currentTrack = player56sInstance.tracks[player56sInstance.currentTrack];
+                                shuffle(player56sInstance.tracks);
+                                player56sInstance.tracks.forEach(function(element, index) {
+                                    if (element == currentTrack) {
+                                        player56sInstance.currentTrack = index;
+                                    } 
+                                });                        
                             }
                         }
                         console.log( "Add Track: " + getTrackTitle(audiofileLink_add[1].innerText) + " - " + audiofileLink_add[3].innerText );
                     }
-
+            
                     if (audiofileLink_play_now[0] !== null ) {
                         player56sInstance.tracks.forEach(function(element, index) {
                             if (audiofileLink_play_now[0].innerText == element.postid) {
                                 player56sInstance.sleep(50);
                                 if (index == player56sInstance.currentTrack) {
                                     if (!player56sInstance.isPlaying) {
-                                        player56sInstance.waitForLoad = true;
                                         player56sInstance.pseudoPlay();
                                         player56sInstance.play();
                                     }
@@ -356,47 +338,50 @@ jQuery( function player56s($) {
                                 } else {
                                     player56sInstance.sleep(100);
                                     player56sInstance.playNow(index);
+                                    player56sInstance.pseudoPlay();
+                                    player56sInstance.play();
                                     console.log( "Play Track: " + getTrackTitle(element.filename) );
                                 }
                             }
                         }, this);
                     }
-
-                    player56sInstance.tracks.forEach(function(element, index) {
-                        var postid = element.postid;
-                        $('.rs-save-for-later-button[data-object-id="'+postid+'"]').addClass('saved');
-                    }, this);
-
+            
                     if ( audiofileLink_remove !== null ) {
                         var audiofileLink_remove_id = audiofileLink_remove[0].innerText; 
                         player56sInstance.tracks.forEach(function(element, index) {
                             if (element.postid == audiofileLink_remove_id) {
-                                if (element.postid !== audiofileLink_currenttrack[0].innerText && player56sInstance.currentTrack !== index) {
-                                    if (player56sInstance.currentTrack > index) {
-                                        player56sInstance.currentTrack = player56sInstance.currentTrack-1;
-                                    }
-                                    player56sInstance.tracks.splice(index, 1);                
-                                } else {
-                                    if (player56sInstance.tracks.length === 1) {
-                                        player56sInstance.removeAll();
-                                    } else {
-                                        if ( player56sInstance.currentTrack === (player56sInstance.tracks.length - 1) ) {
-                                            player56sInstance.$container.find(".player56s-timeline-done").css("width", "0%");
-                                            player56sInstance.switchTrack(false);
-                                            player56sInstance.tracks.splice(index, 1);     
-                                    //        player56sInstance.$container.find(".player56s-timeline-done").css("width", "auto");                                           
+                                if (player56sInstance.tracks.length > 1) {
+                                    if (player56sInstance.currentTrack === index) {
+                                        if (player56sInstance.currentTrack === 0) {
+                                            player56sInstance.switchTrack(true); 
+                                            player56sInstance.tracks.splice(index, 1);
+                                            player56sInstance.switchTrack(false); 
+                                        } else if (player56sInstance.currentTrack === (player56sInstance.tracks.length - 1)) {
+                                            player56sInstance.switchTrack(true);   
+                                            player56sInstance.tracks.splice(index, 1);       
+                                            player56sInstance.switchTrack(false);                                 
                                         } else {
                                             player56sInstance.switchTrack(true);
                                             player56sInstance.tracks.splice(index, 1);
                                             player56sInstance.switchTrack(false);
                                         }
-                                    }                        
-                                }
-                                    console.log("Remove Track: " + getTrackTitle(element.filename));
+                                    } else if (player56sInstance.currentTrack > index) {
+                                        player56sInstance.tracks.splice(index, 1);
+                                        player56sInstance.currentTrack = player56sInstance.currentTrack - 1;
+                                    } else { 
+                                        player56sInstance.tracks.splice(index, 1);
+                                    }
+                                } else {
+                                    player56sInstance.removeAll();
+                                }                             
                             }
                         }, this);
                     }
-
+            
+                    if ( audiofileLink_remove_all[0].innerText === "1" ) {
+                        player56sInstance.removeAll();
+                    }
+            
                     if (playlist_shuffle[0].innerText == "1") {
                         var currentTrack = player56sInstance.tracks[player56sInstance.currentTrack];
                         shuffle(player56sInstance.tracks);
@@ -424,7 +409,7 @@ jQuery( function player56s($) {
                         });
                         player56sInstance.tracks = tracks;
                     }
-
+            
                     if (currenttrack_index[0] !== undefined ) {
                         console.log(player56sInstance.currentTrack);
                         console.log(currenttrack_index[0].innerText);
@@ -433,7 +418,7 @@ jQuery( function player56s($) {
                         }
                         array_move(player56sInstance.tracks, currenttrack_index[0].innerText, currenttrack_index[1].innerText);
                         player56sInstance.tracks.reverse();
-
+            
                         if (playlist_shuffle[0].innerText == "0") {
                             $.ajax({
                                 type: 'post',
@@ -453,9 +438,9 @@ jQuery( function player56s($) {
                         }
                         player56sInstance.tracks.reverse();
                     }
-
+            
                 console.log(player56sInstance); 
-
+            
                 } else {
                     /* Create new instance */
                     if (skinClassPosition > 0) {
@@ -507,8 +492,8 @@ jQuery( function player56s($) {
             this.totalTime = 0;
             this.fullyLoaded = false;
             this.fullTimeDisplayed = false;
-            this.waitForLoad = true;
             this.seekTime = 0;
+            this.waitForLoad = true;
             this.preloaderTimeout = 0;
             this.isSeeking = false;
             this.tracks = [];
@@ -619,6 +604,7 @@ jQuery( function player56s($) {
             $("#player56s-currenttrack").html(this.tracks[this.currentTrack].postid);
             showPreloader(this, this.seekTime ? false : 500); // 500 is enough to play the loaded fragment, if it's loaded; if isn't — preloader will appear after 500ms
             this.isPlayed = true;
+            this.waitForLoad = true; 
             if (typeof this.$jPlayer !== "undefined" && this.$jPlayer.jPlayer) {
                 if (!this.isPlaying) {
                     this.$jPlayer.jPlayer("play");
@@ -653,8 +639,6 @@ jQuery( function player56s($) {
         }
         playNow(index) {
             if (typeof this.$jPlayer !== "undefined" && this.$jPlayer.jPlayer) {
-                var audiofileLink_add = $("#player56s-seek-percent");
-                var TimeSeek = audiofileLink_add[0].innerText;
                 var status = null;
                 if (this.$container.hasClass("status-onpause")) {
                     status = 0;
@@ -702,6 +686,7 @@ jQuery( function player56s($) {
                 this.$container.find(".player56s-title").html('<span>' + getTrackTitle(track.filename) + '</span>');
                 this.$container.find(".player56s-author").html('<span>' + getTrackAuthor(track.filename) + '</span>');
                 this.$container.find(".player56s-album").html('<span>' + getTrackAlbum(track.filename) + '</span>');
+                this.$container.find(".player56s-time").html(formatTime(track.length));
                 this.$container.find(".player56s-album-img").html('<span><img src="' + getTrackAlbumImg(track.filename) + '"></img></span>');
 
                 if ('mediaSession' in navigator) {  
@@ -710,23 +695,11 @@ jQuery( function player56s($) {
 
                 checkAndRunTicker(this);
 
-                if (index == -1) {
-                    this.waitForLoad = true;
-                    this.pseudoPlay();
-                    this.play(); 
-                    willSeekTo(this, parseInt(TimeSeek));
-                }
-                if (status == 0) {
+                if (status == 1) {
                     $("#rs-item-" + this.tracks[this.currentTrack].postid + "").addClass('playing');
-                    this.pseudoPause();
-                    this.pause();
-                }
-                if (index != -1 || status == 1 ) {
-                    this.waitForLoad = true;
                     this.pseudoPlay();
                     this.play();
                 }
-
             }
         }
         switchTrack(to_next) {
@@ -776,6 +749,7 @@ jQuery( function player56s($) {
                 this.$container.find(".player56s-title").html('<span>' + getTrackTitle(track.filename) + '</span>');
                 this.$container.find(".player56s-author").html('<span>' + getTrackAuthor(track.filename) + '</span>');
                 this.$container.find(".player56s-album").html('<span>' + getTrackAlbum(track.filename) + '</span>');
+                this.$container.find(".player56s-time").html(formatTime(track.length));
                 this.$container.find(".player56s-album-img").html('<span><img src="' + getTrackAlbumImg(track.filename) + '"></img></span>');
 
                 this.$jPlayer.jPlayer("clearMedia");            
@@ -806,7 +780,6 @@ jQuery( function player56s($) {
                 }
 
                 if (status == 1) {
-                    this.waitForLoad = true;
                     this.pseudoPlay();
                     this.play();
                 }
@@ -817,7 +790,6 @@ jQuery( function player56s($) {
         onPause() {
             this.isPlaying = false;
             this.isSeeking = false;
-            this.waitForLoad = false;
             this.$container.removeClass("player56s-status-playing");
         }
         onStop() {
@@ -825,13 +797,11 @@ jQuery( function player56s($) {
             this.isPlaying = false;
             this.seekTime = 0;
             this.isSeeking = false;
-            this.waitForLoad = false;
             this.$container.removeClass("player56s-status-playing");
         }
         onPlay() {
             $(document).trigger("player56s-pause", this);
             this.$container.addClass("player56s-status-playing");
-            this.waitForLoad = true;
             this.isPlaying = true;
             this.isPlayed = true;
         }
@@ -858,7 +828,7 @@ jQuery( function player56s($) {
                     $(document.createElement("div")).addClass("player56s-album-img").html('<span><img src="' + getTrackAlbumImg(filename) + '"></img></span>'),
                     $(document.createElement("div")).addClass("player56s-title").html('<span>' + getTrackTitle(filename) + '</span>'),
                     $(document.createElement("div")).addClass("player56s-author").html('<span>' + getTrackAuthor(filename) + '</span>'),
-                    $(document.createElement("div")).addClass("player56s-album").html('<span>' + getTrackAlbum(filename) + '</span>'),
+                    $(document.createElement("div")).addClass("player56s-bottom").append($(document.createElement("div")).addClass("player56s-time-done").html("0:00"), $(document.createElement("div")).addClass("player56s-album").html('<span>' + getTrackAlbum(filename) + '</span>'), $(document.createElement("div")).addClass("player56s-time").html(self.options.length ? formatTime(makeSeconds(self.options.length)) : "")),
                     $(document.createElement("div")).addClass("player56s-timeline").append($(document.createElement("div")).addClass("player56s-timeline-load"), $(document.createElement("div")).addClass("player56s-timeline-done")),
                     $(document.createElement("div")).addClass("player56s-button"),
                     $(document.createElement("div")).addClass("player56s-volume").append($(document.createElement("div")).addClass("player56s-vol-pin").addClass("max-vol").addClass("active"), $(document.createElement("div")).addClass("player56s-vol-pin").addClass("active"), $(document.createElement("div")).addClass("player56s-vol-pin").addClass("active"), $(document.createElement("div")).addClass("player56s-vol-pin").addClass("active"), $(document.createElement("div")).addClass("player56s-vol-pin").addClass("active"), $(document.createElement("div")).addClass("player56s-vol-pin").addClass("active"), $(document.createElement("div")).addClass("player56s-vol-pin").addClass("active"), $(document.createElement("div")).addClass("player56s-vol-pin").addClass("active").addClass("zero-vol")),
@@ -927,7 +897,6 @@ jQuery( function player56s($) {
                             self.pause.call(self);
                         }
                         else {
-                            self.waitForLoad = true;
                             self.pseudoPlay.call(self);
                             self.play.call(self);
                         }
@@ -987,6 +956,9 @@ jQuery( function player56s($) {
                 play: function () {
                     self.onPlay();
                 },
+                error: function () {
+                    self.switchTrack();
+                },
                 progress: function (event) {
                     updateLoadBar(self, event.jPlayer.status);
                     updateTimeDisplay(self, event.jPlayer.status.currentTime);
@@ -1001,7 +973,7 @@ jQuery( function player56s($) {
                         self.seekTime = 0;
                         hidePreloader(self);
                     }
-                    if (self.isPlaying) {
+                    if (self.$container.hasClass("status-playing")) {
                         self.waitForLoad = true;
                         self.pseudoPlay();
                         self.play();
@@ -1034,7 +1006,6 @@ jQuery( function player56s($) {
             // Android mediasession nodification for extrenal btn while the mobile device screen is off
             if ('mediaSession' in navigator) {
                 navigator.mediaSession.setActionHandler('play', function() {
-                    self.waitForLoad = true;
                     self.pseudoPlay();
                     self.play();
                 });
@@ -1065,8 +1036,10 @@ jQuery( function player56s($) {
                 navigator.connection.addEventListener('change', changeHandler);
                 function changeHandler() {
                     var connection_type = $("#player56s-connection-type");
-                    if (connection_type[0].innerText == "wifi" && navigator.connection.type == "cellular") {
-                        console.log(self.GetSeek());
+                    if ((connection_type[0].innerText == "wifi" && navigator.connection.type == "cellular") || (connection_type[0].innerText == "cellular" && navigator.connection.type == "wifi") ) {
+                        var timelinedone = $(".player56s-timeline-done").width() / $('.player56s-timeline-done').parent().width() * 100;
+                        $("#player56s-seek-percent").html(timelinedone);
+                        self.setVolume(0, 1);
                         if (self.isPlaying) {
                             self.playNow(-1);
                         } else {
@@ -1075,17 +1048,14 @@ jQuery( function player56s($) {
                         }
                         console.log('type :' + navigator.connection.type);
                         $("#player56s-connection-type").html(navigator.connection.type);
-                    }
-                    if (connection_type[0].innerText == "cellular" && navigator.connection.type == "wifi") {
-                        console.log(self.GetSeek());
-                        if (self.isPlaying) {
-                            self.playNow(-1);
-                        } else {
-                            self.playNow(-1);
-                            self.$jPlayer.jPlayer("pause");
-                        }
-                        console.log('type :' + navigator.connection.type);
-                        $("#player56s-connection-type").html(navigator.connection.type);
+                        var seek = setInterval(function(){
+                            var timeSeek = Number($("#player56s-seek-percent").html());
+                            willSeekTo(self, timeSeek);
+                            if(timelinedone >= Number($("#player56s-seek-percent").html())) {
+                                clearInterval(seek);
+                                self.setVolume(1, 1);
+                            }
+                        },1000);
                     }
                 }
             }

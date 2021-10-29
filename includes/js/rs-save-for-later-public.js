@@ -1,12 +1,5 @@
 function rs_save_for_later($) {
-    
-    $.fn.ready();
-	'use strict';
 
-
-   	/**
-	 * Save/Unsave for Later
-	 */
 	if($('.rs-save-for-later-button').length) {
 		$('.rs-save-for-later-button[data-toggle="tooltip"]').tooltip();
 		if($('.rs-see-saved').length) {
@@ -17,6 +10,8 @@ function rs_save_for_later($) {
 		}
 		$('.rs-save-for-later-button').on('click', function(event) {
 			event.preventDefault();
+			event.stopPropagation();
+			event.stopImmediatePropagation();
 
 			var anchor = $(this);
 			if(anchor.data('disabled')) {
@@ -69,7 +64,9 @@ function rs_save_for_later($) {
 	 * Remove All from Saved for Later
 	 */
 	$('a.rs-save-for-later-remove-all').on('click', function(event) {
-		event.preventDefault();
+        event.preventDefault();
+        event.stopPropagation();
+        event.stopImmediatePropagation();
 
 		var $this = $(this);
 		nonce = $this.data('nonce');
@@ -82,9 +79,15 @@ function rs_save_for_later($) {
 				'action': 'save_for_later_remove_all'
 			},
 			success: function(data) {
-				$(".entry-save-for-later a").removeClass("saved");
-				$(".rs-save-for-later-button").removeClass("saved");
-				$(".rs-save-for-later-button-album").removeClass("saved");
+				$( ".entry-save-for-later a" ).each(function() {
+					$(this).removeClass("saved");
+				});		
+				$( ".rs-save-for-later-button" ).each(function() {
+					$(this).removeClass("saved");
+				});
+				$( ".rs-save-for-later-button-album" ).each(function() {
+					$(this).removeClass("saved");
+				});
 
 				ajax_playlist_flush_sidebar($);
 

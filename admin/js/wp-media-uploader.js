@@ -42,6 +42,8 @@ jQuery(document).ready(function() {
 
 				// set input
 				$( '#' + id + '-value' ).val( attachment.id );
+				$( '#cover' ).val( attachment.id );
+
 
 				// set preview
 				var img = '<img src="' + attachment.url + '" style="max-width:100%;" />';
@@ -74,6 +76,7 @@ jQuery(document).ready(function() {
 			// $this.next( 'br' ).next( 'img' ).remove();
 
 			$( '#' + id + '-value' ).val( 0 );
+			$( '#cover' ).val( 0 );
 
 		} );
 

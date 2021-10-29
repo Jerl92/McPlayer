@@ -11,14 +11,14 @@ function ajax_playlist_add_album($, object_id)  {
                         //print stuff heres  
                         var i = 0;
                         data.forEach(function(element, index) {
-                            sleep(25);
-                            if (index == i)  {
+                            sleep(50);
+                            if (index === i)  {
                                 ajax_playlist($, element);
                                 $("#album-class-artist-list-id-"+element+" a").addClass("saved");
                                 $("#album-class-artist-list-id-"+element+" a").attr("data-original-title", "Remove");
                                 [i++];
                             }
-                            sleep(25);
+                            sleep(50);
                         }, this);                 
                     },
                     error: function(errorThrown){

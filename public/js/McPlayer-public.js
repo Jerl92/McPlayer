@@ -7,13 +7,11 @@ var jQuery = jQuery.noConflict();
 
 
 jQuery(document).ready(function() {      
-    jQuery('#btn_player_reload').click(function() {
-        location.reload();
-    });
     jQuery('#btn_player_toggle').click(function() {
         jQuery('#player56s-ui-zone').toggleClass('hide-player');
         jQuery('#page').css('padding-bottom', jQuery('#wrap-player').height() +'px');
         jQuery('#btn_player_toggle').toggleClass('up-arrow');
+        stickysidebar($);
     });
 });
 
@@ -145,9 +143,9 @@ function sleep(milliseconds) {
 }
 
 function stickysidebar($) {
-    var sidebar = new StickySidebar('#secondary', {
+    var stickySidebar = new StickySidebar('#secondary', {
         containerSelector: '#content',
-        resizeSensor: false,
+        resizeSensor: true,
         minWidth: 630,
         topSpacing: jQuery('#masthead').height(),
         bottomSpacing: jQuery('#wrap-player').height() + jQuery('#colophon').height()
