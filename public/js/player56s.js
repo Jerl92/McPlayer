@@ -304,7 +304,8 @@ jQuery( function player56s($) {
                                     player56sInstance.tracks = [];
                                 }
                             }
-                            player56sInstance.addTrack(audiofileLink_add[0].innerText, audiofileLink_add[1].innerText,  $.extend({}, audiofileLink_add[3].innerText), audiofileLink_add[2].innerText);
+                            let timeString = audiofileLink_add[3].innerText;
+                            player56sInstance.addTrack(audiofileLink_add[0].innerText, audiofileLink_add[1].innerText, timeString, audiofileLink_add[2].innerText);
                             if (player56sInstance.tracks.length === 1){
                                 player56sInstance.$container.addClass("status-onpause");
                                 player56sInstance.switchTrack(true);
@@ -686,7 +687,7 @@ jQuery( function player56s($) {
                 this.$container.find(".player56s-title").html('<span>' + getTrackTitle(track.filename) + '</span>');
                 this.$container.find(".player56s-author").html('<span>' + getTrackAuthor(track.filename) + '</span>');
                 this.$container.find(".player56s-album").html('<span>' + getTrackAlbum(track.filename) + '</span>');
-                this.$container.find(".player56s-time").html(formatTime(track.length));
+                this.$container.find(".player56s-time").html(track.length ? formatTime(makeSeconds(track.length)) : "");
                 this.$container.find(".player56s-album-img").html('<span><img src="' + getTrackAlbumImg(track.filename) + '"></img></span>');
 
                 if ('mediaSession' in navigator) {  
@@ -749,7 +750,7 @@ jQuery( function player56s($) {
                 this.$container.find(".player56s-title").html('<span>' + getTrackTitle(track.filename) + '</span>');
                 this.$container.find(".player56s-author").html('<span>' + getTrackAuthor(track.filename) + '</span>');
                 this.$container.find(".player56s-album").html('<span>' + getTrackAlbum(track.filename) + '</span>');
-                this.$container.find(".player56s-time").html(formatTime(track.length));
+                this.$container.find(".player56s-time").html(track.length ? formatTime(makeSeconds(track.length)) : "");
                 this.$container.find(".player56s-album-img").html('<span><img src="' + getTrackAlbumImg(track.filename) + '"></img></span>');
 
                 this.$jPlayer.jPlayer("clearMedia");            
@@ -952,6 +953,8 @@ jQuery( function player56s($) {
                 },
                 ended: function () {
                     self.switchTrack();
+                    self.pseudoPlay();
+                    self.play();
                 },
                 play: function () {
                     self.onPlay();
@@ -974,7 +977,6 @@ jQuery( function player56s($) {
                         hidePreloader(self);
                     }
                     if (self.$container.hasClass("status-playing")) {
-                        self.waitForLoad = true;
                         self.pseudoPlay();
                         self.play();
                     }

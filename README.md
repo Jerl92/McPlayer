@@ -72,6 +72,9 @@ Your can have FFMPEG installed on it, to get compresed track over cellulair netw
 <img style="max-width: 100%;" src="https://i.ibb.co/LvxW3Z5/mcplayer1.jpg" />
 <img style="max-width: 100%;" src="https://i.ibb.co/tPNyMcN/mcplayer0.jpg" />
 <img style="max-width: 100%;" src="https://i.ibb.co/YXZ5cvB/mcplayer2.jpg" />
+<img style="max-width: 100%;" src="https://i.ibb.co/LC6RWrK/screencapture-mcplayer-jerl92-ca-artist-linkin-park-2021-11-05-18-47-27.png" />
+<img style="max-width: 100%;" src="https://i.ibb.co/yFTc7P8/screencapture-mcplayer-jerl92-ca-artists-2021-11-05-18-31-26.png" />
+<img style="max-width: 100%;" src="https://i.ibb.co/sQWdMbS/screencapture-mcplayer-jerl92-ca-2021-11-05-17-06-48.png" />
 <img style="max-width: 100%;" src="https://i.ibb.co/9G1DDFm/mcplayeradmin0.jpg" />
 <img style="max-width: 100%;" src="https://i.ibb.co/rdL9T5S/mcplayeradmin1.jpg" />
 <img style="max-width: 100%;" src="https://i.ibb.co/LJFCh3h/mcplayeradmin2.jpg" />
@@ -79,6 +82,7 @@ Your can have FFMPEG installed on it, to get compresed track over cellulair netw
 
 ## Changelog
 
+0.4 - Remove sticky sidebar, use overflow scroll.</br>
 0.3 - Add wake lock when the tab is active, Use FFMPEG for audio compresion.</br>
 0.2 - Sortable playlist.</br>
 0.1 - Init release.</br>

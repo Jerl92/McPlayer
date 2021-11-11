@@ -154,6 +154,36 @@ ul.rs-saved-for-later {
     border-bottom: 1px solid rgba(90, 84, 84, 0.25);
 }
 
+.letterartist {
+    font-size: 30px;
+    margin: 17.5px;
+}
+
+.searchartist {
+    display: table;
+    width: 100%;
+}
+
+/* width */
+#secondary::-webkit-scrollbar {
+    width: 2.5px;
+}
+  
+/* Track */
+#secondary::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+
+/* Handle */
+#secondary::-webkit-scrollbar-thumb {
+    background: #888; 
+}
+
+/* Handle on hover */
+#secondary::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}
+
 .rs-save-for-later-remove-all {
     margin: auto;
     display: block;

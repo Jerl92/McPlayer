@@ -117,9 +117,9 @@ class Mcplayer_Public {
 
 		//	wp_enqueue_script( 'transition',  plugin_dir_url( __FILE__ ) . 'js/transition.js', array( 'jquery' ), $this->version, false );
 
-		wp_enqueue_script( 'resizesensor',  plugin_dir_url( __FILE__ ) . 'js/resizeSensor.js', array( 'jplayer' ), $this->version, false );
+		// wp_enqueue_script( 'resizesensor',  plugin_dir_url( __FILE__ ) . 'js/resizeSensor.js', array( 'jplayer' ), $this->version, false );
 
-		wp_enqueue_script( 'sticky-sidebar',  plugin_dir_url( __FILE__ ) . 'js/sticky-sidebar.js', array( 'jplayer' ), $this->version, false );
+		// wp_enqueue_script( 'sticky-sidebar',  plugin_dir_url( __FILE__ ) . 'js/sticky-sidebar.js', array( 'jplayer' ), $this->version, false );
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/McPlayer-public.js', array( 'jquery' ), $this->version, false );
 								

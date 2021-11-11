@@ -25,7 +25,7 @@
 
 				stickIt_($);
 
-				stickysidebar($);
+				// stickysidebar($);
 
 				ajax_playlist_add_sidebar($);
 								
@@ -44,6 +44,8 @@
 				rs_save_for_later_album($); 
 
 				sortable_playlist($);
+
+				sidebarheight($);
 				
 			}
 		};

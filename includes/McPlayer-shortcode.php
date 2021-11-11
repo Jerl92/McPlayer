@@ -65,6 +65,20 @@ function woocommerce_get_pre_order_loop($atts)
 }
 add_shortcode('pre_order_products', 'woocommerce_get_pre_order_loop');
 
+add_filter( 'terms_clauses', 'terms_clauses_47840519', 10, 3 );
+function terms_clauses_47840519( $clauses, $taxonomies, $args ){
+    global $wpdb;
+
+    if( !isset( $args['__first_letter'] ) ){
+        return $clauses;
+    }
+
+    $clauses['where'] .= ' AND ' . $wpdb->prepare( "t.name LIKE %s", $wpdb->esc_like( $args['__first_letter'] ) . '%' );
+
+    return $clauses;
+
+}
+
 /***************************************************************************/
 /***************************************************************************/
 /******************** Short code to display artist list ********************/
@@ -73,78 +87,90 @@ function artist_get_loop($atts)
 {
 
 	if (is_user_logged_in()) {
+		
+		$curenturl = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
+		foreach (range('a', 'z') as $alphabet) {
+            echo "<a class='letterartist' href='" . $curenturl . "?char=" . $alphabet . "'>" . strtoupper($alphabet) . "</a>";
+        }
+		foreach (range('0', '9') as $number) {
+            echo "<a class='letterartist' href='" . $curenturl . "?char=" . $number . "'>" . strtoupper($number) . "</a>";
+        }
 
-		// Gets every "category" (term) in this taxonomy to get the respective posts
-		$terms = get_terms( array(
-			'taxonomy' => 'artist'
-		) );
+		if($_GET['char']) {
+			// Gets every "category" (term) in this taxonomy to get the respective posts
+			$terms = get_terms( array(
+				'taxonomy' => 'artist',
+				'__first_letter' => $_GET['char']
+			) );
 
-		if ($terms) {
-			foreach ($terms as $term) {
+			if ($terms) {
+				foreach ($terms as $term) {
 
-				$get_albums_args = array(
-					'post_type' => 'attachment',
-					'posts_per_page' => -1,
-					'post_mime_type' => 'image',
-					'meta_key' => 'meta-box-year',
-					'orderby' => 'meta_value_num',
-					'order' => 'ASC',
-					'tax_query' => array(
-						array(
-							'taxonomy' => 'artist',
-							'field'    => 'name',
-							'terms'    => $term->name
+					$get_albums_args = array(
+						'post_type' => 'attachment',
+						'posts_per_page' => -1,
+						'post_mime_type' => 'image',
+						'meta_key' => 'meta-box-year',
+						'orderby' => 'meta_value_num',
+						'order' => 'ASC',
+						'tax_query' => array(
+							array(
+								'taxonomy' => 'artist',
+								'field'    => 'name',
+								'terms'    => $term->name
+							)
 						)
-					)
-				);
+					);
 
-				$get_albums = get_posts($get_albums_args);
+					$get_albums = get_posts($get_albums_args);
 
-				$get_songs_args = array(
-					'post_type' => 'music',
-					'posts_per_page' => -1,
-					'order' => 'ASC',
-					'tax_query' => array(
-						array(
-							'taxonomy' => 'artist',
-							'field'    => 'name',
-							'terms'    => $term->name
+					$get_songs_args = array(
+						'post_type' => 'music',
+						'posts_per_page' => -1,
+						'order' => 'ASC',
+						'tax_query' => array(
+							array(
+								'taxonomy' => 'artist',
+								'field'    => 'name',
+								'terms'    => $term->name
+							)
 						)
-					)
-				);
+					);
 
-				$get_songs = get_posts($get_songs_args);
+					$get_songs = get_posts($get_songs_args);
 
 
-				if ($get_songs) {
+					if ($get_songs) {
 
-					$i = 0;
-					$get_songs_calc = [];
+						$i = 0;
+						$get_songs_calc = [];
 
-					foreach ($get_songs as $get_songs_time) {
-						$get_songs_calc[$i++] =  seconds_from_time(get_post_meta($get_songs_time->ID, 'meta-box-track-length', true));
+						foreach ($get_songs as $get_songs_time) {
+							$get_songs_calc[$i++] =  seconds_from_time(get_post_meta($get_songs_time->ID, 'meta-box-track-length', true));
+						}
 					}
+
+					echo '<li style="list-style: none; text-align: center; width: 50%; float: left; border-bottom: .25px solid rgba(0,0,0,.75); border-right: .25px solid rgba(0,0,0,.75); padding: 10px 0;"><a href="' . esc_attr(get_term_link($term, $taxonomy)) . '" title="' . sprintf(__("View all posts in %s"), $term->name) . '" ' . '><img style="height: 150px; display: flex; margin-left: auto; margin-right: auto;" src="' . z_taxonomy_image_url($term->term_id) . '"><p style="margin: 0;">' . $term->name . '</p></img></a>';
+					echo '<p style="margin: 0; float: left; padding-left: 2.5%;">';
+					echo count($get_albums);
+					echo ' albums - ';
+					echo count($get_songs);
+					echo ' songs - ';
+					echo time_from_seconds(array_sum($get_songs_calc));
+					echo '</p>';
+					echo '<p style="margin: 0; padding-right: 2.5%; float: right;">';
+
+					echo get_post_meta($get_albums[0]->ID,  "meta-box-year", true);
+					echo ' - ';
+					echo get_post_meta($get_albums[count($get_albums) - 1]->ID,  "meta-box-year", true);
+
+					echo '</p></li>';
+
+					wp_reset_postdata();
 				}
+				//	return ob_get_clean();
 
-				echo '<li style="list-style: none; text-align: center; width: 50%; float: left; border-bottom: .25px solid rgba(0,0,0,.75); border-right: .25px solid rgba(0,0,0,.75); padding: 10px 0;"><a href="' . esc_attr(get_term_link($term, $taxonomy)) . '" title="' . sprintf(__("View all posts in %s"), $term->name) . '" ' . '><img style="height: 150px;" src="' . z_taxonomy_image_url($term->term_id) . '"><p style="margin: 0;">' . $term->name . '</p></img></a>';
-				echo '<p style="margin: 0; float: left; padding-left: 2.5%;">';
-				echo count($get_albums);
-				echo ' albums - ';
-				echo count($get_songs);
-				echo ' songs - ';
-				echo time_from_seconds(array_sum($get_songs_calc));
-				echo '</p>';
-				echo '<p style="margin: 0; padding-right: 2.5%; float: right;">';
-
-				echo get_post_meta($get_albums[0]->ID,  "meta-box-year", true);
-				echo ' - ';
-				echo get_post_meta($get_albums[count($get_albums) - 1]->ID,  "meta-box-year", true);
-
-				echo '</p></li>';
-
-				wp_reset_postdata();
 			}
-			//	return ob_get_clean();
 		}
 	} else {
 		echo '<p id="notlogin" class="nothing-saved">You don’t have access to the artists list, You need to <a href="';

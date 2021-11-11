@@ -142,14 +142,19 @@ function sleep(milliseconds) {
     }
 }
 
-function stickysidebar($) {
-    var stickySidebar = new StickySidebar('#secondary', {
-        containerSelector: '#content',
-        resizeSensor: true,
-        minWidth: 630,
-        topSpacing: jQuery('#masthead').height(),
-        bottomSpacing: jQuery('#wrap-player').height() + jQuery('#colophon').height()
-    });
+function sidebarheight($) {
+    var windowwidth = jQuery(window).width();
+    var windowheight = jQuery(window).height();
+    var wrapplayer = jQuery('#wrap-player').height();
+    var colophon = jQuery('#colophon').height();
+    var masthead = jQuery('#masthead').height();
+    if (windowwidth > 720) {
+        var primaryHeight = jQuery('#primary').height();
+        jQuery('#secondary').css('min-height', windowheight-(160+colophon+100));
+        jQuery('#secondary').css('height', primaryHeight);
+        jQuery('#secondary').css('overflow', 'hidden scroll');
+        jQuery('#secondary').css('display', 'block');
+    }
 }
 
 var doVisualUpdates = true;
@@ -176,5 +181,6 @@ jQuery(document).ready(function($) {
     scroll_to_album($);
     sortable_playlist($);
     footer_stick($);
-    stickysidebar($)
+    //stickysidebar($);
+    sidebarheight($);
   });
