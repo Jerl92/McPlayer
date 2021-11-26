@@ -150,11 +150,46 @@ var willSeekTo = function(instance, seekPercent) {
         updateTimeDisplay(instance, instance.seekTime);
     }
 
+    var timelinedone = instance.$container.find(".player56s-timeline-done").width() / instance.$container.find('.player56s-timeline-done').parent().width() * 100;
+    jQuery("#player56s-seek-percent").html(timelinedone);
+
     return instance;
 };
 
 var checkAndRunTicker = function(instance) {
     var titleCont = instance.$container.find(".player56s-title");
+    if (!titleCont.length) { return instance; }
+    var innerSpan = titleCont.children("span");
+    if (innerSpan.length && ((innerSpan.height() - 10) > titleCont.height())) {
+        // we need to activate ticker for title
+        innerSpan.css({ 'display': 'block', 'position' : 'relative' }).width(titleCont.width());
+        while ((innerSpan.height() - 10) > titleCont.height()) {
+            innerSpan.width( innerSpan.width() + 5 );
+        }
+
+        var treset = function() {
+            if (!this) { return false; }
+            var $this = jQuery(this);
+            var parCont = $this.parent();
+            if (!parCont.length) { return false; }
+            var diff = $this.width() - parCont.width();
+            $this.animate({ "left": $this.css("left") }, 500, function() {
+                $this.animate({ "left": "0" }, 2000, function() {
+                    $this.animate({
+                        "left": "-" + diff + "px"
+                    }, (diff * 40), 'linear', treset);   
+                });
+                $this.delay( 500 );
+            });
+        };
+
+        treset.call(innerSpan[0]);
+    }
+    return instance;
+};
+
+var checkAndRunTickerAlbum = function(instance) {
+    var titleCont = instance.$container.find(".player56s-album");
     if (!titleCont.length) { return instance; }
     var innerSpan = titleCont.children("span");
     if (innerSpan.length && ((innerSpan.height() - 10) > titleCont.height())) {
@@ -304,8 +339,9 @@ jQuery( function player56s($) {
                                     player56sInstance.tracks = [];
                                 }
                             }
-                            let timeString = audiofileLink_add[3].innerText;
-                            player56sInstance.addTrack(audiofileLink_add[0].innerText, audiofileLink_add[1].innerText, timeString, audiofileLink_add[2].innerText);
+                            var tracklength = [];
+                            tracklength = { length : audiofileLink_add[3].innerText };
+                            player56sInstance.addTrack(audiofileLink_add[0].innerText, audiofileLink_add[1].innerText, tracklength, audiofileLink_add[2].innerText);
                             if (player56sInstance.tracks.length === 1){
                                 player56sInstance.$container.addClass("status-onpause");
                                 player56sInstance.switchTrack(true);
@@ -418,26 +454,41 @@ jQuery( function player56s($) {
                             player56sInstance.currentTrack = parseInt(currenttrack_index[1].innerText);
                         }
                         array_move(player56sInstance.tracks, currenttrack_index[0].innerText, currenttrack_index[1].innerText);
-                        player56sInstance.tracks.reverse();
+
+                        console.log(player56sInstance.tracks);
             
-                        if (playlist_shuffle[0].innerText == "0") {
-                            $.ajax({
-                                type: 'post',
-                                url: save_order_ajax_url,
-                                data: {
-                                //	'nonce': nonce,
-                                    'object_id': player56sInstance.tracks,
-                                    'action': 'new_order'
-                                },
-                                success: function(data) {
-                                    console.log(data);
-                                },
-                                error: function(error) {
-                                    console.log(error);
+                        $.ajax({    
+                            type: 'post',
+                            url: shuffle_ajax_url,
+                            data: {
+                                'object_id': null,
+                                'action': 'if_shuffle'
+                            },
+                            dataType: 'JSON',
+                            success: function(data){
+                                console.log(data)
+                                if (data == "0") {
+                                    $.ajax({
+                                        type: 'post',
+                                        url: save_order_ajax_url,
+                                        data: {
+                                        //	'nonce': nonce,
+                                            'object_id': player56sInstance.tracks.reverse(),
+                                            'action': 'new_order'
+                                        },
+                                        success: function(data_) {
+                                            console.log(data_);
+                                        },
+                                        error: function(error) {
+                                            console.log(error);
+                                        }
+                                    });
                                 }
-                            });
-                        }
-                        player56sInstance.tracks.reverse();
+                            },
+                            error: function(errorThrown){
+                                //error stuff here.text
+                            }
+                        });
                     }
             
                 console.log(player56sInstance); 
@@ -601,9 +652,8 @@ jQuery( function player56s($) {
             return this;
         }
         play() {
-            $("#rs-item-" + this.tracks[this.currentTrack].postid + "").addClass('playing');
             $("#player56s-currenttrack").html(this.tracks[this.currentTrack].postid);
-            showPreloader(this, this.seekTime ? false : 500); // 500 is enough to play the loaded fragment, if it's loaded; if isn't — preloader will appear after 500ms
+            $("#rs-item-" + this.tracks[this.currentTrack].postid + "").addClass('playing');
             this.isPlayed = true;
             this.waitForLoad = true; 
             if (typeof this.$jPlayer !== "undefined" && this.$jPlayer.jPlayer) {
@@ -695,6 +745,7 @@ jQuery( function player56s($) {
                 }
 
                 checkAndRunTicker(this);
+                checkAndRunTickerAlbum(this);
 
                 if (status == 1) {
                     $("#rs-item-" + this.tracks[this.currentTrack].postid + "").addClass('playing');
@@ -786,6 +837,7 @@ jQuery( function player56s($) {
                 }
 
                 checkAndRunTicker(this);
+                checkAndRunTickerAlbum(this);
             }
         }
         onPause() {
@@ -956,11 +1008,13 @@ jQuery( function player56s($) {
                     self.pseudoPlay();
                     self.play();
                 },
+                error: function () {
+                    if(self.tracks.length > 1) {
+                        self.switchTrack();
+                    }
+                },
                 play: function () {
                     self.onPlay();
-                },
-                error: function () {
-                    self.switchTrack();
                 },
                 progress: function (event) {
                     updateLoadBar(self, event.jPlayer.status);
@@ -973,7 +1027,7 @@ jQuery( function player56s($) {
                     hidePreloader(self);
                     if (self.waitForLoad) {
                         self.waitForLoad = false;
-                        self.seekTime = 0;
+                        self.seekTime = (self.totalTime / 100) * $("#player56s-seek-percent").html();
                         hidePreloader(self);
                     }
                     if (self.$container.hasClass("status-playing")) {
@@ -996,6 +1050,7 @@ jQuery( function player56s($) {
             this.$link.data("player56s", this);
             this.$link.detach();
             checkAndRunTicker(this);
+            checkAndRunTickerAlbum(this);
             return this;
         }
         bindEvents() {
@@ -1044,20 +1099,31 @@ jQuery( function player56s($) {
                         self.setVolume(0, 1);
                         if (self.isPlaying) {
                             self.playNow(-1);
+                            $("#player56s-connection-type").html(navigator.connection.type);
+                            var seek = setInterval(function(){
+                                var timeSeek = Number($("#player56s-seek-percent").html());
+                                willSeekTo(self, timeSeek);
+                                if(timelinedone >= Number($("#player56s-seek-percent").html())) {
+                                    clearInterval(seek);
+                                    self.setVolume(1, 1);
+                                }
+                            },1000);
+                            self.pseudoPlay();
+                            self.play();
                         } else {
                             self.playNow(-1);
+                            $("#player56s-connection-type").html(navigator.connection.type);
+                            var seek = setInterval(function(){
+                                var timeSeek = Number($("#player56s-seek-percent").html());
+                                willSeekTo(self, timeSeek);
+                                if(timelinedone >= Number($("#player56s-seek-percent").html())) {
+                                    clearInterval(seek);
+                                    self.setVolume(1, 1);
+                                }
+                            },1000);
                             self.$jPlayer.jPlayer("pause");
                         }
                         console.log('type :' + navigator.connection.type);
-                        $("#player56s-connection-type").html(navigator.connection.type);
-                        var seek = setInterval(function(){
-                            var timeSeek = Number($("#player56s-seek-percent").html());
-                            willSeekTo(self, timeSeek);
-                            if(timelinedone >= Number($("#player56s-seek-percent").html())) {
-                                clearInterval(seek);
-                                self.setVolume(1, 1);
-                            }
-                        },1000);
                     }
                 }
             }

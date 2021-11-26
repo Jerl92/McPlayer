@@ -30,52 +30,74 @@ class MCPlayer_bottom_playlist_widget extends WP_Widget {
 		if ( ! empty( $title ) )
 		echo $args['before_title'] . $title . $args['after_title'];
 	
-		if ( is_user_logged_in() ) {
-	
-			$matches = get_user_meta( get_current_user_id(), 'rs_saved_for_later', true );
-			
-			if ( ! empty( $matches ) ) {
-				$args = array( 
-					'posts_per_page' => -1,	
-					'post_type' => 'music',
-					'post__in' => $matches,
-					'order'   => 'DESC',
-					'orderby'   => 'post__in',
-				);
-			} else {
-				$args = 0;
-			}
-			
-			$loop = new WP_Query( $args );
-
-			if ( $loop->have_posts() ) : ?>
-
-				<?php ob_start(); ?>
-				
-				<?php while ( $loop->have_posts() ) : $loop->the_post(); ?>
-						
-						<?php get_template_part( 'template-parts/page-music-archive-sidebar', get_post_format() ); ?>
-				
-				<?php endwhile; // end of the loop. ?>
+		$matches = get_user_meta( user_if_login(), 'rs_saved_for_later', true );
 		
-				<?php wp_reset_postdata(); ?>
-
-				<?php echo '<div id="rs-saved-for-later-wrapper" class="noselect"><ul id="rs-saved-for-later" class="rs-saved-for-later">' . ob_get_clean() . '</ul></div>'; ?>
-
-			<?php else : ?>
-
-				<?php echo '<div id="rs-saved-for-later-wrapper" class="noselect"><ul id="rs-saved-for-later" class="rs-saved-for-later"><li style="text-align: center; padding:15px 0;">Nothing in the playlist</li></ul></div>'; ?>
-
-			<?php endif;
-			
-			echo '<div id="remove-all-btn"><a href="#" class="rs-save-for-later-remove-all" data-nonce="' . wp_create_nonce( 'rs_save_for_later_remove_all' ) . '">Flush Playlist</a></div>';
-                        
-			echo '</section>';
-        } else {
-			echo '<p class="nothing-saved">You don’t have access to the Playlist, You need to <a href="';
-			echo wp_login_url( home_url() );
-			echo '" title="Login">Login</a></p>';
+		if ( ! empty( $matches ) ) {
+			$args = array( 
+				'posts_per_page' => -1,	
+				'post_type' => 'music',
+				'post__in' => $matches,
+				'order'   => 'DESC',
+				'orderby'   => 'post__in',
+			);
+		} else {
+			$args = 0;
 		}
+		
+		$loop = new WP_Query( $args );
+
+		if ( $loop->have_posts() ) : ?>
+
+			<?php ob_start(); ?>
+			
+			<?php while ( $loop->have_posts() ) : $loop->the_post(); ?>
+					
+					<?php get_template_part( 'template-parts/page-music-archive-sidebar', get_post_format() ); ?>
+			
+			<?php endwhile; // end of the loop. ?>
+	
+			<?php wp_reset_postdata(); ?>
+
+			<?php echo '<div id="rs-saved-for-later-wrapper" class="noselect"><ul id="rs-saved-for-later" class="rs-saved-for-later">' . ob_get_clean() . '</ul></div>'; ?>
+
+		<?php else : ?>
+
+			<?php echo '<div id="rs-saved-for-later-wrapper" class="noselect"><ul id="rs-saved-for-later" class="rs-saved-for-later"><li style="text-align: center; padding:15px 0;">Nothing in the playlist</li></ul></div>'; ?>
+
+		<?php endif;
+
+		echo "<div id='subnav-content-save' class='subnav-content'>
+			<span>
+				<input type='text' id='lnamesave' name='lname'></input>
+				<button class='save-playlist'>save</button>
+			<span>
+		</div>";
+
+		$args = array( 
+            'posts_per_page' => -1,
+			'post_status' => 'publish',
+			'post_type' => 'playlist'
+        );
+		
+		$posts = get_posts( $args );
+
+		echo "<div id='subnav-content-load'>";
+
+		foreach ($posts as $post) {
+			echo "<div class='playlist-load-loop' data-id='".$post->ID."'>".get_the_title($post->ID)."</div>";
+		}
+
+		echo "</div>";
+			
+		echo '<div id="playlist-btn">';
+		
+		echo '<div class="rs-save-for-later-save-playlist" data-nonce="' . wp_create_nonce( 'rs_save_for_later_save_playlist' ) . '">Save</div>';
+
+		echo '<div class="rs-save-for-later-load-playlist" data-nonce="' . wp_create_nonce( 'rs_save_for_later_load_playlist' ) . '">Load</div></div>';
+
+		echo '<div id="remove-all-btn"><a href="#" class="rs-save-for-later-remove-all" data-nonce="' . wp_create_nonce( 'rs_save_for_later_remove_all' ) . '">Flush Playlist</a></div>';
+					
+		echo '</section>';
 		
 		echo $args['after_widget'];		
 

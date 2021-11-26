@@ -213,17 +213,8 @@ ul.rs-saved-for-later {
     display: none;
 }
 
-#subnav-content-load {
-    display: none;
-}
-
 .subnav-content-display {
     display: block !important;
-}
-
-.playlist-load-loop {
-    height: auto;
-    padding: 15px;
 }
 
 .rs-save-for-later-remove-all {

@@ -176,35 +176,6 @@
 	}
 	add_filter( 'posts_distinct', 'cf_search_distinct' );
 
-/////////////////////////////
-//
-//	Costom box for taxonomy Artists.
-//	WIP
-//
-/////////////////////////////
-
-function add_book_place_column_content($content,$column_name,$term_id){
-    $term= get_term($term_id, 'artist');
-    switch ($column_name) {
-        case 'foo':
-            //do your stuff here with $term or $term_id
-            $content = 'test';
-            break;
-        default:
-            break;
-    }
-    return $content;
-}
-add_filter('manage_artist_custom_column', 'add_book_place_column_content',10,3);
-
-function SearchFilter($query) {
-	if ($query->is_search) {
-	   $query->set('post_type', 'music');
-	}
-	return $query;
- }
- add_filter('pre_get_posts','SearchFilter');
-
 // http://www.webdeveloper.com/forum/showthread.php?212775-Converting-03-45-54-format-time-into-seconds-quick-way-to-do-it
 
 function seconds_from_time($time) {
@@ -275,5 +246,24 @@ add_action('wp_head', 'your_function_name');
 function your_function_name(){
 	echo '<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">';
 };
+
+function user_if_login() {
+	if(!get_current_user_id()) {
+		if(isset($_COOKIE['userid'])) {
+			return intval($_COOKIE['userid']);
+		}
+	} else {
+		return get_current_user_id();
+	}
+}
+
+function set_userid_cookie() {
+	$cookie_name = 'userid';
+	if(!isset($_COOKIE[$cookie_name])) {
+		$cookie_value = intval(rand(10000, 99999));
+		setcookie($cookie_name, $cookie_value, time() + (86400 * 30)); // 86400 = 1 day
+	}
+}
+add_action( 'init', 'set_userid_cookie');
 
 ?>

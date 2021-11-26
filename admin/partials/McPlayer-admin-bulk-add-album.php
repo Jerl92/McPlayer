@@ -13,21 +13,24 @@ function bulk_add_album_submenu_page_callback() {
         echo '<div style="width: 50%; float: left;">';
 		echo '<h2>Bulk add album</h2>';
         echo '</br>';
+        $i = 1;
         $upload_dir = wp_upload_dir();
         $path_implode = $upload_dir['basedir'] . '/youtube-dl/';
         $allFiles = scandir($path_implode, SCANDIR_SORT_DESCENDING);
         $files = array_diff($allFiles, array('.', '..'));
+        $files_ = array_reverse($files);
         echo '<table>';
-        foreach ($files as $file) {
+        foreach ($files_ as $file) {
             $realpath = realpath($path_implode.'/'.$file);
             $pathinfo = pathinfo($realpath);
             if($pathinfo['extension'] == 'mp4') {
                 echo '<tr><td>';
-                echo '<input type="number" class="tracknumber" name="'.$realpath.'" >';
+                echo '<input type="number" class="tracknumber" name="'.$realpath.'" value="'.$i.'" >';
                 echo '</td>';
                 echo '<td>';
                 echo $file;
                 echo '</tr></td>';
+                $i++;
             }
         }
         echo '</table>';
@@ -178,11 +181,11 @@ function my_action() {
 
     $wp_filetype = wp_check_filetype( $filename, null );
 
-    $filename_strstr = strstr($path_parts['filename'], '-', true);
+    $filename_strstr = explode('-', $path_parts['filename']);
 
     $attachment = array(
     'post_mime_type' => $wp_filetype['type'],
-    'post_title' => sanitize_file_name( $filename_strstr ),
+    'post_title' => sanitize_file_name( $filename_strstr[1] ),
     'post_content' => '',
     'post_status' => 'inherit'
     );
@@ -196,7 +199,7 @@ function my_action() {
     $html[] .= $attach_data;
 
     $new_post = array(
-        'post_title' => $filename_strstr,
+        'post_title' => $filename_strstr[1],
         'post_content' => '',
         'post_status' => 'publish',
         'post_author' => get_current_user_id(),
@@ -219,6 +222,17 @@ function my_action() {
     wp_set_object_terms($post_id, $termartist->slug, 'artist');
 
     update_post_meta( $post_id, 'meta-box-media-cover_', $cover);
+
+    $term_obj_list = get_the_terms( $post_id, 'artist' );
+
+    $cover_media_id = get_post_meta( $post_id, "meta-box-media-cover_", true );
+
+    foreach ($term_obj_list as $taxonomy) {
+        $html[] .= $taxonomy->slug;
+        update_post_meta($post_id, 'meta-box-artist', $taxonomy->slug);
+    }
+
+    update_post_meta($post_id, "meta-box-media-cover-name", get_the_title($cover_media_id));
 
     $html[] .= '</br>';
 

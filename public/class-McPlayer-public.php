@@ -111,7 +111,7 @@ class Mcplayer_Public {
 
 		wp_enqueue_script( 'jquery-ui', plugin_dir_url( __FILE__ ) . 'js/jquery-ui.js', array( 'jquery' ), $this->version, false );	
 		
-		wp_enqueue_script( 'aim',  plugin_dir_url( __FILE__ ) . 'js/jquery.aim.js', array( 'jquery' ), $this->version, false );
+		// wp_enqueue_script( 'aim',  plugin_dir_url( __FILE__ ) . 'js/jquery.aim.js', array( 'jquery' ), $this->version, false );
 
 		//	wp_enqueue_script( 'network-information',  plugin_dir_url( __FILE__ ) . 'js/network-information.js', array( 'jquery' ), $this->version, false );	
 

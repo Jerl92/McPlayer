@@ -26,6 +26,7 @@ function ajax_shuffle($)  {
                     $(".shuffle_player_toggle").css("box-shadow", "2.5px 2.5px 2.5px #000");
                     $(".player56s").player56s($);
                 }
+                $("#player56s-shuffle").html(null);
 
             },
             error: function(errorThrown){

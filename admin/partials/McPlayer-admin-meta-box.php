@@ -18,33 +18,7 @@
     // Function that returns post titles from specific post type as form select element
     // returns null if found no results.
     function output_projects_list() {
-        global $wpdb;
 
-        $custom_post_type = 'music'; // define your custom post type slug here
-
-        // A sql query to return all post titles
-        $results = $wpdb->get_results( $wpdb->prepare( "SELECT ID, post_title FROM {$wpdb->posts} WHERE post_type = %s and post_status = 'publish'", $custom_post_type ), ARRAY_A );
-
-        // Return null if we found no results$
-        if ( ! $results )
-            return;
-
-        // HTML for our select printing post titles as loop
-        $output = '<ul name="project" id="project">';
-
-        foreach( $results as $index => $post ) {
-
-            $attachment_id = get_post_meta($post['ID'], 'second_featured_img', true);
-
-            $add_playlist_btn = '<input id="_btn" class="upload_image_button" type="button" value="' . $post['ID'] . '" />'; 
-            
-            $output .= '<li value="' . $post['ID'] . '">' . $post['post_title'] . ' ' . $attachment_id  . ' ' . $add_playlist_btn  . '</li>';
-        }
-
-        $output .= '</ul>'; // end of select element
-
-        // get the html
-        return $output;
     }
 
     /*
@@ -52,7 +26,45 @@
     */
     function playlist_print_box( $post ) {
 
-        echo output_projects_list();
+        $matches = get_post_meta($post->ID, 'rs_saved_for_later');
+
+        foreach ($matches as $matche) {
+            foreach ($matche as $matche_) {
+                foreach ($matche_ as $matche__) {
+                    $matches___[] .= $matche__;
+                }  
+            }      
+        }
+
+        $args = array( 
+            'posts_per_page' => -1,	
+            'post_type' => 'music',
+            'post__in' => $matches___,
+            'order'   => 'DESC',
+            'orderby'   => 'post__in',
+        );
+		
+		$loop = new WP_Query( $args );
+
+		if ( $loop->have_posts() ) : ?>
+
+			<?php ob_start(); ?>
+			
+			<?php while ( $loop->have_posts() ) : $loop->the_post(); ?>
+					
+					<?php get_template_part( 'template-parts/page-music-archive-sidebar', get_post_format() ); ?>
+			
+			<?php endwhile; // end of the loop. ?>
+	
+			<?php wp_reset_postdata(); ?>
+
+			<?php echo '<div id="rs-saved-for-later-wrapper" class="noselect"><ul id="rs-saved-for-later" class="rs-saved-for-later">' . ob_get_clean() . '</ul></div>'; ?>
+
+		<?php else : ?>
+
+			<?php echo '<div id="rs-saved-for-later-wrapper" class="noselect"><ul id="rs-saved-for-later" class="rs-saved-for-later"><li style="text-align: center; padding:15px 0;">Nothing in the playlist</li></ul></div>'; ?>
+
+		<?php endif;
 
     }
 
@@ -136,7 +148,7 @@
             'track' => __( 'Track' ),
             'title' => __( 'Music' ),
             'artist' => __( 'Artist' ),
-            'feat' => __( 'Feat.' ),
+            // 'feat' => __( 'Feat.' ),
             'album' => __( 'Album' ),
             'year' => __( 'Year' ),
             'cover' => __( 'Cover' ),
@@ -158,7 +170,7 @@
     ///////////////////////////
     function my_column_width() {
         echo '<style type="text/css">';
-        echo '.column-track { display: table-cell; width: 35px; }';
+        echo '.column-track { display: table-cell; width: 75px; }';
         echo '@media only screen and (max-width: 782px) {';
         echo 'td:not(.column-primary)::before { display: none !important; }';
         echo '.column-track { display: none !important; }';
@@ -304,5 +316,41 @@
     
     }
     add_action( 'restrict_manage_posts', 'filter_cars_by_taxonomies' , 10, 2);
+
+    function my_column_register_sortable( $columns ) {
+        $columns['track'] = 'track';
+        $columns['artist'] = 'artist';
+        $columns['album'] = 'album';
+        $columns['year'] = 'year';
+        $columns['time'] = 'time';
+        return $columns;
+    }
+
+    add_filter("manage_edit-music_sortable_columns", "my_column_register_sortable" );
+
+    add_action( 'pre_get_posts', 'my_slice_orderby' );
+    function my_slice_orderby( $query ) {
+        if( ! is_admin() )
+            return;
+
+        $orderby = $query->get( 'orderby');
+
+        if( 'track' == $orderby ) {
+            $query->set('meta_key','meta-box-track-number');
+            $query->set('orderby','meta_value_num');
+        } elseif('artist' == $orderby) {
+            $query->set('meta_key','meta-box-artist');
+            $query->set('orderby','meta_value');
+        } elseif('year' == $orderby) {
+            $query->set('meta_key','meta-box-year');
+            $query->set('orderby','meta_value');
+        } elseif('album' == $orderby) {
+            $query->set('meta_key','meta-box-media-cover-name');
+            $query->set('orderby','meta_value');
+        } elseif('time' == $orderby) {
+            $query->set('meta_key','meta-box-track-length');
+            $query->set('orderby','meta_value');
+        }
+    }
 
 ?>

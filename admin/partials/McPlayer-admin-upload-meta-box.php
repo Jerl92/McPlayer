@@ -213,6 +213,10 @@ class meta_box_cover_upload {
 			return;
         if ( ! isset( $_POST['meta-box-media'] ) ) //make sure our custom value is being sent
 			return; 
+
+        $cover_media_id = get_post_meta( $post_id, "meta-box-media-cover_", true );
+        update_post_meta($post_id, "meta-box-media-cover-name", get_the_title($cover_media_id));
+
 		$new_value = array_map( 'intval', $_POST['meta-box-media'] ); //sanitize
 		foreach ( $new_value as $k => $v ) {
 			update_post_meta( $post_id, $k, $v ); //save
@@ -361,6 +365,11 @@ function save_custom_meta_box($post_id, $post, $update) {
         return;
     $artist = array_map('intval', $_POST['customartist']);
     wp_set_object_terms($post_id, $artist, 'artist');
+
+    $term_obj_list = get_the_terms( $post_id, 'artist' );
+    foreach ($term_obj_list as $taxonomy) {
+        update_post_meta($post_id, 'meta-box-artist', $taxonomy->slug);
+    }
 
     if ( !wp_verify_nonce($_POST['dropdown-genre-nonce'], 'genre-dropdown') || !$_POST['customgenre'] )
         return;

@@ -28,7 +28,7 @@ class MCPlayer_bottom_player_widget extends WP_Widget {
 
 		$title_i = "<div id='current_music_name'></div>";
 
-		$shuffle = get_user_meta( get_current_user_id(), 'user_playlist_shuffle', true );
+		$shuffle = get_user_meta( user_if_login(), 'user_playlist_shuffle', true );
 
 		if ( $shuffle == 1 ) {
 			$shuffle_toggle = "<div style='padding-right: 5px; right: 40px; float: right;' ><i class='shuffle_player_toggle material-icons' style='box-shadow: 2.5px 2.5px 2.5px #000'>shuffle</i></div>";
@@ -47,96 +47,88 @@ class MCPlayer_bottom_player_widget extends WP_Widget {
 		if ( ! empty( $title ) )
 		echo $args['before_title'] . $title_toggle . $btn_toggle . $shuffle_toggle . $ogg_toggle . $args['after_title'];
 
-		// This is where you run the code and display the output
-		if ( is_user_logged_in() ) {
-			global $post;
+		global $post;
 
-			// Saved objects
-			$matches = get_user_meta( get_current_user_id(), 'rs_saved_for_later', true );
+		// Saved objects
+		$matches = get_user_meta( user_if_login(), 'rs_saved_for_later', true );
 
-			echo '<div id="player-container">';
+		echo '<div id="player-container">';
 
-			if ( ! empty( $matches ) ) {
-				if ( $shuffle == 1 ) {
-					$saved_args = array(
-						'post_type'      => 'music',
-						'posts_per_page' => -1,
-						'orderby' => 'rand',
-						'post__in'       => array_reverse( $matches, true )
-					);
-				} else {
-					$saved_args = array(
-						'post_type'      => 'music',
-						'posts_per_page' => -1,
-						'orderby' => 'post__in',
-						'post__in'       => array_reverse( $matches, true )
-					);
-				}
+		if ( ! empty( $matches ) ) {
+			if ( $shuffle == 1 ) {
+				$saved_args = array(
+					'post_type'      => 'music',
+					'posts_per_page' => -1,
+					'orderby' => 'rand',
+					'post__in'       => array_reverse( $matches, true )
+				);
 			} else {
-				$saved_args = 0;
+				$saved_args = array(
+					'post_type'      => 'music',
+					'posts_per_page' => -1,
+					'orderby' => 'post__in',
+					'post__in'       => array_reverse( $matches, true )
+				);
 			}
-
-			$saved_loop = new WP_Query( $saved_args );
-
-			if ( $saved_loop->have_posts() ) {
-
-				while ( $saved_loop->have_posts() ) : $saved_loop->the_post();
-
-					$music_playlist = wp_get_attachment_url(get_post_meta( $post->ID, 'music_link_', true ));
-
-					$terms = wp_get_post_terms( $post->ID, 'artist' );
-
-					$name = esc_attr( 'meta-box-media-cover_' );
-					$value = $rawvalue = get_post_meta( $post->ID, $name, true );
-					$attachment_title = get_the_title($value);
-					$get_feat = get_post_meta( get_the_id(), "meta-box-artist-feat", true);
-					$delimeter_player56s = esc_attr(' || ');
-
-					$get_music_meta_length = get_post_meta( $post->ID, "meta-box-track-length", true );
-					
-					?><audio href="<?php echo $music_playlist; ?>" class="player56s" rel="playlist" data-length="<?php echo $get_music_meta_length; ?>" postid="<?php echo $post->ID; ?>"><?php
-						echo $attachment_title;
-						echo $delimeter_player56s;
-						foreach($terms as $term) {
-							echo $term->name;
-						}
-						if ($get_feat != '') {
-							echo ' - Feat. ' . $get_feat;
-						}
-						echo $delimeter_player56s;
-						echo get_the_title();
-						echo $delimeter_player56s;
-						echo wp_get_attachment_image_url( $value , 'full' );
-					?></audio><?php 
-										
-				endwhile;
-
-			wp_reset_postdata();
-				
-			} else {
-				echo '<audio href="" class="player56s" postid="0"></audio>';
-			}
-		
-			echo '</div>';
-
-			echo '<div id="player56s-ajax-wrap" style="display: none;">';
-				echo '<div id="player56s-currenttrack"></div>';
-				echo '<div id="player56s-addtrack"></div>';
-				echo '<div id="player56s-removetrack"></div>';
-				echo '<div id="player56s-removetracks-all"></div>';
-				echo '<div id="player56s-playnow"></div>';
-				echo '<div id="player56s-sortable"></div>';
-				echo '<div id="player56s-shuffle"></div>';
-				echo '<div id="player56s-no-shuffle"></div>';
-				echo '<div id="player56s-connection-type"></div>';
-				echo '<div id="player56s-seek-percent"></div>';
-			echo '</div>';
-
 		} else {
-			echo '<p id="notlogin" class="nothing-saved">You don’t have access to the Player, You need to <a href="';
-			echo wp_login_url( home_url() );
-			echo '" title="Login">Login</a></br>This site is for personal use and development purposes.</p>';
+			$saved_args = 0;
 		}
+
+		$saved_loop = new WP_Query( $saved_args );
+
+		if ( $saved_loop->have_posts() ) {
+
+			while ( $saved_loop->have_posts() ) : $saved_loop->the_post();
+
+				$music_playlist = wp_get_attachment_url(get_post_meta( $post->ID, 'music_link_', true ));
+
+				$terms = wp_get_post_terms( $post->ID, 'artist' );
+
+				$name = esc_attr( 'meta-box-media-cover_' );
+				$value = $rawvalue = get_post_meta( $post->ID, $name, true );
+				$attachment_title = get_the_title($value);
+				$get_feat = get_post_meta( get_the_id(), "meta-box-artist-feat", true);
+				$delimeter_player56s = esc_attr(' || ');
+
+				$get_music_meta_length = get_post_meta( $post->ID, "meta-box-track-length", true );
+				
+				?><audio href="<?php echo $music_playlist; ?>" class="player56s" rel="playlist" data-length="<?php echo $get_music_meta_length; ?>" postid="<?php echo $post->ID; ?>"><?php
+					echo $attachment_title;
+					echo $delimeter_player56s;
+					foreach($terms as $term) {
+						echo $term->name;
+					}
+					if ($get_feat != '') {
+						echo ' - Feat. ' . $get_feat;
+					}
+					echo $delimeter_player56s;
+					echo get_the_title();
+					echo $delimeter_player56s;
+					echo wp_get_attachment_image_url( $value , 'full' );
+				?></audio><?php 
+									
+			endwhile;
+
+		wp_reset_postdata();
+			
+		} else {
+			echo '<audio href="" class="player56s" postid="0">Just another WordPress site || Music Player || Nothing in the playlist || null</audio>';
+		}
+	
+		echo '</div>';
+
+		echo '<div id="player56s-ajax-wrap" style="display: none;">';
+			echo '<div id="player56s-currenttrack"></div>';
+			echo '<div id="player56s-addtrack"></div>';
+			echo '<div id="player56s-removetrack"></div>';
+			echo '<div id="player56s-removetracks-all"></div>';
+			echo '<div id="player56s-playnow"></div>';
+			echo '<div id="player56s-sortable"></div>';
+			echo '<div id="player56s-shuffle"></div>';
+			echo '<div id="player56s-no-shuffle"></div>';
+			echo '<div id="player56s-connection-type"></div>';
+			echo '<div id="player56s-seek-percent"></div>';
+		echo '</div>';
 
 		echo $args['after_widget']; 
 

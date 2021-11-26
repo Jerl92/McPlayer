@@ -17,9 +17,10 @@
 			anchors: "a",
 			blacklist: ".no-smoothState",
 			cache: false,
+			cacheLength: 0,
 			prefetch: true,
-			prefetchOn: "aim",
-			scroll: true,
+			prefetchOn: 'mouseover touchstart',
+			scroll: false,
 			locationHeader: "X-SmoothState-Location",
 			onAfter: function( $container , $newcontainer ) {
 
@@ -27,13 +28,13 @@
 
 				// stickysidebar($);
 
-				ajax_playlist_add_sidebar($);
+				// ajax_playlist_add_sidebar($);
 								
 				play_now($);
 
 				play_pause($);
 
-//				tooltip($);	
+				tooltip($);	
 				
 				scroll_to_album($);
 				
@@ -46,6 +47,10 @@
 				sortable_playlist($);
 
 				sidebarheight($);
+
+				mcplayer_save_playlist($);
+
+				mcplayer_load_playlist($);
 				
 			}
 		};

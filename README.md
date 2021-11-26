@@ -1,6 +1,6 @@
 # McPlayer</br>
 
-<img style="max-width: 100%;" src="https://i.ibb.co/7Ygsf5K/maplyer456.jpg" alt="MCPlayer" />
+<img style="max-width: 100%;" src="https://i.ibb.co/sQKcCh1/mcplayer.gif" alt="MCPlayer" />
 
 McPlayer is a full-width HTML5/JS/AJAX audio Player with Playlist, Plugin for WordPress.</br>
 
@@ -10,7 +10,7 @@ With McPlayer you can get your music from all arroud the wrold, from public wifi
 Create your artist, add a banner picture, upload the album cover and add all the songs from it.</br>
 Navigate through all the artists, albums and songs, add the song you want to the playlist and press play.</br>
 
-McPlayer is build with JS from</br>
+McPlayer is build with the folloing JS</br>
 
 Unobtrusive page transitions with jQuery.</br>
 https://github.com/miguel-perez/smoothState.js</br>
@@ -24,16 +24,10 @@ https://github.com/dymio/player-56s</br>
 Simplicity Save for Later will add a button to your posts/pages/custom post types so users can save that content so they can access it later.</br>
 https://WordPress.org/plugins/rs-save-for-later/</br>
 
-jQuery plugin anticipates on which element user is going to hover/click.</br>
-https://github.com/cihadturhan/jquery-aim</br>
-
 Interactions and Widgets for the web. jQuery UI is a curated set of user interface interactions, effects, widgets, and themes built on top of jQuery.</br>
 https://github.com/jquery/jquery-ui</br>
 
 ## Recommended plugins
-This plugin is dependency for McPlayer-Core</br>
-https://WordPress.org/plugins/categories-images/</br>
-
 This plugin is very usefull for add searching in taxonomie and meta post</br>
 https://wordpress.org/plugins/search-everything/</br>
 
@@ -43,6 +37,9 @@ https://wordpress.org/themes/chichi/</br>
 
 MCPlayer child theme based on Chichi</br>
 https://github.com/Jerl92/McPlayer-Child-Theme</br>
+
+This plugin is dependency for McPlayer-Core</br>
+https://WordPress.org/plugins/categories-images/</br>
 
 ## Installation
 
@@ -59,13 +56,16 @@ Your can have FFMPEG installed on it, to get compresed track over cellulair netw
 8. Rename `McPlayer-master` to `McPlayer`.</br>
 9. Activate `McPlayer` through the Plugins menu in WordPress.</br>
 10. Add artist in the admin musics menu.</br>
-11. Upload cover and set the artist and the year.</br>
+11. Upload cover and set the artist and the year, of the cover</br>
 12. Add new music, set title, set file, set number, set artist, set album.</br>
 13. Use the same album cover picture for all the tracks in the album.</br>
 14. Add the player and playlist widget in the customization menu.</br>
 16. Set shortcode in page.</br>
 [pre_order_products per_page="50" columns="5" order="'rand" orderby="rand"]</br>
 [artist_get_shortcode]</br>
+[year_get_shortcode]</br>
+[artist_new_get_shortcode]</br>
+[pre_order_products per_page="100" columns="5" order="DESC" orderby="date"]</br>
 
 ## Screenshot
 
@@ -82,6 +82,7 @@ Your can have FFMPEG installed on it, to get compresed track over cellulair netw
 
 ## Changelog
 
+0.5 - Not loged user, can now browser and interact with playlist and player.</br>
 0.4 - Remove sticky sidebar, use overflow scroll.</br>
 0.3 - Add wake lock when the tab is active, Use FFMPEG for audio compresion.</br>
 0.2 - Sortable playlist.</br>

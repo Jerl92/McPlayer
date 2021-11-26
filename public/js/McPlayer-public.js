@@ -34,10 +34,12 @@ function footer_stick($) {
         jQuery('#colophon').css('position', 'fixed');
         jQuery('#colophon').css('bottom', playerHeight_+'px');
         jQuery('#colophon').css('width', '100%');
+        jQuery('#colophon').css('display', 'grid');
     } else {
         jQuery('#colophon').css('position', 'static');
         jQuery('#colophon').css('bottom', '0');
         jQuery('#colophon').css('width', '100%');
+        jQuery('#colophon').css('display', 'grid');
     }
 }
 
@@ -51,10 +53,12 @@ jQuery(window).resize(function () {
         jQuery('#colophon').css('position', 'fixed');
         jQuery('#colophon').css('bottom', playerHeight_+'px');
         jQuery('#colophon').css('width', '100%');
+        jQuery('#colophon').css('display', 'grid');
     } else {
         jQuery('#colophon').css('position', 'static');
         jQuery('#colophon').css('bottom', '0');
         jQuery('#colophon').css('width', '100%');
+        jQuery('#colophon').css('display', 'grid');
     }
 
 });
@@ -150,7 +154,7 @@ function sidebarheight($) {
     var masthead = jQuery('#masthead').height();
     if (windowwidth > 720) {
         var primaryHeight = jQuery('#primary').height();
-        jQuery('#secondary').css('min-height', windowheight-(160+colophon+100));
+        jQuery('#secondary').css('min-height', windowheight-(wrapplayer+colophon+masthead+50));
         jQuery('#secondary').css('height', primaryHeight);
         jQuery('#secondary').css('overflow', 'hidden scroll');
         jQuery('#secondary').css('display', 'block');
@@ -175,6 +179,10 @@ document.addEventListener('visibilitychange', function(){
     update();
 });
 
+jQuery(window).on('load', function($) {
+    sidebarheight($);
+});
+
 jQuery(document).ready(function($) {
     doVisualUpdates = !document.hidden;
     update();
@@ -182,5 +190,4 @@ jQuery(document).ready(function($) {
     sortable_playlist($);
     footer_stick($);
     //stickysidebar($);
-    sidebarheight($);
-  });
+});
