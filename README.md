@@ -10,7 +10,7 @@ With McPlayer you can get your music from all arroud the wrold, from public wifi
 Create your artist, add a banner picture, upload the album cover and add all the songs from it.</br>
 Navigate through all the artists, albums and songs, add the song you want to the playlist and press play.</br>
 
-McPlayer is build with the folloing JS</br>
+McPlayer is build with the following JS</br>
 
 Unobtrusive page transitions with jQuery.</br>
 https://github.com/miguel-perez/smoothState.js</br>
