@@ -117,6 +117,8 @@ function ajax_add_track($post) {
 		
 		$matche = $_POST['object_id'];
 		$posts = wp_get_attachment_url( get_post_meta( $matche , 'music_link_', true) );
+		$urllocal = realpath(ABSPATH.explode(site_url(), $posts)[1]);
+        $plugin_dir = site_url().'/wp-content/plugins/McPlayer/includes/download.php';
 
 		$terms = wp_get_post_terms( $matche, 'artist' );
 
@@ -128,7 +130,7 @@ function ajax_add_track($post) {
 		$get_music_meta_length = get_post_meta( $matche, 'meta-box-track-length', true );
 		
 		foreach($terms as $term) {
-			$html[] = '<ul><li>' . $posts . '</li><li>' . $attachment_title . $delimeter_player56s . $term->name . $delimeter_player56s . get_the_title( $matche ) . $delimeter_player56s . wp_get_attachment_image_url( $value , 'full' ) . '</li><li>' . $matche . '</li><li>' . $get_music_meta_length . '</li></ul>';
+			$html[] = '<ul><li>' . $plugin_dir.'?path='.$urllocal . '</li><li>' . $attachment_title . $delimeter_player56s . $term->name . $delimeter_player56s . get_the_title( $matche ) . $delimeter_player56s . wp_get_attachment_image_url( $value , 'full' ) . '</li><li>' . $matche . '</li><li>' . $get_music_meta_length . '</li></ul>';
 		}
 		return wp_send_json ( $html );	 
 }	
@@ -691,6 +693,8 @@ function load_playlist($post) {
 				update_user_meta( user_if_login(), 'rs_saved_for_later', $matche__ );
 				foreach (array_reverse($matche__) as $matche) {
 					$posts = wp_get_attachment_url( get_post_meta( $matche , 'music_link_', true) );
+					$urllocal = realpath(ABSPATH.explode(site_url(), $posts)[1]);
+					$plugin_dir = site_url().'/wp-content/plugins/McPlayer/includes/download.php';
 
 					$terms = wp_get_post_terms( $matche, 'artist' );
 			
@@ -702,7 +706,7 @@ function load_playlist($post) {
 					$get_music_meta_length = get_post_meta( $matche, 'meta-box-track-length', true );
 					
 					foreach($terms as $term) {
-						$html[] .= '<ul><li>' . $posts . '</li><li>' . $attachment_title . $delimeter_player56s . $term->name . $delimeter_player56s . get_the_title( $matche ) . $delimeter_player56s . wp_get_attachment_image_url( $value , 'full' ) . '</li><li>' . $matche . '</li><li>' . $get_music_meta_length . '</li></ul>';
+						$html[] .= '<ul><li>' . $plugin_dir.'?path='.$urllocal . '</li><li>' . $attachment_title . $delimeter_player56s . $term->name . $delimeter_player56s . get_the_title( $matche ) . $delimeter_player56s . wp_get_attachment_image_url( $value , 'full' ) . '</li><li>' . $matche . '</li><li>' . $get_music_meta_length . '</li></ul>';
 					}
 				}
 			}

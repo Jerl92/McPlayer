@@ -154,12 +154,28 @@ function sidebarheight($) {
     var masthead = jQuery('#masthead').height();
     if (windowwidth > 720) {
         var primaryHeight = jQuery('#primary').height();
+        jQuery('#content').css('height', primaryHeight);
         jQuery('#secondary').css('min-height', windowheight-(wrapplayer+colophon+masthead+50));
         jQuery('#secondary').css('height', primaryHeight);
         jQuery('#secondary').css('overflow', 'hidden scroll');
         jQuery('#secondary').css('display', 'block');
     }
 }
+
+var windowwidth = jQuery(window).width();
+var windowheight = jQuery(window).height();
+var wrapplayer = jQuery('#wrap-player').height();
+var colophon = jQuery('#colophon').height();
+var masthead = jQuery('#masthead').height();
+
+var sidebar = new StickySidebar('#secondary', {
+    topSpacing: masthead,
+    bottomSpacing: wrapplayer+colophon+100,
+    containerSelector: '#content',
+    innerWrapperSelector: 'inner-wrapper-sticky',
+    scrollContainer: '#main-viewport',
+    minWidth: 760
+});
 
 var doVisualUpdates = true;
 

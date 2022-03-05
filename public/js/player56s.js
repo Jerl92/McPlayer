@@ -697,6 +697,7 @@ jQuery( function player56s($) {
                 if (this.$container.hasClass("status-playing")) {
                     status = 1;
                 }
+                this.setVolume(0, 1);
                 this.pseudoPause();
                 this.pause();
                 this.stop();
@@ -752,6 +753,8 @@ jQuery( function player56s($) {
                     this.pseudoPlay();
                     this.play();
                 }
+
+                this.setVolume(1, 1);
             }
         }
         switchTrack(to_next) {
@@ -767,6 +770,8 @@ jQuery( function player56s($) {
                 if (this.$container.hasClass("status-playing")) {
                     status = 1;
                 }
+
+                this.setVolume(0, 1);
 
                 this.pseudoPause();
                 this.pause();
@@ -838,6 +843,7 @@ jQuery( function player56s($) {
 
                 checkAndRunTicker(this);
                 checkAndRunTickerAlbum(this);
+                this.setVolume(1, 1);
             }
         }
         onPause() {
@@ -897,9 +903,6 @@ jQuery( function player56s($) {
                 .addClass(self.minimal ? "minimal" : "normal")
                 .attr("id", "player56s-ui-zone")
                 .append($invisibleObject.addClass("player56s-invisible-object"), $infoArea.addClass("player56s-content").append(createContentAreaDOM()));
-            if ('mediaSession' in navigator) {
-                initMediaSession(this.tracks[this.currentTrack].filename);
-            }
             return this;
         }
         initPlayerPlugin() {
@@ -1055,6 +1058,9 @@ jQuery( function player56s($) {
         }
         bindEvents() {
             var self = this, uniqueID = self.$container.attr("id");
+            if ('mediaSession' in navigator) {
+                initMediaSession(self.tracks[self.currentTrack].filename);
+            }
             $(document).on("player56s-pause." + uniqueID, function (event, triggeredPlayer56s) {
                 if (self !== triggeredPlayer56s) {
                     self.pause();

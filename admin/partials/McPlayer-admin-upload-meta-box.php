@@ -30,10 +30,14 @@ class Meta_Box_audio_Upload {
         $image = ! $rawvalue ? '' : get_attached_file( $rawvalue );
         $link_url = wp_get_attachment_url( get_post_meta( get_the_id(), $name, true ));
 
+        $urllocal = realpath(ABSPATH.explode(site_url(), $link_url)[1]);
+
+        $plugin_dir = site_url().'/wp-content/plugins/McPlayer/includes/download.php';
+
         echo '<br />';
 
-        if ($link_url != null) {
-            echo "<div class='audio-preview'>$link_url</div>";
+        if ($urllocal != null) {
+            echo "<div class='audio-preview'>$plugin_dir?path=$urllocal</div>";
         } else {
             echo "<div class='audio-preview'>No audio file</div>";
         }
@@ -41,7 +45,7 @@ class Meta_Box_audio_Upload {
         echo '<br />';
                 
         $attr = array(
-            'src'      => $link_url,
+            'src'      => $plugin_dir.'?path='.$urllocal,
             'loop'     => '',
             'autoplay' => '',
             'preload' => 'metadata',

@@ -82,6 +82,7 @@ Your can have FFMPEG installed on it, to get compresed track over cellulair netw
 
 ## Changelog
 
+0.55 - Fix sidebare bottom display issue.</br>
 0.5 - Not loged user, can now browser and interact with playlist and player.</br>
 0.4 - Remove sticky sidebar, use overflow scroll.</br>
 0.3 - Add wake lock when the tab is active, Use FFMPEG for audio compresion.</br>

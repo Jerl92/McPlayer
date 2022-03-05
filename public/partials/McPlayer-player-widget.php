@@ -82,6 +82,10 @@ class MCPlayer_bottom_player_widget extends WP_Widget {
 
 				$music_playlist = wp_get_attachment_url(get_post_meta( $post->ID, 'music_link_', true ));
 
+				$urllocal = realpath(ABSPATH.explode(site_url(), $music_playlist	)[1]);
+
+				$plugin_dir = site_url().'/wp-content/plugins/McPlayer/includes/download.php';
+	
 				$terms = wp_get_post_terms( $post->ID, 'artist' );
 
 				$name = esc_attr( 'meta-box-media-cover_' );
@@ -92,7 +96,7 @@ class MCPlayer_bottom_player_widget extends WP_Widget {
 
 				$get_music_meta_length = get_post_meta( $post->ID, "meta-box-track-length", true );
 				
-				?><audio href="<?php echo $music_playlist; ?>" class="player56s" rel="playlist" data-length="<?php echo $get_music_meta_length; ?>" postid="<?php echo $post->ID; ?>"><?php
+				?><audio href="<?php echo $plugin_dir.'?path='.$urllocal; ?>" class="player56s" rel="playlist" data-length="<?php echo $get_music_meta_length; ?>" postid="<?php echo $post->ID; ?>"><?php
 					echo $attachment_title;
 					echo $delimeter_player56s;
 					foreach($terms as $term) {

@@ -20,7 +20,8 @@
  * @subpackage Mcplayer/public
  * @author     jerl92 <jeremie.langevin@outlook.com>
  */
-class Mcplayer_Public {
+class Mcplayer_Public
+{
 
 	/**
 	 * The ID of this plugin.
@@ -47,11 +48,11 @@ class Mcplayer_Public {
 	 * @param      string    $plugin_name       The name of the plugin.
 	 * @param      string    $version    The version of this plugin.
 	 */
-	public function __construct( $plugin_name, $version ) {
+	public function __construct($plugin_name, $version)
+	{
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
-
 	}
 
 	/**
@@ -59,7 +60,8 @@ class Mcplayer_Public {
 	 *
 	 * @since    1.0.0
 	 */
-	public function enqueue_styles() {
+	public function enqueue_styles()
+	{
 
 		/**
 		 * This function is provided for demonstration purposes only.
@@ -73,13 +75,11 @@ class Mcplayer_Public {
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/McPlayer-public.css', array(), $this->version, 'all' );
+		wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/McPlayer-public.css', array(), $this->version, 'all');
 
-		wp_enqueue_style( 'player56s', plugin_dir_url( __FILE__ ) . 'css/player56s.css', array(), $this->version, 'all' );
+		wp_enqueue_style('player56s', plugin_dir_url(__FILE__) . 'css/player56s.css', array(), $this->version, 'all');
 
-		wp_enqueue_style( 'rs-save-for-later', plugin_dir_url( __FILE__ ) . 'css/rs-save-for-later-public.css', array(), $this->version, 'all' );
-
-
+		wp_enqueue_style('rs-save-for-later', plugin_dir_url(__FILE__) . 'css/rs-save-for-later-public.css', array(), $this->version, 'all');
 	}
 
 	/**
@@ -87,7 +87,8 @@ class Mcplayer_Public {
 	 *
 	 * @since    1.0.0
 	 */
-	public function enqueue_scripts() {
+	public function enqueue_scripts()
+	{
 
 		/**	
 		 * This function is provided for demonstration purposes only.
@@ -100,17 +101,13 @@ class Mcplayer_Public {
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
-		
+
 		// wp_enqueue_script( 'aurora',  plugin_dir_url( __FILE__ ) . 'js/aurora.js/aurora.js', array( 'jquery' ), $this->version, false );
 
 		// wp_enqueue_script( 'mp3',  plugin_dir_url( __FILE__ ) . 'js/aurora.js/mp3.js', array( 'jquery' ), $this->version, false );
 
-		wp_enqueue_script( 'jplayer',  plugin_dir_url( __FILE__ ) . 'js/jplayer.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script('jquery-ui', plugin_dir_url(__FILE__) . 'js/jquery-ui.js', array('jquery'), $this->version, false);
 
-		wp_enqueue_script( 'player56s',  plugin_dir_url( __FILE__ ) . 'js/player56s.js', array( 'jplayer' ), $this->version, false );
-
-		wp_enqueue_script( 'jquery-ui', plugin_dir_url( __FILE__ ) . 'js/jquery-ui.js', array( 'jquery' ), $this->version, false );	
-		
 		// wp_enqueue_script( 'aim',  plugin_dir_url( __FILE__ ) . 'js/jquery.aim.js', array( 'jquery' ), $this->version, false );
 
 		//	wp_enqueue_script( 'network-information',  plugin_dir_url( __FILE__ ) . 'js/network-information.js', array( 'jquery' ), $this->version, false );	
@@ -119,14 +116,16 @@ class Mcplayer_Public {
 
 		// wp_enqueue_script( 'resizesensor',  plugin_dir_url( __FILE__ ) . 'js/resizeSensor.js', array( 'jplayer' ), $this->version, false );
 
-		// wp_enqueue_script( 'sticky-sidebar',  plugin_dir_url( __FILE__ ) . 'js/sticky-sidebar.js', array( 'jplayer' ), $this->version, false );
+		wp_enqueue_script('jplayer',  plugin_dir_url(__FILE__) . 'js/jplayer.js', array('jquery'), $this->version, false);
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/McPlayer-public.js', array( 'jquery' ), $this->version, false );
-								
-		wp_enqueue_script( 'smoothState',  plugin_dir_url( __FILE__ ) . 'js/jquery.smoothState.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script('player56s',  plugin_dir_url(__FILE__) . 'js/player56s.js', array('jplayer'), $this->version, false);
 
-		wp_enqueue_script( 'smoothStatejs',  plugin_dir_url( __FILE__ ) . 'js/smoothState.js', array( 'smoothState' ), $this->version, false );
+		wp_enqueue_script('sticky-sidebar',  plugin_dir_url(__FILE__) . 'js/sticky-sidebar.js', array('jplayer'), $this->version, false);
 
+		wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/McPlayer-public.js', array('jquery'), $this->version, false);
+
+		wp_enqueue_script('smoothState',  plugin_dir_url(__FILE__) . 'js/jquery.smoothState.js', array('jquery'), $this->version, false);
+
+		wp_enqueue_script('smoothStatejs',  plugin_dir_url(__FILE__) . 'js/smoothState.js', array('smoothState'), $this->version, false);
 	}
-
 }

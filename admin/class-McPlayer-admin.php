@@ -77,7 +77,7 @@ class Mcplayer_Admin {
 
 		wp_enqueue_style( 'McPlayer-public', plugin_dir_url( __FILE__ ) . 'css/McPlayer-public.css', array(), $this->version, 'all' );
 
-		wp_enqueue_style( 'rs-save-for-later-public', plugin_dir_url( __FILE__ ) . 'css/rs-save-for-later-public', array(), $this->version, 'all' );
+		wp_enqueue_style( 'rs-save-for-later-public', plugin_dir_url( __FILE__ ) . 'css/rs-save-for-later-public.css', array(), $this->version, 'all' );
 
 	}
 
