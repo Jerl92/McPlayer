@@ -13,27 +13,44 @@ function bulk_add_album_submenu_page_callback() {
         echo '<div style="width: 50%; float: left;">';
 		echo '<h2>Bulk add album</h2>';
         echo '</br>';
-        echo '<input type="text" class="yturl" name="yturl" value=""><br>';
-        echo '<input type="submit" id="yburlsubmit">';
-        echo '<div id="filetable"></div>';
-        echo '</br>';
-        echo '</div>';
-        echo '<div style="width: 50%; display: table; padding-top: 5%;">';
-        echo '<div id="artistdiv"></div>';
-        echo '</br>';
-        echo "Album:";
-        echo '<div id="metabox_album_upload">';
-        echo '<div class="image-preview">';
-        echo '<img id="image-preview" src="" style="max-width:100%;">';
-        echo '</div></br>';
-        echo '<input type="hidden" id="cover" class="small-text" name="meta-box-media[]" value="">';
-        echo '<input type="button" id="" class="button meta-box-upload-button" value="Upload">';
-        echo '<input type="button" id="-remove" class="button meta-box-upload-button-remove" value="Remove">';
-        echo '</div>';
+        $sox_file = '/usr/local/bin/youtube-dl';
 
-        echo '<div class="block">';
-        echo '<div id="result"></div>';
-        echo '</div>';
+        if (file_exists($sox_file)) {
+            print "youtube-dl is install";
+            echo '<br />';
+            echo 'Copy any music.youtube album playlist url';
+            echo '<br /><br />';
+        } else {
+            print 'If youtube-dl is istalled on the host, you can download msuic.youtube album playlist';
+            echo '<br />';
+            print "youtube-dl is not install";
+            print '<br />';
+            print "Go see https://github.com/ytdl-org/youtube-dl/ for more info";
+            print '<br /><br />';
+        }
+        if (file_exists($sox_file)) {
+            echo '<input type="text" class="yturl" name="yturl" value=""><br>';
+            echo '<input type="submit" id="yburlsubmit">';
+            echo '<div id="filetable"></div>';
+            echo '</br>';
+            echo '</div>';
+            echo '<div style="width: 50%; display: table; padding-top: 5%;">';
+            echo '<div id="artistdiv"></div>';
+            echo '</br>';
+            echo "Album:";
+            echo '<div id="metabox_album_upload">';
+            echo '<div class="image-preview">';
+            echo '<img id="image-preview" src="" style="max-width:100%;">';
+            echo '</div></br>';
+            echo '<input type="hidden" id="cover" class="small-text" name="meta-box-media[]" value="">';
+            echo '<input type="button" id="" class="button meta-box-upload-button" value="Upload">';
+            echo '<input type="button" id="-remove" class="button meta-box-upload-button-remove" value="Remove">';
+            echo '</div>';
+
+            echo '<div class="block">';
+            echo '<div id="result"></div>';
+            echo '</div>';
+        }
 	echo '</div>';
 }
 
@@ -221,7 +238,9 @@ function my_action_javascript() { ?>
         // since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php
         jQuery.post(ajaxurl, data, function(response) {
             console.log(response);
-            $('input[type="text"].yturl').val(response);
+            if(response != 'Finish'){
+                $('input[type="text"].yturl').val(response);
+            }
             setTimeout(function(){ yt_url($); }, 5000);
             if(response == 'Finish'){
                 wake_lock_stop($);   

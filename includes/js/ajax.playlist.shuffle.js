@@ -51,7 +51,8 @@ function ajax_no_shuffle($)  {
         dataType: 'JSON',
         success: function(data){
             //print stuff heres
-            $("#player56s-no-shuffle").html(data);   
+            $("#player56s-no-shuffle").html(data);
+            $("#player56s-shuffle").html('0');
             sleep(500);
             $(".player56s").player56s($);  
             $("#player56s-shuffle").html(null);        

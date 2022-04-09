@@ -1,6 +1,6 @@
 # McPlayer</br>
 
-<img style="max-width: 100%;" src="https://i.ibb.co/sQKcCh1/mcplayer.gif" alt="MCPlayer" />
+<img style="max-width: 100%;" src="https://i.ibb.co/py6CLRS/viewtype3.gif" alt="MCPlayer" />
 
 McPlayer is a full-width HTML5/JS/AJAX audio Player with Playlist, Plugin for WordPress.</br>
 
@@ -10,7 +10,7 @@ With McPlayer you can get your music from all arroud the wrold, from public wifi
 Create your artist, add a banner picture, upload the album cover and add all the songs from it.</br>
 Navigate through all the artists, albums and songs, add the song you want to the playlist and press play.</br>
 
-McPlayer is build with the following JS</br>
+McPlayer is build with the folloing JS</br>
 
 Unobtrusive page transitions with jQuery.</br>
 https://github.com/miguel-perez/smoothState.js</br>
@@ -45,7 +45,8 @@ https://WordPress.org/plugins/categories-images/</br>
 
 This section describes how to install the plugin and get it working.</br>
 
-Your can have FFMPEG installed on it, to get compresed track over cellulair network. `apt-get install ffmpeg`</br>
+You can have FFMPEG installed on it, to get compresed track over cellulair network. `apt-get install ffmpeg`</br>
+You can have youtube-dl installed on it, to download and add album playlist. `https://github.com/ytdl-org/youtube-dl/`</br></br>
 1. Upload `chichi` to the `/wp-content/themes/` directory.</br>
 2. Upload `McPlayer-Child-Theme` to the `/wp-content/themes/` directory.</br>
 3. Rename `McPlayer-Child-Theme` to `chichi-child`.</br>
@@ -55,10 +56,10 @@ Your can have FFMPEG installed on it, to get compresed track over cellulair netw
 7. Upload `McPlayer-master` to the `/wp-content/plugins/` directory.</br>
 8. Rename `McPlayer-master` to `McPlayer`.</br>
 9. Activate `McPlayer` through the Plugins menu in WordPress.</br>
-10. Add artist in the admin musics menu.</br>
+10. Add artist in the admin music menu.</br>
 11. Upload cover and set the artist and the year, of the cover</br>
-12. Add new music, set title, set file, set number, set artist, set album.</br>
-13. Use the same album cover picture for all the tracks in the album.</br>
+12. Add new music, set title, set mp3 file, set track number, set artist, set album.</br>
+13. <b>Use the same album cover picture for all the tracks in the album.</b></br>
 14. Add the player and playlist widget in the customization menu.</br>
 16. Set shortcode in page.</br>
 [pre_order_products per_page="50" columns="5" order="'rand" orderby="rand"]</br>
@@ -72,9 +73,6 @@ Your can have FFMPEG installed on it, to get compresed track over cellulair netw
 <img style="max-width: 100%;" src="https://i.ibb.co/LvxW3Z5/mcplayer1.jpg" />
 <img style="max-width: 100%;" src="https://i.ibb.co/tPNyMcN/mcplayer0.jpg" />
 <img style="max-width: 100%;" src="https://i.ibb.co/YXZ5cvB/mcplayer2.jpg" />
-<img style="max-width: 100%;" src="https://i.ibb.co/LC6RWrK/screencapture-mcplayer-jerl92-ca-artist-linkin-park-2021-11-05-18-47-27.png" />
-<img style="max-width: 100%;" src="https://i.ibb.co/yFTc7P8/screencapture-mcplayer-jerl92-ca-artists-2021-11-05-18-31-26.png" />
-<img style="max-width: 100%;" src="https://i.ibb.co/sQWdMbS/screencapture-mcplayer-jerl92-ca-2021-11-05-17-06-48.png" />
 <img style="max-width: 100%;" src="https://i.ibb.co/9G1DDFm/mcplayeradmin0.jpg" />
 <img style="max-width: 100%;" src="https://i.ibb.co/rdL9T5S/mcplayeradmin1.jpg" />
 <img style="max-width: 100%;" src="https://i.ibb.co/LJFCh3h/mcplayeradmin2.jpg" />
@@ -82,7 +80,7 @@ Your can have FFMPEG installed on it, to get compresed track over cellulair netw
 
 ## Changelog
 
-0.55 - Fix sidebare bottom display issue.</br>
+0.6 - Playlist can be save and load and shuffle and no-shuffle order work</br>
 0.5 - Not loged user, can now browser and interact with playlist and player.</br>
 0.4 - Remove sticky sidebar, use overflow scroll.</br>
 0.3 - Add wake lock when the tab is active, Use FFMPEG for audio compresion.</br>

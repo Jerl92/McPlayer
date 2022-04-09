@@ -240,16 +240,6 @@ var initMediaSession = function(filename) {
     return navigator.mediaSession.metadata;
 };
 
-var updateMediaSession = function(filename) {
-    navigator.mediaSession.metadata = new MediaMetadata({
-        title: getTrackTitle(filename),
-        artist: getTrackAuthor(filename),
-        album: getTrackAlbum(filename),
-        artwork: [{ src: getTrackAlbumImg(filename) }]
-    });
-    return navigator.mediaSession.metadata;
-};
-
 function shuffle(arra1) {
     let ctr = arra1.length;
     let temp;
@@ -419,17 +409,18 @@ jQuery( function player56s($) {
                         player56sInstance.removeAll();
                     }
             
-                    if (playlist_shuffle[0].innerText == "1") {
+                    if (playlist_shuffle[0].innerText === "1") {
                         var currentTrack = player56sInstance.tracks[player56sInstance.currentTrack];
                         shuffle(player56sInstance.tracks);
                         player56sInstance.tracks.forEach(function(element, index) {
                             if (element == currentTrack) {
                                 player56sInstance.currentTrack = index;
                             } 
-                        });                        
+                        });   
+                        console.log('shuffle');                
                     }
                      
-                    if (playlist_shuffle[0].innerText == "0") {
+                    if (playlist_shuffle[0].innerText === "0") {
                         var tracks = [],               
                         currentTrack = player56sInstance.tracks[player56sInstance.currentTrack];
                         player56sInstance.tracks.forEach(function(element_, index) {
@@ -454,8 +445,6 @@ jQuery( function player56s($) {
                             player56sInstance.currentTrack = parseInt(currenttrack_index[1].innerText);
                         }
                         array_move(player56sInstance.tracks, currenttrack_index[0].innerText, currenttrack_index[1].innerText);
-
-                        console.log(player56sInstance.tracks);
             
                         $.ajax({    
                             type: 'post',
@@ -741,9 +730,7 @@ jQuery( function player56s($) {
                 this.$container.find(".player56s-time").html(track.length ? formatTime(makeSeconds(track.length)) : "");
                 this.$container.find(".player56s-album-img").html('<span><img src="' + getTrackAlbumImg(track.filename) + '"></img></span>');
 
-                if ('mediaSession' in navigator) {  
-                    updateMediaSession(track.filename);
-                }
+                initMediaSession(track.filename);
 
                 checkAndRunTicker(this);
                 checkAndRunTickerAlbum(this);
@@ -797,9 +784,7 @@ jQuery( function player56s($) {
                 
                 var track = this.tracks[this.currentTrack];
 
-                if ('mediaSession' in navigator) {  
-                    updateMediaSession(track.filename);
-                }
+                initMediaSession(track.filename);
                 
                 $("#player56s-currenttrack").html(track.postid);
 
@@ -809,7 +794,7 @@ jQuery( function player56s($) {
                 this.$container.find(".player56s-time").html(track.length ? formatTime(makeSeconds(track.length)) : "");
                 this.$container.find(".player56s-album-img").html('<span><img src="' + getTrackAlbumImg(track.filename) + '"></img></span>');
 
-                this.$jPlayer.jPlayer("clearMedia");            
+                // this.$jPlayer.jPlayer("clearMedia");            
                 if ('connection' in navigator) {
                     if (navigator.connection.type == 'cellular') {
                         if (fileExists(track.audiofileLink + '.ogg') == 200 || fileExists(track.audiofileLink + '.ogg') == 206 ) {
@@ -1058,41 +1043,37 @@ jQuery( function player56s($) {
         }
         bindEvents() {
             var self = this, uniqueID = self.$container.attr("id");
-            if ('mediaSession' in navigator) {
-                initMediaSession(self.tracks[self.currentTrack].filename);
-            }
             $(document).on("player56s-pause." + uniqueID, function (event, triggeredPlayer56s) {
                 if (self !== triggeredPlayer56s) {
                     self.pause();
                 }
             });
             // Android mediasession nodification for extrenal btn while the mobile device screen is off
-            if ('mediaSession' in navigator) {
-                navigator.mediaSession.setActionHandler('play', function() {
-                    self.pseudoPlay();
-                    self.play();
-                });
-                navigator.mediaSession.setActionHandler('pause', function() {
-                    self.pseudoPause();
-                    self.pause();
-                });
-                navigator.mediaSession.setActionHandler('previoustrack', function () {
-                    self.switchTrack(false);
-                });
-                navigator.mediaSession.setActionHandler('nexttrack', function () {
-                    self.switchTrack(true);
-                });
-                navigator.mediaSession.setActionHandler('seekforward', function () {
-                    var timelinedone = $(".player56s-timeline-done").width() / $('.player56s-timeline-done').parent().width() * 100;
-                    var timeSeek = parseInt(timelinedone) + 5;
-                    willSeekTo(self, timeSeek);
-                });
-                navigator.mediaSession.setActionHandler('seekbackward', function () {
-                    var timelinedone = $(".player56s-timeline-done").width() / $('.player56s-timeline-done').parent().width() * 100;
-                    var timeSeek = parseInt(timelinedone) - 5;
-                    willSeekTo(self, timeSeek);
-                });                  
-            } 
+            navigator.mediaSession.setActionHandler('play', function() {
+                self.pseudoPlay();
+                self.play();
+            });
+            navigator.mediaSession.setActionHandler('pause', function() {
+                self.pseudoPause();
+                self.pause();
+            });
+            navigator.mediaSession.setActionHandler('previoustrack', function () {
+                self.switchTrack(false);
+            });
+            navigator.mediaSession.setActionHandler('nexttrack', function () {
+                self.switchTrack(true);
+            });
+            navigator.mediaSession.setActionHandler('seekforward', function () {
+                var timelinedone = $(".player56s-timeline-done").width() / $('.player56s-timeline-done').parent().width() * 100;
+                var timeSeek = parseInt(timelinedone) + 5;
+                willSeekTo(self, timeSeek);
+            });
+            navigator.mediaSession.setActionHandler('seekbackward', function () {
+                var timelinedone = $(".player56s-timeline-done").width() / $('.player56s-timeline-done').parent().width() * 100;
+                var timeSeek = parseInt(timelinedone) - 5;
+                willSeekTo(self, timeSeek);
+            });      
+            initMediaSession(self.tracks[self.currentTrack].filename);            
             // Get the connection type. 
             if ('connection' in navigator) {
                 $("#player56s-connection-type").html(navigator.connection.type);
