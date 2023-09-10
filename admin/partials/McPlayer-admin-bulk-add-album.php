@@ -48,7 +48,7 @@ function bulk_add_album_submenu_page_callback() {
             echo '</div>';
 
             echo '<div class="block">';
-            echo '<div id="result"></div>';
+            echo '<div id="result" style="height: 250px;overflow: scroll;"></div>';
             echo '</div>';
         }
 	echo '</div>';
@@ -194,12 +194,15 @@ function my_action_javascript() { ?>
                     yt_artist($);
                     yt_album($);
                     yt_table($);
-                    setTimeout(function(){ add_chart_data($); }, 5000);   
+                    setTimeout(function(){ add_chart_data($); }, 5000);  
+                    $('input[type="text"].yturl').val(''); 
                 }
                 if(response[1] == '1'){
                     yt_url_error($);
                 }
             });
+            var chatHistory = document.getElementById("result");
+            chatHistory.scrollTop = chatHistory.scrollHeight;
         });
     }
 
@@ -231,8 +234,10 @@ function my_action_javascript() { ?>
         $("#image-preview").attr("src", '');
         $("#cover").val('');
 
+        var url = $('input[type="text"].yturl').val();
         var data = {
-            'action': 'my_url_fetch'
+            'action': 'my_url_fetch',
+            'url': url
         };
 
         // since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php
@@ -278,7 +283,7 @@ function my_album() {
     foreach ($files_ as $file) {
         $realpath = realpath($path_implode.'/'.$file);
         $pathinfo = pathinfo($realpath);
-        $filename_artist = explode('-', $pathinfo['filename']);
+        $filename_artist = explode('-|-', $pathinfo['filename']);
         if($pathinfo['extension'] == 'mp3') {
             $artists[] .= $filename_artist[2];
             $albums[] .= $filename_artist[3];
@@ -383,7 +388,7 @@ function my_artist() {
         $realpath = realpath($path_implode.'/'.$file);
         $pathinfo = pathinfo($realpath);
         if($pathinfo['extension'] == 'mp3') {
-            $filename_artist = explode('-', $pathinfo['filename']);
+            $filename_artist = explode('-|-', $pathinfo['filename']);
             $artists[] .= $filename_artist[2];
         }
     }
@@ -437,6 +442,7 @@ add_action( 'wp_ajax_my_url_fetch', 'my_url_fetch' );
 function my_url_fetch() {
     $upload_dir = wp_upload_dir();
     $path_implode = $upload_dir['basedir'];
+    $url = $_POST['url'];
 
     $path_implode_ytdl = $upload_dir['basedir'] . '/youtube-dl/';
     $allFiles = scandir($path_implode_ytdl, SCANDIR_SORT_DESCENDING);
@@ -447,7 +453,14 @@ function my_url_fetch() {
     }
 
     $html = file_get_contents($path_implode.'/ytlink.txt');
-    $ytlinks = preg_split("/\r\n|\n|\r/", $html);
+
+    if($url != ''){
+        $ytlinks = preg_split("/\r\n|\n|\r/", $url);
+    }
+
+    if($url == ''){
+        $ytlinks = preg_split("/\r\n|\n|\r/", $html);
+    }
 
     $attachments = get_posts( array(
         'post_type'   => 'attachment',
@@ -484,7 +497,7 @@ function my_url() {
     $upload_dir = wp_upload_dir();
     $path_implode = $upload_dir['basedir'] . '/youtube-dl/';
     // shell_exec('rm '.$path_implode.'out.log');
-    $cmd = "youtube-dl -o '$path_implode%(playlist_index)s-%(title)s-%(artist)s-%(album)s-%(release_year)s.%(ext)s' -f 18 --extract-audio --audio-format mp3 --prefer-ffmpeg --write-thumbnail -k " . $url;
+    $cmd = "youtube-dl -o '$path_implode%(playlist_index)s-|-%(title)s-|-%(artist)s-|-%(album)s-|-%(release_year)s.%(ext)s' -f 18 --extract-audio --audio-format mp3 --prefer-ffmpeg --write-thumbnail -k " . $url;
     $res = shell_exec(''.$cmd.' > '.$path_implode.'out.log 2>&1 &');
     return wp_send_json ( $res );
 }
@@ -494,8 +507,8 @@ function my_dl() {
     $upload_dir = wp_upload_dir();
     $path_implode = $upload_dir['basedir'] . '/youtube-dl/';
     $html = file_get_contents($path_implode.'out.log');
-    $fruits = preg_split("/\r\n|\n|\r/", $html);
-    $res[0] = array_slice($fruits, -15, 15, true);
+    $res[0] = preg_split("/\r\n|\n|\r/", $html);
+    // $res[0] = array_slice($fruits, -50, 50, true);
 
     foreach ($res[0] as $string) {
         if (strpos($string, 'Finished downloading playlist') !== FALSE) { // Yoshi version
@@ -596,7 +609,7 @@ function my_action() {
 
     $wp_filetype = wp_check_filetype( $filename, null );
 
-    $filename_strstr = explode('-', $path_parts['filename']);
+    $filename_strstr = explode('-|-', $path_parts['filename']);
 
     $str_artists = str_replace("_", " ", $filename_strstr[1]);
 

@@ -334,22 +334,53 @@
             return;
 
         $orderby = $query->get( 'orderby');
+        $order = $query->get( 'order');
 
         if( 'track' == $orderby ) {
             $query->set('meta_key','meta-box-track-number');
             $query->set('orderby','meta_value_num');
+            if($order == 'asc') {
+                $query->set('order','ASC');
+            }
+            if($order == 'desc') {
+                $query->set('order','DESC');
+            }
         } elseif('artist' == $orderby) {
             $query->set('meta_key','meta-box-artist');
             $query->set('orderby','meta_value');
+            if($order == 'asc') {
+                $query->set('order','ASC');
+            }
+            if($order == 'desc') {
+                $query->set('order','DESC');
+            }
         } elseif('year' == $orderby) {
             $query->set('meta_key','meta-box-year');
-            $query->set('orderby','meta_value');
+            $query->set('orderby','meta_value_num');
+            if($order == 'asc') {
+                $query->set('order','ASC');
+            }
+            if($order == 'desc') {
+                $query->set('order','DESC');
+            }
         } elseif('album' == $orderby) {
             $query->set('meta_key','meta-box-media-cover-name');
             $query->set('orderby','meta_value');
+            if($order == 'asc') {
+                $query->set('order','ASC');
+            }
+            if($order == 'desc') {
+                $query->set('order','DESC');
+            }
         } elseif('time' == $orderby) {
             $query->set('meta_key','meta-box-track-length');
             $query->set('orderby','meta_value');
+            if($order == 'asc') {
+                $query->set('order','ASC');
+            }
+            if($order == 'desc') {
+                $query->set('order','DESC');
+            }
         }
     }
 

@@ -1,12 +1,34 @@
 
-function mcplayer_load_playlist($) {    
+function mcplayer_load_saved_playlist($) {    
     $('.rs-save-for-later-load-playlist').on('click', function(event) {
         event.preventDefault();
         event.stopPropagation();
         event.stopImmediatePropagation();
+
+        jQuery.ajax({
+            type: 'post',
+            url: save_playlist_ajax_url,
+            data: {
+                'action': 'load_saved_playlist'
+            },
+            dataType: 'json',
+            success: function(data){
+                console.log(data);
+                $("#subnav-content-load").html(null);
+                data.forEach(function(element, index) {
+                    $("#subnav-content-load").append(element);
+                }, this); 
+                mcplayer_load_playlist($);
+            },
+            error: function(errorThrown){
+                //error stuff here.text
+            }
+        });
         $("#subnav-content-load").toggleClass("subnav-content-display");
     });
+}
 
+function mcplayer_load_playlist($) { 
     $('.playlist-load-loop').on('click', function(event) {
         event.preventDefault();
         event.stopPropagation();
@@ -47,4 +69,5 @@ function mcplayer_load_playlist($) {
 
 jQuery(document).ready(function($) {
     mcplayer_load_playlist($);
+    mcplayer_load_saved_playlist($);
 });

@@ -88,9 +88,9 @@ function wp_playlist_ajax_scripts() {
 	wp_enqueue_script( 'wp-playlist-ajax-shuffle-scripts' );
 
 	/* AJAX playlist */
-	wp_register_script( 'wp-playlist-ajax-save-order-scripts', $url . "js/ajax.playlist.order.js", array( 'jquery' ), '1.0.0', true );
+	/* wp_register_script( 'wp-playlist-ajax-save-order-scripts', $url . "js/ajax.playlist.order.js", array( 'jquery' ), '1.0.0', true );
 	wp_localize_script( 'wp-playlist-ajax-save-order-scripts', 'save_order_ajax_url', admin_url( 'admin-ajax.php' ) );
-	wp_enqueue_script( 'wp-playlist-ajax-save-order-scripts' );
+	wp_enqueue_script( 'wp-playlist-ajax-save-order-scripts' ); */
 
 	/* Save AJAX playlist */
 	wp_register_script( 'wp-playlist-ajax-save-playlist-scripts', $url . "js/ajax.playlist.save.js", array( 'jquery' ), '1.0.0', true );
@@ -712,6 +712,28 @@ function load_playlist($post) {
 			}
 		}
 
+	}
+
+	return wp_send_json ( $html );
+}
+
+
+/* AJAX action callback */
+add_action( 'wp_ajax_load_saved_playlist', 'load_saved_playlist' );
+add_action( 'wp_ajax_nopriv_load_saved_playlist', 'load_saved_playlist' );
+
+function load_saved_playlist($post) {
+	$object_id = $_POST['object_id'];
+
+	$args = array(
+		'post_type'      => 'playlist',
+		'posts_per_page' => -1
+	);
+
+	$posts = get_posts($args);
+
+	foreach ($posts as $post) {
+		$html[] .= "<div class='playlist-load-loop' data-id='".$post->ID."'>".get_the_title($post->ID)."</div>";
 	}
 
 	return wp_send_json ( $html );

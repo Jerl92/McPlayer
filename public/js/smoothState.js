@@ -48,9 +48,9 @@
 
 				sidebarheight($);
 
-				mcplayer_save_playlist($);
-
 				mcplayer_load_playlist($);
+				
+				mcplayer_load_saved_playlist($);
 				
 			}
 		};

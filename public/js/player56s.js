@@ -894,8 +894,8 @@ jQuery( function player56s($) {
             var self = this, $jPlayer = self.$container.find(".player56s-invisible-object");
             this.$jPlayer = $jPlayer.jPlayer({
                 solution: "html",
-                wmode: "window",
-                preload: "metadata",
+                wmode: "gpu",
+                preload: "auto",
                 smoothPlayBar: true,
                 keyEnabled: true,
                 swfPath: self.options.swfPath + self.options.swfFilename,

@@ -6,7 +6,7 @@ function McPlayer_register_playlist_widgets() {
 add_action( 'widgets_init', 'McPlayer_register_playlist_widgets' );
 
 class MCPlayer_bottom_playlist_widget extends WP_Widget {
-	function MCPlayer_bottom_playlist_widget() {	
+	public function __construct() {
 		// Instantiate the parent object
 		parent::__construct(
 
@@ -68,7 +68,7 @@ class MCPlayer_bottom_playlist_widget extends WP_Widget {
 
 		echo "<div id='subnav-content-save' class='subnav-content'>
 			<span>
-				<input type='text' id='lnamesave' name='lname'></input>
+				<input type='text' id='lnamesave' name='lname' aria-labelledby='Save playlist'></input>
 				<button class='save-playlist'>save</button>
 			<span>
 		</div>";

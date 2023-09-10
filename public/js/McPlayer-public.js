@@ -168,14 +168,13 @@ var wrapplayer = jQuery('#wrap-player').height();
 var colophon = jQuery('#colophon').height();
 var masthead = jQuery('#masthead').height();
 
-var sidebar = new StickySidebar('#secondary', {
-    topSpacing: masthead,
-    bottomSpacing: wrapplayer+colophon+100,
-    containerSelector: '#content',
-    innerWrapperSelector: 'inner-wrapper-sticky',
-    scrollContainer: '#main-viewport',
-    minWidth: 760
-});
+var primaryheight = jQuery('#primary').height();
+var secondaryheight = jQuery('#secondary').height();
+
+if(primaryheight <= secondaryheight){
+    jQuery('#content').css("height", primaryheight);
+    jQuery('#secondary').css("overflow-y", "scroll");
+}
 
 var doVisualUpdates = true;
 

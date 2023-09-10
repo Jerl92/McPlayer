@@ -1,6 +1,6 @@
 # McPlayer</br>
 
-<img style="max-width: 100%;" src="https://i.ibb.co/py6CLRS/viewtype3.gif" alt="MCPlayer" />
+<img style="max-width: 100%;" src="https://s11.gifyu.com/images/S4z1z.gif" alt="MCPlayer" />
 
 McPlayer is a full-width HTML5/JS/AJAX audio Player with Playlist, Plugin for WordPress.</br>
 
@@ -27,19 +27,19 @@ https://WordPress.org/plugins/rs-save-for-later/</br>
 Interactions and Widgets for the web. jQuery UI is a curated set of user interface interactions, effects, widgets, and themes built on top of jQuery.</br>
 https://github.com/jquery/jquery-ui</br>
 
-## Recommended plugins
-This plugin is very usefull for add searching in taxonomie and meta post</br>
-https://wordpress.org/plugins/search-everything/</br>
-
-## Depend on theme
-A simple mobile friendly wordpress theme base on underscores</br>
-https://wordpress.org/themes/chichi/</br>
-
+## Depend on this theme and plugins
 MCPlayer child theme based on Chichi</br>
 https://github.com/Jerl92/McPlayer-Child-Theme</br>
 
 This plugin is dependency for McPlayer-Core</br>
 https://WordPress.org/plugins/categories-images/</br>
+
+This plugin is needed if you want the scroll bar to be sticky</br>
+https://wordpress.org/plugins/mystickysidebar/</br>
+
+## Recommended plugins
+This plugin is very usefull for add searching in taxonomie and meta post</br>
+https://wordpress.org/plugins/search-everything/</br>
 
 ## Installation
 

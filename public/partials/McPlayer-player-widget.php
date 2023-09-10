@@ -6,7 +6,7 @@ function McPlayer_register_widgets() {
 add_action( 'widgets_init', 'McPlayer_register_widgets' );
 
 class MCPlayer_bottom_player_widget extends WP_Widget {
-	 function MCPlayer_bottom_player_widget() {	
+	public function __construct() {
 		// Instantiate the parent object
 		parent::__construct(
 

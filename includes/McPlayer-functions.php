@@ -8,7 +8,7 @@
 	/////////////////////////////
 	add_action( 'wp_enqueue_scripts', 'yourprefix_a11y' );
 	function yourprefix_a11y() {
-	//	wp_enqueue_script( 'wp-a11y' );
+		wp_enqueue_script( 'wp-a11y' );
 	}
 
 
