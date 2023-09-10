@@ -9,6 +9,7 @@ McPlayer is a full-width HTML5/JS/AJAX audio Player with Playlist, Plugin for Wo
 With McPlayer you can get your music from all arroud the wrold, from public wifi or your cellular network.</br>
 Create your artist, add a banner picture, upload the album cover and add all the songs from it.</br>
 Navigate through all the artists, albums and songs, add the song you want to the playlist and press play.</br>
+Without any publicity</br>
 
 McPlayer is build with the folloing JS</br>
 
@@ -80,7 +81,8 @@ You can have youtube-dl installed on it, to download and add album playlist. `ht
 
 ## Changelog
 
-0.6 - Playlist can be save and load and shuffle and no-shuffle order work</br>
+0.7 - The bulk add album admin page, some stuff fixed.</br>
+0.6 - Playlist can be save and load and shuffle and no-shuffle order work.</br>
 0.5 - Not loged user, can now browser and interact with playlist and player.</br>
 0.4 - Remove sticky sidebar, use overflow scroll.</br>
 0.3 - Add wake lock when the tab is active, Use FFMPEG for audio compresion.</br>
@@ -88,3 +90,4 @@ You can have youtube-dl installed on it, to download and add album playlist. `ht
 0.1 - Init release.</br>
 
 Init version of this plugin, a lots of QA hours have been done with Chrome and Firefox, both work great.</br>
+Work realy good with LineageOS.</br>

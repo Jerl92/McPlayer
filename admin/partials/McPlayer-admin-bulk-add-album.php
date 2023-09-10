@@ -10,31 +10,61 @@ function register_my_custom_submenu_page() {
 
 function bulk_add_album_submenu_page_callback() {
     echo '<div class="wrap">';
-        echo '<div style="width: 50%; float: left;">';
+        echo '<div style="width: 1000%; float: left;">';
 		echo '<h2>Bulk add album</h2>';
         echo '</br>';
-        $sox_file = '/usr/local/bin/youtube-dl';
+        $youtube_file = '/usr/local/bin/youtube-dl';
 
-        if (file_exists($sox_file)) {
+        if (file_exists($youtube_file)) {
+            echo '<br />';
             print "youtube-dl is install";
             echo '<br />';
-            echo 'Copy any music.youtube album playlist url';
-            echo '<br /><br />';
+            print 'If youtube-dl is installed, you can download msuic.youtube.com full album playlist';
+            echo '<br />';
+            print 'https://music.youtube.com/playlist?list=OLAK5uy_kz25JK3b42rQnscGuO8CbxwPXLxZUBPq4';
+            echo '<br />';
         } else {
-            print 'If youtube-dl is istalled on the host, you can download msuic.youtube album playlist';
             echo '<br />';
             print "youtube-dl is not install";
             print '<br />';
             print "Go see https://github.com/ytdl-org/youtube-dl/ for more info";
-            print '<br /><br />';
+            print '<br />';
         }
-        if (file_exists($sox_file)) {
-            echo '<input type="text" class="yturl" name="yturl" value=""><br>';
-            echo '<input type="submit" id="yburlsubmit">';
+
+        $ffmpeg_file = '/usr/bin/ffmpeg';
+
+        if (file_exists($ffmpeg_file)) {
+            echo '<br />';
+            print "FFMPEG is install: Conversion to MP3 and OGG enable";
+            echo '<br />';
+        } else {
+            echo '<br />';
+            print "FFMPEG is not install";
+            print '<br />';
+            print "Go see https://linuxize.com/post/how-to-install-ffmpeg-on-ubuntu-20-04/ for more info";
+            print '<br />';
+        }
+
+        print '<br />';
+
+        echo '<input type="text" class="yturl" name="yturl" value=""><br>';
+        echo '<input type="submit" id="yburlsubmit">';
+
+        print '<br />';
+        print '<br />';
+
+        echo '<div class="block">';
+            echo 'Result:';
+            print '<br />';
+            echo '<div id="result" style="height: 250px;overflow-y: scroll;"></div>';
+            echo '</div>';
+            print '<br />';
             echo '<div id="filetable"></div>';
             echo '</br>';
             echo '</div>';
-            echo '<div style="width: 50%; display: table; padding-top: 5%;">';
+            echo '<div style="width: 100%; display: table; padding-top: 5%;">';
+            echo 'Artist:';
+            print '<br />';
             echo '<div id="artistdiv"></div>';
             echo '</br>';
             echo "Album:";
@@ -43,15 +73,10 @@ function bulk_add_album_submenu_page_callback() {
             echo '<img id="image-preview" src="" style="max-width:100%;">';
             echo '</div></br>';
             echo '<input type="hidden" id="cover" class="small-text" name="meta-box-media[]" value="">';
-            echo '<input type="button" id="" class="button meta-box-upload-button" value="Upload">';
-            echo '<input type="button" id="-remove" class="button meta-box-upload-button-remove" value="Remove">';
+            echo '<input type="hidden" id="" class="button meta-box-upload-button" value="Upload">';
+            echo '<input type="hidden" id="-remove" class="button meta-box-upload-button-remove" value="Remove">';
             echo '</div>';
-
-            echo '<div class="block">';
-            echo '<div id="result" style="height: 250px;overflow: scroll;"></div>';
-            echo '</div>';
-        }
-	echo '</div>';
+        echo '</div>';
 }
 
 add_action( 'admin_footer', 'my_action_javascript' ); // Write our JS below here
@@ -67,7 +92,6 @@ function my_action_javascript() { ?>
     }
 
     function add_chart_data($) {
-
         $('input[type="number"].tracknumber').each(function () {
             console.log($(this).val());
 
@@ -191,11 +215,12 @@ function my_action_javascript() { ?>
                     setTimeout(function(){ yt_dl($); }, 5000);   
                 }        
                 if(response[1] == '0'){
-                    yt_artist($);
                     yt_album($);
+                    yt_artist($);
                     yt_table($);
                     setTimeout(function(){ add_chart_data($); }, 5000);  
-                    $('input[type="text"].yturl').val(''); 
+                    // setTimeout(function(){ yt_url_fetch($); }, 10000);
+                    // $('input[type="text"].yturl').val(''); 
                 }
                 if(response[1] == '1'){
                     yt_url_error($);
@@ -244,11 +269,11 @@ function my_action_javascript() { ?>
         jQuery.post(ajaxurl, data, function(response) {
             console.log(response);
             if(response != 'Finish'){
-                $('input[type="text"].yturl').val(response);
+                $('input[type="text"].yturl').val();
+                setTimeout(function(){ yt_url($); }, 5000);
             }
-            setTimeout(function(){ yt_url($); }, 5000);
             if(response == 'Finish'){
-                wake_lock_stop($);   
+                wake_lock_stop($);
             }
         });
         
@@ -302,7 +327,7 @@ function my_album() {
 
     $key_artists = array_search(strval($counted_max_artists), $counted_artists);
 
-    $str_artists = str_replace("_", "-", strtolower($key_artists));
+    $str_artists = str_replace(" ", "-", strtolower($key_artists));
 
     $str_artists_ = str_replace("_", "+", $key_artists);
 
@@ -407,6 +432,8 @@ function my_artist() {
 
     $str_ = str_replace("_", " ", $key);
 
+    $str__ = str_replace(" ", "-", strtolower($key));
+
     foreach ( $terms as $term ) {
         if ( $term->slug == $str ) {
             $html[2] = $term->slug;
@@ -416,17 +443,19 @@ function my_artist() {
 
     if($x == 0){
         wp_create_term($str_, 'artist');
+        foreach ( $terms as $term ) {
+            if ( $term->slug == $str ) {
+                $html[2] = $term->slug;
+            }
+        }
     }
 
     $html[1] = $str_;
 
     $terms_ = get_terms( 'artist', 'hide_empty=0');
-
-    $html[0] = "Artist:";
-    $html[0] .= '</br>';
     $html[0] .= "<select id='artistoptions' name='customartist[]'>";
     foreach ( $terms_ as $term_ ) {
-        if ($term_->slug == $str) {
+        if ($term_->slug == $str__) {
             $html[0] .= "<option value='".$term_->term_id."' selected='selected'>".$term_->name."</option>";
         } else {
             $html[0] .= "<option value='".$term_->term_id."'>".$term_->name."</option>";
@@ -449,7 +478,7 @@ function my_url_fetch() {
     $files = array_diff($allFiles, array('.', '..'));
     $files_ = array_reverse($files);
     foreach ($files_ as $file) {
-        unlink(realpath($path_implode_ytdl.'/'.$file));
+        // unlink(realpath($path_implode_ytdl.'/'.$file));
     }
 
     $html = file_get_contents($path_implode.'/ytlink.txt');
@@ -515,6 +544,9 @@ function my_dl() {
             $res[1] = 0;
         }
         if (strpos($string, 'ERROR') !== FALSE) { // Yoshi version
+            $res[1] = 1;
+        }
+        if (strpos($string, 'youtube-dl: error:') !== FALSE) { // Yoshi version
             $res[1] = 1;
         }
     }

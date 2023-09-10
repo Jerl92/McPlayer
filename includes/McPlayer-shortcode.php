@@ -86,6 +86,8 @@ function artist_get_loop($atts) {
 		echo "<a class='letterartist' href='" . $curenturl . "?char=" . $number . "'>" . strtoupper($number) . "</a>";
 	}
 
+	echo "<br />";
+	
 	if($_GET['char']) {
 		$terms = get_terms( array(
 			'taxonomy' => 'artist',
