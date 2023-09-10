@@ -76,7 +76,7 @@ You can have youtube-dl installed on it, to download and add album playlist. `ht
 <img style="max-width: 100%;" src="https://i.ibb.co/9G1DDFm/mcplayeradmin0.jpg" />
 <img style="max-width: 100%;" src="https://i.ibb.co/rdL9T5S/mcplayeradmin1.jpg" />
 <img style="max-width: 100%;" src="https://i.ibb.co/LJFCh3h/mcplayeradmin2.jpg" />
-<img style="max-width: 100%;" src="https://i.ibb.co/NYH1PpD/bulk-add-album.png" />
+<img style="max-width: 100%;" src="https://i.ibb.co/R6G5xTt/bulk-add-album.png" />
 
 ## Changelog
 
