@@ -69,14 +69,16 @@ This section describes how to install the plugin and get it working.</br>
 13. <b>Use the same album cover picture for all the tracks in the album.</b></br>
 14. Add the player and playlist widget in the customization menu.</br>
 16. Set shortcode in page.</br>
-</br>
 [pre_order_products per_page="50" columns="5" order="'rand" orderby="rand"]</br>
 [artist_get_shortcode]</br>
 [year_get_shortcode]</br>
 [artist_new_get_shortcode]</br>
+
+You can have FFMPEG installed on it, to get compresed track over cellulair network.</br>
+https://github.com/FFmpeg/FFmpeg</br>
 </br>
-You can have FFMPEG installed on it, to get compresed track over cellulair network. https://github.com/FFmpeg/FFmpeg</br>
-You can have youtube-dl installed on it, to download and add album playlist. https://github.com/ytdl-org/youtube-dl</br>
+You can have youtube-dl installed on it, to download and add album playlist.</br>
+https://github.com/ytdl-org/youtube-dl</br>
 
 ## Screenshot
 <img style="max-width: 100%;" src="https://i.ibb.co/LvxW3Z5/mcplayer1.jpg" />
