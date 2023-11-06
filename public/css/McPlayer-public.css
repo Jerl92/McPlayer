@@ -213,12 +213,20 @@ ul.rs-saved-for-later {
     display: none;
 }
 
+.subnav-content-save-span {
+    margin: 25px 0 40px 0;
+    text-align: center;
+    width: 100%;
+}
+
 #subnav-content-load {
     display: none;
 }
 
 .subnav-content-display {
     display: block !important;
+    height: 250px;
+    overflow-y: scroll;
 }
 
 .playlist-load-loop {

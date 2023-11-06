@@ -66,7 +66,7 @@ class MCPlayer_bottom_playlist_widget extends WP_Widget {
 
 		<?php endif;
 
-		echo "<div id='subnav-content-save' class='subnav-content'>
+		echo "<div id='subnav-content-save' class='subnav-content subnav-content-save-span'>
 			<span>
 				<input type='text' id='lnamesave' name='lname' aria-labelledby='Save playlist'></input>
 				<button class='save-playlist'>save</button>

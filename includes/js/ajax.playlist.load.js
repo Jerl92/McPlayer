@@ -3,7 +3,6 @@ function mcplayer_load_saved_playlist($) {
     $('.rs-save-for-later-load-playlist').on('click', function(event) {
         event.preventDefault();
         event.stopPropagation();
-        event.stopImmediatePropagation();
 
         jQuery.ajax({
             type: 'post',
@@ -27,12 +26,11 @@ function mcplayer_load_saved_playlist($) {
         $("#subnav-content-load").toggleClass("subnav-content-display");
     });
 }
-
+    
 function mcplayer_load_playlist($) { 
     $('.playlist-load-loop').on('click', function(event) {
         event.preventDefault();
         event.stopPropagation();
-        event.stopImmediatePropagation();
 
         var $this = $(this),
         object_id = $this.data('id');
