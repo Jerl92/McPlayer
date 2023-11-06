@@ -4,7 +4,7 @@ function mcplayer_save_playlist($) {
         event.preventDefault();
         event.stopPropagation();
         event.stopImmediatePropagation();
-        $("#subnav-content-save").toggleClass("subnav-content-display");
+        $('#subnav-content-save').toggleClass('subnav-content-display');
     });
 
     $('.save-playlist').on('click', function(event) {
@@ -23,7 +23,8 @@ function mcplayer_save_playlist($) {
             },
             dataType: 'json',
             success: function(data){
-                console.log(data);
+                $('#subnav-content-save').toggleClass('subnav-content-display');
+                $('#lnamesave').val('');
             },
             error: function(errorThrown){
                 //error stuff here.text

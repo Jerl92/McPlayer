@@ -1,16 +1,20 @@
-# McPlayer</br>
+# McPlayer
 
-<img style="max-width: 100%;" src="https://s11.gifyu.com/images/S4z1z.gif" alt="MCPlayer" />
+McPlayer is a full-width HTML5/CSS/PHP/JS/AJAX audio Player with Playlist, Plugin for WordPress.</br>
 
-McPlayer is a full-width HTML5/JS/AJAX audio Player with Playlist, Plugin for WordPress.</br>
+<img style="max-width: 100%;" src="https://i.ibb.co/mtb9tvz/mcplayer.gif" alt="MCPlayer" />
 
-## Description</br>
-
+## Description
 With McPlayer you can get your music from all arroud the wrold, from public wifi or your cellular network.</br>
 Create your artist, add a banner picture, upload the album cover and add all the songs from it.</br>
 Navigate through all the artists, albums and songs, add the song you want to the playlist and press play.</br>
-Without any publicity</br>
+Working with android, it a nice way to do long drive with your custom playlist.</br>
+Without any ads.</br>
 
+In the admin panel, there a sub-page to let's do bulk add albums from music.youtube.com. Just copy and paste the playlist link and click the button and the album will download and convert to audio, and will add to the libray automatically. This make this plugin a must-have to have your private music library, without any artist you don't want, and only got what you like.</br>
+Without any limitation.</br>
+
+## Build-with
 McPlayer is build with the folloing JS</br>
 
 Unobtrusive page transitions with jQuery.</br>
@@ -43,11 +47,13 @@ This plugin is very usefull for add searching in taxonomie and meta post</br>
 https://wordpress.org/plugins/search-everything/</br>
 
 ## Installation
+This plugin have been designed on:</br>
+    -   Ubuntu Sever</br>
+    -   NGINX</br>
+    -   PHP 7.4</br>
 
 This section describes how to install the plugin and get it working.</br>
 
-You can have FFMPEG installed on it, to get compresed track over cellulair network. `apt-get install ffmpeg`</br>
-You can have youtube-dl installed on it, to download and add album playlist. `https://github.com/ytdl-org/youtube-dl/`</br></br>
 1. Upload `chichi` to the `/wp-content/themes/` directory.</br>
 2. Upload `McPlayer-Child-Theme` to the `/wp-content/themes/` directory.</br>
 3. Rename `McPlayer-Child-Theme` to `chichi-child`.</br>
@@ -63,16 +69,20 @@ You can have youtube-dl installed on it, to download and add album playlist. `ht
 13. <b>Use the same album cover picture for all the tracks in the album.</b></br>
 14. Add the player and playlist widget in the customization menu.</br>
 16. Set shortcode in page.</br>
+</br>
 [pre_order_products per_page="50" columns="5" order="'rand" orderby="rand"]</br>
 [artist_get_shortcode]</br>
 [year_get_shortcode]</br>
 [artist_new_get_shortcode]</br>
-[pre_order_products per_page="100" columns="5" order="DESC" orderby="date"]</br>
+</br>
+You can have FFMPEG installed on it, to get compresed track over cellulair network. https://github.com/FFmpeg/FFmpeg</br>
+You can have youtube-dl installed on it, to download and add album playlist. https://github.com/ytdl-org/youtube-dl</br>
 
 ## Screenshot
-
 <img style="max-width: 100%;" src="https://i.ibb.co/LvxW3Z5/mcplayer1.jpg" />
 <img style="max-width: 100%;" src="https://i.ibb.co/tPNyMcN/mcplayer0.jpg" />
+<img style="max-width: 100%;" src="https://i.ibb.co/rvMtZG0/mcplayer1.jpg" />
+<img style="max-width: 100%;" src="https://i.ibb.co/jRVZd5z/mcplayer3.jpg" />
 <img style="max-width: 100%;" src="https://i.ibb.co/YXZ5cvB/mcplayer2.jpg" />
 <img style="max-width: 100%;" src="https://i.ibb.co/9G1DDFm/mcplayeradmin0.jpg" />
 <img style="max-width: 100%;" src="https://i.ibb.co/rdL9T5S/mcplayeradmin1.jpg" />
@@ -80,8 +90,8 @@ You can have youtube-dl installed on it, to download and add album playlist. `ht
 <img style="max-width: 100%;" src="https://i.ibb.co/R6G5xTt/bulk-add-album.png" />
 
 ## Changelog
-
-0.7 - The bulk add album admin page, some stuff fixed.</br>
+0.8 - Add in the bulk add album, Imagick cropImage, to remove border of image album.</br>
+0.7 - Init version of bulk add album admin page.</br>
 0.6 - Playlist can be save and load and shuffle and no-shuffle order work.</br>
 0.5 - Not loged user, can now browser and interact with playlist and player.</br>
 0.4 - Remove sticky sidebar, use overflow scroll.</br>

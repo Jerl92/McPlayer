@@ -10,7 +10,7 @@ function register_my_custom_submenu_page() {
 
 function bulk_add_album_submenu_page_callback() {
     echo '<div class="wrap">';
-        echo '<div style="width: 1000%; float: left;">';
+        echo '<div style="width: 100%; float: left;">';
 		echo '<h2>Bulk add album</h2>';
         echo '</br>';
         $youtube_file = '/usr/local/bin/youtube-dl';
@@ -21,7 +21,7 @@ function bulk_add_album_submenu_page_callback() {
             echo '<br />';
             print 'If youtube-dl is installed, you can download msuic.youtube.com full album playlist';
             echo '<br />';
-            print 'https://music.youtube.com/playlist?list=OLAK5uy_kz25JK3b42rQnscGuO8CbxwPXLxZUBPq4';
+            print 'https://music.youtube.com/playlist?list=#';
             echo '<br />';
         } else {
             echo '<br />';
@@ -84,11 +84,7 @@ function my_action_javascript() { ?>
 	<script type="text/javascript" >
 
     function wake_lock_stop($) {
-        navigator.wakeLock.release("screen")
-        .then((wakeLock) => {
-            console.log(wakeLock);
-            console.log('stop');
-        })
+        
     }
 
     function add_chart_data($) {
@@ -212,6 +208,8 @@ function my_action_javascript() { ?>
                     $("#result").append(val);
                 });
                 if(response[1] != '0'){
+                    var chatHistory = document.getElementById("result");
+                    chatHistory.scrollTop = chatHistory.scrollHeight;
                     setTimeout(function(){ yt_dl($); }, 5000);   
                 }        
                 if(response[1] == '0'){
@@ -226,8 +224,6 @@ function my_action_javascript() { ?>
                     yt_url_error($);
                 }
             });
-            var chatHistory = document.getElementById("result");
-            chatHistory.scrollTop = chatHistory.scrollHeight;
         });
     }
 
@@ -279,18 +275,9 @@ function my_action_javascript() { ?>
         
     }
 
-    function wake_lock_start($) {
-        navigator.wakeLock.request('screen')
-        .then((wakeLock) => {
-            console.log(wakeLock);
-            console.log('acquired');
-        })
-    }
-
     jQuery(document).ready(function($) {
         $("#yburlsubmit").on( "click", function(event) {
             yt_url_fetch($);
-            wake_lock_start($);
         });
     });
 	</script> <?php
@@ -310,7 +297,8 @@ function my_album() {
         $pathinfo = pathinfo($realpath);
         $filename_artist = explode('-|-', $pathinfo['filename']);
         if($pathinfo['extension'] == 'mp3') {
-            $artists[] .= $filename_artist[2];
+            $artist_multipe = explode(',', $filename_artist[2]);
+            $artists[] .= $artist_multipe[0];
             $albums[] .= $filename_artist[3];
             $years[] .= $filename_artist[4];
         }
@@ -337,11 +325,9 @@ function my_album() {
 
     $key = array_search(strval($counted_max), $counted);
 
-    $str = str_replace("_", "-", strtolower($key));
+    $str = str_replace(" ", "-", strtolower($key));
 
-    $str_ = str_replace("_", "+", $key);
-
-    $str__ = str_replace("_", " ", $key);
+    $str__ = str_replace("_", "+", $key);
 
     $counted_years = array_count_values($years);
 
@@ -349,17 +335,13 @@ function my_album() {
 
     $key_years = array_search(strval($counted_max_years), $counted_years);
     
-    $image_data = file_get_contents( $cover_url );
-    
+    $image_data = file_get_contents( $cover_path );
+
     $filename = $str.'.jpg';
 
-    $upload_dir = wp_upload_dir();
-    if ( wp_mkdir_p( $upload_dir['path'] ) ) {
     $file = $upload_dir['path'] . '/' . $filename;
-    }
-    else {
-    $file = $upload_dir['basedir'] . '/' . $filename;
-    }
+
+    $upload_dir = wp_upload_dir();
 
     file_put_contents( $file, $image_data );
     
@@ -378,6 +360,15 @@ function my_album() {
     require_once( ABSPATH . 'wp-admin/includes/image.php' );
     $attach_data = wp_generate_attachment_metadata( $attach_id, $file );
     wp_update_attachment_metadata( $attach_id, $attach_data );
+
+    $pathmedia = get_attached_file($attach_id);
+
+    header('Content-type: image/jpeg');
+
+    $image = new Imagick($pathmedia);
+    $image->cropImage(720,720,280,0);
+
+    $image->writeImage($pathmedia);
 
     $terms = get_terms( 'artist', 'hide_empty=0');
 
@@ -414,7 +405,8 @@ function my_artist() {
         $pathinfo = pathinfo($realpath);
         if($pathinfo['extension'] == 'mp3') {
             $filename_artist = explode('-|-', $pathinfo['filename']);
-            $artists[] .= $filename_artist[2];
+            $artist_multipe = explode(',', $filename_artist[2]);
+            $artists[] .= $artist_multipe[0];
         }
     }
 
@@ -478,7 +470,7 @@ function my_url_fetch() {
     $files = array_diff($allFiles, array('.', '..'));
     $files_ = array_reverse($files);
     foreach ($files_ as $file) {
-        // unlink(realpath($path_implode_ytdl.'/'.$file));
+       unlink(realpath($path_implode_ytdl.'/'.$file));
     }
 
     $html = file_get_contents($path_implode.'/ytlink.txt');

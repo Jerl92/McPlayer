@@ -104,7 +104,7 @@ function artist_get_loop($atts) {
 		shuffle($terms_);
 			
 		// Grab Indices 0 - 5, 6 in total
-		$terms = array_slice( $terms_, 0, 8 );
+		$terms = array_slice( $terms_, 1, 64 );
 	}
 
 	if ($terms) {
