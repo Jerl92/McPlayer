@@ -698,31 +698,10 @@ jQuery( function player56s($) {
                     var track = this.tracks[this.currentTrack];
                 }
                 $("#player56s-currenttrack").html(track.postid);
-                if ('connection' in navigator) {
-                    if (navigator.connection.type == 'cellular') {
-                        if (fileExists(track.audiofileLink + '.ogg') == 200 || fileExists(track.audiofileLink + '.ogg') == 206) {
-                            $("#ogg_player_toggle").css('display', 'block');
-                            this.$jPlayer.jPlayer("setMedia", {
-                                oga: track.audiofileLink + '.ogg'
-                            });
-                        } else {
-                            $("#ogg_player_toggle").css('display', 'none');
-                            this.$jPlayer.jPlayer("setMedia", {
-                                mp3: track.audiofileLink
-                            });
-                        }
-                    } else {
-                        $("#ogg_player_toggle").css('display', 'none');
-                        this.$jPlayer.jPlayer("setMedia", {
-                            mp3: track.audiofileLink
-                        });
-                    }
-                } else {
-                    $("#ogg_player_toggle").css('display', 'none');
-                    this.$jPlayer.jPlayer("setMedia", {
-                        mp3: track.audiofileLink
-                    });
-                }
+                $("#ogg_player_toggle").css('display', 'none');
+                this.$jPlayer.jPlayer("setMedia", {
+                    mp3: track.audiofileLink
+                });
 
                 this.$container.find(".player56s-title").html('<span>' + getTrackTitle(track.filename) + '</span>');
                 this.$container.find(".player56s-author").html('<span>' + getTrackAuthor(track.filename) + '</span>');
@@ -795,31 +774,10 @@ jQuery( function player56s($) {
                 this.$container.find(".player56s-album-img").html('<span><img src="' + getTrackAlbumImg(track.filename) + '"></img></span>');
 
                 // this.$jPlayer.jPlayer("clearMedia");            
-                if ('connection' in navigator) {
-                    if (navigator.connection.type == 'cellular') {
-                        if (fileExists(track.audiofileLink + '.ogg') == 200 || fileExists(track.audiofileLink + '.ogg') == 206 ) {
-                            $("#ogg_player_toggle").css('display', 'block');
-                            this.$jPlayer.jPlayer("setMedia", {
-                                oga: track.audiofileLink + '.ogg'
-                            });
-                        } else {
-                            $("#ogg_player_toggle").css('display', 'none');
-                            this.$jPlayer.jPlayer("setMedia", {
-                                mp3: track.audiofileLink
-                            });
-                        }
-                    } else {
-                        $("#ogg_player_toggle").css('display', 'none');
-                        this.$jPlayer.jPlayer("setMedia", {
-                            mp3: track.audiofileLink
-                        });
-                    }
-                } else {
-                    $("#ogg_player_toggle").css('display', 'none');
-                    this.$jPlayer.jPlayer("setMedia", {
-                        mp3: track.audiofileLink
-                    });
-                }
+                $("#ogg_player_toggle").css('display', 'none');
+                this.$jPlayer.jPlayer("setMedia", {
+                    mp3: track.audiofileLink
+                });
 
                 if (status == 1) {
                     this.pseudoPlay();
@@ -903,33 +861,10 @@ jQuery( function player56s($) {
                 volume: self.options.volume,
                 ready: function () {
                     var audiofileLink = self.tracks[0].audiofileLink, uniqueID = self.$container.attr("id");
-                    // check if the android device is on carrier network then use ogg file, otherwise use mp3 file.
-                    if ('connection' in navigator) {
-                        if (navigator.connection.type == 'cellular') {
-                            if (fileExists(audiofileLink + '.ogg') == 200 || fileExists(audiofileLink + '.ogg') == 206 ) {
-                                $("#ogg_player_toggle").css('display', 'block');
-                                self.$jPlayer.jPlayer("setMedia", {
-                                    oga: audiofileLink + '.ogg'
-                                });
-                            } else {
-                                $("#ogg_player_toggle").css('display', 'none');
-                                self.$jPlayer.jPlayer("setMedia", {
-                                    mp3: audiofileLink
-                                });
-                            }
-                        } else {
-                            $("#ogg_player_toggle").css('display', 'none');
-                            self.$jPlayer.jPlayer("setMedia", {
-                                mp3: audiofileLink
-                            });
-                        }
-                    }
-                    else {
-                        $("#ogg_player_toggle").css('display', 'none');
-                        self.$jPlayer.jPlayer("setMedia", {
-                            mp3: audiofileLink
-                        });
-                    }
+                    $("#ogg_player_toggle").css('display', 'none');
+                    self.$jPlayer.jPlayer("setMedia", {
+                        mp3: audiofileLink
+                    });
                     self.$container.find(".player56s-button").on("click", function (event) {
                         event.stopPropagation();
                         event.preventDefault();

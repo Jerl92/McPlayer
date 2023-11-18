@@ -211,6 +211,7 @@ ul.rs-saved-for-later {
 
 #subnav-content-save {
     display: none;
+    height: 50px !important;
 }
 
 .subnav-content-save-span {
@@ -359,7 +360,7 @@ a.rs-save-for-later-button.saved:after, a.rs-save-for-later-button-album.saved:a
 @media only screen and (min-width: 1367px) {
 
     .page-music {
-        width: 19.5%;
+        width: 19.6%;
         padding: 0 0.25%;    
         display: inline-block;
     }
