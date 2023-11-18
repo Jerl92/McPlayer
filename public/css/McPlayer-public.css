@@ -156,7 +156,11 @@ ul.rs-saved-for-later {
 
 .letterartist {
     font-size: 30px;
-    margin: 17.5px;
+    margin: 15px;
+}
+
+.letterartistwrap {
+    text-align: center;
 }
 
 .searchartist {

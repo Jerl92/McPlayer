@@ -2,6 +2,99 @@
 
 /***************************************************************************/
 /***************************************************************************/
+/******************** Short code to display info about database *******************/
+
+function get_database_info_loop($atts) {
+
+	$terms = get_terms( array(
+		'taxonomy'   => 'artist',
+		'hide_empty' => true,
+	) );
+	
+	$i = 0;
+	foreach($terms as $term){
+		$args = array( 
+			'post_type' => 'attachment',
+			'posts_per_page' => -1,
+			'post_mime_type' => 'image',
+			'meta_key' => 'meta-box-year',
+			'orderby' => 'meta_value_num',
+			'order' => 'ASC',
+			'tax_query' => array(
+				array(
+					'taxonomy' => 'artist',
+					'field'    => 'slug',
+					'terms'    => $term->slug,
+				),
+			),
+		); 
+
+		$attachments[$i++] = get_posts( $args );	
+	}
+
+	$x = 0;
+	$s = 0;
+	$sc = 0;
+	foreach($attachments as $attachment_){
+		$x+= count($attachment_);
+
+		foreach($attachment_ as $attachment){
+
+			$getslugid = wp_get_post_terms( $attachment->ID, 'artist' );
+			foreach( $getslugid as $thisslug ) {
+				$artist_slug_name = $thisslug->name; // Added a space between the slugs with . ' '
+			}
+	
+			$get_songs_args = array( 
+				'post_type' => 'music',
+				'posts_per_page' => -1,
+				'meta_key' => 'meta-box-media-cover_',
+				'meta_value' => $attachment->ID,
+				'order' => 'DESC',
+				'tax_query' => array(
+					array(
+						'taxonomy' => 'artist',
+						'field'    => 'name',
+						'terms'    => $artist_slug_name
+					)
+				)
+			); 
+		
+			$get_songs[$s++] = get_posts( $get_songs_args );
+
+		}
+
+	}
+
+	if ( $get_songs ) {
+			
+		foreach($get_songs as $get_song_){
+			$sc+= count($get_song_);
+			foreach ( $get_song_ as $get_song ) {
+				$get_songs_calc[$i++] =  seconds_from_time( get_post_meta(  $get_song->ID , 'meta-box-track-length' , true ));
+			}
+		}
+	}
+
+	?><div style="width: 100%;display: flex;"><?php
+		?><div style="width: 50%;font-size: 30px;font-weight: 400;"><?php
+			echo 'Numbre of artists: ' . count($terms);
+			echo '</br>';
+			echo 'Numbre of albums: ' . $x;
+		?></div><?php
+		?><div style="width: 50%;font-size: 30px;font-weight: 400;text-align: end;"><?php
+			echo 'Numbre of songs: ' . $sc;
+			echo '</br>';
+			echo 'Total time: ' . time_from_seconds ( array_sum($get_songs_calc) );
+		?></div><?php
+	?></div><?php
+
+
+}
+add_shortcode('get_database_info', 'get_database_info_loop');
+
+/***************************************************************************/
+/***************************************************************************/
 /******************** Short code to display single music *******************/
 
 function woocommerce_get_pre_order_loop($atts) {
@@ -79,13 +172,17 @@ function terms_clauses_47840519( $clauses, $taxonomies, $args ){
 function artist_get_loop($atts) {
 
 	$curenturl = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
-	foreach (range('a', 'z') as $alphabet) {
-		echo "<a class='letterartist' href='" . $curenturl . "?char=" . $alphabet . "'>" . strtoupper($alphabet) . "</a>";
-	}
+
+	?><div class='letterartistwrap'><?php
 	foreach (range('0', '9') as $number) {
 		echo "<a class='letterartist' href='" . $curenturl . "?char=" . $number . "'>" . strtoupper($number) . "</a>";
 	}
-
+	?></div><?php
+	?><div class='letterartistwrap'><?php
+	foreach (range('a', 'z') as $alphabet) {
+		echo "<a class='letterartist' href='" . $curenturl . "?char=" . $alphabet . "'>" . strtoupper($alphabet) . "</a>";
+	}
+	?></div><?php
 	echo "<br />";
 	
 	if($_GET['char']) {
