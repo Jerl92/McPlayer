@@ -48,6 +48,10 @@ function play_now($) {
 
                         ajax_playlist_update_sidebar($, object_id);
 
+                        $('.playlist_matches_count').text('');
+                        
+						$('.playlist_matches_count').text(data.count);		
+
                         $this.attr('data-title', 'Pause');
 
                     }

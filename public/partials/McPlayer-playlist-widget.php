@@ -25,12 +25,12 @@ class MCPlayer_bottom_playlist_widget extends WP_Widget {
 	function widget( $args, $instance ) {
 
 		$title = apply_filters( 'widget_title', $instance['title'] );
+		$matches = get_user_meta( user_if_login(), 'rs_saved_for_later', true );
+		$matches_count = count($matches);
 
 		echo $args['before_widget'];
 		if ( ! empty( $title ) )
-		echo $args['before_title'] . $title . $args['after_title'];
-	
-		$matches = get_user_meta( user_if_login(), 'rs_saved_for_later', true );
+		echo $args['before_title'] . $title . ' - <span class="playlist_matches_count">' . $matches_count . '</span>' . $args['after_title'];
 		
 		if ( ! empty( $matches ) ) {
 			$args = array( 

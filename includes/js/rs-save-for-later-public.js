@@ -43,13 +43,17 @@ function rs_save_for_later($) {
 						$this.parent().find('.rs-see-saved').remove();
 						$('.rs-saved-trigger span').text(data.count);
 						$('.rs-saved-trigger').addClass('empty');	
+						$('.playlist_matches_count').text('');
+						$('.playlist_matches_count').text(data.count);
 					} else {	
 						ajax_playlist($, object_id);
 						ajax_playlist_add_sidebar($, object_id);
 						$this.addClass('saved');
 						$this.attr('data-title', rs_save_for_later_ajax.unsave_txt);
 						$this.attr('data-original-title', rs_save_for_later_ajax.unsave_txt);
-						$('.rs-saved-trigger').removeClass('empty');									
+						$('.rs-saved-trigger').removeClass('empty');	
+						$('.playlist_matches_count').text('');
+						$('.playlist_matches_count').text(data.count);								
 					}
 					anchor.removeData('disabled');
 				},

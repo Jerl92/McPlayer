@@ -5,7 +5,7 @@ McPlayer is a full-width HTML5/CSS/PHP/JS/AJAX audio Player with Playlist, Plugi
 <img style="max-width: 100%;" src="https://i.ibb.co/vhxJ13Q/mcplayer.gif" alt="MCPlayer" />
 
 ## Description
-With McPlayer you can get your music from all arroud the wrold, from public wifi or your cellular network.</br>
+With McPlayer you can get your music from all around the world, from public Wi-Fi or your cellular network.</br>
 Create your artist, add a banner picture, upload the album cover and add all the songs from it.</br>
 Navigate through all the artists, albums and songs, add the song you want to the playlist and press play.</br>
 Working with android, it a nice way to do long drive with your custom playlist.</br>
