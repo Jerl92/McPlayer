@@ -62,68 +62,6 @@
 	}
 	add_filter( 'sanitize_file_name', 'wpartisan_sanitize_file_name', 10, 1 );
 
-
-	//////////////////
-	//
-	//	add_ogg_attachment($attachment_ID)
-	//	Automaticly convert the uploded audio file to OGG format for less LTE data use.
-	//	Because of Chrome for android 60+ the conection.state set the player to use OGG file. MP3 = 6MB => OGG = 1.3MB
-	//
-	//////////////////
-	function add_ogg_attachment($attachment_ID)
-	{          
-		global $current_user;
-		get_currentuserinfo();
-
-		$ffmpeg_file = '/usr/bin/ffmpeg';
-
-		$attachment_post = get_post( $attachment_ID );
-
-		$type = get_post_mime_type($attachment_ID);
-
-		$musics_option = get_option( 'musics_option_name' ); // Array
-
-		$rate_value =  $musics_option ['audio_rate']; // Option value
-
-		$channel_value =  $musics_option ['audio_channel']; // Option value
-
-		$codec_value =  $musics_option ['audio_codec']; // Option value
-		
-		if ($rate_value == null) {
-			$rate_value = '44100';
-		} else {
-			$rate_value = $rate_value;
-		}
-
-		if ($channel_value == 1) {
-			$channel_value = 1;
-		} elseif ($channel_value == 2 || $channel_value == null) {
-			$channel_value = 2;
-		}	
-		
-		$norm_ = ' ';
-		if ($codec_value == 1) {
-			$codec_value = '.ogg';
-			$norm_ = ' -c:a libvorbis -qscale:a 5 ';
-		} elseif ( $codec_value == 2 ) {
-			$codec_value = '.wma';
-		} elseif ( $codec_value == 3 ) {
-			$codec_value = '.mp3';
-		} elseif ( $codec_value == 4 ) {
-			$codec_value = '.acc';
-		}
-
-		if(strpos($type, 'audio') === 0)
-		{
-			if (file_exists($ffmpeg_file)) {
-				echo exec('ffmpeg -i ' . get_attached_file($attachment_ID) . $norm_ .' -r ' . $rate_value .' -ac ' . $channel_value .' -b:a 192k '. get_attached_file($attachment_ID) . $codec_value);
-				chmod( get_attached_file($attachment_ID) . $codec_value , 0666 );
-			}
-		}
-	}
-	add_action('add_attachment', 'add_ogg_attachment');
-
-
 	//////////////////
 	//
 	//	Automaticly remove the OGG audio file if the original is removed.

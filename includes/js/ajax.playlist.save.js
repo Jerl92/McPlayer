@@ -1,10 +1,15 @@
 
 function mcplayer_save_playlist($) {    
     $('.rs-save-for-later-save-playlist').on('click', function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        
         $('#subnav-content-save').toggleClass('subnav-content-display');
     });
 
     $('.save-playlist').on('click', function(event) {
+        event.preventDefault();
+        event.stopPropagation();
 
         var inputVal = document.getElementById("lnamesave").value;
     

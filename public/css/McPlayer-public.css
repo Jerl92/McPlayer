@@ -211,11 +211,12 @@ ul.rs-saved-for-later {
 
 #subnav-content-save {
     display: none;
-    height: 50px !important;
+    height: 75px !important;
 }
 
-.subnav-content-save-span {
-    margin: 25px 0 40px 0;
+.subnav-content-save span {
+    margin: auto;
+    display: table;
     text-align: center;
     width: 100%;
 }

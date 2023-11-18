@@ -65,7 +65,7 @@
 
 				tooltip($);	
 				
-				scroll_to_album($);
+				// scroll_to_album($);
 				
 				footer_stick($);
                     
@@ -80,6 +80,8 @@
 				mcplayer_load_playlist($);
 				
 				mcplayer_load_saved_playlist($);
+
+				mcplayer_save_playlist($);
 				
 			}
 		};
