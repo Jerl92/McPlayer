@@ -216,7 +216,7 @@ function my_action_javascript() { ?>
                     yt_album($);
                     yt_artist($);
                     yt_table($);
-                    setTimeout(function(){ add_chart_data($); }, 5000);  
+                    setTimeout(function(){ add_chart_data($); }, 7500);  
                     // setTimeout(function(){ yt_url_fetch($); }, 10000);
                     // $('input[type="text"].yturl').val(''); 
                 }
@@ -291,23 +291,42 @@ function my_album() {
     $path_implode = $upload_dir['basedir'] . '/youtube-dl/';
     $allFiles = scandir($path_implode, SCANDIR_SORT_DESCENDING);
     $files = array_diff($allFiles, array('.', '..'));
-    $files_ = array_reverse($files);
+    $files_ = array_reverse($files);    
     foreach ($files_ as $file) {
         $realpath = realpath($path_implode.'/'.$file);
         $pathinfo = pathinfo($realpath);
-        $filename_artist = explode('-|-', $pathinfo['filename']);
-        if($pathinfo['extension'] == 'mp3') {
-            $artist_multipe = explode(',', $filename_artist[2]);
-            $artists[] .= $artist_multipe[0];
-            $albums[] .= $filename_artist[3];
-            $years[] .= $filename_artist[4];
-        }
-        if($pathinfo['extension'] == 'jpg' || $pathinfo['extension'] == 'webp' ) {
-            $cover_path = $realpath;
-            $cover_url = get_site_url() .'/'. UPLOADS . '/youtube-dl/' . $file;
-            $cover_filename = $file;
+        if($pathinfo['extension'] == 'json') {
+            $jsonfileget = file_get_contents($realpath);
+            $jsonfile = json_decode($jsonfileget, true);
         }
     }
+
+    $artist_multipe = explode(',', $jsonfile['artist']);
+    $artists[] .= $artist_multipe[0];
+    $albums[] .= $jsonfile['album'];
+    $years[] .= $jsonfile['release_year'];
+
+    $sanitized_filename = remove_accents( $jsonfile['id'] . '-' . $jsonfile['album'] . '.jpg' ); // Convert to ASCII
+
+    // Standard replacements
+    $invalid = array(
+        ' '   => '-',
+        '%20' => '-',
+        '_'   => '-',
+    );
+    $sanitized_filename = str_replace( array_keys( $invalid ), array_values( $invalid ), $sanitized_filename );
+
+    $sanitized_filename = preg_replace('/[^A-Za-z0-9-\. ]/', '', $sanitized_filename); // Remove all non-alphanumeric except .
+    $sanitized_filename = preg_replace('/\.(?=.*\.)/', '', $sanitized_filename); // Remove all but last .
+    $sanitized_filename = preg_replace('/-+/', '-', $sanitized_filename); // Replace any more than one - in a row
+    $sanitized_filename = str_replace('-.', '.', $sanitized_filename); // Remove last - if at the end
+    $sanitized_filename = strtolower( $sanitized_filename ); // Lowercase
+
+    $content = file_get_contents($jsonfile['thumbnails'][4]['url']);
+    file_put_contents($path_implode.'/'.$sanitized_filename, $content);
+    $cover_path = $path_implode.'/'.$sanitized_filename;
+    $cover_url = get_site_url() .'/'. UPLOADS . '/youtube-dl/' . $sanitized_filename;
+    $cover_filename = $file;
 
     $counted_artists = array_count_values($artists);
 
@@ -403,10 +422,23 @@ function my_artist() {
     foreach ($files_ as $file) {
         $realpath = realpath($path_implode.'/'.$file);
         $pathinfo = pathinfo($realpath);
-        if($pathinfo['extension'] == 'mp3') {
-            $filename_artist = explode('-|-', $pathinfo['filename']);
-            $artist_multipe = explode(',', $filename_artist[2]);
-            $artists[] .= $artist_multipe[0];
+        if($pathinfo['extension'] == 'json') {
+            $jsonfileget = file_get_contents($realpath);
+            $jsonfiles[$x++] = json_decode($jsonfileget, true);
+        }
+    }
+    foreach ($files_ as $file) {
+        foreach($jsonfiles as $jsonfile) {
+            $realpath = realpath($path_implode.'/'.$file);
+            $pathinfo = pathinfo($realpath);
+            if($pathinfo['extension'] == 'mp3'){
+                if($pathinfo['filename'] == $jsonfile['id']) {
+                    $artist_multipe = explode(',', $jsonfile['artist']);
+                    $artists[] .= $artist_multipe[0];
+                    $albums[] .= $jsonfile['album'];
+                    $years[] .= $jsonfile['release_year'];
+                }
+            }
         }
     }
 
@@ -470,7 +502,7 @@ function my_url_fetch() {
     $files = array_diff($allFiles, array('.', '..'));
     $files_ = array_reverse($files);
     foreach ($files_ as $file) {
-       unlink(realpath($path_implode_ytdl.'/'.$file));
+        unlink(realpath($path_implode_ytdl.'/'.$file));
     }
 
     $html = file_get_contents($path_implode.'/ytlink.txt');
@@ -518,7 +550,8 @@ function my_url() {
     $upload_dir = wp_upload_dir();
     $path_implode = $upload_dir['basedir'] . '/youtube-dl/';
     // shell_exec('rm '.$path_implode.'out.log');
-    $cmd = "youtube-dl -o '$path_implode%(playlist_index)s-|-%(title)s-|-%(artist)s-|-%(album)s-|-%(release_year)s.%(ext)s' -f 18 --extract-audio --audio-format mp3 --prefer-ffmpeg --write-thumbnail -k " . $url;
+    // $cmd = "youtube-dl -o '$path_implode%(playlist_index)s-|-%(title)s-|-%(artist)s-|-%(album)s-|-%(release_year)s.%(ext)s' -f 18 --extract-audio --audio-format mp3 --prefer-ffmpeg --write-thumbnail -k " . $url;
+    $cmd = "youtube-dl -o '$path_implode%(id)s.%(ext)s' -f best --extract-audio --audio-format mp3 --prefer-avconv --write-info-json -k " . $url;
     $res = shell_exec(''.$cmd.' > '.$path_implode.'out.log 2>&1 &');
     return wp_send_json ( $res );
 }
@@ -555,17 +588,30 @@ function my_table() {
     $files = array_diff($allFiles, array('.', '..'));
     $files_ = array_reverse($files);
     $html[] = '<table>';
+
     foreach ($files_ as $file) {
         $realpath = realpath($path_implode.'/'.$file);
         $pathinfo = pathinfo($realpath);
-        if($pathinfo['extension'] == 'mp3') {
-            $html[] .= '<tr><td>';
-            $html[] .= '<input type="number" class="tracknumber" name="'.$realpath.'" value="'.$i.'" >';
-            $html[] .= '</td>';
-            $html[] .= '<td>';
-            $html[] .= $file;
-            $html[] .= '</tr></td>';
-            $i++;
+        if($pathinfo['extension'] == 'json') {
+            $jsonfileget = file_get_contents($realpath);
+            $jsonfiles[$x++] = json_decode($jsonfileget, true);
+        }
+    }
+    foreach ($files_ as $file) {
+        foreach($jsonfiles as $jsonfile) {
+            $realpath = realpath($path_implode.'/'.$file);
+            $pathinfo = pathinfo($realpath);
+            if($pathinfo['extension'] == 'mp3'){
+                if($pathinfo['filename'] == $jsonfile['id']) {
+                    $playlist_index = $jsonfile['playlist_index'];
+                    $html[] .= '<tr><td>';
+                    $html[] .= '<input type="number" class="tracknumber" name="'.$realpath.'" value="'.$playlist_index.'" >';
+                    $html[] .= '</td>';
+                    $html[] .= '<td>';
+                    $html[] .= $file;
+                    $html[] .= '</tr></td>';
+                }
+            }
         }
     }
     $html[] .= '</table>';
@@ -633,13 +679,16 @@ function my_action() {
 
     $wp_filetype = wp_check_filetype( $filename, null );
 
-    $filename_strstr = explode('-|-', $path_parts['filename']);
+    $path_implode = $upload_dir['basedir'] . '/youtube-dl/';
 
-    $str_artists = str_replace("_", " ", $filename_strstr[1]);
+    $jsonfileget = file_get_contents($path_implode.$path_parts['filename'].'.info.json');
+    $jsonfile = json_decode($jsonfileget, true);
+
+    $str_artists = str_replace("_", " ", $jsonfile['title']);
 
     $attachment = array(
     'post_mime_type' => $wp_filetype['type'],
-    'post_title' => sanitize_file_name( $filename_strstr[1] ),
+    'post_title' => sanitize_file_name( $jsonfile['title'] ),
     'post_content' => '',
     'post_status' => 'inherit'
     );

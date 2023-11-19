@@ -770,4 +770,62 @@ function get_save_for_later_album_button_display($atts)
 }
 
 add_shortcode('simplicity-save-for-later-loop-album', 'get_save_for_later_album_button_display');
+
+/***************************************************************************/
+/***************************************************************************/
+/******************** Short code to display single music *******************/
+
+function mcplayer_get_count_music_loop($atts) {
+
+	$atts = shortcode_atts(array(
+		'per_page' => '12',
+		'columns'  => '1',
+		'orderby'  => 'meta_value_num',
+		'order'    => 'DESC'
+	), $atts);
+
+	$args = array(
+		'post_type' => 'music',
+		'meta_key' => 'count_play_loop',
+		'orderby'    => $atts['orderby'],
+		'order'      => $atts['order'],
+		'columns'  => $atts['columns'],
+		'posts_per_page'  => $atts['per_page']
+	);
+
+	$loop = new WP_Query($args);
+	$columns = absint($args['columns']);
+	$woocommerce_loop['columns'] = $columns;
+
+	ob_start();
+
+	if ($loop->have_posts()) : ?>
+
+		<?php // do_action( "woocommerce_shortcode_before_featured_products_loop" ); 
+		?>
+
+		<?php // woocommerce_product_loop_start(); 
+		?>
+
+		<?php while ($loop->have_posts()) : $loop->the_post(); ?>
+
+			<?php get_template_part('template-parts/page-music-archive', get_post_format()); ?>
+
+		<?php endwhile; // end of the loop. 
+		?>
+
+		<?php // woocommerce_product_loop_end(); 
+		?>
+
+		<?php  // do_action( "woocommerce_shortcode_after_featured_products_loop" ); 
+		?>
+
+	<?php endif;
+
+	// woocommerce_reset_loop();
+	wp_reset_postdata();
+
+	return '<div class="columns-' . $columns . '">' . ob_get_clean() . '</div>';
+}
+add_shortcode('get_count_music', 'mcplayer_get_count_music_loop');
 ?>

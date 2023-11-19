@@ -69,11 +69,24 @@ This section describes how to install the plugin and get it working.</br>
 13. <b>Use the same album cover picture for all the tracks in the album.</b></br>
 14. Add the player and playlist widget in the customization menu.</br>
 16. Set shortcode in page.</br>
+</br>
+To get info about how many you have in database</br>
 [get_database_info]</br>
+</br>
+Show random song</br>
 [pre_order_products per_page="50" columns="5" order="'rand" orderby="rand"]</br>
+</br>
+Show alphabet and artist</br>
 [artist_get_shortcode]</br>
+</br>
+Show all the years of all album</br>
 [year_get_shortcode]</br>
+</br>
+Show the lasted added songs</br>
 [artist_new_get_shortcode]</br>
+</br>
+Show the most played sons</br>
+[get_count_music]</br>
 
 You can have FFMPEG installed on it, to get compresed track over cellulair network.</br>
 https://github.com/FFmpeg/FFmpeg</br>
@@ -95,6 +108,7 @@ https://github.com/ytdl-org/youtube-dl</br>
 <img style="max-width: 100%;" src="https://i.ibb.co/R6G5xTt/bulk-add-album.png" />
 
 ## Changelog
+0.9 - Add play count song and most played shortcode.</br>
 0.8 - Add in the bulk add album, Imagick cropImage, to remove border of image album.</br>
 0.7 - Init version of bulk add album admin page.</br>
 0.6 - Playlist can be save and load and shuffle and no-shuffle order work.</br>
