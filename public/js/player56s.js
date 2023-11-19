@@ -927,6 +927,21 @@ jQuery( function player56s($) {
                     self.onStop();
                 },
                 ended: function () {
+                    $.ajax({    
+                        type: 'post',
+                        url: count_playlist_ajax_url,
+                        data: {
+                            'object_id': self.tracks[self.currentTrack].postid,
+                            'action': 'count_play'
+                        },
+                        dataType: 'JSON',
+                        success: function(data){
+                            console.log(data);
+                        },
+                        error: function(errorThrown){
+                            //error stuff here.text
+                        }
+                    });
                     self.switchTrack();
                     self.pseudoPlay();
                     self.play();

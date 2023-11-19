@@ -174,7 +174,7 @@ function artist_get_loop($atts) {
 	$curenturl = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
 
 	?><div class='letterartistwrap'><?php
-	foreach (range('0', '9') as $number) {
+	foreach (range('1', '9') as $number) {
 		echo "<a class='letterartist' href='" . $curenturl . "?char=" . $number . "'>" . strtoupper($number) . "</a>";
 	}
 	?></div><?php

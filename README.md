@@ -69,6 +69,7 @@ This section describes how to install the plugin and get it working.</br>
 13. <b>Use the same album cover picture for all the tracks in the album.</b></br>
 14. Add the player and playlist widget in the customization menu.</br>
 16. Set shortcode in page.</br>
+[get_database_info]</br>
 [pre_order_products per_page="50" columns="5" order="'rand" orderby="rand"]</br>
 [artist_get_shortcode]</br>
 [year_get_shortcode]</br>
@@ -81,7 +82,7 @@ You can have youtube-dl installed on it, to download and add album playlist.</br
 https://github.com/ytdl-org/youtube-dl</br>
 
 ## Screenshot
-<img style="max-width: 100%;" src="https://i.ibb.co/LvxW3Z5/mcplayer1.jpg" />
+<img style="max-width: 100%;" src="https://i.ibb.co/XpJKqvf/mcplayer145865146.png" />
 <img style="max-width: 100%;" src="https://i.ibb.co/tPNyMcN/mcplayer0.jpg" />
 <img style="max-width: 100%;" src="https://i.ibb.co/rvMtZG0/mcplayer1.jpg" />
 <img style="max-width: 100%;" src="https://i.ibb.co/jRVZd5z/mcplayer3.jpg" />

@@ -101,6 +101,11 @@ function wp_playlist_ajax_scripts() {
 	wp_register_script( 'wp-playlist-ajax-load-playlist-scripts', $url . "js/ajax.playlist.load.js", array( 'jquery' ), '1.0.0', true );
 	wp_localize_script( 'wp-playlist-ajax-load-playlist-scripts', 'load_playlist_ajax_url', admin_url( 'admin-ajax.php' ) );
 	wp_enqueue_script( 'wp-playlist-ajax-load-playlist-scripts' );
+
+	/* Count play AJAX playlist */
+	wp_register_script( 'wp-playlist-ajax-count-playlist-scripts', $url . "js/ajax.playlist.count.js", array( 'jquery' ), '1.0.0', true );
+	wp_localize_script( 'wp-playlist-ajax-count-playlist-scripts', 'count_playlist_ajax_url', admin_url( 'admin-ajax.php' ) );
+	wp_enqueue_script( 'wp-playlist-ajax-count-playlist-scripts' );
 }
 
 /* 3. AJAX CALLBACK
@@ -737,6 +742,26 @@ function load_saved_playlist($post) {
 	}
 
 	return wp_send_json ( $html );
+}
+
+/* AJAX action callback */
+add_action( 'wp_ajax_count_play', 'count_play' );
+add_action( 'wp_ajax_nopriv_count_play', 'count_play' );
+
+function count_play($post) {
+	$object_id = $_POST['object_id'];
+
+	$get_count_play = get_post_meta($object_id, 'count_play_loop', true);
+
+	if($get_count_play) {
+		$countplay = intval($get_count_play) + 1;
+		update_post_meta($object_id, 'count_play_loop', $countplay);
+	} else {
+		$countplay = '1';
+		add_post_meta($object_id, 'count_play_loop', 1);
+	}
+
+	return wp_send_json ($countplay);
 }
 
 ?>

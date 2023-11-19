@@ -69,7 +69,7 @@ class Mcplayer {
 	public function __construct() {
 
 		$this->plugin_name = 'McPlayer';
-		$this->version = '0.3';
+		$this->version = '0.5';
 
 		$this->load_dependencies();
 		$this->set_locale();
