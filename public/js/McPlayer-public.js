@@ -1,17 +1,49 @@
-/* jQuery(document).ready(function() {
-    jQuery('#menu-off').bigSlide();
-    jQuery('.menu-link').bigSlide();
-}); */
-
-var jQuery = jQuery.noConflict();
 
 
 jQuery(document).ready(function() {      
     jQuery('#btn_player_toggle').click(function() {
-        jQuery('#player56s-ui-zone').toggleClass('hide-player');
-        jQuery('#page').css('padding-bottom', jQuery('#wrap-player').height() +'px');
-        jQuery('#btn_player_toggle').toggleClass('up-arrow');
-        stickysidebar($);
+        if(jQuery('#wrap-player').hasClass('full-player')){
+            jQuery('#wrap-player').removeClass('full-player');
+            jQuery('.player_widget_name_up_btn').css('display', 'block');
+        } else {
+            jQuery('#player56s-ui-zone').addClass('hide-player');
+            jQuery('.player_widget_name_hide_btn').css('display', 'none');
+            jQuery('#page').css('padding-bottom', jQuery('#wrap-player').height() +'px');
+    
+            if ($.isFunction($.fn.theiaStickySidebar)){ 
+                if ( jQuery.browser.mobile && !mystickyside_name.device_mobile) {
+                    return false;
+                } else if ( !jQuery.browser.mobile && !mystickyside_name.device_desktop) {
+                    return false;
+                }
+                var mysticky_sidebar_id = document.querySelector(mystickyside_name.mystickyside_string),
+                mystickyside_content_id = (mystickyside_name.mystickyside_content_string),
+                mystickyside_margin_top = parseInt(mystickyside_name.mystickyside_margin_top_string),
+                mystickyside_margin_bot = parseInt(mystickyside_name.mystickyside_margin_bot_string),
+                mystickyside_update_sidebar_height = Boolean(mystickyside_name.mystickyside_update_sidebar_height_string),
+                mystickyside_min_width = parseInt(mystickyside_name.mystickyside_min_width_string);
+                
+                $(mysticky_sidebar_id).theiaStickySidebar({
+                    containerSelector: mystickyside_content_id,
+                    additionalMarginTop: mystickyside_margin_top,
+                    additionalMarginBottom: mystickyside_margin_bot,
+                    updateSidebarHeight: mystickyside_update_sidebar_height,
+                    minWidth: mystickyside_min_width
+                });  
+            }
+        }
+
+    });
+    jQuery('#btn_player_toggle_up').click(function() {
+        if(jQuery('#player56s-ui-zone').hasClass('hide-player')) {
+            jQuery('#player56s-ui-zone').removeClass('hide-player');
+            jQuery('.player_widget_name_hide_btn').css('display', 'block');
+            jQuery('#page').css('padding-bottom', jQuery('#wrap-player').height() +'px');
+        } else {
+            jQuery('#wrap-player').addClass('full-player');
+            jQuery('.player_widget_name_up_btn').css('display', 'none');
+        }
+
     });
 });
 
@@ -63,41 +95,6 @@ jQuery(window).resize(function () {
 
 });
 
-function scroll_to_album($) {
-    
-    $.fn.ready();
-    'use strict';
-
-//    if ($('#idalbum')) {
-
-        // to top right away
-        if ( window.location.hash ) scroll(0,0);
-        // void some browsers issue
-        setTimeout( function() { scroll(0,0); }, 1);
-
-        // jQuery('.saved').css("padding-bottom", "20px");    
-
-        // any position
-        $(function() {
-            windowwidth = $(window).width();
-            // *only* if we have anchor on the url
-            if(window.location.hash) {
-                if (windowwidth >= 450) {
-                    // smooth scroll to the anchor id
-                    $('html, body').animate({
-                        scrollTop: ($(window.location.hash).offset().top - 55) + 'px'
-                    }, 1000, 'swing');
-                } else  {
-                    $('html, body').animate({
-                        scrollTop: $(window.location.hash).offset().top + 'px'
-                    }, 1000, 'swing');
-                }
-            }
-        });
-
-  //  }
-}
-
 function sortable_playlist($) {
 
     $( "#rs-saved-for-later" ).sortable({    
@@ -146,47 +143,94 @@ function sleep(milliseconds) {
     }
 }
 
-function sidebarheight($) {
+function sidebarheight() {
     var windowwidth = jQuery(window).width();
     var windowheight = jQuery(window).height();
     var wrapplayer = jQuery('#wrap-player').height();
     var colophon = jQuery('#colophon').height();
     var masthead = jQuery('#masthead').height();
+    var primaryheight = jQuery('#primary').height();
+    var secondaryheight = jQuery('#secondary').height();
+    
     if (windowwidth > 720) {
-        var primaryHeight = jQuery('#primary').height();
-        jQuery('#content').css('height', primaryHeight);
-        jQuery('#secondary').css('min-height', windowheight-(wrapplayer+colophon+masthead+50));
-        jQuery('#secondary').css('height', primaryHeight);
-        jQuery('#secondary').css('overflow', 'hidden scroll');
-        jQuery('#secondary').css('display', 'block');
+        if(primaryheight <= windowheight){
+            jQuery('body').height(windowheight);
+            jQuery('#primary').height(windowheight-colophon);
+            jQuery('#secondary').height(windowheight-colophon);
+        }
+        if(windowheight <= primaryheight){
+            jQuery('#secondary').height(primaryheight);
+        }
     }
+    
+    if ($.isFunction($.fn.theiaStickySidebar)){ 
+        if ( jQuery.browser.mobile && !mystickyside_name.device_mobile) {
+            return false;
+        } else if ( !jQuery.browser.mobile && !mystickyside_name.device_desktop) {
+            return false;
+        }
+        var mysticky_sidebar_id = document.querySelector(mystickyside_name.mystickyside_string),
+        mystickyside_content_id = (mystickyside_name.mystickyside_content_string),
+        mystickyside_margin_top = parseInt(mystickyside_name.mystickyside_margin_top_string),
+        mystickyside_margin_bot = parseInt(mystickyside_name.mystickyside_margin_bot_string),
+        mystickyside_update_sidebar_height = Boolean(mystickyside_name.mystickyside_update_sidebar_height_string),
+        mystickyside_min_width = parseInt(mystickyside_name.mystickyside_min_width_string);
+        
+        $(mysticky_sidebar_id).theiaStickySidebar({
+            containerSelector: mystickyside_content_id,
+            additionalMarginTop: mystickyside_margin_top,
+            additionalMarginBottom: mystickyside_margin_bot,
+            updateSidebarHeight: mystickyside_update_sidebar_height,
+            minWidth: mystickyside_min_width
+        });  
+    }
+
 }
 
-var windowwidth = jQuery(window).width();
-var windowheight = jQuery(window).height();
-var wrapplayer = jQuery('#wrap-player').height();
-var colophon = jQuery('#colophon').height();
-var masthead = jQuery('#masthead').height();
+jQuery(document).ready(function($){	
+    var max=0;
+    jQuery("entry-meta-cover img").each(function(index, el) {
+        console.log( jQuery(el).height() );
+    
+        if( jQuery(el).height() > max ){
+            max = jQuery(el).height();
+        }
+    });
+    console.log( max);
+    jQuery("entry-meta-cover img").css('height', max);
+});
 
-var primaryheight = jQuery('#primary').height();
-var secondaryheight = jQuery('#secondary').height();
-
-if(primaryheight <= secondaryheight){
-    jQuery('#content').css("height", primaryheight);
-    jQuery('#secondary').css("overflow-y", "scroll");
+var interval = null;
+function startTimer(duration) {
+    var timer = duration
+      
+      interval = setInterval(function() {
+  
+      if (--timer < 0) {
+        play_pause($);
+        clearInterval(interval);
+      }
+      
+    }, 1000);
 }
 
 var doVisualUpdates = true;
-
 function update() {
+    var windowwidth = jQuery(window).width();
     if (!doVisualUpdates) {
         console.log("Tab not visible");
+          var fiveMinutes = 216000
+          startTimer(fiveMinutes);
+    } else {
+        clearInterval(interval);
+        if (windowwidth < 720) {
+            navigator.wakeLock.request('screen')
+            .then((wakeLock) => {
+                console.log(wakeLock);
+                console.log('acquired');
+            })
+        }
     }
-    navigator.wakeLock.request('screen')
-    .then((wakeLock) => {
-        console.log(wakeLock);
-        console.log('acquired');
-    })
 }
 
 document.addEventListener('visibilitychange', function(){
@@ -194,15 +238,10 @@ document.addEventListener('visibilitychange', function(){
     update();
 });
 
-jQuery(window).on('load', function($) {
-    sidebarheight($);
-});
-
 jQuery(document).ready(function($) {
     doVisualUpdates = !document.hidden;
     update();
-    scroll_to_album($);
+    sidebarheight($);
     sortable_playlist($);
     footer_stick($);
-    //stickysidebar($);
 });

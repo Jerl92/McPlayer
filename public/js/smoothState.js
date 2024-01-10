@@ -23,28 +23,33 @@
 			scroll: false,
 			locationHeader: "X-SmoothState-Location",
 			onStart: {
-				duration: 500, // Duration of our animation
+				duration: 100, // Duration of our animation
 				render: function ($container) {
 
 					// Add your CSS animation reversing class
-					$container.addClass('is-exiting');
+					$('#primary').addClass('is-onstart');
+
+					$('#secondary').scrollTop(0);
+
+					// Scroll user to the top, this is very important, transition may not work without this
+					$body.scrollTop(0);
 
 					// Restart your animation
 					//smoothState.restartCSSAnimations();
 				}
 	        },
 			onReady: {
-				duration: 0,
+				duration: 100,
 				render: function ($container, $newContent) {
-
-					// Scroll user to the top, this is very important, transition may not work without this
-					$body.scrollTop(0);
-
-					// Remove your CSS animation reversing class
-					$container.removeClass('is-exiting');
 
 					// Inject the new content
 					$container.html($newContent);
+
+					// Add your CSS animation reversing class
+					$('#primary').addClass('is-onready');
+
+					// Remove your CSS animation reversing class
+					$('#primary').removeClass('is-onstart');
 
 					// Trigger load functions
 					$(document).ready();
@@ -58,6 +63,28 @@
 				// stickysidebar($);
 
 				// ajax_playlist_add_sidebar($);
+
+				if ($.isFunction($.fn.theiaStickySidebar)){ 
+					if ( jQuery.browser.mobile && !mystickyside_name.device_mobile) {
+						return false;
+					} else if ( !jQuery.browser.mobile && !mystickyside_name.device_desktop) {
+						return false;
+					}
+					var mysticky_sidebar_id = document.querySelector(mystickyside_name.mystickyside_string),
+					mystickyside_content_id = (mystickyside_name.mystickyside_content_string),
+					mystickyside_margin_top = parseInt(mystickyside_name.mystickyside_margin_top_string),
+					mystickyside_margin_bot = parseInt(mystickyside_name.mystickyside_margin_bot_string),
+					mystickyside_update_sidebar_height = Boolean(mystickyside_name.mystickyside_update_sidebar_height_string),
+					mystickyside_min_width = parseInt(mystickyside_name.mystickyside_min_width_string);
+					
+					$(mysticky_sidebar_id).theiaStickySidebar({
+						containerSelector: mystickyside_content_id,
+						additionalMarginTop: mystickyside_margin_top,
+						additionalMarginBottom: mystickyside_margin_bot,
+						updateSidebarHeight: mystickyside_update_sidebar_height,
+						minWidth: mystickyside_min_width
+					});  
+				}
 								
 				play_now($);
 
@@ -82,6 +109,9 @@
 				mcplayer_load_saved_playlist($);
 
 				mcplayer_save_playlist($);
+
+				// Add your CSS animation reversing class
+				$('#primary').removeClass('is-onready');
 				
 			}
 		};

@@ -26,7 +26,11 @@ class MCPlayer_bottom_playlist_widget extends WP_Widget {
 
 		$title = apply_filters( 'widget_title', $instance['title'] );
 		$matches = get_user_meta( user_if_login(), 'rs_saved_for_later', true );
-		$matches_count = count($matches);
+		if ( ! empty( $matches ) ) {
+			$matches_count = count($matches);
+		} else {
+			$matches_count = "0";
+		}
 
 		echo $args['before_widget'];
 		if ( ! empty( $title ) )
@@ -41,7 +45,7 @@ class MCPlayer_bottom_playlist_widget extends WP_Widget {
 				'orderby'   => 'post__in',
 			);
 		} else {
-			$args = 0;
+			$args = null;
 		}
 		
 		$loop = new WP_Query( $args );
@@ -67,7 +71,7 @@ class MCPlayer_bottom_playlist_widget extends WP_Widget {
 		<?php endif;
 
 		echo "<div id='subnav-content-save'>
-			<span style='margin: auto;display: table;'>
+			<span style='margin: 0px; width: 100%; display: table;'>
 				<input type='text' id='lnamesave' name='lname' aria-labelledby='Save playlist'></input>
 				<button class='save-playlist'>save</button>
 			<span>

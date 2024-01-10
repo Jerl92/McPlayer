@@ -24,6 +24,7 @@ function mcplayer_load_saved_playlist($) {
             }
         });
         $("#subnav-content-load").toggleClass("subnav-content-display");
+        $("#subnav-content-save").removeClass("subnav-content-display");
     });
 }
     
@@ -55,13 +56,15 @@ function mcplayer_load_playlist($) {
                     $("#player56s-addtrack").html(element);
                     $(".player56s").player56s($);                    
                     $("#player56s-addtrack").html(null);
-                }, this);   
-                ajax_playlist_add_sidebar($, object_id);
+                    $(".playlist_matches_count").text(index);
+                }, this);  
+                ajax_playlist_add_sidebar($, object_id); 
             },
             error: function(errorThrown){
                 //error stuff here.text
             }
         });
+        $("#subnav-content-load").toggleClass("subnav-content-display");
     });
 }
 

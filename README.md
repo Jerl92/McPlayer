@@ -36,7 +36,11 @@ https://github.com/jquery/jquery-ui</br>
 MCPlayer child theme based on Chichi</br>
 https://github.com/Jerl92/McPlayer-Child-Theme</br>
 
-This plugin is dependency for McPlayer-Core</br>
+To enable memberships subscription by month</br>
+If not installed and enable the plugin player will have limitation</br>
+https://en-ca.wordpress.org/plugins/paid-memberships-pro/</br>
+
+The Categories Images Plugin allow you to add image with category</br>
 https://WordPress.org/plugins/categories-images/</br>
 
 This plugin is needed if you want the scroll bar to be sticky</br>
@@ -69,7 +73,15 @@ This section describes how to install the plugin and get it working.</br>
 13. <b>Use the same album cover picture for all the tracks in the album.</b></br>
 14. Add the player and playlist widget in the customization menu.</br>
 16. Set shortcode in page.</br>
+
+## Advandced installation
+You can have FFMPEG installed on it, to get compresed track over cellulair network.</br>
+https://github.com/FFmpeg/FFmpeg</br>
 </br>
+You can have youtube-dl installed on it, to download and add album playlist.</br>
+https://github.com/ytdl-org/youtube-dl</br>
+
+## Shortcode
 To get info about how many you have in database</br>
 [get_database_info]</br>
 </br>
@@ -83,16 +95,13 @@ Show all the years of all album</br>
 [year_get_shortcode]</br>
 </br>
 Show the lasted added songs</br>
-[artist_new_get_shortcode]</br>
+[get_new_shortcode]</br>
 </br>
-Show the most played sons</br>
-[get_count_music]</br>
-
-You can have FFMPEG installed on it, to get compresed track over cellulair network.</br>
-https://github.com/FFmpeg/FFmpeg</br>
+Show the most played songs</br>
+[get_count_music per_page="175" columns="5" order="DESC" orderby="meta_value_num"]</br>
 </br>
-You can have youtube-dl installed on it, to download and add album playlist.</br>
-https://github.com/ytdl-org/youtube-dl</br>
+Show the lasted played songs</br>
+[get_already_played per_page="10" columns="5" order="ASC" orderby="post__in"]</br>
 
 ## Screenshot
 <img style="max-width: 100%;" src="https://i.ibb.co/XpJKqvf/mcplayer145865146.png" />
@@ -108,6 +117,8 @@ https://github.com/ytdl-org/youtube-dl</br>
 <img style="max-width: 100%;" src="https://i.ibb.co/R6G5xTt/bulk-add-album.png" />
 
 ## Changelog
+1.2 - Add shortcode to show the lasted played songs.</br>
+1.0 - Add the paid-memberships-pro plugin to make free user have limited playing time, only 10% of a song.</br>
 0.9 - Add play count song and most played shortcode.</br>
 0.8 - Add in the bulk add album, Imagick cropImage, to remove border of image album.</br>
 0.7 - Init version of bulk add album admin page.</br>

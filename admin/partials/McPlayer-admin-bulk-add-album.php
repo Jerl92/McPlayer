@@ -87,6 +87,23 @@ function my_action_javascript() { ?>
         
     }
 
+    var doVisualUpdates = true;
+    function update() {
+        if (!doVisualUpdates) {
+            console.log("Tab not visible");
+        }
+        navigator.wakeLock.request('screen')
+        .then((wakeLock) => {
+            console.log(wakeLock);
+            console.log('acquired');
+        })
+    }
+
+    document.addEventListener('visibilitychange', function(){
+        doVisualUpdates = !document.hidden;
+        update();
+    });
+
     function add_chart_data($) {
         $('input[type="number"].tracknumber').each(function () {
             console.log($(this).val());
@@ -278,6 +295,7 @@ function my_action_javascript() { ?>
     jQuery(document).ready(function($) {
         $("#yburlsubmit").on( "click", function(event) {
             yt_url_fetch($);
+            update();
         });
     });
 	</script> <?php
@@ -456,7 +474,7 @@ function my_artist() {
 
     $str_ = str_replace("_", " ", $key);
 
-    $str__ = str_replace(" ", "-", strtolower($key));
+    $str__ = str_replace("-", "-", strtolower($key));
 
     foreach ( $terms as $term ) {
         if ( $term->slug == $str ) {

@@ -45,6 +45,7 @@ function rs_save_for_later($) {
 						$('.rs-saved-trigger').addClass('empty');	
 						$('.playlist_matches_count').text('');
 						$('.playlist_matches_count').text(data.count);
+						sidebarheight($);
 					} else {	
 						ajax_playlist($, object_id);
 						ajax_playlist_add_sidebar($, object_id);
@@ -53,7 +54,8 @@ function rs_save_for_later($) {
 						$this.attr('data-original-title', rs_save_for_later_ajax.unsave_txt);
 						$('.rs-saved-trigger').removeClass('empty');	
 						$('.playlist_matches_count').text('');
-						$('.playlist_matches_count').text(data.count);								
+						$('.playlist_matches_count').text(data.count);				
+						sidebarheight($);				
 					}
 					anchor.removeData('disabled');
 				},
@@ -83,6 +85,7 @@ function rs_save_for_later($) {
 				'action': 'save_for_later_remove_all'
 			},
 			success: function(data) {
+				$(".playlist_matches_count").text("0");
 				$( ".entry-save-for-later a" ).each(function() {
 					$(this).removeClass("saved");
 				});		
@@ -98,6 +101,28 @@ function rs_save_for_later($) {
 				$("#player56s-removetracks-all").html("1");  
 				$(".player56s").player56s($);
 				$("#player56s-removetracks-all").html(null);
+
+				if ($.isFunction($.fn.theiaStickySidebar)){ 
+					if ( jQuery.browser.mobile && !mystickyside_name.device_mobile) {
+						return false;
+					} else if ( !jQuery.browser.mobile && !mystickyside_name.device_desktop) {
+						return false;
+					}
+					var mysticky_sidebar_id = document.querySelector(mystickyside_name.mystickyside_string),
+					mystickyside_content_id = (mystickyside_name.mystickyside_content_string),
+					mystickyside_margin_top = parseInt(mystickyside_name.mystickyside_margin_top_string),
+					mystickyside_margin_bot = parseInt(mystickyside_name.mystickyside_margin_bot_string),
+					mystickyside_update_sidebar_height = Boolean(mystickyside_name.mystickyside_update_sidebar_height_string),
+					mystickyside_min_width = parseInt(mystickyside_name.mystickyside_min_width_string);
+										
+					$(mysticky_sidebar_id).theiaStickySidebar({
+						containerSelector: mystickyside_content_id,
+						additionalMarginTop: mystickyside_margin_top,
+						additionalMarginBottom: mystickyside_margin_bot,
+						updateSidebarHeight: mystickyside_update_sidebar_height,
+						minWidth: mystickyside_min_width
+					});  
+				}
 			},
 			error: function(error) {
 				console.log(error);

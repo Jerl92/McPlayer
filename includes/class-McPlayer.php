@@ -69,7 +69,7 @@ class Mcplayer {
 	public function __construct() {
 
 		$this->plugin_name = 'McPlayer';
-		$this->version = '0.5';
+		$this->version = '1.0';
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -129,6 +129,8 @@ class Mcplayer {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/McPlayer-admin-meta-box.php';
 
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/McPlayer-admin-upload-meta-box.php';
+
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/McPlayer-admin-tax-page.php';
 
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/McPlayer-admin-bulk-add-album.php';
 

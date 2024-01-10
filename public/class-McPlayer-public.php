@@ -75,11 +75,14 @@ class Mcplayer_Public
 		 * class.
 		 */
 
+		wp_enqueue_style('Material-Icons', plugin_dir_url(__FILE__) . 'css/Material-Icons.css', array(), $this->version, 'all');
+
 		wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/McPlayer-public.css', array(), $this->version, 'all');
 
 		wp_enqueue_style('player56s', plugin_dir_url(__FILE__) . 'css/player56s.css', array(), $this->version, 'all');
 
 		wp_enqueue_style('rs-save-for-later', plugin_dir_url(__FILE__) . 'css/rs-save-for-later-public.css', array(), $this->version, 'all');
+
 	}
 
 	/**
@@ -102,19 +105,14 @@ class Mcplayer_Public
 		 * class.
 		 */
 
-		// wp_enqueue_script( 'aurora',  plugin_dir_url( __FILE__ ) . 'js/aurora.js/aurora.js', array( 'jquery' ), $this->version, false );
 
-		// wp_enqueue_script( 'mp3',  plugin_dir_url( __FILE__ ) . 'js/aurora.js/mp3.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script('jquery', plugin_dir_url(__FILE__) . 'js/jquery-3.7.1.js', array('jquery'), $this->version, false);
 
 		wp_enqueue_script('jquery-ui', plugin_dir_url(__FILE__) . 'js/jquery-ui.js', array('jquery'), $this->version, false);
 
-		// wp_enqueue_script( 'aim',  plugin_dir_url( __FILE__ ) . 'js/jquery.aim.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( 'aim',  plugin_dir_url( __FILE__ ) . 'js/jquery.aim.js', array( 'jquery' ), $this->version, false );
 
-		//	wp_enqueue_script( 'network-information',  plugin_dir_url( __FILE__ ) . 'js/network-information.js', array( 'jquery' ), $this->version, false );	
-
-		//	wp_enqueue_script( 'transition',  plugin_dir_url( __FILE__ ) . 'js/transition.js', array( 'jquery' ), $this->version, false );
-
-		// wp_enqueue_script( 'resizesensor',  plugin_dir_url( __FILE__ ) . 'js/resizeSensor.js', array( 'jplayer' ), $this->version, false );
+		wp_enqueue_script( 'resizesensor',  plugin_dir_url( __FILE__ ) . 'js/resizeSensor.js', array( 'jplayer' ), $this->version, false );
 
 		wp_enqueue_script('jplayer',  plugin_dir_url(__FILE__) . 'js/jplayer.js', array('jquery'), $this->version, false);
 

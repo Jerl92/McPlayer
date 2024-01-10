@@ -151,6 +151,70 @@ function woocommerce_get_pre_order_loop($atts) {
 }
 add_shortcode('pre_order_products', 'woocommerce_get_pre_order_loop');
 
+/***************************************************************************/
+/***************************************************************************/
+/******************** Short code to display single music *******************/
+
+function woocommerce_get_already_played_loop($atts) {
+	
+	$get_saved_played = get_user_meta( user_if_login(), 'rs_saved_played', true );
+
+	$atts = shortcode_atts(array(
+		'per_page' => '12',
+		'columns'  => '1',
+		'orderby'  => 'rand',
+		'order'    => 'rand'
+	), $atts);
+
+	if($get_saved_played) {
+		$args = array(
+			'post_type' => 'music',
+			'orderby'    => $atts['orderby'],
+			'order'      => $atts['order'],
+			'columns'  => $atts['columns'],
+			'posts_per_page'  => $atts['per_page'],
+			'post__in' => $get_saved_played
+		);
+	
+		$loop = new WP_Query($args);
+		$columns = absint($args['columns']);
+		$woocommerce_loop['columns'] = $columns;
+
+		ob_start();
+
+		if ($loop->have_posts()) : ?>
+	
+			<?php // do_action( "woocommerce_shortcode_before_featured_products_loop" ); 
+			?>
+	
+			<?php // woocommerce_product_loop_start(); 
+			?>
+	
+			<?php while ($loop->have_posts()) : $loop->the_post(); ?>
+	
+				<?php get_template_part('template-parts/page-music-archive', get_post_format()); ?>
+	
+			<?php endwhile; // end of the loop. 
+			?>
+	
+			<?php // woocommerce_product_loop_end(); 
+			?>
+	
+			<?php  // do_action( "woocommerce_shortcode_after_featured_products_loop" ); 
+			?>
+	
+		<?php endif;
+	
+		// woocommerce_reset_loop();
+		wp_reset_postdata();
+	
+		return '<div class="columns-' . $columns . '">' . ob_get_clean() . '</div>';
+	} else {
+		return  'No Previously Played saved';
+	}
+}
+add_shortcode('get_already_played', 'woocommerce_get_already_played_loop');
+
 add_filter( 'terms_clauses', 'terms_clauses_47840519', 10, 3 );
 function terms_clauses_47840519( $clauses, $taxonomies, $args ){
     global $wpdb;
@@ -201,7 +265,7 @@ function artist_get_loop($atts) {
 		shuffle($terms_);
 			
 		// Grab Indices 0 - 5, 6 in total
-		$terms = array_slice( $terms_, 1, 64 );
+		$terms = array_slice( $terms_, 1, 12 );
 	}
 
 	if ($terms) {
@@ -362,7 +426,7 @@ function artist_new_get_loop($atts) {
 	}
 }
 
-add_shortcode('artist_new_get_shortcode', 'artist_new_get_loop');
+add_shortcode('get_new_shortcode', 'artist_new_get_loop');
 
 
 /***************************************************************************/
@@ -443,6 +507,11 @@ function get_albums_loop($end)
 function year_get_loop($atts)
 {
 
+	$previous = "javascript:history.go(-1)";
+	if(isset($_SERVER['HTTP_REFERER'])) {
+		$previous = $_SERVER['HTTP_REFERER'];
+	}
+
 	// Gets every "category" (term) in this taxonomy to get the respective posts
 	$get_years_args = array(
 		'post_type' => 'attachment',
@@ -461,21 +530,28 @@ function year_get_loop($atts)
 		'page-music',
 	);
 
-	echo '<div style="display: table;">';
-	foreach ($get_years as $get_year) {
-		$last_year = get_post_meta($get_years[$i++]->ID, "meta-box-year", true);
-		if ($last_year != get_post_meta($get_year->ID,  "meta-box-year", true)) {
-			global $wp;
-			echo '<li style="float: left;list-style: none;margin: 15px;font-weight: 600;font-size: 25px;">';
-			echo '<a href="' . home_url( $wp->request ).'/?y='.get_post_meta($get_year->ID,  "meta-box-year", true) . '">';
-			echo get_post_meta($get_year->ID,  "meta-box-year", true);
-			echo '</a>';
-			echo '<br>';
-			echo '</li>';
-			wp_reset_postdata();
+	if(!$_GET['y'] && !$_GET['album']) {
+		echo '<div style="display: table;">';
+		foreach ($get_years as $get_year) {
+			$last_year = get_post_meta($get_years[$i++]->ID, "meta-box-year", true);
+			if ($last_year != get_post_meta($get_year->ID,  "meta-box-year", true)) {
+				global $wp;
+				echo '<li style="float: left;list-style: none;margin: 15px;font-weight: 600;font-size: 25px;">';
+				echo '<a href="' . home_url( $wp->request ).'/?y='.get_post_meta($get_year->ID,  "meta-box-year", true) . '">';
+				echo get_post_meta($get_year->ID,  "meta-box-year", true);
+				echo '</a>';
+				echo '<br>';
+				echo '</li>';
+				wp_reset_postdata();
+			}
 		}
+		echo '</div>';
+	} else {
+		echo '<h1>';
+			echo $_GET['y'];
+		echo '</h1>';
+		?><span style="font-size: 25px; font-weight: 400;"><a href="<?= $previous ?>">< Back</a></span></br><?php
 	}
-	echo '</div>';
 
 	$get_songs_args = array(
 		'post_type' => 'attachment',

@@ -3,6 +3,10 @@
  * included in this file.
  */
 
+ #edittag {
+    max-width: 100%;
+ }
+
  #metabox_music_upload_wrapper {
     width: auto;
     display: flex;
@@ -103,4 +107,18 @@ input[type=text], input[type=search], input[type=radio], input[type=tel], input[
 
 .column-track {
     width: 15px;
+}
+
+#chart-container {
+    width: 100%;
+    height: auto;
+}
+
+.full {
+    display: flex;
+}
+
+.wraptax {
+    margin: 10px 20px 0 2px;
+    width: 25%;
 }

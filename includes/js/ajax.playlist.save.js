@@ -5,6 +5,7 @@ function mcplayer_save_playlist($) {
         event.stopPropagation();
         
         $('#subnav-content-save').toggleClass('subnav-content-display');
+        $("#subnav-content-load").removeClass("subnav-content-display");
     });
 
     $('.save-playlist').on('click', function(event) {

@@ -36,16 +36,16 @@ class MCPlayer_bottom_player_widget extends WP_Widget {
 			$shuffle_toggle = "<div style='padding-right: 5px; right: 40px; float: right;' ><i class='shuffle_player_toggle material-icons'>shuffle</i></div>";
 		}
 
-		$btn_toggle = "<div id='btn_player_toggle' class='player_widget_name_hide_btn' style='padding-right: 5px' ><i class='material-icons'>keyboard_arrow_down</i></div>";	
-		
-		$ogg_toggle = "<div id='ogg_player_toggle' class='player_widget_name_ogg' style='padding-right: 10px' >.OGG</div>";	
+		$btn_toggle_up = "<div id='btn_player_toggle_up' class='player_widget_name_up_btn' style='padding-right: 5px' ><i class='material-icons'>keyboard_arrow_up</i></div>";	
+
+		$btn_toggle_down = "<div id='btn_player_toggle' class='player_widget_name_hide_btn' style='padding-right: 5px' ><i class='material-icons'>keyboard_arrow_down</i></div>";	
 
 		$title_toggle = "<div id='title_player_toggle' class='player_widget_name' style='margin-left: auto; margin-right: auto;	display: inline;'>$title</div>";
 
 		// before and after widget arguments are defined by themes
 		echo $args['before_widget'];
 		if ( ! empty( $title ) )
-		echo $args['before_title'] . $title_toggle . $btn_toggle . $shuffle_toggle . $ogg_toggle . $args['after_title'];
+		echo $args['before_title'] . $title_toggle . $btn_toggle_down .  $btn_toggle_up . $shuffle_toggle . $args['after_title'];
 
 		global $post;
 
@@ -132,6 +132,8 @@ class MCPlayer_bottom_player_widget extends WP_Widget {
 			echo '<div id="player56s-no-shuffle"></div>';
 			echo '<div id="player56s-connection-type"></div>';
 			echo '<div id="player56s-seek-percent"></div>';
+			echo '<div id="player56s-seek-percent-free"></div>';
+			echo '<div id="player56s-play-timer"></div>';
 		echo '</div>';
 
 		echo $args['after_widget']; 

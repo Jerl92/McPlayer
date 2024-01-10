@@ -81,6 +81,52 @@
         
         if(strpos($type, 'image') === 0) {
 
+            $getslugid = wp_get_post_terms( $post->ID, 'artist' );
+
+            $userid = get_current_user_id();                
+            $terms = get_terms("artist", "orderby=name&hide_empty=0");
+            $artist = get_user_meta( $userid, '_artist_role_set', true );
+
+            $html[] = "<select id='artistoptions' name='customartist[]'>";
+            if ( !is_wp_error( $terms ) ) {
+                if($artist){
+                    foreach ( $terms as $term ) {
+                        if($artist == $term->term_id) {
+                            $html[] .= "<option value='{$term->term_id}'>";
+                            $html[] .= $term->name . ' '; // Added a space between the slugs with . ' '
+                            $html[] .= "</option>";
+                        }
+                    }
+                } else {
+
+                    foreach( $getslugid as $thisslug ) {
+                        $html[] .= "<option value='$thisslug->term_id'>";
+                        $html[] .= $thisslug->name . ' '; // Added a space between the slugs with . ' '
+                        $html[] .= "</option>";
+                    }
+    
+                    foreach ( $terms as $term ) {
+                        if ( $term->parent == 0) {
+                            if ( in_array($term->term_id, $object_terms) ) {
+                                $parent_id = $term->term_id;
+                                $html[] .= "<option value='{$term->term_id}' selected='selected'>{$term->name}</option>";
+                            } else {
+                                $html[] .= "<option value='{$term->term_id}'>{$term->name}</option>";
+                            }
+                        }
+                    }
+
+                }
+            }
+
+            $html[] .= "</select><br />";
+            
+            $form_fields['meta-box-artist'] = array(
+                'label' => 'Artist',
+                'input' => 'html',
+                'html' => implode($html),
+                'helps' => 'Artist of the album',
+            );
             $form_fields['meta-box-year'] = array(
                 'label' => 'Year',
                 'input' => 'text',
@@ -120,7 +166,13 @@
     * @return $post array, modified post data
     */
     
-    function be_attachment_field_credit_save( $post, $attachment ) {
+    function be_attachment_field_credit_save( $post, $attachment ) {       
+        $artist = array_map('intval', $_POST['customartist']);
+        wp_set_object_terms($post['ID'], $artist, 'artist');
+        $term_obj_list = get_the_terms( $post['ID'], 'artist' );
+        foreach ($term_obj_list as $taxonomy) {
+            update_post_meta($post['ID'], 'meta-box-artist', $taxonomy->slug);
+        } 
         if( isset( $attachment['meta-box-year'] ) )
             update_post_meta( $post['ID'], 'meta-box-year', $attachment['meta-box-year'] );
         if( isset( $attachment['meta-box-producer'] ) )

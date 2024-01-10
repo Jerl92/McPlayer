@@ -263,20 +263,37 @@ wp_nonce_field(basename(__FILE__), "meta-box-nonce");
                 echo "<select id='artistoptions' name='customartist[]'>";
                 $getslugid = wp_get_post_terms( $object->ID, 'artist', $args );
 
-                foreach( $getslugid as $thisslug ) {
-                    echo "<option value='$thisslug->term_id'>";
-                    echo $thisslug->name . ' '; // Added a space between the slugs with . ' '
-                    echo "</option>";
-                }
-
-                foreach ( $terms as $term ) {
-                    if ( $term->parent == 0) {
-                        if ( in_array($term->term_id, $object_terms) ) {
-                            $parent_id = $term->term_id;
-                            echo "<option value='{$term->term_id}' selected='selected'>{$term->name}</option>";
-                        } else {
-                            echo "<option value='{$term->term_id}'>{$term->name}</option>";
+                $userid = get_current_user_id();                
+                $terms = get_terms("artist", "orderby=name&hide_empty=0");
+                $artist = get_user_meta( $userid, '_artist_role_set', true );
+                if ( !is_wp_error( $terms ) ) {
+                    if($artist){
+                        foreach ( $terms as $term ) {
+                            if($artist == $term->term_id) {
+                                echo "<option value='$term->term_id'>";
+                                echo $term->name . ' '; // Added a space between the slugs with . ' '
+                                echo "</option>";
+                            }
                         }
+                    } else {
+
+                        foreach( $getslugid as $thisslug ) {
+                            echo "<option value='$thisslug->term_id'>";
+                            echo $thisslug->name . ' '; // Added a space between the slugs with . ' '
+                            echo "</option>";
+                        }
+        
+                        foreach ( $terms as $term ) {
+                            if ( $term->parent == 0) {
+                                if ( in_array($term->term_id, $object_terms) ) {
+                                    $parent_id = $term->term_id;
+                                    echo "<option value='{$term->term_id}' selected='selected'>{$term->name}</option>";
+                                } else {
+                                    echo "<option value='{$term->term_id}'>{$term->name}</option>";
+                                }
+                            }
+                        }
+
                     }
                 }
 
@@ -288,47 +305,6 @@ wp_nonce_field(basename(__FILE__), "meta-box-nonce");
                 Feat
                 </br>
                 <input name="meta-box-artist-feat" type="text" id="meta-box-artist-feat" value="<?php echo get_post_meta($object->ID, "meta-box-artist-feat", true); ?>" size="30">
-            </li>
-
-            <li style="padding-right: 10px;">
-                
-                <?php
-                wp_nonce_field('genre-dropdown', 'dropdown-genre-nonce');
-                $terms = get_terms( 'genre', 'hide_empty=0');
-                if ( is_a( $terms, 'WP_Error' ) ) {
-                    $terms = array();
-                }
-
-                $object_terms = wp_get_object_terms( $post->ID, 'genre', array('fields'=>'ids'));
-                if ( is_a( $object_terms, 'WP_Error' ) ) {
-                    $object_terms = array();
-                }
-                // you can move the below java script to admin_head
-
-                echo "Genre:";
-                echo '</br>';
-                echo "<select id='genreoptions' name='customgenre[]'>";
-                $getslugid = wp_get_post_terms( $object->ID, 'genre', $args );
-
-                foreach( $getslugid as $thisslug ) {
-                    echo "<option value='$thisslug->term_id'>";
-                    echo $thisslug->name . ' '; // Added a space between the slugs with . ' '
-                    echo "</option>";
-                }
-
-                foreach ( $terms as $term ) {
-                    if ( $term->parent == 0) {
-                        if ( in_array($term->term_id, $object_terms) ) {
-                            $parent_id = $term->term_id;
-                            echo "<option value='{$term->term_id}' selected='selected'>{$term->name}</option>";
-                        } else {
-                            echo "<option value='{$term->term_id}'>{$term->name}</option>";
-                        }
-                    }
-                }
-
-                echo "</select><br />"; ?>
-
             </li>
 
         </ul>
@@ -374,12 +350,6 @@ function save_custom_meta_box($post_id, $post, $update) {
     foreach ($term_obj_list as $taxonomy) {
         update_post_meta($post_id, 'meta-box-artist', $taxonomy->slug);
     }
-
-    if ( !wp_verify_nonce($_POST['dropdown-genre-nonce'], 'genre-dropdown') || !$_POST['customgenre'] )
-        return;
-        
-    $genre = array_map('intval', $_POST['customgenre']);
-    wp_set_object_terms($post_id, $genre, 'genre');
 }
 
 add_action("save_post", "save_custom_meta_box", 10, 3);
@@ -395,6 +365,10 @@ function custom_meta_box_lyrics($object)
 {
 
 wp_nonce_field(basename(__FILE__), "meta-box-nonce");
+
+$apiaudd = shell_exec("curl https://api.audd.io/ -F url=".$link_url." -F return='apple_music,spotify' -F api_token='7416f31e4a0211a702d3fde1e7be3df9'");
+
+echo $apiaudd;
 
 ?>
     <div style="text-align: center;">

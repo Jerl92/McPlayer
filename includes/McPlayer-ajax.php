@@ -106,6 +106,16 @@ function wp_playlist_ajax_scripts() {
 	wp_register_script( 'wp-playlist-ajax-count-playlist-scripts', $url . "js/ajax.playlist.count.js", array( 'jquery' ), '1.0.0', true );
 	wp_localize_script( 'wp-playlist-ajax-count-playlist-scripts', 'count_playlist_ajax_url', admin_url( 'admin-ajax.php' ) );
 	wp_enqueue_script( 'wp-playlist-ajax-count-playlist-scripts' );
+
+	/* Get membership AJAX playlist */
+	wp_register_script( 'wp-playlist-ajax-if-membership-scripts', $url . "js/ajax.membership.get.js", array( 'jquery' ), '1.0.0', true );
+	wp_localize_script( 'wp-playlist-ajax-if-membership-scripts', 'if_membership_ajax_url', admin_url( 'admin-ajax.php' ) );
+	wp_enqueue_script( 'wp-playlist-ajax-if-membership-scripts' );
+
+	/* Memory usage AJAX playlist */
+	wp_register_script( 'wp-playlist-ajax-memory-usage-scripts', $url . "js/ajax.memory.usage.js", array( 'jquery' ), '1.0.0', true );
+	wp_localize_script( 'wp-playlist-ajax-memory-usage-scripts', 'memory_usage_ajax_url', admin_url( 'admin-ajax.php' ) );
+	wp_enqueue_script( 'wp-playlist-ajax-memory-usage-scripts' );
 }
 
 /* 3. AJAX CALLBACK
@@ -331,7 +341,6 @@ function save_unsave_for_later() {
 	// Check cookie if object is saved
 	$saved = false;
 
-	$matches = get_user_meta( user_if_login(), 'rs_saved_for_later', true );
 	if ( empty( $matches ) ) {
 		$matches = array();
 	}
@@ -738,7 +747,11 @@ function load_saved_playlist($post) {
 	$posts = get_posts($args);
 
 	foreach ($posts as $post) {
-		$html[] .= "<div class='playlist-load-loop' data-id='".$post->ID."'>".get_the_title($post->ID)."</div>";
+		$matches_ = get_post_meta($post->ID, 'rs_saved_for_later', true);
+		foreach($matches_ as $matche_){
+			$matche = count($matche_);
+		}
+		$html[] .= "<div class='playlist-load-loop' data-id='".$post->ID."'>".get_the_title($post->ID)."<span style='text-align: right;right: 30px !important;float: right;'>".$matche."</span></div>";
 	}
 
 	return wp_send_json ( $html );
@@ -750,8 +763,19 @@ add_action( 'wp_ajax_nopriv_count_play', 'count_play' );
 
 function count_play($post) {
 	$object_id = $_POST['object_id'];
-
 	$get_count_play = get_post_meta($object_id, 'count_play_loop', true);
+	$get_saved_played = get_user_meta( user_if_login(), 'rs_saved_played', true );
+
+	if($get_saved_played != null){
+		$get_saved_played_array[] = $object_id;
+		foreach($get_saved_played as $get_saved_played_){
+			$get_saved_played_array[] .= $get_saved_played_;
+		}
+	} else {
+		$get_saved_played_array = array($object_id); 
+	}
+
+	update_user_meta( user_if_login(), 'rs_saved_played', $get_saved_played_array );
 
 	if($get_count_play) {
 		$countplay = intval($get_count_play) + 1;
@@ -762,6 +786,38 @@ function count_play($post) {
 	}
 
 	return wp_send_json ($countplay);
+}
+
+/* AJAX action callback */
+add_action( 'wp_ajax_if_membership', 'if_membership' );
+add_action( 'wp_ajax_nopriv_if_membership', 'if_membership' );
+
+function if_membership($post) {
+
+	if(is_user_logged_in() && function_exists('pmpro_hasMembershipLevel') && pmpro_hasMembershipLevel())
+	{
+		global $current_user;
+		$current_user->membership_level = pmpro_getMembershipLevelForUser($current_user->ID);
+	}
+
+	return wp_send_json ($current_user->membership_level);
+}
+
+// @see http://fr2.php.net/manual/en/function.mb-convert-encoding.php#103300
+/* AJAX action callback */
+add_action( 'wp_ajax_memory_usage', 'memory_usage_ajax' );
+add_action( 'wp_ajax_nopriv_memory_usage', 'memory_usage_ajax' );
+
+function memory_usage_ajax() {
+	$mem_usage = memory_get_usage(false);
+	if ($mem_usage < 1024) {
+		$mem_usage .= ' B';
+	} elseif ($mem_usage < 1048576) {
+		$mem_usage = round($mem_usage/1024,2) . ' KB';
+	} else {
+		$mem_usage = round($mem_usage/1048576,2) . ' MB';
+	}
+	return wp_send_json ( $mem_usage );
 }
 
 ?>
