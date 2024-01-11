@@ -132,4 +132,4 @@ Show the lasted played songs</br>
 0.1 - Init release.</br>
 
 Init version of this plugin, a lots of QA hours have been done with Chrome and Firefox, both work great.</br>
-Work realy good with LineageOS.</br>
+Work realy good with any version of Android.</br>

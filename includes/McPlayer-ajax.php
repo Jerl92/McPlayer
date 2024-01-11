@@ -870,7 +870,14 @@ function search_ajax_get() {
 		foreach ($get_attachments as $get_attachment) {
 			$getslugid = wp_get_post_terms( $get_attachment->ID, 'artist' );
 			foreach( $getslugid as $thisslug ) {
-				$html[] .= "<li><a id='mcplayer-search-get' href='".get_term_link( $thisslug ).'?album='.$get_attachment->ID."'>".$get_attachment->post_title.' - '. $thisslug->name ."</a></li>";
+				$html[] .= "<div style='display: inline-flex; margin-bottom:15px; width: 100%;'>";
+					$html[] .= "<div id='mcplayer-search-get'style='width: 92.5%;'>";
+						$html[] .= "<a href='".get_term_link( $thisslug ).'?album='.$get_attachment->ID."'>".$get_attachment->post_title.' - '. $thisslug->name ."</a>";
+					$html[] .= "</div>";
+					$html[] .= "<div>";
+						$html[] .= do_shortcode( '[simplicity-save-for-later-loop-album album_id="' . $get_attachment->ID . '"]' );
+					$html[] .= "</div>";
+				$html[] .= "</div>";
 			}
 		}
 		$html[] .= "</ul>";
@@ -892,7 +899,17 @@ function search_ajax_get() {
 			if (strpos(get_permalink($post->ID), "/music/") !== false) {
 				$getslugid = wp_get_post_terms( $post->ID, 'artist' );
 				foreach( $getslugid as $thisslug ) {
-					$html[] .= "<li><a id='mcplayer-search-get' href='".get_permalink($post->ID)."'>".$post->post_title.' - '. $thisslug->name ."</a></li>";
+					$html[] .= "<div style='display: flex; margin-bottom:15px; width: 100%;'>";
+						$html[] .= "<div id='mcplayer-search-get' style='width: 85%;'>";
+							$html[] .= "<a href='".get_permalink($post->ID)."'>".$post->post_title.' - '. $thisslug->name ."</a>";
+						$html[] .= "</div>";
+						$html[] .= "<div>";
+							$html[] .= do_shortcode( '[simplicity-save-for-later-loop id="' . $post->ID . '"]' );
+						$html[] .= "</div>";
+						$html[] .= "<div style='padding-left: 25px;'>";
+							$html[] .= do_shortcode( '[add-play-now id="' . $post->ID . '"]' );
+						$html[] .= "</div>";
+					$html[] .= '</div>';
 				}
 			 }
 		}

@@ -20,6 +20,10 @@ function mcplayer_search_ajax($) {
                     $("#widget-mcplayer-search-result").css("background","#fff");
                     $("#widget-mcplayer-search-result").css("width","100%");
                     $("#widget-mcplayer-search-result").html(data);
+                    rs_save_for_later_album($);
+                    rs_save_for_later($);
+                    play_pause($);
+                    play_now($);
                 } else {
                     $("#widget-mcplayer-search-result").css("display","none");
                 }
