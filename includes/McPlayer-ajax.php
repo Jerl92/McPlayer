@@ -771,13 +771,16 @@ function count_play($post) {
 	$get_count_play = get_post_meta($object_id, 'count_play_loop', true);
 	$get_saved_played = get_user_meta( user_if_login(), 'rs_saved_played', true );
 
+	$date = date('m/d/Y h:i:s a', time());
+	$strtodate = strtotime($date);
+
 	if($get_saved_played != null){
-		$get_saved_played_array[] = $object_id;
+		$get_saved_played_array[] = array($strtodate, $object_id);
 		foreach($get_saved_played as $get_saved_played_){
 			$get_saved_played_array[] .= $get_saved_played_;
 		}
 	} else {
-		$get_saved_played_array = array($object_id); 
+		$get_saved_played_array = array($strtodate, $object_id);
 	}
 
 	update_user_meta( user_if_login(), 'rs_saved_played', $get_saved_played_array );
@@ -863,8 +866,8 @@ function search_ajax_get() {
 
 	$get_attachments = get_posts( $args );
 
-	$count_posts = count($get_attachments);
-	if($count_posts > 0){
+	$count_attachments = count($get_attachments);
+	if($count_attachments > 0){
 		$html[] .= "Albums";
 		$html[] .= "<ul>";
 		foreach ($get_attachments as $get_attachment) {
@@ -904,10 +907,10 @@ function search_ajax_get() {
 							$html[] .= "<a href='".get_permalink($post->ID)."'>".$post->post_title.' - '. $thisslug->name ."</a>";
 						$html[] .= "</div>";
 						$html[] .= "<div>";
-							$html[] .= do_shortcode( '[simplicity-save-for-later-loop id="' . $post->ID . '"]' );
-						$html[] .= "</div>";
-						$html[] .= "<div style='padding-left: 25px;'>";
 							$html[] .= do_shortcode( '[add-play-now id="' . $post->ID . '"]' );
+						$html[] .= "</div>";
+						$html[] .= "<div style='padding-left: 42.5px;'>";
+							$html[] .= do_shortcode( '[simplicity-save-for-later-loop id="' . $post->ID . '"]' );
 						$html[] .= "</div>";
 					$html[] .= '</div>';
 				}
@@ -916,7 +919,7 @@ function search_ajax_get() {
 		$html[] .= "</ul>";
 	}
 
-	if($count == 0 && $count_posts == 0) {
+	if($count == 0 && $count_attachments == 0 && $count_posts == 0) {
 		$html[] .= "<ul>";
 			$html[] .= "<li>No music founds...</li>";
 		$html[] .= "</ul>";

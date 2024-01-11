@@ -46,10 +46,6 @@ https://WordPress.org/plugins/categories-images/</br>
 This plugin is needed if you want the scroll bar to be sticky</br>
 https://wordpress.org/plugins/mystickysidebar/</br>
 
-## Recommended plugins
-This plugin is very usefull for add searching in taxonomie and meta post</br>
-https://wordpress.org/plugins/search-everything/</br>
-
 ## Installation
 This plugin have been designed on:</br>
     -   Ubuntu Sever</br>

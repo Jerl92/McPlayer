@@ -157,7 +157,23 @@ add_shortcode('pre_order_products', 'woocommerce_get_pre_order_loop');
 
 function woocommerce_get_already_played_loop($atts) {
 	
-	$get_saved_played = get_user_meta( user_if_login(), 'rs_saved_played', true );
+	$i = 0;
+	$blogusers = get_users();
+	// Array of WP_User objects.
+	foreach ( $blogusers as $user ) {
+		$users_id[$i++] = $user->ID;
+	}
+
+	$i = 0;
+	foreach ( $users_id as $user_id ) {
+		$get_saved_played[$i++] = get_user_meta( $user_id, 'rs_saved_played', true );
+	}
+
+	$i = 0;
+	rsort( $get_saved_played );
+	foreach($get_saved_played as $get_saved_played_) {
+		$get_saved_played__[$i++] = $get_saved_played_[1];
+	}
 
 	$atts = shortcode_atts(array(
 		'per_page' => '12',
@@ -166,14 +182,14 @@ function woocommerce_get_already_played_loop($atts) {
 		'order'    => 'rand'
 	), $atts);
 
-	if($get_saved_played) {
+	if($get_saved_played__) {
 		$args = array(
 			'post_type' => 'music',
 			'orderby'    => $atts['orderby'],
 			'order'      => $atts['order'],
 			'columns'  => $atts['columns'],
 			'posts_per_page'  => $atts['per_page'],
-			'post__in' => $get_saved_played
+			'post__in' => $get_saved_played__
 		);
 	
 		$loop = new WP_Query($args);

@@ -298,11 +298,19 @@ function nopio_admin_user_profile_category_select( $user ) {
 					$artist = get_user_meta( $user->id, '_artist_role_set', true );
 					echo $artist;
 					if ( !is_wp_error( $terms ) ) {
-						foreach ( $terms as $term ) {
-							if($artist == $term->term_id) {
-								echo "<option value='" . $term->term_id . "' selected='selected'>" . $term->name . "</option>";
-							} else {
-								echo "<option value='" . $term->term_id . "'>" . $term->name . "</option>";
+						if ( current_user_can('artist') ) {
+							foreach ( $terms as $term ) {
+								if($artist == $term->term_id) {
+									echo "<option value='" . $term->term_id . "' selected='selected'>" . $term->name . "</option>";
+								}
+							}
+						} else {
+							foreach ( $terms as $term ) {
+								if($artist == $term->term_id) {
+									echo "<option value='" . $term->term_id . "' selected='selected'>" . $term->name . "</option>";
+								} else {
+									echo "<option value='" . $term->term_id . "'>" . $term->name . "</option>";
+								}
 							}
 						}
 					}

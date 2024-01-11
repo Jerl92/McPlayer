@@ -271,7 +271,11 @@ function presenters_taxonomy_custom_fields($tag) {
          <label for="presenter_id"><?php _e('Earn for eatch play'); ?></label>  
      </th>  
      <td>  
-        <?php echo '<input type="number" step=".01" name="meta_color" id="meta_color" value="'. $get_term_color .'" class="my-color-field" style="width: 75px;"></input>' ?>
+		<?php if(current_user_can('artist')) {
+        	echo '<input type="number" step=".01" name="none" id="none" value="'. $get_term_color .'" class="my-color-field" style="width: 75px;" disabled></input>';
+		} else {
+			echo '<input type="number" step=".01" name="meta_color" id="meta_color" value="'. $get_term_color .'" class="my-color-field" style="width: 75px;"></input>';
+		} ?>
      </td>  
  </tr>
    
@@ -280,7 +284,9 @@ function presenters_taxonomy_custom_fields($tag) {
 
  // A callback function to save our extra taxonomy field(s)  
  function save_taxonomy_custom_meta( $term_id ) {
-    if ( isset($_POST['meta_color']) ) {
+	if(current_user_can('artist')) {
+		return null;
+	} elseif ( isset($_POST['meta_color']) ) {
         update_term_meta( $term_id, 'meta_count_earn', $_POST['meta_color'] );
     }
 } 

@@ -32,7 +32,7 @@ function artist_admin_init() {
     if (is_array($artist_taxonomies)) {
         foreach ($artist_taxonomies as $artist_taxonomy) {
             add_filter('manage_edit-'.$artist_taxonomy.'_columns', 'artistTaxonomyColumns');
-            add_filter('manage_'.$artist_taxonomy.'_custom_column', 'artistTaxonomyColumn', 10, 3 );
+            // add_filter('manage_'.$artist_taxonomy.'_custom_column', 'artistTaxonomyColumn', 10, 3 );
         }
     }
 }
@@ -56,7 +56,6 @@ function artistTaxonomyColumns( $columns ) {
     $new_columns['name'] = __('Name', 'McPlayer');
     $new_columns['description'] = __('Description', 'McPlayer');
     $new_columns['slug'] = __('slug', 'McPlayer');
-    $new_columns['link'] = __('Private Page', 'McPlayer');
 
     return array_merge( $new_columns, $columns );
 }
