@@ -3,14 +3,15 @@
  
 function myprefix_custom_cron_schedule( $schedules ) {
     $schedules['every_six_hours'] = array(
-        'interval' => 21600, // Every 6 hours
-        'display'  => __( 'Every 6 hours' ),
+        'interval' => 43200, // Every 6 hours
+        'display'  => __( 'Every 12 hours' ),
     );
     return $schedules;
 }
 add_filter( 'cron_schedules', 'myprefix_custom_cron_schedule' );
 
 add_action( 'init', function () {
+
     ///Hook into that action that'll fire every six hours
     add_action( 'myprefix_cron_hook', 'myprefix_cron_function' );
 

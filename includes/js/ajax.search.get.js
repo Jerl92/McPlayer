@@ -18,7 +18,7 @@ function mcplayer_search_ajax($) {
                     $("#widget-mcplayer-search-result").css("z-index","999");
                     $("#widget-mcplayer-search-result").css("border","0.05px solid #000");
                     $("#widget-mcplayer-search-result").css("background","#fff");
-                    $("#widget-mcplayer-search-result").css("width","82.5%");
+                    $("#widget-mcplayer-search-result").css("width","100%");
                     $("#widget-mcplayer-search-result").html(data);
                 } else {
                     $("#widget-mcplayer-search-result").css("display","none");

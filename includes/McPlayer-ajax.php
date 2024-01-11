@@ -854,6 +854,27 @@ function search_ajax_get() {
 		$html[] .= "</ul>";
 	}
 
+	$args = array(
+		'posts_per_page' => 10,
+		'post_type'      => 'attachment',
+		's'           => $inputVal
+	);
+
+	$get_attachments = get_posts( $args );
+
+	$count_posts = count($get_attachments);
+	if($count_posts > 0){
+		$html[] .= "Albums";
+		$html[] .= "<ul>";
+		foreach ($get_attachments as $get_attachment) {
+			$getslugid = wp_get_post_terms( $get_attachment->ID, 'artist' );
+			foreach( $getslugid as $thisslug ) {
+				$html[] .= "<li><a id='mcplayer-search-get' href='".get_term_link( $thisslug ).'?album='.$get_attachment->ID."'>".$get_attachment->post_title.' - '. $thisslug->name ."</a></li>";
+			}
+		}
+		$html[] .= "</ul>";
+	}
+
 	$argc = array(
 		'post_type' => 'music',
 		'post_status' => 'publish',

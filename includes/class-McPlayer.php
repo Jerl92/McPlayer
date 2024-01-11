@@ -112,6 +112,8 @@ class Mcplayer {
 
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/McPlayer-shortcode.php';
 
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/McPlayer-cron.php';
+
 		/**
 		 * The class responsible for defining internationalization functionality
 		 * of the plugin.
