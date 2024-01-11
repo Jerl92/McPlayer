@@ -400,6 +400,10 @@ a.rs-save-for-later-button.saved:after, a.rs-save-for-later-button-album.saved:a
     display: none !important;
 }
 
+.widget-mcplayer-search-input {
+    width: 80%;
+}
+
 /*
 .music {
     width: 25% !important;

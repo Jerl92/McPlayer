@@ -116,6 +116,11 @@ function wp_playlist_ajax_scripts() {
 	wp_register_script( 'wp-playlist-ajax-memory-usage-scripts', $url . "js/ajax.memory.usage.js", array( 'jquery' ), '1.0.0', true );
 	wp_localize_script( 'wp-playlist-ajax-memory-usage-scripts', 'memory_usage_ajax_url', admin_url( 'admin-ajax.php' ) );
 	wp_enqueue_script( 'wp-playlist-ajax-memory-usage-scripts' );
+
+	/* Search AJAX playlist */
+	wp_register_script( 'wp-ajax-search-get-scripts', $url . "js/ajax.search.get.js", array( 'jquery' ), '1.0.0', true );
+	wp_localize_script( 'wp-ajax-search-get-scripts', 'search_get_ajax_url', admin_url( 'admin-ajax.php' ) );
+	wp_enqueue_script( 'wp-ajax-search-get-scripts' );
 }
 
 /* 3. AJAX CALLBACK
@@ -818,6 +823,67 @@ function memory_usage_ajax() {
 		$mem_usage = round($mem_usage/1048576,2) . ' MB';
 	}
 	return wp_send_json ( $mem_usage );
+}
+
+add_action( 'wp_ajax_search_ajax_get', 'search_ajax_get' );
+add_action( 'wp_ajax_nopriv_search_ajax_get', 'search_ajax_get' );
+
+function search_ajax_get() {
+
+	$inputVal = $_POST['inputVal'];
+
+	$args = array(
+		'taxonomy'      => array( 'artist' ), // taxonomy name
+		'orderby'       => 'id', 
+		'order'         => 'ASC',
+		'hide_empty'    => true,
+		'fields'        => 'all',
+		'name__like'    => $inputVal
+	); 
+	
+	$terms = get_terms( $args );
+	
+	$count = count($terms);
+	if($count > 0){
+		$html[] .= "Artists";
+		$html[] .= "<ul>";
+		foreach ($terms as $term) {
+			$html[] .= "<li><a id='mcplayer-search-get' href='".get_term_link( $term )."'>".$term->name."</a></li>";
+	
+		}
+		$html[] .= "</ul>";
+	}
+
+	$argc = array(
+		'post_type' => 'music',
+		'post_status' => 'publish',
+		'posts_per_page' => '25',
+		's'    			 => $inputVal
+	);
+	
+	$posts = get_posts( $argc );
+	$count_posts = count($posts);
+	if($count_posts > 0){
+		$html[] .= "Tracks";
+		$html[] .= "<ul>";
+		foreach ($posts as $post) {
+			if (strpos(get_permalink($post->ID), "/music/") !== false) {
+				$getslugid = wp_get_post_terms( $post->ID, 'artist' );
+				foreach( $getslugid as $thisslug ) {
+					$html[] .= "<li><a id='mcplayer-search-get' href='".get_permalink($post->ID)."'>".$post->post_title.' - '. $thisslug->name ."</a></li>";
+				}
+			 }
+		}
+		$html[] .= "</ul>";
+	}
+
+	if($count == 0 && $count_posts == 0) {
+		$html[] .= "<ul>";
+			$html[] .= "<li>No music founds...</li>";
+		$html[] .= "</ul>";
+	}
+
+	return wp_send_json ( implode($html) );
 }
 
 ?>

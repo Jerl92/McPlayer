@@ -110,6 +110,8 @@
 
 				mcplayer_save_playlist($);
 
+				mcplayer_search_ajax($);
+
 				// Add your CSS animation reversing class
 				$('#primary').removeClass('is-onready');
 				
