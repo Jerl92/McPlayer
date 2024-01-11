@@ -22,8 +22,7 @@ function ajax_playlist_add_album($, object_id)  {
                         }, this);                 
                     },
                     error: function(errorThrown){
-                        //error stuff here.text
-                        //console.log(errorThrown);
+                        console.log(errorThrown);
                     }
             });
     

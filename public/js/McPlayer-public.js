@@ -190,13 +190,11 @@ function sidebarheight() {
 jQuery(document).ready(function($){	
     var max=0;
     jQuery("entry-meta-cover img").each(function(index, el) {
-        console.log( jQuery(el).height() );
     
         if( jQuery(el).height() > max ){
             max = jQuery(el).height();
         }
     });
-    console.log( max);
     jQuery("entry-meta-cover img").css('height', max);
 });
 
@@ -218,7 +216,6 @@ var doVisualUpdates = true;
 function update() {
     var windowwidth = jQuery(window).width();
     if (!doVisualUpdates) {
-        console.log("Tab not visible");
           var fiveMinutes = 216000
           startTimer(fiveMinutes);
     } else {
@@ -226,8 +223,7 @@ function update() {
         if (windowwidth < 720) {
             navigator.wakeLock.request('screen')
             .then((wakeLock) => {
-                console.log(wakeLock);
-                console.log('acquired');
+                //
             })
         }
     }

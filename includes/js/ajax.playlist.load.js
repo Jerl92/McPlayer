@@ -12,7 +12,6 @@ function mcplayer_load_saved_playlist($) {
             },
             dataType: 'json',
             success: function(data){
-                console.log(data);
                 $("#subnav-content-load").html(null);
                 data.forEach(function(element, index) {
                     $("#subnav-content-load").append(element);
@@ -20,7 +19,7 @@ function mcplayer_load_saved_playlist($) {
                 mcplayer_load_playlist($);
             },
             error: function(errorThrown){
-                //error stuff here.text
+                console.log(errorThrown);
             }
         });
         $("#subnav-content-load").toggleClass("subnav-content-display");
@@ -35,8 +34,6 @@ function mcplayer_load_playlist($) {
 
         var $this = $(this),
         object_id = $this.data('id');
-
-        console.log(object_id);
     
         jQuery.ajax({
             type: 'post',
@@ -47,7 +44,6 @@ function mcplayer_load_playlist($) {
             },
             dataType: 'json',
             success: function(data){
-                console.log(data);
                 ajax_playlist_flush_sidebar($);
 				$("#player56s-removetracks-all").html("1");  
 				$(".player56s").player56s($);
@@ -61,7 +57,7 @@ function mcplayer_load_playlist($) {
                 ajax_playlist_add_sidebar($, object_id); 
             },
             error: function(errorThrown){
-                //error stuff here.text
+                console.log(errorThrown);
             }
         });
         $("#subnav-content-load").toggleClass("subnav-content-display");

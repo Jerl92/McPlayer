@@ -400,7 +400,6 @@ jQuery( function player56s($) {
                                 });                        
                             }
                         }
-                        console.log( "Add Track: " + getTrackTitle(audiofileLink_add[1].innerText) + " - " + audiofileLink_add[3].innerText );
                     }
             
                     if (audiofileLink_play_now[0] !== null ) {
@@ -421,7 +420,6 @@ jQuery( function player56s($) {
                                     player56sInstance.playNow(index);
                                     player56sInstance.pseudoPlay();
                                     player56sInstance.play();
-                                    console.log( "Play Track: " + getTrackTitle(element.filename) );
                                 }
                             }
                         }, this);
@@ -470,8 +468,7 @@ jQuery( function player56s($) {
                             if (element == currentTrack) {
                                 player56sInstance.currentTrack = index;
                             } 
-                        });   
-                        console.log('shuffle');                
+                        });               
                     }
                      
                     if (playlist_shuffle[0].innerText === "0") {
@@ -493,8 +490,6 @@ jQuery( function player56s($) {
                     }
             
                     if (currenttrack_index[0] !== undefined ) {
-                        console.log(player56sInstance.currentTrack);
-                        console.log(currenttrack_index[0].innerText);
                         if (player56sInstance.currentTrack == parseInt(currenttrack_index[0].innerText)) {
                             player56sInstance.currentTrack = parseInt(currenttrack_index[1].innerText);
                         }
@@ -509,7 +504,6 @@ jQuery( function player56s($) {
                             },
                             dataType: 'JSON',
                             success: function(data){
-                                console.log(data)
                                 if (data == "0") {
                                     $.ajax({
                                         type: 'post',
@@ -520,7 +514,7 @@ jQuery( function player56s($) {
                                             'action': 'new_order'
                                         },
                                         success: function(data_) {
-                                            console.log(data_);
+                                            //
                                         },
                                         error: function(error) {
                                             console.log(error);
@@ -529,12 +523,10 @@ jQuery( function player56s($) {
                                 }
                             },
                             error: function(errorThrown){
-                                //error stuff here.text
+                                console.log(errorThrown);
                             }
                         });
                     }
-            
-                console.log(player56sInstance); 
             
                 } else {
                     /* Create new instance */
@@ -552,7 +544,6 @@ jQuery( function player56s($) {
                         pl56si.$container.find(".player56s-album").html('<span>Just another WordPress site</span>');
                         pl56si.$container.find(".player56s-album-img").html('<span></span>');                   
                     }
-                    console.log(pl56si); 
                 }
             }
         });
@@ -748,8 +739,6 @@ jQuery( function player56s($) {
                 var currentTracklength = this.tracks[this.currentTrack].length;
                 var currentTracklengthsec = parseInt(currentTracklength) * 60;
                 var currentTracklengthsechalf = parseInt(currentTracklengthsec) / 1.25;
-                console.log(player56splaytimer[0].innerText);
-                console.log(parseInt(currentTracklengthsechalf));
                 if(player56splaytimer[0].innerText >= parseInt(currentTracklengthsechalf)){
                     $.ajax({    
                         type: 'post',
@@ -760,10 +749,10 @@ jQuery( function player56s($) {
                         },
                         dataType: 'JSON',
                         success: function(data){
-                            console.log(data);
+                            //
                         },
                         error: function(errorThrown){
-                            //error stuff here.text
+                            console.log(errorThrown);
                         }
                     });
                 }
@@ -828,8 +817,6 @@ jQuery( function player56s($) {
                 var currentTracklength = this.tracks[this.currentTrack].length;
                 var currentTracklengthsec = parseInt(currentTracklength) * 60;
                 var currentTracklengthsechalf = parseInt(currentTracklengthsec) / 1.25;
-                console.log(player56splaytimer[0].innerText);
-                console.log(parseInt(currentTracklengthsechalf));
                 if(player56splaytimer[0].innerText >= parseInt(currentTracklengthsechalf)){
                     $.ajax({    
                         type: 'post',
@@ -840,10 +827,10 @@ jQuery( function player56s($) {
                         },
                         dataType: 'JSON',
                         success: function(data){
-                            console.log(data);
+                            //
                         },
                         error: function(errorThrown){
-                            //error stuff here.text
+                            console.log(errorThrown);
                         }
                     });
                 }
@@ -907,7 +894,6 @@ jQuery( function player56s($) {
             this.$container.removeClass("player56s-status-playing");
         }
         onStop() {
-            console.log("stop");
             this.isPlaying = false;
             this.seekTime = 0;
             this.isSeeking = false;
@@ -1119,7 +1105,7 @@ jQuery( function player56s($) {
                     membership = data;
                 },
                 error: function(errorThrown){
-                    //error stuff here.text
+                    console.log(errorThrown);
                 }
             });
 

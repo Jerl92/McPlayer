@@ -113,10 +113,12 @@ Show the lasted played songs</br>
 <img style="max-width: 100%;" src="https://i.ibb.co/9G1DDFm/mcplayeradmin0.jpg" />
 <img style="max-width: 100%;" src="https://i.ibb.co/rdL9T5S/mcplayeradmin1.jpg" />
 <img style="max-width: 100%;" src="https://i.ibb.co/LJFCh3h/mcplayeradmin2.jpg" />
+<img style="max-width: 100%;" src="https://i.ibb.co/Cs81nXd/screencapture-192-168-2-110-wp-admin-term-php-2024-01-10-23-52-09.png" />
 <img style="max-width: 100%;" src="https://i.ibb.co/JdDXRNb/playlist.png" />
 <img style="max-width: 100%;" src="https://i.ibb.co/R6G5xTt/bulk-add-album.png" />
 
 ## Changelog
+1.3 - Add albums in AJAX search.</br>
 1.2 - Add shortcode to show the lasted played songs.</br>
 1.0 - Add the paid-memberships-pro plugin to make free user have limited playing time, only 10% of a song.</br>
 0.9 - Add play count song and most played shortcode.</br>

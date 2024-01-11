@@ -41,7 +41,6 @@ function rs_save_for_later_album($) {
                 dataType: 'JSON',
 				success: function(data) {
 					if(data.status == false) {
-						console.log("coolies");
                         Cookies.set('rs_save_for_later', data.cookie, { expires: 365 });
 					}
 					if($this.hasClass('saved')) {

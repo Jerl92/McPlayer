@@ -22,8 +22,7 @@ function ajax_playlist_remove_album($, object_id)  {
                         ajax_playlist_update_sidebar($, object_id);
                     },
                     error: function(errorThrown){
-                        //error stuff here.text
-                        //console.log(errorThrown);
+                        console.log(errorThrown);
                     }
             });
     

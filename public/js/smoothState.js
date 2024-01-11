@@ -119,7 +119,7 @@
 		};
 
 		if (!$("body").hasClass("elementor-editor-active")) {
-			console.log(	$( "#page" ).smoothState( settings ).data("smoothState") );
+			$( "#page" ).smoothState( settings ).data("smoothState");
 		}
 
 	});
