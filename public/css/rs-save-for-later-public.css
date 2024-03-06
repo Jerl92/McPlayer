@@ -258,17 +258,6 @@ ul.rs-saved-for-later > li.rs-item-saved-for-later > .rs-item-content {
 	display: table;
 	width: 100%;
 }
-ul.rs-saved-for-later > li.rs-item-saved-for-later > .rs-item-content > a {
-	display: block;
-	overflow: hidden;
-	text-decoration: none;
-	box-shadow: none;
-	outline: none;
-	color: #313131;
-	font-size: 20px;
-	line-height: 30px;
-	font-weight: bold;
-}
 ul.rs-saved-for-later > li.rs-item-saved-for-later > .rs-item-content > a:hover > .rs-item-float > .rs-item-title {
 	color: #50bcb6;
 }

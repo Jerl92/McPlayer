@@ -2,10 +2,7 @@
 
 	function addBlacklistClass() { 
 		$( "a" ).each( function() {
-			if ( this.href.indexOf("/wp-admin/") !== -1 || 
-				 this.href.indexOf("/wp-login.php") !== -1 ) {
-				$( this ).addClass( "no-smoothState" );
-			}
+			//
         });
 	}
 
@@ -26,6 +23,15 @@
 				duration: 100, // Duration of our animation
 				render: function ($container) {
 
+				// Remove your CSS animation reversing class
+					$('body').removeClass('on-scroll');
+
+					// Add your CSS animation reversing class
+					$('body').addClass('no-scroll');
+
+					// Add your CSS animation reversing class
+					$('#primary').removeClass('is-onready');
+
 					// Add your CSS animation reversing class
 					$('#primary').addClass('is-onstart');
 
@@ -41,15 +47,15 @@
 			onReady: {
 				duration: 100,
 				render: function ($container, $newContent) {
-
+									
 					// Inject the new content
 					$container.html($newContent);
 
-					// Add your CSS animation reversing class
-					$('#primary').addClass('is-onready');
-
 					// Remove your CSS animation reversing class
 					$('#primary').removeClass('is-onstart');
+
+					// Add your CSS animation reversing class
+					$('#primary').addClass('is-onready');
 
 					// Trigger load functions
 					$(document).ready();
@@ -92,8 +98,6 @@
 
 				tooltip($);	
 				
-				// scroll_to_album($);
-				
 				footer_stick($);
                     
 				rs_save_for_later($);
@@ -112,8 +116,22 @@
 
 				mcplayer_search_ajax($);
 
+				scrolltosecondary($);
+
+				hw_info = document.getElementById("hwm-area");
+				if (hw_info) {					
+					ajax_get_hw_shortcode($);
+					ajax_get_hw($);
+					hw_info.innerHTML = '';
+					getData();
+					setInterval(getData, parseInt($('#interval').val(), 10) * 5000);
+				}
+
+				// Remove your CSS animation reversing class
+				$('body').removeClass('no-scroll');
+
 				// Add your CSS animation reversing class
-				$('#primary').removeClass('is-onready');
+				$('body').addClass('on-scroll');
 				
 			}
 		};

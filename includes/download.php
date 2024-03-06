@@ -56,7 +56,7 @@ if(!empty($path)){
                 header('HTTP/1.1 206 Partial Content');
             }
             header("Content-Range: bytes $start-$end/$size");
-            header("Content-Length: ".$length);
+            header ('Content-Length:'. Filesize($length));
             
             
             $buffer = 1024 * 8;

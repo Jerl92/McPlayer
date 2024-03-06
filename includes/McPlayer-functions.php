@@ -181,12 +181,12 @@ function disable_emojis_remove_dns_prefetch( $urls, $relation_type ) {
 }
 
 function user_if_login() {
-	if(!get_current_user_id()) {
+	if(get_current_user_id()) {
+		return get_current_user_id();
+	} else {
 		if(isset($_COOKIE['userid'])) {
 			return $_COOKIE['userid'];
 		}
-	} else {
-		return get_current_user_id();
 	}
 }
 
@@ -258,6 +258,7 @@ function set_userid_cookie() {
 
 		$cookie_value = implode($hash);
 		setcookie($cookie_name, $cookie_value, time() + (86400 * 30)); // 86400 = 1 day
+		return $cookie_value;
 	}
 }
 add_action( 'init', 'set_userid_cookie');
@@ -410,4 +411,23 @@ function role_external( $query ) {
     return $query;
 }
 
+add_action('admin_init','rpt_add_role_caps',999);
+
+    function rpt_add_role_caps() {
+
+        // Add the roles you'd like to administer the custom post types
+        $roles = array('artist');
+
+        // Loop through each role and assign capabilities
+        foreach($roles as $the_role) {    
+             $role = get_role($the_role);               
+             $role->add_cap( 'read' );
+             $role->add_cap( 'read_music');
+             $role->add_cap( 'edit_music' );
+             $role->add_cap( 'edit_musics' );
+             $role->add_cap( 'edit_published_musics' );
+             $role->add_cap( 'publish_musics' );
+             $role->add_cap( 'delete_published_musics' );
+        }
+	}
 ?>

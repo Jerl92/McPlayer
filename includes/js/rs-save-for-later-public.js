@@ -1,4 +1,4 @@
-function rs_save_for_later($) {
+function rs_save_for_later($, objectid) {
 
 	if($('.rs-save-for-later-button').length) {
 		$('.rs-save-for-later-button[data-toggle="tooltip"]').tooltip();
@@ -23,38 +23,37 @@ function rs_save_for_later($) {
 
 			var $this = $(this),
 				object_id = $this.data('object-id');
-				// once = $this.data('nonce');
+
+			if(typeof object_id === "undefined"){
+				object_id = objectid;
+			}
 
 			$.ajax({
 				type: 'post',
 				url: rs_save_for_later_ajax.ajax_url,
 				data: {
-				//	'nonce': nonce,
 					'object_id': object_id,
 					'action': 'save_unsave_for_later'
 				},
 				success: function(data) {
 					if($this.hasClass('saved')) {
-						ajax_playlist_remove_sidebar($, object_id);
-						ajax_playlist_remove_track($, object_id);
 						$this.removeClass('saved');
 						$this.attr('data-title', rs_save_for_later_ajax.save_txt);
 						$this.attr('data-original-title', rs_save_for_later_ajax.save_txt);
-						$this.parent().find('.rs-see-saved').remove();
-						$('.rs-saved-trigger span').text(data.count);
-						$('.rs-saved-trigger').addClass('empty');	
+						$this.parent().find('.rs-see-saved').remove();	
 						$('.playlist_matches_count').text('');
 						$('.playlist_matches_count').text(data.count);
+						ajax_playlist_remove_sidebar($, object_id);
+						ajax_playlist_remove_track($, object_id);
 						sidebarheight($);
 					} else {	
-						ajax_playlist($, object_id);
-						ajax_playlist_add_sidebar($, object_id);
 						$this.addClass('saved');
 						$this.attr('data-title', rs_save_for_later_ajax.unsave_txt);
 						$this.attr('data-original-title', rs_save_for_later_ajax.unsave_txt);
-						$('.rs-saved-trigger').removeClass('empty');	
 						$('.playlist_matches_count').text('');
-						$('.playlist_matches_count').text(data.count);				
+						$('.playlist_matches_count').text(data.count);			
+						ajax_playlist($, object_id);
+						ajax_playlist_add_sidebar($, object_id);	
 						sidebarheight($);				
 					}
 					anchor.removeData('disabled');

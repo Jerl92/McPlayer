@@ -19,7 +19,7 @@ function ajax_playlist_add_album($, object_id)  {
                                 [i++];
                             }
                             sleep(50);
-                        }, this);                 
+                        }, this);        
                     },
                     error: function(errorThrown){
                         console.log(errorThrown);

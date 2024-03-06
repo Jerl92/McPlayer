@@ -95,6 +95,8 @@
                             $html[] .= "<option value='{$term->term_id}'>";
                             $html[] .= $term->name . ' '; // Added a space between the slugs with . ' '
                             $html[] .= "</option>";
+                            wp_set_object_terms($post->ID, array($term->term_id), 'artist');
+                            update_post_meta($post->ID, 'meta-box-artist', $term->term_id);
                         }
                     }
                 } else {
@@ -171,7 +173,7 @@
         wp_set_object_terms($post['ID'], $artist, 'artist');
         $term_obj_list = get_the_terms( $post['ID'], 'artist' );
         foreach ($term_obj_list as $taxonomy) {
-            update_post_meta($post['ID'], 'meta-box-artist', $taxonomy->slug);
+            update_post_meta($post['ID'], 'meta-box-artist', $taxonomy->term_id);
         } 
         if( isset( $attachment['meta-box-year'] ) )
             update_post_meta( $post['ID'], 'meta-box-year', $attachment['meta-box-year'] );

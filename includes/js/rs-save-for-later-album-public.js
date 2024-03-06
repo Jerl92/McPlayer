@@ -28,46 +28,46 @@ function rs_save_for_later_album($) {
 
 			var $this = $(this),
 				object_id = $this.data('object-id');
-				// nonce = $this.data('nonce');
 
 			$.ajax({
 				type: 'post',
 				url: rs_save_for_later_album_ajax,
 				data: {
-					// 'nonce': nonce,
 					'object_id': object_id,
 					'action': 'save_unsave_for_later_album'
                 },
                 dataType: 'JSON',
 				success: function(data) {
-					if(data.status == false) {
-                        Cookies.set('rs_save_for_later', data.cookie, { expires: 365 });
-					}
 					if($this.hasClass('saved')) {
-						if($this.hasClass('saved-in-list')) {
-							var $parent = $this.parent().parent().parent();
-							var $parent_deeper = $this.parent().parent().parent().parent();
-							$parent.delay(200).fadeOut(300).remove();
-					//		ajax_playlist_remove_sidebar($, object_id);
-					//		ajax_playlist_remove_sidebar_btn($, object_id);
-						} else {
-							$this.removeClass('saved');
-							$this.attr('data-title', rs_save_for_later_ajax.save_txt);
-							$this.attr('data-original-title', rs_save_for_later_ajax.save_txt);
-					//			ajax_playlist_remove_sidebar($, object_id);
-				//			ajax_playlist_remove_page_btn($, object_id);
-						}
-						ajax_playlist_remove_album($, object_id);
-					//	ajax_playlist_remove_album_sidebar($, object_id);
+						$this.removeClass('saved');
+						$this.attr('data-title', rs_save_for_later_ajax.save_txt);
+						$this.attr('data-original-title', rs_save_for_later_ajax.save_txt);
+						$('.rs-save-for-later-button-album').each(function() {
+							var data_id = $(this).data("object-id");
+							if(data_id == object_id){
+								$(this).removeClass('saved');
+							}
+						});     
 						$this.parent().find('.rs-see-saved').remove();
-						$('.rs-saved-trigger span').text(data.count);
+						$('.rs-saved-trigger span').text(data);
 						$('.rs-saved-trigger').addClass('empty');	
+						$('.playlist_matches_count').text('');
+						$('.playlist_matches_count').text(data);
+						ajax_playlist_remove_album($, object_id);
 					} else {	
 						$this.addClass('saved');
+						$('.rs-save-for-later-button-album').each(function() {
+                            var data_id = $(this).data("object-id");
+                            if(data_id == object_id){
+                                $(this).addClass("saved");
+                            }
+                        });     
 						$this.attr('data-title', rs_save_for_later_ajax.unsave_txt);
 						$this.attr('data-original-title', rs_save_for_later_ajax.unsave_txt);
-						$('.rs-saved-trigger span').text(data.count);
+						$('.rs-saved-trigger span').text(data);
 						$('.rs-saved-trigger').removeClass('empty');	
+						$('.playlist_matches_count').text('');
+						$('.playlist_matches_count').text(data);
 						ajax_playlist_add_album($, object_id);	
 						ajax_playlist_add_sidebar($, object_id);
 					}

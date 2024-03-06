@@ -26,8 +26,9 @@ class MCPlayer_bottom_playlist_widget extends WP_Widget {
 
 		$title = apply_filters( 'widget_title', $instance['title'] );
 		$matches = get_user_meta( user_if_login(), 'rs_saved_for_later', true );
-		if ( ! empty( $matches ) ) {
-			$matches_count = count($matches);
+		$matches_ = array_reverse($matches);
+		if ( ! empty( $matches_ ) ) {
+			$matches_count = count($matches_);
 		} else {
 			$matches_count = "0";
 		}
@@ -36,11 +37,11 @@ class MCPlayer_bottom_playlist_widget extends WP_Widget {
 		if ( ! empty( $title ) )
 		echo $args['before_title'] . $title . ' - <span class="playlist_matches_count">' . $matches_count . '</span>' . $args['after_title'];
 		
-		if ( ! empty( $matches ) ) {
+		if ( ! empty( $matches_ ) ) {
 			$args = array( 
 				'posts_per_page' => -1,	
 				'post_type' => 'music',
-				'post__in' => $matches,
+				'post__in' => $matches_,
 				'order'   => 'DESC',
 				'orderby'   => 'post__in',
 			);
@@ -66,7 +67,7 @@ class MCPlayer_bottom_playlist_widget extends WP_Widget {
 
 		<?php else : ?>
 
-			<?php echo '<div id="rs-saved-for-later-wrapper" class="noselect"><ul id="rs-saved-for-later" class="rs-saved-for-later"><li style="text-align: center; padding:15px 0;">Nothing in the playlist</li></ul></div>'; ?>
+			<?php echo '<div id="rs-saved-for-later-wrapper" class="noselect"><ul id="rs-saved-for-later" class="rs-saved-for-later"><li id="rs-saved-for-later-nothing" style="text-align: center; padding:15px 0;">Nothing in the playlist</li></ul></div>'; ?>
 
 		<?php endif;
 

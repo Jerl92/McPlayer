@@ -44,17 +44,19 @@ function mcplayer_load_playlist($) {
             },
             dataType: 'json',
             success: function(data){
-                ajax_playlist_flush_sidebar($);
 				$("#player56s-removetracks-all").html("1");  
 				$(".player56s").player56s($);
 				$("#player56s-removetracks-all").html(null);
                 data.forEach(function(element, index) {
-                    $("#player56s-addtrack").html(element);
-                    $(".player56s").player56s($);                    
-                    $("#player56s-addtrack").html(null);
-                    $(".playlist_matches_count").text(index);
+                    const chars = element.split('</li><li>');
+                    rs_save_for_later($, chars[2]);
+                    ajax_playlist_add_sidebar($, chars[2]);
+                    setTimeout(function(){
+                        $("#player56s-addtrack").html(element);
+                        $(".player56s").player56s($);   
+                    }, 2500);
+                    $(".playlist_matches_count").text(index+1);
                 }, this);  
-                ajax_playlist_add_sidebar($, object_id); 
             },
             error: function(errorThrown){
                 console.log(errorThrown);

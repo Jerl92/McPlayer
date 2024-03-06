@@ -182,6 +182,8 @@ function artist_private_submenu_page_callback() {
 
             $meta_count_earn = get_term_meta( $Get_tag_ID, 'meta_count_earn', true );
 
+            $user = wp_get_current_user();
+
             echo '<h2>';
                 echo 'Number of play: ';
                 echo $get_meta_count_play_count;
@@ -195,7 +197,9 @@ function artist_private_submenu_page_callback() {
                 echo ($get_meta_count_play_count - $my_term_money_end['count'])*$meta_count_earn;
             echo '</h2>';
             if(($get_meta_count_play_count - $my_term_money_end['count']) != 0){
-                echo "<input type='button' id='claimmoney'        class='button'        value='Claim Money' />";
+                if(current_user_can('artist')){
+                    echo "<input type='button' id='claimmoney'        class='button'        value='Claim Money' />";
+                }
             } else {
                 echo "<input type='button' id='claimmoney_'        class='button'        value='Claim Money' disable />";
             }
@@ -213,6 +217,12 @@ function artist_private_submenu_page_callback() {
                 if($user->user_login != ''){
                     $userid = $user->ID;
                     $get_saved_played = get_user_meta( $userid, 'rs_saved_played', true );
+
+                    $i = 0;
+                    foreach($get_saved_played as $get_saved_played_) {
+                        $get_saved_played_x[$i] = $get_saved_played_[1];
+                        $i++;
+                    }
     
                     if($get_saved_played){
                         $get_songs_args = array(
@@ -220,7 +230,7 @@ function artist_private_submenu_page_callback() {
                             'posts_per_page' => -1,
                             'order' => 'ASC',
                             'orderby' => 'post__in',
-                            'post__in' => $get_saved_played
+                            'post__in' => $get_saved_played_x
                         );
             
                         $get_songs = get_posts($get_songs_args);

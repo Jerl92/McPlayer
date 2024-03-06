@@ -13,11 +13,11 @@ add_filter( 'cron_schedules', 'myprefix_custom_cron_schedule' );
 add_action( 'init', function () {
 
     ///Hook into that action that'll fire every six hours
-    add_action( 'myprefix_cron_hook', 'myprefix_cron_function' );
+    add_action( 'myfunc_cron_hook', 'myprefix_cron_function' );
 
     //Schedule an action if it's not already scheduled
-    if ( ! wp_next_scheduled( 'myprefix_cron_hook' ) ) {
-        wp_schedule_event( time(), 'every_six_hours', 'myprefix_cron_hook' );
+    if ( ! wp_next_scheduled( 'myfunc_cron_hook' ) ) {
+        wp_schedule_event( time(), 'every_six_hours', 'myfunc_cron_hook' );
     }
 });
 
@@ -71,5 +71,72 @@ function myprefix_cron_function() {
     }
 
 }
+
+add_action( 'init', function () {
+
+    ///Hook into that action that'll fire every six hours
+    add_action( 'artist_count_cron_hook', 'artist_count_cron_function' );
+
+    //Schedule an action if it's not already scheduled
+    if ( ! wp_next_scheduled( 'artist_count_cron_hook' ) ) {
+        wp_schedule_event( time(), 'every_six_hours', 'artist_count_cron_hook' );
+    }
+});
+
+//create your function, that runs on cron
+function artist_count_cron_function() {
+
+	$terms = get_terms( array(
+		'taxonomy'   => 'artist',
+		'hide_empty' => true,
+	) );
+	
+    foreach($terms as $term){
+        $get_songs_args = array(
+            'post_type' => 'music',
+            'posts_per_page' => -1,
+            'order' => 'ASC',
+            'tax_query' => array(
+                array(
+                    'taxonomy' => 'artist',
+                    'field'    => 'slug',
+                    'terms'    => $term->slug
+                )
+            )
+        );
+
+        $get_songs = get_posts($get_songs_args);
+
+        echo $term->slug;
+
+        echo "\n";
+
+        echo count($get_songs);
+
+        echo "\n";
+
+        $x = 0;
+        $sum_count_play = array();
+        foreach($get_songs as $get_song){
+            $sum_count_play[$x++] = get_post_meta( $get_song->ID , 'count_play_loop' , true );
+        }
+
+        echo array_sum($sum_count_play);
+
+        echo "\n";
+
+        echo "\n";
+
+        $getcountplay = get_term_meta( $term->term_id, 'count_play_loop' , true );
+        if($getcountplay == null) {
+            add_term_meta( $term->term_id, 'count_play_loop' , array_sum($sum_count_play) );
+        } else {
+            update_term_meta( $term->term_id, 'count_play_loop' , array_sum($sum_count_play) );
+        }
+
+    }
+
+}
+
 
 ?>

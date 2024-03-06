@@ -82,7 +82,7 @@ class MCPlayer_bottom_player_widget extends WP_Widget {
 
 				$music_playlist = wp_get_attachment_url(get_post_meta( $post->ID, 'music_link_', true ));
 
-				$urllocal = realpath(ABSPATH.explode(site_url(), $music_playlist	)[1]);
+				$urllocal = realpath(ABSPATH.explode(site_url(), $music_playlist )[1]);
 
 				$plugin_dir = site_url().'/wp-content/plugins/McPlayer/includes/download.php';
 	
@@ -95,8 +95,16 @@ class MCPlayer_bottom_player_widget extends WP_Widget {
 				$delimeter_player56s = esc_attr(' || ');
 
 				$get_music_meta_length = get_post_meta( $post->ID, "meta-box-track-length", true );
+
+				$get_music_meta_length_str = explode(":", $get_music_meta_length);
+
+				$get_music_meta_length_str_minute = $get_music_meta_length_str[0]*60;
+		
+				$get_music_meta_length_str_seconde = $get_music_meta_length_str[1];
+		
+				$get_music_meta_length_str__ = $get_music_meta_length_str_minute+$get_music_meta_length_str_seconde;
 				
-				?><audio href="<?php echo $plugin_dir.'?path='.$urllocal; ?>" class="player56s" rel="playlist" data-length="<?php echo $get_music_meta_length; ?>" postid="<?php echo $post->ID; ?>"><?php
+				?><audio href="<?php echo $plugin_dir.'?path='.$urllocal; ?>" class="player56s" rel="playlist" data-length="<?php echo $get_music_meta_length_str__; ?>" postid="<?php echo $post->ID; ?>"><?php
 					echo $attachment_title;
 					echo $delimeter_player56s;
 					foreach($terms as $term) {
@@ -116,10 +124,13 @@ class MCPlayer_bottom_player_widget extends WP_Widget {
 		wp_reset_postdata();
 			
 		} else {
-			echo '<audio href="" class="player56s" postid="0">Just another WordPress site || Music Player || Nothing in the playlist || null</audio>';
+			echo '<audio href="" class="player56s" rel="playlist" data-length="0" postid="0">Just another WordPress site || McPlayer || Nothing in the playlist || https://'. $_SERVER['SERVER_NAME'] .'/wp-content/plugins/McPlayer/public/css/blue-note.png</audio>';
 		}
 	
 		echo '</div>';
+
+		$mac = new GetMacAddr(PHP_OS);
+		$str = str_replace(":", '', $mac=$mac->mac_addr);
 
 		echo '<div id="player56s-ajax-wrap" style="display: none;">';
 			echo '<div id="player56s-currenttrack"></div>';
@@ -130,10 +141,11 @@ class MCPlayer_bottom_player_widget extends WP_Widget {
 			echo '<div id="player56s-sortable"></div>';
 			echo '<div id="player56s-shuffle"></div>';
 			echo '<div id="player56s-no-shuffle"></div>';
-			echo '<div id="player56s-connection-type"></div>';
 			echo '<div id="player56s-seek-percent"></div>';
+			echo '<div id="player56s-seek-current-percent"></div>';
 			echo '<div id="player56s-seek-percent-free"></div>';
 			echo '<div id="player56s-play-timer"></div>';
+			echo '<div id="player56s-mac-address">'. $str .'</div>';
 		echo '</div>';
 
 		echo $args['after_widget']; 

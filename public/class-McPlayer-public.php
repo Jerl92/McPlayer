@@ -75,7 +75,7 @@ class Mcplayer_Public
 		 * class.
 		 */
 
-		wp_enqueue_style('Material-Icons', plugin_dir_url(__FILE__) . 'css/Material-Icons.css', array(), $this->version, 'all');
+		wp_enqueue_style('Material-Icons', 'https://fonts.googleapis.com/icon?family=Material+Icons', array(), $this->version, 'all');
 
 		wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/McPlayer-public.css', array(), $this->version, 'all');
 
@@ -104,9 +104,6 @@ class Mcplayer_Public
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
-
-
-		wp_enqueue_script('jquery', plugin_dir_url(__FILE__) . 'js/jquery-3.7.1.js', array('jquery'), $this->version, false);
 
 		wp_enqueue_script('jquery-ui', plugin_dir_url(__FILE__) . 'js/jquery-ui.js', array('jquery'), $this->version, false);
 

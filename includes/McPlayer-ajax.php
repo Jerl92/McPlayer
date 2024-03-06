@@ -148,9 +148,17 @@ function ajax_add_track($post) {
 		$delimeter_player56s = esc_attr(' || ');		
 		
 		$get_music_meta_length = get_post_meta( $matche, 'meta-box-track-length', true );
+
+		$get_music_meta_length_str = explode(":", $get_music_meta_length);
+
+		$get_music_meta_length_str_minute = $get_music_meta_length_str[0]*60;
+
+		$get_music_meta_length_str_seconde = $get_music_meta_length_str[1];
+
+		$get_music_meta_length_str__ = $get_music_meta_length_str_minute+$get_music_meta_length_str_seconde;
 		
 		foreach($terms as $term) {
-			$html[] = '<ul><li>' . $plugin_dir.'?path='.$urllocal . '</li><li>' . $attachment_title . $delimeter_player56s . $term->name . $delimeter_player56s . get_the_title( $matche ) . $delimeter_player56s . wp_get_attachment_image_url( $value , 'full' ) . '</li><li>' . $matche . '</li><li>' . $get_music_meta_length . '</li></ul>';
+			$html[] = '<ul><li>' . $plugin_dir.'?path='.$urllocal . '</li><li>' . $attachment_title . $delimeter_player56s . $term->name . $delimeter_player56s . get_the_title( $matche ) . $delimeter_player56s . wp_get_attachment_image_url( $value , 'full' ) . '</li><li>' . $matche . '</li><li>' . $get_music_meta_length_str__ . '</li></ul>';
 		}
 		return wp_send_json ( $html );	 
 }	
@@ -252,21 +260,19 @@ add_action( 'wp_ajax_nopriv_add_track_sidebar', 'ajax_add_track_sidebar' );
 
 function ajax_add_track_sidebar($post) {		
 
-	$matches = get_user_meta( user_if_login(), 'rs_saved_for_later', true );
+	$matches = $_POST['object_id'];
 
-	// $matches[] = $_POST['object_id'];
-
-	//	array_reverse($matches);
+	$matchesenarray = array($matches);
 		
 	if ( ! empty( $matches ) ) {
 		$args = array( 
 			'posts_per_page' => '-1',	
 			'post_type' => 'music',
-			'post__in' => ($matches),
+			'post__in' => ($matchesenarray),
 			'orderby'   => 'post__in'
 		);
 	} else {
-		$args = 0;
+		$args = null;
 	}		
 
 	$loop = new WP_Query( $args );
@@ -293,7 +299,7 @@ function ajax_add_track_sidebar($post) {
 
 	<?php else : ?>
 
-		<?php $html = '<li style="text-align: center; padding: 15px 0;">Nothing in the playlist</li>'; ?>
+		<?php $html = '<li id="rs-saved-for-later-nothing" style="text-align: center; padding: 15px 0;">Nothing in the playlist</li>'; ?>
 
 	<?php endif;
 	
@@ -349,7 +355,7 @@ function save_unsave_for_later() {
 	if ( empty( $matches ) ) {
 		$matches = array();
 	}
-	// array_reverse($matches);
+	//array_reverse($matches);
 	if ( in_array( $object_id, $matches ) ) {
 		$saved = true;
 		unset( $matches[array_search( $object_id, $matches )] );
@@ -409,7 +415,7 @@ function save_and_play_now() {
 	}
 	$count = count( $matches );
 
-	$no_content = '<li style="text-align: center; padding: 15px 0;">Nothing in the playlist</li>';
+	$no_content = '<li id="rs-saved-for-later-nothing" style="text-align: center; padding: 15px 0;">Nothing in the playlist</li>';
 
 	// Object ID
 	$object_id = isset( $_REQUEST['object_id'] ) ? intval( $_REQUEST['object_id'] ) : 0;
@@ -527,6 +533,7 @@ function save_unsave_for_later_album($post) {
 			}
 
 		}
+		
 		return wp_send_json ( $count );
 
 	} 
@@ -724,8 +731,16 @@ function load_playlist($post) {
 					
 					$get_music_meta_length = get_post_meta( $matche, 'meta-box-track-length', true );
 					
+					$get_music_meta_length_str = explode(":", $get_music_meta_length);
+
+					$get_music_meta_length_str_minute = $get_music_meta_length_str[0]*60;
+			
+					$get_music_meta_length_str_seconde = $get_music_meta_length_str[1];
+			
+					$get_music_meta_length_str__ = $get_music_meta_length_str_minute+$get_music_meta_length_str_seconde;
+					
 					foreach($terms as $term) {
-						$html[] .= '<ul><li>' . $plugin_dir.'?path='.$urllocal . '</li><li>' . $attachment_title . $delimeter_player56s . $term->name . $delimeter_player56s . get_the_title( $matche ) . $delimeter_player56s . wp_get_attachment_image_url( $value , 'full' ) . '</li><li>' . $matche . '</li><li>' . $get_music_meta_length . '</li></ul>';
+						$html[] .= '<ul><li>' . $plugin_dir.'?path='.$urllocal . '</li><li>' . $attachment_title . $delimeter_player56s . $term->name . $delimeter_player56s . get_the_title( $matche ) . $delimeter_player56s . wp_get_attachment_image_url( $value , 'full' ) . '</li><li>' . $matche . '</li><li>' . $get_music_meta_length_str__ . '</li></ul>';
 					}
 				}
 			}
@@ -767,31 +782,42 @@ add_action( 'wp_ajax_count_play', 'count_play' );
 add_action( 'wp_ajax_nopriv_count_play', 'count_play' );
 
 function count_play($post) {
+	$i = 0;
 	$object_id = $_POST['object_id'];
 	$get_count_play = get_post_meta($object_id, 'count_play_loop', true);
 	$get_saved_played = get_user_meta( user_if_login(), 'rs_saved_played', true );
+
+	if(is_user_logged_in() && function_exists('pmpro_hasMembershipLevel') && pmpro_hasMembershipLevel())
+	{
+		global $current_user;
+		$current_user->membership_level = pmpro_getMembershipLevelForUser($current_user->ID);
+	}
 
 	$date = date('m/d/Y h:i:s a', time());
 	$strtodate = strtotime($date);
 
 	if($get_saved_played != null){
-		$get_saved_played_array[] = array($strtodate, $object_id);
+		$get_saved_played_array[$i] = array($strtodate, $object_id);
+		$i++;
 		foreach($get_saved_played as $get_saved_played_){
-			$get_saved_played_array[] .= $get_saved_played_;
+			$get_saved_played_array[$i] = $get_saved_played_;
+			$i++;
 		}
 	} else {
-		$get_saved_played_array = array($strtodate, $object_id);
+		$get_saved_played_array[$i] = array($strtodate, $object_id);
 	}
 
 	update_user_meta( user_if_login(), 'rs_saved_played', $get_saved_played_array );
 
-	if($get_count_play) {
-		$countplay = intval($get_count_play) + 1;
-		update_post_meta($object_id, 'count_play_loop', $countplay);
-	} else {
-		$countplay = '1';
-		add_post_meta($object_id, 'count_play_loop', 1);
-	}
+	// if($current_user->membership_level->trial_amount != 0){
+		if($get_count_play) {
+			$countplay = intval($get_count_play) + 1;
+			update_post_meta($object_id, 'count_play_loop', $countplay);
+		} else {
+			$countplay = '1';
+			add_post_meta($object_id, 'count_play_loop', 1);
+		}
+	// }
 
 	return wp_send_json ($countplay);
 }
@@ -845,6 +871,8 @@ function search_ajax_get() {
 	); 
 	
 	$terms = get_terms( $args );
+
+	$html[] = "<div id='widget-mcplayer-search-wrapper'>";
 	
 	$count = count($terms);
 	if($count > 0){
@@ -858,7 +886,7 @@ function search_ajax_get() {
 	}
 
 	$args = array(
-		'posts_per_page' => 10,
+		'posts_per_page' => -1,
 		'post_type'      => 'attachment',
 		'post_mime_type' => 'image',
 		's'           => $inputVal
@@ -873,14 +901,20 @@ function search_ajax_get() {
 		foreach ($get_attachments as $get_attachment) {
 			$getslugid = wp_get_post_terms( $get_attachment->ID, 'artist' );
 			foreach( $getslugid as $thisslug ) {
-				$html[] .= "<div style='display: inline-flex; margin-bottom:15px; width: 100%;'>";
-					$html[] .= "<div id='mcplayer-search-get'style='width: 92.5%;'>";
-						$html[] .= "<a href='".get_term_link( $thisslug ).'?album='.$get_attachment->ID."'>".$get_attachment->post_title.' - '. $thisslug->name ."</a>";
-					$html[] .= "</div>";
-					$html[] .= "<div>";
-						$html[] .= do_shortcode( '[simplicity-save-for-later-loop-album album_id="' . $get_attachment->ID . '"]' );
-					$html[] .= "</div>";
-				$html[] .= "</div>";
+				if($thisslug->name != null){
+					$html[] .= "<div style='display: inline-flex; margin-bottom:15px; width: 100%;'>";
+					$get_attachment_url = wp_get_attachment_url( $get_attachment->ID );
+						$html[] .= "<div id='mcplayer-search-img'style=''>";
+							$html[] .= "<img src='$get_attachment_url' style='width: 30px; margin:0px 2.5px;'></img>";
+						$html[] .= "</div>";
+						$html[] .= "<div id='mcplayer-search-get'style='width: 87.5%;'>";
+							$html[] .= "<a href='".get_term_link( $thisslug ).'?album='.$get_attachment->ID."'>".$get_attachment->post_title.' - '. $thisslug->name ."</a>";
+						$html[] .= "</div>";
+						$html[] .= "<div>";
+							$html[] .= do_shortcode( '[simplicity-save-for-later-loop-album album_id="' . $get_attachment->ID . '"]' );
+						$html[] .= "</div>";
+					$html[] .= "</div>";					
+				}
 			}
 		}
 		$html[] .= "</ul>";
@@ -889,7 +923,7 @@ function search_ajax_get() {
 	$argc = array(
 		'post_type' => 'music',
 		'post_status' => 'publish',
-		'posts_per_page' => '25',
+		'posts_per_page' => -1,
 		's'    			 => $inputVal
 	);
 	
@@ -902,19 +936,21 @@ function search_ajax_get() {
 			if (strpos(get_permalink($post->ID), "/music/") !== false) {
 				$getslugid = wp_get_post_terms( $post->ID, 'artist' );
 				foreach( $getslugid as $thisslug ) {
-					$html[] .= "<div style='display: flex; margin-bottom:15px; width: 100%;'>";
-						$html[] .= "<div id='mcplayer-search-get' style='width: 85%;'>";
-							$html[] .= "<a href='".get_permalink($post->ID)."'>".$post->post_title.' - '. $thisslug->name ."</a>";
-						$html[] .= "</div>";
-						$html[] .= "<div>";
-							$html[] .= do_shortcode( '[add-play-now id="' . $post->ID . '"]' );
-						$html[] .= "</div>";
-						$html[] .= "<div style='padding-left: 42.5px;'>";
-							$html[] .= do_shortcode( '[simplicity-save-for-later-loop id="' . $post->ID . '"]' );
-						$html[] .= "</div>";
-					$html[] .= '</div>';
+					if($thisslug->name != null){
+						$html[] .= "<div style='display: flex; margin-bottom:15px; width: 100%;'>";
+							$html[] .= "<div id='mcplayer-search-get' style='width: 85%;'>";
+								$html[] .= "<a href='".get_permalink($post->ID)."'>".$post->post_title.' - '. $thisslug->name ."</a>";
+							$html[] .= "</div>";
+							$html[] .= "<div>";
+								$html[] .= do_shortcode( '[add-play-now id="' . $post->ID . '"]' );
+							$html[] .= "</div>";
+							$html[] .= "<div style='padding-left: 42.5px;'>";
+								$html[] .= do_shortcode( '[simplicity-save-for-later-loop id="' . $post->ID . '"]' );
+							$html[] .= "</div>";
+						$html[] .= '</div>';
+					}
 				}
-			 }
+			}
 		}
 		$html[] .= "</ul>";
 	}
@@ -924,6 +960,8 @@ function search_ajax_get() {
 			$html[] .= "<li>No music founds...</li>";
 		$html[] .= "</ul>";
 	}
+
+	$html[] .= "</div>";
 
 	return wp_send_json ( implode($html) );
 }

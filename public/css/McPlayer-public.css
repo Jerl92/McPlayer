@@ -401,7 +401,15 @@ a.rs-save-for-later-button.saved:after, a.rs-save-for-later-button-album.saved:a
 }
 
 .widget-mcplayer-search-input {
-    width: 80%;
+    width: 72.5%
+}
+
+.no-scroll {
+    overflow-y: hidden;
+}
+
+.on-scroll {
+    overflow-y: auto;
 }
 
 /*
@@ -616,6 +624,7 @@ a.add-play-now-button:hover, a.add-play-now-button:active, a.add-play-now-button
 
 #page {
     overflow-x: hidden;
+    overflow-y: hidden;
 }
 
 .player_shuffle_btn::before {

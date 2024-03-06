@@ -2,7 +2,7 @@
 
 McPlayer is a full-width HTML5/CSS/PHP/JS/AJAX audio Player with Playlist, Plugin for WordPress.</br>
 
-<img style="max-width: 100%;" src="https://i.ibb.co/HHzm0VT/mcplayer7547685.png" alt="MCPlayer" />
+<img style="max-width: 100%;" src="https://i.ibb.co/Y8Rt9Ng/mc678t87.png" alt="MCPlayer" />
 
 ## Description
 With McPlayer you can get your music from all around the world, from public Wi-Fi or your cellular network.</br>
@@ -100,7 +100,7 @@ Show the lasted played songs</br>
 [get_already_played per_page="10" columns="5" order="ASC" orderby="post__in"]</br>
 
 ## Screenshot
-<img style="max-width: 100%;" src="https://i.ibb.co/XpJKqvf/mcplayer145865146.png" />
+<img style="max-width: 100%;" src="https://i.ibb.co/x7wRzmX/screencapture-192-168-2-110-artists-2024-02-19-11-26-22.png" />
 <img style="max-width: 100%;" src="https://i.ibb.co/tPNyMcN/mcplayer0.jpg" />
 <img style="max-width: 100%;" src="https://i.ibb.co/rvMtZG0/mcplayer1.jpg" />
 <img style="max-width: 100%;" src="https://i.ibb.co/jRVZd5z/mcplayer3.jpg" />
@@ -114,6 +114,8 @@ Show the lasted played songs</br>
 <img style="max-width: 100%;" src="https://i.ibb.co/R6G5xTt/bulk-add-album.png" />
 
 ## Changelog
+1.5 - Add AJAX search and add load state on page refresh.</br>
+1.4 - In shortcode for previously played show all user previously played.</br>
 1.3 - Add albums in AJAX search.</br>
 1.2 - Add shortcode to show the lasted played songs.</br>
 1.0 - Add the paid-memberships-pro plugin to make free user have limited playing time, only 10% of a song.</br>

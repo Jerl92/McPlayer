@@ -452,9 +452,13 @@ function my_artist() {
             if($pathinfo['extension'] == 'mp3'){
                 if($pathinfo['filename'] == $jsonfile['id']) {
                     $artist_multipe = explode(',', $jsonfile['artist']);
-                    $artists[] .= $artist_multipe[0];
-                    $albums[] .= $jsonfile['album'];
-                    $years[] .= $jsonfile['release_year'];
+                    if(isset($artist_multipe)){
+                        $artists[] .= $artist_multipe[0];
+                    } else {
+                        $artists[] .= $jsonfile['artist'];
+                    }
+                    $albums[] = $jsonfile['album'];
+                    $years[] = $jsonfile['release_year'];
                 }
             }
         }

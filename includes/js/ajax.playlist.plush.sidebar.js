@@ -11,7 +11,7 @@ function ajax_playlist_add_sidebar($, object_id)  {
         success: function(data){
 
             if ( data ) {
-                $("#rs-saved-for-later").html(data);
+                $("#rs-saved-for-later").append(data);
             }
 
             if($('.play-now-button').length) {
@@ -45,7 +45,7 @@ function ajax_playlist_add_sidebar($, object_id)  {
 }
 
 function ajax_playlist_flush_sidebar($)  {
-    $("#rs-saved-for-later").html('<li style="text-align: center; padding:15px 0;">Nothing in the playlist</li>');
+    $("#rs-saved-for-later").html('<li id="rs-saved-for-later-nothing" style="text-align: center; padding:15px 0;">Nothing in the playlist</li>');
 }
 
 function  ajax_playlist_sortable_sidebar($){
