@@ -9,17 +9,12 @@ add_action( 'wp_enqueue_scripts', 'wp_playlist_ajax_scripts' );
 function wp_playlist_ajax_scripts() {
 	/* Plugin DIR URL */
 	$url = trailingslashit( plugin_dir_url( __FILE__ ) );
-	//
-	
-/* JS + Localize */
+
 	$save = __( 'Add to Playlist', 'rs-save-for-later' );
 	$unsave = __( 'Remove', 'rs-save-for-later' );
 	$saved = __( 'See Playlist', 'rs-save-for-later' );
 	$number = __( 'Playlist: ', 'rs-save-for-later' );
 	$onpause = __( 'Pause', 'rs-save-for-later' );
-
-	/* AJAX Play now */
-	wp_enqueue_script( 'tooltip', $url . "js/tooltip.js", array( 'jquery' ), '1.0.0' );
 
 	wp_enqueue_script( 'rs-save-for-later', plugin_dir_url( __FILE__ ) . 'js/rs-save-for-later-public.js', array( 'jquery' ), '1.0.0', false );
 	wp_localize_script(
@@ -45,6 +40,7 @@ function wp_playlist_ajax_scripts() {
 		'number_txt'        => $number
 	) );
 	wp_enqueue_script( 'wp-playlist-ajax-play-now' );
+	
 	/* AJAX add track to playlist */
 	wp_register_script( 'wp-playlist-ajax-add-track-scripts', $url . "js/ajax.playlist.add.js", array( 'jquery' ), '1.0.0', true );
 	wp_localize_script( 'wp-playlist-ajax-add-track-scripts', 'add_track_ajax_url', admin_url( 'admin-ajax.php' ) );
@@ -108,9 +104,9 @@ function wp_playlist_ajax_scripts() {
 	wp_enqueue_script( 'wp-playlist-ajax-count-playlist-scripts' );
 
 	/* Get membership AJAX playlist */
-	wp_register_script( 'wp-playlist-ajax-if-membership-scripts', $url . "js/ajax.membership.get.js", array( 'jquery' ), '1.0.0', true );
-	wp_localize_script( 'wp-playlist-ajax-if-membership-scripts', 'if_membership_ajax_url', admin_url( 'admin-ajax.php' ) );
-	wp_enqueue_script( 'wp-playlist-ajax-if-membership-scripts' );
+	wp_register_script( 'wp-playlist-ajax-membership-scripts', $url . "js/ajax.membership.get.js", array( 'jquery' ), '1.0.0', true );
+	wp_localize_script( 'wp-playlist-ajax-membership-scripts', 'membership_ajax_url', admin_url( 'admin-ajax.php' ) );
+	wp_enqueue_script( 'wp-playlist-ajax-membership-scripts' );
 
 	/* Memory usage AJAX playlist */
 	wp_register_script( 'wp-playlist-ajax-memory-usage-scripts', $url . "js/ajax.memory.usage.js", array( 'jquery' ), '1.0.0', true );
@@ -121,6 +117,8 @@ function wp_playlist_ajax_scripts() {
 	wp_register_script( 'wp-ajax-search-get-scripts', $url . "js/ajax.search.get.js", array( 'jquery' ), '1.0.0', true );
 	wp_localize_script( 'wp-ajax-search-get-scripts', 'search_get_ajax_url', admin_url( 'admin-ajax.php' ) );
 	wp_enqueue_script( 'wp-ajax-search-get-scripts' );
+
+	wp_enqueue_script( 'tooltip', $url . "js/tooltip.js", array( 'jquery' ), '1.0.0' );
 }
 
 /* 3. AJAX CALLBACK
@@ -827,10 +825,10 @@ function count_play($post) {
 }
 
 /* AJAX action callback */
-add_action( 'wp_ajax_if_membership', 'if_membership' );
-add_action( 'wp_ajax_nopriv_if_membership', 'if_membership' );
+add_action( 'wp_ajax_get_membership', 'get_membership' );
+add_action( 'wp_ajax_nopriv_get_membership', 'get_membership' );
 
-function if_membership($post) {
+function get_membership($post) {
 
 	if(is_user_logged_in() && function_exists('pmpro_hasMembershipLevel') && pmpro_hasMembershipLevel())
 	{

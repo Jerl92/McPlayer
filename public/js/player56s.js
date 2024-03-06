@@ -283,7 +283,20 @@ function willSeekTonull(instance, status) {
 }
 
 jQuery( function player56s($) { 
-    var membership = null;
+    $.ajax({    
+        type: 'post',
+        url: membership_ajax_url,
+        data: {
+            'action': 'get_membership'
+        },
+        dataType: 'JSON',
+        success: function(data){
+            membership = data;
+        },
+        error: function(errorThrown){
+            console.log(errorThrown);
+        }
+    });
     var Clock = { 
         totalSeconds: 0, 
         start: function () { 
@@ -1067,22 +1080,6 @@ jQuery( function player56s($) {
             document.cookie = name + '=; expires=Thu, 01-Jan-70 00:00:01 GMT;';
         }
         bindEvents() {
-            $.ajax({    
-                type: 'post',
-                url: if_membership_ajax_url,
-                data: {
-                    'object_id': '',
-                    'action': 'if_membership'
-                },
-                dataType: 'JSON',
-                success: function(data){
-                    membership = data;
-                },
-                error: function(errorThrown){
-                    console.log(errorThrown);
-                }
-            });
-
             var self = this, uniqueID = self.$container.attr("id");
             
             var player56sMacAddr = $("#player56s-mac-address");
