@@ -10,6 +10,9 @@ function ajax_playlist_add_sidebar($, object_id)  {
         dataType: 'JSON',
         success: function(data){
 
+            $("#rs-saved-for-later-nothing").empty();
+            $("#rs-saved-for-later-nothing").css('padding', '0px');
+
             if ( data ) {
                 $("#rs-saved-for-later").append(data);
             }

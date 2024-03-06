@@ -34,7 +34,11 @@ function play_now($) {
 
                      if( ! $this.hasClass('saved') ) {
 
-                        ajax_playlist_add_sidebar($, object_id);
+                        if($('#rs-item-'+object_id).length){
+                            //
+                        } else {
+                            ajax_playlist_add_sidebar($, object_id);
+                        }
 
                         $('#postid-'+object_id+' a').addClass('saved');
 

@@ -49,8 +49,6 @@ function rs_save_for_later_album($) {
 							}
 						});     
 						$this.parent().find('.rs-see-saved').remove();
-						$('.rs-saved-trigger span').text(data);
-						$('.rs-saved-trigger').addClass('empty');	
 						$('.playlist_matches_count').text('');
 						$('.playlist_matches_count').text(data);
 						ajax_playlist_remove_album($, object_id);
@@ -64,12 +62,9 @@ function rs_save_for_later_album($) {
                         });     
 						$this.attr('data-title', rs_save_for_later_ajax.unsave_txt);
 						$this.attr('data-original-title', rs_save_for_later_ajax.unsave_txt);
-						$('.rs-saved-trigger span').text(data);
-						$('.rs-saved-trigger').removeClass('empty');	
 						$('.playlist_matches_count').text('');
 						$('.playlist_matches_count').text(data);
-						ajax_playlist_add_album($, object_id);	
-						ajax_playlist_add_sidebar($, object_id);
+						ajax_playlist_add_album($, object_id);
 					}
 					anchor.removeData('disabled');
 				},

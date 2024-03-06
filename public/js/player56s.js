@@ -305,8 +305,6 @@ jQuery( function player56s($) {
             delete this.interval; 
             this.totalSeconds = 0; 
             $("#player56s-play-timer").text(parseInt(this.totalSeconds)); 
-            this.start(); 
-            this.pause();
         } 
     }; 
     $.fn.player56s = function(options) {
@@ -348,6 +346,10 @@ jQuery( function player56s($) {
 
             if (goAndCreate) {
                 if (player56sInstance) {
+                    if(typeof player56sInstance.tracks[player56sInstance.currentTrack] === "undefined"){
+                        player56sInstance.tracks[player56sInstance.currentTrack] = {'audiofileLink':'#', 'filename':'', 'length':'0', 'postid':'0'};
+                    }
+
                     if (audiofileLink_add[0] !== undefined ) {
                         var allready = 0;
                         player56sInstance.tracks.forEach(function(element, index) {
@@ -362,13 +364,13 @@ jQuery( function player56s($) {
                             }
                         }
                         player56sInstance.tracks.forEach(function(element, index) {
-                            if (element.postid === "0") {
-                                player56sInstance.tracks.splice(index, 1); 
+                            if (element.postid === '0') {
+                                player56sInstance.pseudoPause();
+                                player56sInstance.pause();
+                                player56sInstance.tracks.splice(index, 1);
                                 player56sInstance.switchTrack(true); 
                             }
                         }, this);
-                        $("#rs-saved-for-later-nothing").empty();
-                        $("#rs-saved-for-later-nothing").css('padding', '0px');
                     }
                     
                     player56sInstance.currentTrack = 0;
@@ -435,7 +437,9 @@ jQuery( function player56s($) {
                     }
             
                     if ( audiofileLink_remove_all[0].innerText === "1" ) {
-                        player56sInstance.removeAll();
+                        if(player56sInstance.tracks[0].postid !== "0"){
+                            player56sInstance.removeAll();
+                        }
                     }
             
                     if (playlist_shuffle[0].innerText === "1") {
@@ -506,10 +510,6 @@ jQuery( function player56s($) {
 
                     }
 
-                    if(typeof player56sInstance.tracks[player56sInstance.currentTrack] === "undefined"){
-                        player56sInstance.tracks[player56sInstance.currentTrack] = {'audiofileLink':'#', 'filename':'', 'length':'0', 'postid':'0'};
-                    }
-
                     console.log(player56sInstance);
             
                 } else {
@@ -524,7 +524,6 @@ jQuery( function player56s($) {
                     if (canHaveGroup) {
                         relGroups.push({ group: thisRel, pl56s: pl56si });                         
                     } else {
-                        audiofileLink_currenttrack.html(0);   
                         pl56si.$container.find(".player56s-title").html('<span>Nothing in the playlist</span>');
                         pl56si.$container.find(".player56s-author").html('<span>Music Player</span>');
                         pl56si.$container.find(".player56s-album").html('<span>Just another WordPress site</span>');
@@ -614,13 +613,14 @@ jQuery( function player56s($) {
         removeAll() {
             this.stop();
             this.tracks = [];
-            this.addTrack('#', '', 0, 0);
+            this.addTrack('#', '', '0', '0');
             this.currentTrack = 0;
             this.seekTime = 0;
             this.$container.find(".player56s-title").html('<span>Nothing in the playlist</span>');
             this.$container.find(".player56s-author").html('<span>Music Player</span>');
             this.$container.find(".player56s-album").html('<span>Just another WordPress site</span>');
             this.$container.find(".player56s-album-img").html('<img src="' + window.location.origin + '/wp-content/plugins/McPlayer/public/css/blue-note.png"></img>');
+            $("#rs-saved-for-later").html('<li id="rs-saved-for-later-nothing" style="text-align: center; padding:15px 0px;">Nothing in the playlist</li>');
         }
         destroy() {
             var uniqueID = this.$container.attr("id");
@@ -631,13 +631,11 @@ jQuery( function player56s($) {
         }
         stop() {
             if (typeof this.$jPlayer !== "undefined" && this.$jPlayer.jPlayer) {
-                if (this.isPlaying) {
-                    this.$jPlayer.jPlayer( "stop" );
-                    this.$jPlayer.jPlayer("setMedia", {
-                        mp3: '#'
-                    });
-                    Clock.stop();
-                }
+                this.$jPlayer.jPlayer( "stop" );
+                this.$jPlayer.jPlayer("setMedia", {
+                    mp3: '#'
+                });
+                Clock.stop();
             }
             return this;
         }
@@ -1097,11 +1095,11 @@ jQuery( function player56s($) {
                     self.tracks.forEach(function(element, index) {
                         if(parseInt(element.postid) === parseInt(Player56sState)){
                             self.playNow(parseInt(index));
+                            willSeekTo(self, parseInt(Player56sSeek));
                         }
                     });
-                    willSeekTo(self, parseInt(Player56sSeek));
 
-                    if(player56scurrenttrack[0].innerText === Player56sState && player56scurrentseek >= Player56sSeek) {
+                    if(player56scurrenttrack[0].innerText === Player56sState && player56scurrentseek > Player56sSeek) {
                         clearInterval(Refersh);
                         self.DeleteCookie(Player56sState);
                         self.DeleteCookie(Player56sSeek);

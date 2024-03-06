@@ -179,26 +179,31 @@ function ajax_add_track_album($post) {
 	$get_songs_args = array( 
 		'post_type' => 'music',
 		'posts_per_page' => -1,
-		'meta_key' => 'meta-box-track-number',
-		'orderby' => 'meta_value_num',
 		'order' => 'ASC',
 		'meta_query' => array(
 			array(
 				'key' => 'meta-box-media-cover_',
-				'value'   => ($object_id),
-				'compare' => 'IN'
+				'value'   => $object_id
 			)
 		)
 	); 
 
-	$get_songs = get_posts( $get_songs_args );
+	$loop = get_posts( $get_songs_args );
 
-	foreach ( $get_songs as $get_song ) :
-		$html[] = $get_song->ID;
-	endforeach;
-	wp_reset_postdata();
+	foreach($loop as $post){
+		$posts[$x][0] = get_post_meta( $post->ID, "meta-box-track-number", true );
+		$posts[$x][1] = $post->ID;
+		$x++;
+	}
 
-	return wp_send_json ( $html ); 
+	asort($posts);
+
+	foreach($posts as $post_){
+		$html[] .= $post_[1];
+	}
+
+	return wp_send_json ( $html );
+
 }	
 
 add_action( 'wp_ajax_remove_track_album', 'ajax_remove_track_album' );
@@ -268,7 +273,7 @@ function ajax_add_track_sidebar($post) {
 		$args = array( 
 			'posts_per_page' => '-1',	
 			'post_type' => 'music',
-			'post__in' => ($matchesenarray),
+			'post__in' => $matchesenarray,
 			'orderby'   => 'post__in'
 		);
 	} else {
@@ -306,7 +311,6 @@ function ajax_add_track_sidebar($post) {
 	return wp_send_json ( $html );
 
 }
-
 
 add_action( 'wp_ajax_remove_track_sidebar', 'ajax_remove_track_sidebar' );
 add_action( 'wp_ajax_nopriv_remove_track_sidebar', 'ajax_remove_track_sidebar' );

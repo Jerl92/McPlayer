@@ -51,10 +51,8 @@ function mcplayer_load_playlist($) {
                     const chars = element.split('</li><li>');
                     rs_save_for_later($, chars[2]);
                     ajax_playlist_add_sidebar($, chars[2]);
-                    setTimeout(function(){
-                        $("#player56s-addtrack").html(element);
-                        $(".player56s").player56s($);   
-                    }, 2500);
+                    $("#player56s-addtrack").html(element);
+                    $(".player56s").player56s($);   
                     $(".playlist_matches_count").text(index+1);
                 }, this);  
             },
