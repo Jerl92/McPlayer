@@ -32,6 +32,7 @@ function mcplayer_load_playlist($) {
         event.preventDefault();
         event.stopPropagation();
 
+        var loop = 0;
         var $this = $(this),
         object_id = $this.data('id');
     
@@ -48,12 +49,17 @@ function mcplayer_load_playlist($) {
 				$(".player56s").player56s($);
 				$("#player56s-removetracks-all").html(null);
                 data.forEach(function(element, index) {
-                    const chars = element.split('</li><li>');
-                    rs_save_for_later($, chars[2]);
-                    ajax_playlist_add_sidebar($, chars[2]);
-                    $("#player56s-addtrack").html(element);
-                    $(".player56s").player56s($);   
-                    $(".playlist_matches_count").text(index+1);
+                    $('.rs-save-for-later-button').each(function(){
+                        if($(this).data('object-id') == element){
+                            $(this).addClass('saved');
+                            $(this).attr('data-title', rs_save_for_later_ajax.unsave_txt);
+                            $(this).attr('data-original-title', rs_save_for_later_ajax.unsave_txt);
+                        }
+                    });
+                    $('.playlist_matches_count').text('');
+                    $('.playlist_matches_count').text(index+1);
+                    ajax_playlist($, element);
+                    ajax_playlist_add_sidebar($, element);	
                 }, this);  
             },
             error: function(errorThrown){

@@ -283,6 +283,7 @@ function willSeekTonull(instance, status) {
 }
 
 jQuery( function player56s($) { 
+    var membership = null;
     $.ajax({    
         type: 'post',
         url: membership_ajax_url,

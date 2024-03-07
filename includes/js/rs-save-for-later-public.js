@@ -1,4 +1,4 @@
-function rs_save_for_later($, objectid) {
+function rs_save_for_later($) {
 
 	if($('.rs-save-for-later-button').length) {
 		$('.rs-save-for-later-button[data-toggle="tooltip"]').tooltip();
@@ -24,9 +24,7 @@ function rs_save_for_later($, objectid) {
 			var $this = $(this),
 				object_id = $this.data('object-id');
 
-			if(typeof object_id === "undefined"){
-				object_id = objectid;
-			}
+			console.log(object_id);
 
 			$.ajax({
 				type: 'post',

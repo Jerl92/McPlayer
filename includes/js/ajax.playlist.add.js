@@ -11,13 +11,13 @@ function ajax_playlist($, object_id)  {
                 success: function(data){
                     //print stuff heres
 
-                    sleep(100);
-
                     $("#player56s-addtrack").html(data);
 
                     $(".player56s").player56s($);
                     
                     $("#player56s-addtrack").html(null);
+
+                    sleep(50);
                 },
                 error: function(errorThrown){
                     //error stuff here.text
