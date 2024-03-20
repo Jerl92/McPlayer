@@ -22,13 +22,11 @@ function ajax_playlist_add_sidebar($, object_id)  {
                 $('.play-now-button').on('click', function(event) {
                     event.preventDefault();
                     event.stopPropagation();
+                    event.stopImmediatePropagation();
             
-                $('.add-play-now-button[data-toggle="tooltip"]').tooltip('hide');
-        
-                    var $this = $(this),
-                        object_id = $this.data('object-id');
+                    $('.add-play-now-button[data-toggle="tooltip"]').tooltip('hide');
                     
-                    ajax_playlist_update_sidebar($, object_id);
+                    ajax_playlist_update_sidebar($);
                 });
             }
 
@@ -57,7 +55,7 @@ function  ajax_playlist_sortable_sidebar($){
 }
     
 
-function  ajax_playlist_update_sidebar($, object_id) {
+function  ajax_playlist_update_sidebar($) {
     
     var currenttrack = $("#player56s-currenttrack")[0].innerText;
     

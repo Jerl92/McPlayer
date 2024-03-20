@@ -620,12 +620,12 @@ jQuery( function player56s($) {
         }
         pause() {
             if (typeof this.$jPlayer !== "undefined" && this.$jPlayer.jPlayer) {
-                if (this.isPlaying && this.tracks[this.currentTrack].postid !== '0') {
-                    $("#rs-item-" + this.tracks[this.currentTrack].postid + "").removeClass('playing');
-                    $("#play-now-id-" + this.tracks[this.currentTrack].postid + "").removeClass('onplay');
-                    $("#add-play-now-id-" + this.tracks[this.currentTrack].postid + "").removeClass('onplay');
-                    $("#play-now-id-" + this.tracks[this.currentTrack].postid + "").addClass('onpause');
-                    $("#add-play-now-id-" + this.tracks[this.currentTrack].postid + "").addClass('onpause');                    //
+                $("#rs-item-" + this.tracks[this.currentTrack].postid + "").removeClass('playing');
+                $("#play-now-id-" + this.tracks[this.currentTrack].postid + "").removeClass('onplay');
+                $("#add-play-now-id-" + this.tracks[this.currentTrack].postid + "").removeClass('onplay');
+                $("#play-now-id-" + this.tracks[this.currentTrack].postid + "").addClass('onpause');
+                $("#add-play-now-id-" + this.tracks[this.currentTrack].postid + "").addClass('onpause');     
+                if (this.isPlaying && this.tracks[this.currentTrack].postid !== '0') {               
                     this.isPlaying = false;
                     this.waitForLoad = false;
                     this.$jPlayer.jPlayer("pause");
@@ -642,12 +642,12 @@ jQuery( function player56s($) {
         }
         play() {
             if (typeof this.$jPlayer !== "undefined" && this.$jPlayer.jPlayer) {
+                $("#rs-item-" + this.tracks[this.currentTrack].postid + "").addClass("playing");
+                $("#play-now-id-" + this.tracks[this.currentTrack].postid + "").addClass('onplay');
+                $("#add-play-now-id-" + this.tracks[this.currentTrack].postid + "").addClass('onplay');
+                $("#play-now-id-" + this.tracks[this.currentTrack].postid + "").removeClass('onpause');
+                $("#add-play-now-id-" + this.tracks[this.currentTrack].postid + "").removeClass('onpause');
                 if (!this.isPlaying && this.tracks[this.currentTrack].postid !== '0') {
-                    $("#rs-item-" + this.tracks[this.currentTrack].postid + "").addClass("playing");
-                    $("#play-now-id-" + this.tracks[this.currentTrack].postid + "").addClass('onplay');
-                    $("#add-play-now-id-" + this.tracks[this.currentTrack].postid + "").addClass('onplay');
-                    $("#play-now-id-" + this.tracks[this.currentTrack].postid + "").removeClass('onpause');
-                    $("#add-play-now-id-" + this.tracks[this.currentTrack].postid + "").removeClass('onpause');
                     this.isPlayed = true;
                     this.waitForLoad = true;
                     this.$jPlayer.jPlayer("play");

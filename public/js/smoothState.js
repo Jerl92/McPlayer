@@ -92,6 +92,8 @@
 
 				current_album($);
 
+				ajax_playlist_update_sidebar($);
+
 				sidebarheight($);
 
 				mcplayer_load_playlist($);
