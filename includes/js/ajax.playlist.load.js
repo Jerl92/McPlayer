@@ -46,11 +46,11 @@ function mcplayer_load_playlist($) {
             },
             dataType: 'json',
             success: function(data){
-                var x = 1;
 				$("#player56s-removetracks-all").html("1");  
 				$(".player56s").player56s($);
 				$("#player56s-removetracks-all").html(null);
-                data.forEach(function(element, index) {
+                links = data.playlist.reverse();
+                links.forEach(function(element, index) {
                     $('.rs-save-for-later-button').each(function(){
                         if($(this).data('object-id') == element){
                             $(this).addClass('saved');
@@ -87,6 +87,14 @@ function mcplayer_load_playlist($) {
                         });  
                     }
 
+                }, this);  
+                data.playlist_album.forEach(function(element) {
+                    $('.rs-save-for-later-button-album').each(function() {
+                        var data_id = $(this).data("object-id");
+                        if(data_id == element){
+                            $(this).addClass('saved');
+                        }
+                    }); 
                 }, this);  
             },
             error: function(errorThrown){

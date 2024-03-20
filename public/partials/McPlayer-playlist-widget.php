@@ -45,30 +45,23 @@ class MCPlayer_bottom_playlist_widget extends WP_Widget {
 				'orderby'   => 'post__in',
 			);
 		} else {
-			$args = null;
+			$args = 0;
 		}
 		
-		$loop = new WP_Query( $args );
+		$the_query = new WP_Query( $args );
 
-		if ( $loop->have_posts() ) : ?>
+		if ( $the_query->have_posts() ) {
+			echo '<div id="rs-saved-for-later-wrapper" class="noselect"><ul id="rs-saved-for-later" class="rs-saved-for-later">' ;
+			while ( $the_query->have_posts() ) {
+				$the_query->the_post();
+				echo get_template_part( 'template-parts/page-music-archive-sidebar', get_post_format() );
+			}
+			echo '</ul></div>';
+		} else {
+			echo '<div id="rs-saved-for-later-wrapper" class="noselect"><ul id="rs-saved-for-later" class="rs-saved-for-later"><li id="rs-saved-for-later-nothing" style="text-align: center; padding:15px 0;">Nothing in the playlist</li></ul></div>';
+		}
 
-			<?php ob_start(); ?>
-			
-			<?php while ( $loop->have_posts() ) : $loop->the_post(); ?>
-					
-					<?php get_template_part( 'template-parts/page-music-archive-sidebar', get_post_format() ); ?>
-			
-			<?php endwhile; // end of the loop. ?>
-	
-			<?php wp_reset_postdata(); ?>
-
-			<?php echo '<div id="rs-saved-for-later-wrapper" class="noselect"><ul id="rs-saved-for-later" class="rs-saved-for-later">' . ob_get_clean() . '</ul></div>'; ?>
-
-		<?php else : ?>
-
-			<?php echo '<div id="rs-saved-for-later-wrapper" class="noselect"><ul id="rs-saved-for-later" class="rs-saved-for-later"><li id="rs-saved-for-later-nothing" style="text-align: center; padding:15px 0;">Nothing in the playlist</li></ul></div>'; ?>
-
-		<?php endif;
+		wp_reset_postdata();
 
 		echo "<div id='subnav-content-save'>
 			<span style='margin: 0px; width: 100%; display: table;'>
@@ -100,8 +93,6 @@ class MCPlayer_bottom_playlist_widget extends WP_Widget {
 		echo '<div class="rs-save-for-later-load-playlist" data-nonce="' . wp_create_nonce( 'rs_save_for_later_load_playlist' ) . '">Load</div></div>';
 
 		echo '<div id="remove-all-btn"><a href="#" class="rs-save-for-later-remove-all" data-nonce="' . wp_create_nonce( 'rs_save_for_later_remove_all' ) . '">Flush Playlist</a></div>';
-					
-		echo '</section>';
 		
 		echo $args['after_widget'];		
 

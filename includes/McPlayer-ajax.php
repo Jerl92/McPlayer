@@ -638,9 +638,17 @@ function save_playlist($post) {
 		'post_type' => 'playlist'
 	);
 	$post_id = wp_insert_post($new_post);
-	$playlist = get_user_meta( user_if_login(), 'rs_saved_for_later' );
+	$playlist = get_user_meta( user_if_login(), 'rs_saved_for_later', true);
+	$playlist_album = get_user_meta( user_if_login(), 'rs_saved_for_later_album', true);
 	add_post_meta($post_id, 'rs_saved_for_later', $playlist);
-	return wp_send_json ( $playlist );
+	add_post_meta($post_id, 'rs_saved_for_later_album', $playlist_album);
+
+	$return = array(
+		'playlist'   => $playlist,
+		'playlist_album'   => $playlist_album
+	);
+
+	return wp_send_json ( $return );
 }
 
 /* AJAX action callback */
@@ -649,23 +657,28 @@ add_action( 'wp_ajax_nopriv_load_playlist', 'load_playlist' );
 
 function load_playlist($post) {
 
-	$x = 0;
 	$object_id = $_POST['object_id'];
 
-	$post = get_post( $object_id );
+	$matches = get_post_meta($object_id, 'rs_saved_for_later', true);
 
-	$matches = get_post_meta($post->ID, 'rs_saved_for_later', true);
+	$matches_albums = get_post_meta($object_id, 'rs_saved_for_later_album', true);
 
-	foreach($matches as $matche){
-		$revert = array_reverse($matche);
-		foreach($revert as $matche_){
-			$html[$x] = $matche_;
-			$x++;
-		}
-		update_user_meta( user_if_login(), 'rs_saved_for_later', $html );
+	if ( empty( $matches_albums ) ) {
+		$matches_albums = array();
 	}
+	update_user_meta( user_if_login(), 'rs_saved_for_later_album', $matches_albums );
 
-	return wp_send_json ( $html );
+	if ( empty( $matches ) ) {
+		$matches = array();
+	}
+	update_user_meta( user_if_login(), 'rs_saved_for_later', $matches );
+
+	$return = array(
+		'playlist'   => $matches,
+		'playlist_album'   => $matches_albums
+	);
+
+	return wp_send_json ( $return );
 }
 
 /* AJAX action callback */
@@ -683,11 +696,9 @@ function load_saved_playlist($post) {
 	$posts = get_posts($args);
 
 	foreach ($posts as $post) {
-		$matches_ = get_post_meta($post->ID, 'rs_saved_for_later', true);
-		foreach($matches_ as $matche_){
-			$matche = count($matche_);
-		}
-		$html[] .= "<div class='playlist-load-loop' data-id='".$post->ID."'>".get_the_title($post->ID)."<span style='text-align: right;right: 30px !important;float: right;'>".$matche."</span></div>";
+		$matches = get_post_meta($post->ID, 'rs_saved_for_later', true);
+		$matches_count = count($matches);
+		$html[] .= "<div class='playlist-load-loop' data-id='".$post->ID."'>".get_the_title($post->ID)."<span style='text-align: right;right: 30px !important;float: right;'>".$matches_count."</span></div>";
 	}
 
 	return wp_send_json ( $html );

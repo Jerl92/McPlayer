@@ -192,7 +192,6 @@ function set_userid_cookie() {
 		$mac = new GetMacAddr(PHP_OS);
 		$str = str_replace(":", '', $mac=$mac->mac_addr);
 
-		$hash[] = '0';
 		for ( $pos=0; $pos < strlen($str); $pos ++ ) {
 			$byte = substr($str, $pos);
 			$hash[] .=  ord($byte);
