@@ -38,7 +38,6 @@ function rs_save_for_later($) {
 						ajax_playlist_add_sidebar($, object_id);					
 					}
 					sidebarheight($);
-					rs_save_for_later($);
 				},
 				error: function(error) {
 					console.log(error);
@@ -47,22 +46,20 @@ function rs_save_for_later($) {
 		});
 	}
 
+}
+
+function rs_remove_all($) {
 	/**
 	 * Remove All from Saved for Later
 	 */
 	$('a.rs-save-for-later-remove-all').on('click', function(event) {
         event.preventDefault();
         event.stopPropagation();
-        event.stopImmediatePropagation();
-
-		var $this = $(this);
-		nonce = $this.data('nonce');
 
 		$.ajax({
 			type: 'post',
-			url: rs_save_for_later_ajax.ajax_url,
+			url: rs_save_for_later_ajax,
 			data: {
-				'nonce': nonce,
 				'action': 'save_for_later_remove_all'
 			},
 			success: function(data) {
@@ -104,8 +101,6 @@ function rs_save_for_later($) {
 						minWidth: mystickyside_min_width
 					});  
 				}
-
-				rs_save_for_later($);
 			},
 			error: function(error) {
 				console.log(error);
@@ -116,4 +111,5 @@ function rs_save_for_later($) {
 
 jQuery(document).ready(function($) {
 	rs_save_for_later($);
+	rs_remove_all($);
 });

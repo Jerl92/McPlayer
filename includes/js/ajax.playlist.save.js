@@ -27,7 +27,6 @@ function mcplayer_save_playlist($) {
             success: function(data){
                 $('#subnav-content-save').toggleClass('subnav-content-display');
                 $('#lnamesave').val('');
-                mcplayer_save_playlist($);
             },
             error: function(errorThrown){
                 //error stuff here.text

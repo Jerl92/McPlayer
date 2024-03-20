@@ -32,7 +32,7 @@ function rs_save_for_later_album($) {
 						$this.attr('data-title', 'Add to Playlist');
 						$this.attr('data-original-title', 'Add to Playlist');
 						$('.playlist_matches_count').html(null);
-						$('.playlist_matches_count').html(data.length);
+						$('.playlist_matches_count').html(data.count);
 						ajax_playlist_remove_album($, object_id);
 					} else {	
 						$this.addClass('saved');
@@ -45,10 +45,9 @@ function rs_save_for_later_album($) {
 						$this.attr('data-title', 'Remove');
 						$this.attr('data-original-title', 'Remove');
 						$('.playlist_matches_count').html(null);
-						$('.playlist_matches_count').html(data.length);
+						$('.playlist_matches_count').html(data.count);
 						ajax_playlist_add_album($, object_id);
 					}
-					rs_save_for_later_album($);
 				},
 				error: function(error) {
 					console.log(error);

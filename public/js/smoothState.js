@@ -9,7 +9,7 @@
 			cacheLength: 0,
 			prefetch: true,
 			prefetchOn: 'mouseover touchstart',
-			scroll: true,
+			scroll: false,
 			locationHeader: "X-SmoothState-Location",
 			onStart: {
 				duration: 100, // Duration of our animation
@@ -90,6 +90,8 @@
 				
 				rs_save_for_later_album($);
 
+				current_album($);
+
 				sidebarheight($);
 
 				mcplayer_load_playlist($);
@@ -103,6 +105,10 @@
 				scrolltosecondary($);
 				
 				topmenucontainer($);
+
+				rs_remove_all($);
+
+				memory_ajax($);
 
 				hw_info = document.getElementById("hwm-area");
 				if (hw_info) {					

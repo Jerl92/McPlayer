@@ -322,8 +322,8 @@ jQuery( function player56s($) {
 
             if (goAndCreate) {
                 if (player56sInstance) {
-                    if(typeof player56sInstance.tracks[player56sInstance.currentTrack] === "undefined"){
-                        player56sInstance.tracks[player56sInstance.currentTrack] = {'audiofileLink':'#', 'filename':'', 'length':'0', 'postid':'0'};
+                    if(typeof player56sInstance.tracks[player56sInstance.currentTrack] === undefined){
+                        player56sInstance.removeAll();
                     }
 
                     if (audiofileLink_add[0] !== undefined ) {
@@ -340,7 +340,7 @@ jQuery( function player56s($) {
                             }
                         }
                         player56sInstance.tracks.forEach(function(element, index) {
-                            if (element.postid === '0') {
+                            if (element.postid === '0' && player56sInstance.tracks.length >= 2) {
                                 player56sInstance.pseudoPause();
                                 player56sInstance.pause();
                                 player56sInstance.tracks.splice(index, 1);
@@ -384,9 +384,7 @@ jQuery( function player56s($) {
                         var audiofileLink_remove_id = audiofileLink_remove[0].innerText; 
                         player56sInstance.tracks.forEach(function(element, index) {
                             if (element.postid == audiofileLink_remove_id) {
-                                if (player56sInstance.tracks.length <= 1) {
-                                    player56sInstance.removeAll();
-                                } else {
+                                if (player56sInstance.tracks.length > 1) {
                                     if (player56sInstance.currentTrack === index) {
                                         if (player56sInstance.currentTrack === 0) {
                                             player56sInstance.switchTrack(true); 
@@ -407,15 +405,19 @@ jQuery( function player56s($) {
                                     } else { 
                                         player56sInstance.tracks.splice(index, 1);
                                     }
+                                } else {
+                                    player56sInstance.removeAll();
                                 }                             
                             }
                         }, this);
                     }
-            
+
+                    if (player56sInstance.tracks.length === 0) {
+                        player56sInstance.removeAll();
+                    }
+                    
                     if ( audiofileLink_remove_all[0].innerText === "1" ) {
-                        if(player56sInstance.tracks[0].postid !== "0"){
-                            player56sInstance.removeAll();
-                        }
+                        player56sInstance.removeAll();
                     }
             
                     if (playlist_shuffle[0].innerText === "1") {
@@ -645,7 +647,7 @@ jQuery( function player56s($) {
                 $("#add-play-now-id-" + this.tracks[this.currentTrack].postid + "").addClass('onplay');
                 $("#play-now-id-" + this.tracks[this.currentTrack].postid + "").removeClass('onpause');
                 $("#add-play-now-id-" + this.tracks[this.currentTrack].postid + "").removeClass('onpause');
-                if (!this.isPlaying) {
+                if (!this.isPlaying && this.tracks[this.currentTrack].postid !== 0) {
                     this.isPlayed = true;
                     this.waitForLoad = true;
                     this.$jPlayer.jPlayer("play");
