@@ -3,6 +3,7 @@ function mcplayer_save_playlist($) {
     $('.rs-save-for-later-save-playlist').on('click', function(event) {
         event.preventDefault();
         event.stopPropagation();
+        event.stopImmediatePropagation();
         
         $('#subnav-content-save').toggleClass('subnav-content-display');
         $("#subnav-content-load").removeClass("subnav-content-display");
@@ -11,6 +12,7 @@ function mcplayer_save_playlist($) {
     $('.save-playlist').on('click', function(event) {
         event.preventDefault();
         event.stopPropagation();
+        event.stopImmediatePropagation();
 
         var inputVal = document.getElementById("lnamesave").value;
     
@@ -25,6 +27,7 @@ function mcplayer_save_playlist($) {
             success: function(data){
                 $('#subnav-content-save').toggleClass('subnav-content-display');
                 $('#lnamesave').val('');
+                mcplayer_save_playlist($);
             },
             error: function(errorThrown){
                 //error stuff here.text

@@ -2,7 +2,7 @@
 
 McPlayer is a full-width HTML5/CSS/PHP/JS/AJAX audio Player with Playlist, Plugin for WordPress.</br>
 
-<img style="max-width: 100%;" src="https://i.ibb.co/Y8Rt9Ng/mc678t87.png" alt="MCPlayer" />
+<img style="max-width: 100%;" src="https://i.ibb.co/sHSNzvL/loadplaylist.gif" alt="MCPlayer" />
 
 ## Description
 With McPlayer you can get your music from all around the world, from public Wi-Fi or your cellular network.</br>
@@ -35,10 +35,6 @@ https://github.com/jquery/jquery-ui</br>
 ## Depend on this theme and plugins
 MCPlayer child theme based on Chichi</br>
 https://github.com/Jerl92/McPlayer-Child-Theme</br>
-
-To enable memberships subscription by month</br>
-If not installed and enable the plugin player will have limitation</br>
-https://en-ca.wordpress.org/plugins/paid-memberships-pro/</br>
 
 The Categories Images Plugin allow you to add image with category</br>
 https://WordPress.org/plugins/categories-images/</br>
@@ -109,11 +105,11 @@ Show the lasted played songs</br>
 <img style="max-width: 100%;" src="https://i.ibb.co/9G1DDFm/mcplayeradmin0.jpg" />
 <img style="max-width: 100%;" src="https://i.ibb.co/rdL9T5S/mcplayeradmin1.jpg" />
 <img style="max-width: 100%;" src="https://i.ibb.co/LJFCh3h/mcplayeradmin2.jpg" />
-<img style="max-width: 100%;" src="https://i.ibb.co/Cs81nXd/screencapture-192-168-2-110-wp-admin-term-php-2024-01-10-23-52-09.png" />
 <img style="max-width: 100%;" src="https://i.ibb.co/JdDXRNb/playlist.png" />
 <img style="max-width: 100%;" src="https://i.ibb.co/R6G5xTt/bulk-add-album.png" />
 
 ## Changelog
+1.6 - Remove artist private page, remove other stuff.</br>
 1.5 - Add AJAX search and add load state on page refresh.</br>
 1.4 - In shortcode for previously played show all user previously played.</br>
 1.3 - Add albums in AJAX search.</br>

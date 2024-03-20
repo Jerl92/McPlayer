@@ -8,18 +8,11 @@ function ajax_playlist_remove_album($, object_id)  {
                         'action': 'remove_track_album'
                     },
                     dataType: 'JSON',
-                    success: function(data){
-                        //print stuff heres   
+                    success: function(data){ 
                         data.forEach(function(element) {
-                            $("#player56s-removetrack").html(element);
-                            $(".player56s").player56s($);
-                            $("#player56s-removetrack").html(null);
-                            sleep(75);   
-                            $("#rs-item-"+element).remove();
-                            $("#album-class-artist-list-id-"+element+" a").removeClass("saved");
-                            $(".album-"+element+" li a").removeClass("saved");
+                            ajax_playlist_remove_sidebar($, element);
+                            ajax_playlist_remove_track($, element);
                         }, this); 
-                        ajax_playlist_update_sidebar($, object_id);
                     },
                     error: function(errorThrown){
                         console.log(errorThrown);

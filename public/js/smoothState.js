@@ -1,23 +1,15 @@
 ( function( $ ) {
 
-	function addBlacklistClass() { 
-		$( "a" ).each( function() {
-			//
-        });
-	}
-
 	$( function() {
 
-		addBlacklistClass();
 		var $body = $('html, body');
 		var settings = { 
 			anchors: "a",
-			blacklist: ".no-smoothState",
 			cache: false,
 			cacheLength: 0,
 			prefetch: true,
 			prefetchOn: 'mouseover touchstart',
-			scroll: false,
+			scroll: true,
 			locationHeader: "X-SmoothState-Location",
 			onStart: {
 				duration: 100, // Duration of our animation
@@ -64,12 +56,6 @@
 		    },
 			onAfter: function( $container , $newcontainer ) {
 
-				// stickIt_($);
-
-				// stickysidebar($);
-
-				// ajax_playlist_add_sidebar($);
-
 				if ($.isFunction($.fn.theiaStickySidebar)){ 
 					if ( jQuery.browser.mobile && !mystickyside_name.device_mobile) {
 						return false;
@@ -102,9 +88,7 @@
                     
 				rs_save_for_later($);
 				
-				rs_save_for_later_album($); 
-
-				sortable_playlist($);
+				rs_save_for_later_album($);
 
 				sidebarheight($);
 
@@ -117,6 +101,8 @@
 				mcplayer_search_ajax($);
 
 				scrolltosecondary($);
+				
+				topmenucontainer($);
 
 				hw_info = document.getElementById("hwm-area");
 				if (hw_info) {					

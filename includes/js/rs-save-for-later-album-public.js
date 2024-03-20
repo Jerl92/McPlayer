@@ -1,30 +1,13 @@
 function rs_save_for_later_album($) {
-    
-    $.fn.ready();
-	'use strict';
 
-
-    /**
-	 * Save/Unsave for Later
-	 */
 	if($('.rs-save-for-later-button-album').length) {
 		$('.rs-save-for-later-button-album[data-toggle="tooltip"]').tooltip();
-		if($('.rs-see-saved').length) {
-			$('.rs-see-saved[data-toggle="tooltip"]').tooltip();
-		}
-		if($('.rs-saved-trigger').length) {
-			$('.rs-saved-trigger[data-toggle="tooltip"]').tooltip();
-		}
 		$('.rs-save-for-later-button-album').on('click', function(event) {
 			event.preventDefault();
+			event.stopPropagation();
+			event.stopImmediatePropagation();
 
 			$('.rs-save-for-later-button-album[data-toggle="tooltip"]').tooltip('hide');
-			
-			var anchor = $(this);
-			if(anchor.data('disabled')) {
-				return false;
-			}
-			anchor.data('disabled', 'disabled');
 
 			var $this = $(this),
 				object_id = $this.data('object-id');
@@ -40,17 +23,16 @@ function rs_save_for_later_album($) {
 				success: function(data) {
 					if($this.hasClass('saved')) {
 						$this.removeClass('saved');
-						$this.attr('data-title', rs_save_for_later_ajax.save_txt);
-						$this.attr('data-original-title', rs_save_for_later_ajax.save_txt);
 						$('.rs-save-for-later-button-album').each(function() {
 							var data_id = $(this).data("object-id");
 							if(data_id == object_id){
 								$(this).removeClass('saved');
 							}
 						});     
-						$this.parent().find('.rs-see-saved').remove();
-						$('.playlist_matches_count').text('');
-						$('.playlist_matches_count').text(data);
+						$this.attr('data-title', 'Add to Playlist');
+						$this.attr('data-original-title', 'Add to Playlist');
+						$('.playlist_matches_count').html(null);
+						$('.playlist_matches_count').html(data.length);
 						ajax_playlist_remove_album($, object_id);
 					} else {	
 						$this.addClass('saved');
@@ -60,13 +42,13 @@ function rs_save_for_later_album($) {
                                 $(this).addClass("saved");
                             }
                         });     
-						$this.attr('data-title', rs_save_for_later_ajax.unsave_txt);
-						$this.attr('data-original-title', rs_save_for_later_ajax.unsave_txt);
-						$('.playlist_matches_count').text('');
-						$('.playlist_matches_count').text(data);
+						$this.attr('data-title', 'Remove');
+						$this.attr('data-original-title', 'Remove');
+						$('.playlist_matches_count').html(null);
+						$('.playlist_matches_count').html(data.length);
 						ajax_playlist_add_album($, object_id);
 					}
-					anchor.removeData('disabled');
+					rs_save_for_later_album($);
 				},
 				error: function(error) {
 					console.log(error);

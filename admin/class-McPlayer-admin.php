@@ -104,14 +104,6 @@ class Mcplayer_Admin {
 
 		wp_enqueue_script( 'wp-media-uploader', plugin_dir_url( __FILE__ ) . 'js/wp-media-uploader.js', array( 'jquery' ), $this->version, false );
 
-		wp_enqueue_script( 'Chart.bundle', plugin_dir_url( __FILE__ ) . 'js/Chart.bundle.js', array( 'jquery' ), $this->version, false );
-
-		wp_enqueue_script( 'Chart.min', plugin_dir_url( __FILE__ ) . 'js/Chart.min.js', array( 'jquery' ), $this->version, false );
-
-		wp_enqueue_script( 'chart', plugin_dir_url( __FILE__ ) . 'js/Chart.js', array( 'jquery' ), $this->version, false );
-		
-		wp_enqueue_script( 'Chart.render', plugin_dir_url( __FILE__ ) . 'js/Chart.render.js', array( 'jquery' ), $this->version, false );
-
 		wp_enqueue_script( $this->Mcplayer, plugin_dir_url( __FILE__ ) . 'js/McPlayer-admin.js', array( 'jquery' ), $this->version, false );
 
 	}

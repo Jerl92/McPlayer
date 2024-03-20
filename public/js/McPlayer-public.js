@@ -9,7 +9,8 @@ jQuery(document).ready(function() {
             jQuery('#player56s-ui-zone').addClass('hide-player');
             jQuery('.player_widget_name_hide_btn').css('display', 'none');
             jQuery('#page').css('padding-bottom', jQuery('#wrap-player').height() +'px');
-    
+            jQuery('.shuffle_player_toggle').css('display', 'none');
+
             if ($.isFunction($.fn.theiaStickySidebar)){ 
                 if ( jQuery.browser.mobile && !mystickyside_name.device_mobile) {
                     return false;
@@ -39,6 +40,7 @@ jQuery(document).ready(function() {
             jQuery('#player56s-ui-zone').removeClass('hide-player');
             jQuery('.player_widget_name_hide_btn').css('display', 'block');
             jQuery('#page').css('padding-bottom', jQuery('#wrap-player').height() +'px');
+            jQuery('.shuffle_player_toggle').css('display', 'block');
         } else {
             jQuery('#wrap-player').addClass('full-player');
             jQuery('.player_widget_name_up_btn').css('display', 'none');
@@ -95,45 +97,6 @@ jQuery(window).resize(function () {
 
 });
 
-function sortable_playlist($) {
-
-    $( "#rs-saved-for-later" ).sortable({    
-        start: function(e, ui) {
-            var i = 0;
-            const playlist_array = [];
-            $(".rs-item-saved-for-later").each(function () {
-                playlist_array[i] = $(this);
-                i++;
-            });
-            playlist_array.reverse();
-            var array = playlist_array[ui.item.index()];
-            $(this).attr('data-previndex', parseInt(array.index()-1));
-        },
-        update: function(e, ui) {
-            var i = 0;
-            const playlist_array = [];
-            $(".rs-item-saved-for-later").each(function () {
-                playlist_array[i] = $(this);
-                i++;
-            });
-            playlist_array.reverse();
-            var array = playlist_array[ui.item.index()];
-            var newIndex = parseInt(array.index());
-            var oldIndex = $(this).attr('data-previndex');
-            $("#player56s-sortable").html('<ul><li>' + oldIndex + '</li><li>' + newIndex + '</li></ul>');
-
-            $(".player56s").player56s($);
-            
-            $("#player56s-sortable").html(null);      
-
-            $(this).removeAttr('data-previndex');
-
-            sortable_playlist($);
-        }
-    });
-    $("#rs-saved-for-later").disableSelection();
-}
-
 function sleep(milliseconds) {
     var start = new Date().getTime();
     for (var i = 0; i < 1e7; i++) {
@@ -156,7 +119,7 @@ function checkHeightChange() {
         var windowheight = jQuery(window).height();
         var primaryheight = jQuery('#primary').height();
         
-        if (windowwidth > 720) {
+        if (windowwidth >= 720) {
             if(newHeight < 1080){
                 newHeight = 1080;
             }
@@ -208,7 +171,7 @@ function sidebarheight() {
     var primaryheight = jQuery('#primary').height();
     var secondaryheight = jQuery('#secondary').height();
     
-    if (windowwidth > 720) {
+    if (windowwidth >= 720) {
         if(primaryheight <= windowheight){
             jQuery('body').height(windowheight);
             jQuery('#primary').height(windowheight-colophon);
@@ -293,7 +256,7 @@ function update() {
           startTimer(fiveMinutes);
     } else {
         clearInterval(interval);
-        if (windowwidth < 720) {
+        if (windowwidth <= 720) {
             navigator.wakeLock.request('screen')
             .then((wakeLock) => {
                 //
@@ -311,6 +274,5 @@ jQuery(document).ready(function($) {
     doVisualUpdates = !document.hidden;
     update();
     sidebarheight($);
-    sortable_playlist($);
     footer_stick($);
 });

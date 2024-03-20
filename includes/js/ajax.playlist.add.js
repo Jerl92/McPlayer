@@ -9,7 +9,6 @@ function ajax_playlist($, object_id)  {
                 },
                 dataType: 'JSON',
                 success: function(data){
-                    //print stuff heres
 
                     $("#player56s-addtrack").html(data);
 

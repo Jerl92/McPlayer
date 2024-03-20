@@ -259,45 +259,7 @@ function generateRandom(max) { // min and max included
     return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
-function willSeekTonull(instance, status) {
-    var timeSeekfree = Number($("#player56s-seek-percent-free").html());
-    instance.setVolume(0, 1);
-    instance.sleep(250);
-    var seek = setInterval(function(){
-        willSeekTo(instance, parseInt(timeSeekfree)-1);
-        if(parseInt(timeSeekfree) > Number($("#player56s-seek-percent").html())) {
-            clearInterval(seek);
-        }
-    },1000);
-    var play = setInterval(function(){
-        if(parseInt(timeSeekfree) > Number($("#player56s-seek-percent").html())) {
-            clearInterval(play);
-            if(status == 1){
-                instance.pseudoPlay();
-                instance.play();
-            }
-            instance.sleep(250);
-            instance.setVolume(1, 1);
-        }
-    },2500);
-}
-
 jQuery( function player56s($) { 
-    var membership = null;
-    $.ajax({    
-        type: 'post',
-        url: membership_ajax_url,
-        data: {
-            'action': 'get_membership'
-        },
-        dataType: 'JSON',
-        success: function(data){
-            membership = data;
-        },
-        error: function(errorThrown){
-            console.log(errorThrown);
-        }
-    });
     var Clock = { 
         totalSeconds: 0, 
         start: function () { 
@@ -523,8 +485,6 @@ jQuery( function player56s($) {
                         });
 
                     }
-
-                    console.log(player56sInstance);
             
                 } else {
                     /* Create new instance */
@@ -532,8 +492,6 @@ jQuery( function player56s($) {
                         skin = thisClass.substr(skinClassPosition + 12, thisClass.indexOf(" ", skinClassPosition) > 0 ? thisClass.indexOf(" ", skinClassPosition) : thisClass.length);
                     }
                     var pl56si = new Player56s($this, $.extend({}, $.fn.player56s.defaults, options, $this.data(), {skin: skin}));
-
-                    console.log(pl56si);
 
                     if (canHaveGroup) {
                         relGroups.push({ group: thisRel, pl56s: pl56si });                         
@@ -758,19 +716,13 @@ jQuery( function player56s($) {
                     mp3: track.audiofileLink
                 });
 
-                if(membership == null) {
-                    $("#player56s-seek-percent-free").html(null);
-                    $("#player56s-seek-percent-free").html(generateRandom(90));
-                    willSeekTonull(this, status);
-                }
-
                 this.$container.find(".player56s-title").html('<span>' + getTrackTitle(track.filename) + '</span>');
                 this.$container.find(".player56s-author").html('<span>' + getTrackAuthor(track.filename) + '</span>');
                 this.$container.find(".player56s-album").html('<span>' + getTrackAlbum(track.filename) + '</span>');
                 this.$container.find(".player56s-time").html(track.length ? formatTime(makeSeconds(track.length)) : "");
                 this.$container.find(".player56s-album-img").html('<span><img src="' + getTrackAlbumImg(track.filename) + '"></img></span>');
 
-                if (status == 1 && membership != null) {
+                if (status == 1) {
                     $("#rs-item-" + this.tracks[this.currentTrack].postid + "").addClass('playing');
                     this.pseudoPlay();
                     this.play();
@@ -855,13 +807,7 @@ jQuery( function player56s($) {
                 this.$container.find(".player56s-time").html(track.length ? formatTime(makeSeconds(track.length)) : "");
                 this.$container.find(".player56s-album-img").html('<span><img src="' + getTrackAlbumImg(track.filename) + '"></img></span>');
 
-                if(membership == null) {
-                    $("#player56s-seek-percent-free").html(null);
-                    $("#player56s-seek-percent-free").html(generateRandom(90));
-                    willSeekTonull(this, status);
-                }
-
-                if (status == 1 && membership != null) {
+                if (status == 1) {
                     this.pseudoPlay();
                     this.play();
                 }
@@ -945,11 +891,6 @@ jQuery( function player56s($) {
 
                     $("#player56s-currenttrack").html(self.tracks[self.currentTrack].postid);
 
-                    if(membership == null) {
-                        $("#player56s-seek-percent-free").html(1);
-                        willSeekTonull(self);
-                    }
-
                     self.$container.find(".player56s-button").on("click", function (event) {
                         event.stopPropagation();
                         event.preventDefault();
@@ -999,13 +940,9 @@ jQuery( function player56s($) {
                                 return false;
                             }
                             var clickPoint = ((event.pageX - $this.offset().left) / $this.width()) * 100;
-                            if(membership != null) {
-                                willSeekTo(self, clickPoint);
-                            }
-                        });
-                        if(membership != null) {
                             willSeekTo(self, clickPoint);
-                        }
+                        });
+                        willSeekTo(self, clickPoint);
                     });
                 },
                 pause: function () {
@@ -1045,14 +982,6 @@ jQuery( function player56s($) {
                     if (self.$container.hasClass("status-playing")) {
                         self.pseudoPlay();
                         self.play();
-                    }
-                    if(membership == null) {
-                        var timelinedone = $(".player56s-timeline-done").width() / $('.player56s-timeline-done').parent().width() * 100;
-                        var timeSeekfree = Number($("#player56s-seek-percent-free").html());
-                        var timeSeekfreeend = parseInt(timeSeekfree) + 10;
-                        if(timeSeekfreeend < Number(timelinedone)) {
-                            self.switchTrack();
-                        }
                     }
                 }
             });

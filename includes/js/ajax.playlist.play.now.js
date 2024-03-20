@@ -9,6 +9,8 @@ function play_now($) {
     
             $('.add-play-now-button').on('click', function(event) {
                 event.preventDefault();
+                event.stopPropagation();
+                event.stopImmediatePropagation();
         
                 var $this = $(this),
                     object_id = $this.data('object-id');
@@ -16,7 +18,7 @@ function play_now($) {
                 $('.add-play-now-button[data-toggle="tooltip"]').tooltip("hide");
                 $.ajax({
                     type: 'post',
-                    url: play_now_ajax_url.ajax_url,
+                    url: play_now_ajax_url,
                     data: {
                         'object_id': object_id,
                         'action': 'save_and_play_now'
@@ -34,9 +36,7 @@ function play_now($) {
 
                      if( ! $this.hasClass('saved') ) {
 
-                        if($('#rs-item-'+object_id).length){
-                            //
-                        } else {
+                        if(!$('#rs-item-'+object_id).length){
                             ajax_playlist_add_sidebar($, object_id);
                         }
 
@@ -52,13 +52,15 @@ function play_now($) {
 
                         ajax_playlist_update_sidebar($, object_id);
 
-                        $('.playlist_matches_count').text('');
+                        $('.playlist_matches_count').html(null);
                         
-						$('.playlist_matches_count').text(data.count);		
+						$('.playlist_matches_count').html(data.count);		
 
                         $this.attr('data-title', 'Pause');
 
                     }
+
+                    play_now($);
 
                 },
                 error: function(error) {
@@ -76,6 +78,8 @@ function play_pause($) {
         $('.play-now-button[data-toggle="tooltip"]').tooltip();
         $('.play-now-button').on('click', function(event) {
             event.preventDefault();
+            event.stopPropagation();
+            event.stopImmediatePropagation();
 
             $('.add-play-now-button[data-toggle="tooltip"]').tooltip('hide');
 
@@ -85,6 +89,8 @@ function play_pause($) {
             ajax_playlist_play_now($, object_id); 
             
             ajax_playlist_update_sidebar($, object_id);
+
+            play_pause($);
         });
     }
 }

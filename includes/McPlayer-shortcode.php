@@ -366,7 +366,7 @@ function artist_get_loop($atts) {
 	
 		rsort($terms_count_plays);
 	
-		$outputs = array_slice($terms_count_plays, 0, 10); 
+		$outputs = array_slice($terms_count_plays, 0, 50); 
 	
 		foreach($outputs as $output){
 			$term = get_term($output['ID']);

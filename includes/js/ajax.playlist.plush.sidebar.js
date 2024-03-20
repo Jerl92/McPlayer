@@ -14,14 +14,15 @@ function ajax_playlist_add_sidebar($, object_id)  {
             $("#rs-saved-for-later-nothing").css('padding', '0px');
 
             if ( data ) {
-                $("#rs-saved-for-later").append(data);
+                $( "#rs-saved-for-later" ).prepend(data);
             }
 
             if($('.play-now-button').length) {
                 $('.play-now-button[data-toggle="tooltip"]').tooltip($);
                 $('.play-now-button').on('click', function(event) {
                     event.preventDefault();
-        
+                    event.stopPropagation();
+            
                 $('.add-play-now-button[data-toggle="tooltip"]').tooltip('hide');
         
                     var $this = $(this),
@@ -31,13 +32,13 @@ function ajax_playlist_add_sidebar($, object_id)  {
                 });
             }
 
-            tooltip($);
-
             rs_save_for_later($);
             
             rs_save_for_later_album($);
 
             play_pause($);
+
+            tooltip($);
         
         },
         error: function(errorThrown){

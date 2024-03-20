@@ -3,6 +3,7 @@ function mcplayer_load_saved_playlist($) {
     $('.rs-save-for-later-load-playlist').on('click', function(event) {
         event.preventDefault();
         event.stopPropagation();
+        event.stopImmediatePropagation();
 
         jQuery.ajax({
             type: 'post',
@@ -12,11 +13,12 @@ function mcplayer_load_saved_playlist($) {
             },
             dataType: 'json',
             success: function(data){
-                $("#subnav-content-load").html(null);
+                $("#subnav-content-load").html('');
                 data.forEach(function(element, index) {
                     $("#subnav-content-load").append(element);
                 }, this); 
                 mcplayer_load_playlist($);
+                mcplayer_load_saved_playlist($);
             },
             error: function(errorThrown){
                 console.log(errorThrown);
@@ -31,8 +33,8 @@ function mcplayer_load_playlist($) {
     $('.playlist-load-loop').on('click', function(event) {
         event.preventDefault();
         event.stopPropagation();
+        event.stopImmediatePropagation();
 
-        var loop = 0;
         var $this = $(this),
         object_id = $this.data('id');
     
@@ -45,6 +47,7 @@ function mcplayer_load_playlist($) {
             },
             dataType: 'json',
             success: function(data){
+                var x = 1;
 				$("#player56s-removetracks-all").html("1");  
 				$(".player56s").player56s($);
 				$("#player56s-removetracks-all").html(null);
@@ -52,14 +55,15 @@ function mcplayer_load_playlist($) {
                     $('.rs-save-for-later-button').each(function(){
                         if($(this).data('object-id') == element){
                             $(this).addClass('saved');
-                            $(this).attr('data-title', rs_save_for_later_ajax.unsave_txt);
-                            $(this).attr('data-original-title', rs_save_for_later_ajax.unsave_txt);
+                            $(this).attr('data-title', 'Remove');
+                            $(this).attr('data-original-title', 'Remove');
                         }
                     });
-                    $('.playlist_matches_count').text('');
-                    $('.playlist_matches_count').text(index+1);
+                    $('.playlist_matches_count').html(null);
+                    $('.playlist_matches_count').html(x);
                     ajax_playlist($, element);
-                    ajax_playlist_add_sidebar($, element);	
+                    ajax_playlist_add_sidebar($, element);
+                    x++;	
                 }, this);  
             },
             error: function(errorThrown){

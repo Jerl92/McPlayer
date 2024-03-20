@@ -1,7 +1,10 @@
  
 function mcplayer_search_ajax($) {    
-    $( "#target" ).on( "keyup", function() {
+    $( "#target" ).on( "keyup", function(event) {
         var inputVal = document.getElementById("target").value;
+        event.preventDefault();
+        event.stopPropagation();
+        event.stopImmediatePropagation();
         jQuery.ajax({
             type: 'post',
             url: search_get_ajax_url,
@@ -47,6 +50,7 @@ function mcplayer_search_ajax($) {
         var inputVal = document.getElementById("target").value;
         event.preventDefault();
         event.stopPropagation();
+        event.stopImmediatePropagation();
         if(inputVal != ''){
             jQuery.ajax({
                 type: 'post',
@@ -93,11 +97,13 @@ function mcplayer_search_ajax($) {
     $('#widget-mcplayer-search-result').mouseup(function(event) {
         event.preventDefault();
         event.stopPropagation();
+        event.stopImmediatePropagation();
         $("#widget-mcplayer-search-result").css("display","none");
     });
     $( "#target" ).on( "keyup", function(event) {
         event.preventDefault();
         event.stopPropagation();
+        event.stopImmediatePropagation();
         var base_url = window.location.origin;
         var inputVal = document.getElementById("target").value;
         $(".widget-mcplayer-search-a").attr("href", base_url+"?s="+inputVal);
@@ -107,6 +113,7 @@ function mcplayer_search_ajax($) {
 jQuery(document).on('click', function (event) {
     event.preventDefault();
     event.stopPropagation();
+    event.stopImmediatePropagation();
     if ($(event.target).closest("#widget-mcplayer-search-result").length === 0) {
         $("#widget-mcplayer-search-result").hide();
     }

@@ -10,30 +10,20 @@ function wp_playlist_ajax_scripts() {
 	/* Plugin DIR URL */
 	$url = trailingslashit( plugin_dir_url( __FILE__ ) );
 
-	wp_enqueue_script( 'rs-save-for-later', plugin_dir_url( __FILE__ ) . 'js/rs-save-for-later-public.js', array( 'jquery' ), '1.0.0', false );
-	wp_localize_script(
-		'rs-save-for-later',
-		'rs_save_for_later_ajax',
-		array(
-			'ajax_url'          => admin_url( 'admin-ajax.php', 'relative' ),
-			'save_txt'          => $save,
-			'unsave_txt'        => $unsave,
-			'saved_txt'         => $saved,
-			'number_txt'        => $number
-		)
-	);
-	wp_enqueue_script( 'rs-save-for-later' );
+	/* Save-unsave */
+	wp_register_script( 'rs-save-for-later', $url . "js/rs-save-for-later-public.js", array( 'jquery' ), '1.0.0', true );
+	wp_localize_script( 'rs-save-for-later', 'rs_save_for_later_ajax', admin_url( 'admin-ajax.php' ) );
+	wp_enqueue_script( 'rs-save-for-later' );	
 		
 	/* AJAX Play now */
 	wp_register_script( 'wp-playlist-ajax-play-now', $url . "js/ajax.playlist.play.now.js", array( 'jquery' ), '1.0.0', true );
-	wp_localize_script( 'wp-playlist-ajax-play-now', 'play_now_ajax_url', 			array(
-		'ajax_url'          => admin_url( 'admin-ajax.php', 'relative' ),
-		'save_txt'          => $save,
-		'unsave_txt'        => $onpause,
-		'saved_txt'         => $saved,
-		'number_txt'        => $number
-	) );
-	wp_enqueue_script( 'wp-playlist-ajax-play-now' );
+	wp_localize_script( 'wp-playlist-ajax-play-now', 'play_now_ajax_url', admin_url( 'admin-ajax.php' ) );
+	wp_enqueue_script( 'wp-playlist-ajax-play-now' );	
+
+	/* Add album */
+	wp_register_script( 'rs-save-for-later-album', $url . "js/rs-save-for-later-album-public.js", array( 'jquery' ), '1.0.0', true );
+	wp_localize_script( 'rs-save-for-later-album', 'rs_save_for_later_album_ajax', admin_url( 'admin-ajax.php' ) );
+	wp_enqueue_script( 'rs-save-for-later-album' );	
 	
 	/* AJAX add track to playlist */
 	wp_register_script( 'wp-playlist-ajax-add-track-scripts', $url . "js/ajax.playlist.add.js", array( 'jquery' ), '1.0.0', true );
@@ -53,11 +43,6 @@ function wp_playlist_ajax_scripts() {
 	wp_localize_script( 'wp-playlist-ajax-remove-track-sidebar-scripts', 'remove_track_sidebar_ajax_url', admin_url( 'admin-ajax.php' ) );
 	wp_enqueue_script( 'wp-playlist-ajax-remove-track-sidebar-scripts' );
 
-	/* album */
-	/* Ajax remove all track from playlist */
-	wp_register_script( 'rs-save-for-later-album', $url . "js/rs-save-for-later-album-public.js", array( 'jquery' ), '1.0.0', true );
-	wp_localize_script( 'rs-save-for-later-album', 'rs_save_for_later_album_ajax', admin_url( 'admin-ajax.php' ) );
-	wp_enqueue_script( 'rs-save-for-later-album' );	
 	/* AJAX add track to playlist */
 	wp_register_script( 'wp-playlist-ajax-add-album-scripts', $url . "js/ajax.playlist.add.album.js", array( 'jquery' ), '1.0.0', true );
 	wp_localize_script( 'wp-playlist-ajax-add-album-scripts', 'add_album_ajax_url', admin_url( 'admin-ajax.php' ) );
@@ -77,11 +62,6 @@ function wp_playlist_ajax_scripts() {
 	wp_localize_script( 'wp-playlist-ajax-shuffle-scripts', 'shuffle_ajax_url', admin_url( 'admin-ajax.php' ) );
 	wp_enqueue_script( 'wp-playlist-ajax-shuffle-scripts' );
 
-	/* AJAX playlist */
-	/* wp_register_script( 'wp-playlist-ajax-save-order-scripts', $url . "js/ajax.playlist.order.js", array( 'jquery' ), '1.0.0', true );
-	wp_localize_script( 'wp-playlist-ajax-save-order-scripts', 'save_order_ajax_url', admin_url( 'admin-ajax.php' ) );
-	wp_enqueue_script( 'wp-playlist-ajax-save-order-scripts' ); */
-
 	/* Save AJAX playlist */
 	wp_register_script( 'wp-playlist-ajax-save-playlist-scripts', $url . "js/ajax.playlist.save.js", array( 'jquery' ), '1.0.0', true );
 	wp_localize_script( 'wp-playlist-ajax-save-playlist-scripts', 'save_playlist_ajax_url', admin_url( 'admin-ajax.php' ) );
@@ -97,11 +77,6 @@ function wp_playlist_ajax_scripts() {
 	wp_localize_script( 'wp-playlist-ajax-count-playlist-scripts', 'count_playlist_ajax_url', admin_url( 'admin-ajax.php' ) );
 	wp_enqueue_script( 'wp-playlist-ajax-count-playlist-scripts' );
 
-	/* Get membership AJAX playlist */
-	wp_register_script( 'wp-playlist-ajax-membership-scripts', $url . "js/ajax.membership.get.js", array( 'jquery' ), '1.0.0', true );
-	wp_localize_script( 'wp-playlist-ajax-membership-scripts', 'membership_ajax_url', admin_url( 'admin-ajax.php' ) );
-	wp_enqueue_script( 'wp-playlist-ajax-membership-scripts' );
-
 	/* Memory usage AJAX playlist */
 	wp_register_script( 'wp-playlist-ajax-memory-usage-scripts', $url . "js/ajax.memory.usage.js", array( 'jquery' ), '1.0.0', true );
 	wp_localize_script( 'wp-playlist-ajax-memory-usage-scripts', 'memory_usage_ajax_url', admin_url( 'admin-ajax.php' ) );
@@ -111,8 +86,9 @@ function wp_playlist_ajax_scripts() {
 	wp_register_script( 'wp-ajax-search-get-scripts', $url . "js/ajax.search.get.js", array( 'jquery' ), '1.0.0', true );
 	wp_localize_script( 'wp-ajax-search-get-scripts', 'search_get_ajax_url', admin_url( 'admin-ajax.php' ) );
 	wp_enqueue_script( 'wp-ajax-search-get-scripts' );
-
+	
 	wp_enqueue_script( 'tooltip', $url . "js/tooltip.js", array( 'jquery' ), '1.0.0' );
+
 }
 
 /* 3. AJAX CALLBACK
@@ -122,9 +98,6 @@ add_action( 'wp_ajax_add_track', 'ajax_add_track' );
 add_action( 'wp_ajax_nopriv_add_track', 'ajax_add_track' );
 
 function ajax_add_track($post) {
-	  // $posts = get_posts('numberposts='.$count.'&post_status=publish');
-	 
-	// Saved objects
 		$posts  = array();
 		
 		$matche = $_POST['object_id'];
@@ -165,8 +138,6 @@ function ajax_add_track_album($post) {
 	$posts = array();
 
 	$object_id = $_POST['object_id'];
-
-	// $matches = get_user_meta( user_if_login(), 'rs_saved_for_later', true );			
 
 	$get_songs_args = array( 
 		'post_type' => 'music',
@@ -210,11 +181,9 @@ function ajax_remove_track_album($post) {
 
 	$matches_album = get_user_meta( user_if_login(), 'rs_saved_for_later_album', true );
 	
-
 	$get_songs_args = array( 
 		'post_type' => 'music',
 		'posts_per_page' => -1,
-		'post__in' => $matches,
 		'meta_key' => 'meta-box-media-cover_',
 		'meta_value' => $object_id
 	); 
@@ -225,17 +194,15 @@ function ajax_remove_track_album($post) {
 		unset( $matches_album[array_search( $object_id, $matches_album )] );
 	}
 
-	foreach($get_songs as $get_song) :
+	foreach($get_songs as $get_song){
 		if ( empty( $matches ) ) {
 			$matches = array();
 		}
-		// array_reverse($matches);
 		if ( in_array( $get_song->ID, $matches ) ) {
 			unset( $matches[array_search( $get_song->ID, $matches )] );
 		} 
 		$html[] = $get_song->ID;
-	endforeach;
-	wp_reset_postdata();
+	}
 
 	update_user_meta( user_if_login(), 'rs_saved_for_later', $matches );	
 	update_user_meta( user_if_login(), 'rs_saved_for_later_album', $matches_album );			
@@ -324,16 +291,8 @@ add_action( 'wp_ajax_save_unsave_for_later', 'save_unsave_for_later' );
 */
 function save_unsave_for_later() {
 
-	if ( ! wp_verify_nonce( $_REQUEST['nonce'], 'rs_object_save_for_later' ) ) {
-	//	die;
-	}
-	
-	$save = __( 'Save for Later', 'rs-save-for-later' );
-	$unsave = __( 'Remove', 'rs-save-for-later' );
-	$saved = __( 'See Saved', 'rs-save-for-later' );
-	$number = __( 'Saved: ', 'rs-save-for-later' );
-
 	$matches = get_user_meta( user_if_login(), 'rs_saved_for_later', true );
+
 	if ( empty( $matches ) ) {
 		$matches = array();
 	}
@@ -343,15 +302,11 @@ function save_unsave_for_later() {
 
 	// Object ID
 	$object_id = isset( $_REQUEST['object_id'] ) ? intval( $_REQUEST['object_id'] ) : 0;
-	$neworder = isset( $_REQUEST['neworder'] ) ? intval( $_REQUEST['neworder'] ) : 0;
-
-	// Check cookie if object is saved
-	$saved = false;
 
 	if ( empty( $matches ) ) {
 		$matches = array();
 	}
-	//array_reverse($matches);
+
 	if ( in_array( $object_id, $matches ) ) {
 		$saved = true;
 		unset( $matches[array_search( $object_id, $matches )] );
@@ -359,6 +314,7 @@ function save_unsave_for_later() {
 		$saved = false;
 		array_unshift( $matches, $object_id );
 	}
+
 	update_user_meta( user_if_login(), 'rs_saved_for_later', $matches );
 
 	if ( $saved == true ) {
@@ -368,18 +324,11 @@ function save_unsave_for_later() {
 	}
 
 	$return = array(
-		'status'  => is_user_logged_in(),
+		'status'  => user_if_login(),
 		'update'  => $saved,
 		'message' => $no_content,
 		'count'   => esc_attr( $count )
 	);
-
-	if ($neworder) {
-		delete_user_meta( user_if_login(), 'rs_saved_for_later' );
-		add_user_meta( user_if_login(), 'rs_saved_for_later', $neworder );
-		$matches_ = get_user_meta( user_if_login(), 'rs_saved_for_later', true );
-		$return .= print_r($neworder);
-	}
 
 	return wp_send_json( $return );
 
@@ -396,16 +345,8 @@ add_action( 'wp_ajax_save_and_play_now', 'save_and_play_now' );
 */
 function save_and_play_now() {
 
-	if ( ! wp_verify_nonce( $_REQUEST['nonce'], 'rs_object_save_for_later' ) ) {
-	//	die;
-	}
-	
-	$save = __( 'Save for Later', 'rs-save-for-later' );
-	$unsave = __( 'Remove', 'rs-save-for-later' );
-	$saved = __( 'See Saved', 'rs-save-for-later' );
-	$number = __( 'Saved: ', 'rs-save-for-later' );
-
 	$matches = get_user_meta( user_if_login(), 'rs_saved_for_later', true );
+
 	if ( empty( $matches ) ) {
 		$matches = array();
 	}
@@ -416,15 +357,11 @@ function save_and_play_now() {
 	// Object ID
 	$object_id = isset( $_REQUEST['object_id'] ) ? intval( $_REQUEST['object_id'] ) : 0;
 
-	// Check cookie if object is saved
-	$saved = false;
-
 	$matches = get_user_meta( user_if_login(), 'rs_saved_for_later', true );
 	if ( empty( $matches ) ) {
 		$matches = array();
 	}
 	
-	// array_reverse($matches);
 	if ( ! in_array( $object_id, $matches ) ) {
 		$saved = false;
 		array_unshift( $matches, $object_id );
@@ -433,7 +370,7 @@ function save_and_play_now() {
 	}
 
 	$return = array(
-		'status'  => is_user_logged_in(),
+		'status'  => user_if_login(),
 		'update'  => $saved,
 		'message' => $no_content,
 		'count'   => esc_attr( $count )
@@ -456,8 +393,6 @@ function save_unsave_for_later_album($post) {
 	
 	$object_id = $_POST['object_id'];
 
-	// $matches_ = get_user_meta( user_if_login(), 'rs_saved_for_later', true );
-
 	$get_songs_args = array( 
 		'post_type' => 'music',
 		'posts_per_page' => -1,
@@ -467,16 +402,13 @@ function save_unsave_for_later_album($post) {
 		'meta_query' => array(
 			array(
 				'key' => 'meta-box-media-cover_',
-				'value'   => ($object_id),
+				'value'   => $object_id,
 				'compare' => 'IN'
 			)
 		)
 	); 
 
 	$get_songs = get_posts( $get_songs_args );
-
-	// Check cookie if object is saved
-	$saved_album = false;
 
 	if ($get_songs) {
 
@@ -486,10 +418,9 @@ function save_unsave_for_later_album($post) {
 			if ( empty( $matches_album ) ) {
 				$matches_album = array();
 			}
-			// array_reverse($matches);
 			if ( in_array( $object_id, $matches_album ) ) {
-			//	$saved_album = true;
-			//	unset( $matches_album[array_search( $object_id, $matches_album )] );
+				$saved_album = true;
+				unset( $matches_album[array_search( $object_id, $matches_album )] );
 			} else {
 				$saved_album = false;
 				array_unshift( $matches_album, $object_id );
@@ -505,17 +436,15 @@ function save_unsave_for_later_album($post) {
 		}
 		
 		$count = count( $get_songs );
-
 		foreach ($get_songs as $get_song ) {
 
 			$matches = get_user_meta( user_if_login(), 'rs_saved_for_later', true );
 			if ( empty( $matches ) ) {
 				$matches = array();
 			}
-			// array_reverse($matches);
 			if ( in_array( $get_song->ID, $matches ) ) {
-			//	$saved = true;
-			//	unset( $matches[array_search( $get_song->ID, $matches )] );
+				$saved = true;
+				unset( $matches[array_search( $get_song->ID, $matches )] );
 			} else {
 				$saved = false;
 				array_unshift( $matches, $get_song->ID );
@@ -546,11 +475,6 @@ add_action( 'wp_ajax_save_for_later_remove_all', 'save_for_later_remove_all' );
 * @version  1.0.6
 */
 function save_for_later_remove_all() {
-
-	if ( ! wp_verify_nonce( $_REQUEST['nonce'], 'rs_save_for_later_remove_all' ) ) {
-		die;
-	}
-	
 	$saved_items = get_user_meta( user_if_login(), 'rs_saved_for_later', true );
 	if ( ! empty( $saved_items ) ) {
 			delete_user_meta( user_if_login(), 'rs_saved_for_later' );
@@ -703,13 +627,12 @@ function load_playlist($post) {
 	$matches = get_post_meta($post->ID, 'rs_saved_for_later', true);
 
 	foreach($matches as $matche){
-		$reversed = array_reverse($matche);
-		foreach($reversed as $matche_){
+		$revert = array_reverse($matche);
+		foreach($revert as $matche_){
 			$html[$x] = $matche_;
 			$x++;
 		}
-		$reversed_ = array_reverse($html);
-		update_user_meta( user_if_login(), 'rs_saved_for_later', $reversed_ );
+		update_user_meta( user_if_login(), 'rs_saved_for_later', $html );
 	}
 
 	return wp_send_json ( $html );
@@ -750,12 +673,6 @@ function count_play($post) {
 	$get_count_play = get_post_meta($object_id, 'count_play_loop', true);
 	$get_saved_played = get_user_meta( user_if_login(), 'rs_saved_played', true );
 
-	if(is_user_logged_in() && function_exists('pmpro_hasMembershipLevel') && pmpro_hasMembershipLevel())
-	{
-		global $current_user;
-		$current_user->membership_level = pmpro_getMembershipLevelForUser($current_user->ID);
-	}
-
 	$date = date('m/d/Y h:i:s a', time());
 	$strtodate = strtotime($date);
 
@@ -772,32 +689,15 @@ function count_play($post) {
 
 	update_user_meta( user_if_login(), 'rs_saved_played', $get_saved_played_array );
 
-	// if($current_user->membership_level->trial_amount != 0){
-		if($get_count_play) {
-			$countplay = intval($get_count_play) + 1;
-			update_post_meta($object_id, 'count_play_loop', $countplay);
-		} else {
-			$countplay = '1';
-			add_post_meta($object_id, 'count_play_loop', 1);
-		}
-	// }
-
-	return wp_send_json ($countplay);
-}
-
-/* AJAX action callback */
-add_action( 'wp_ajax_get_membership', 'get_membership' );
-add_action( 'wp_ajax_nopriv_get_membership', 'get_membership' );
-
-function get_membership($post) {
-
-	if(is_user_logged_in() && function_exists('pmpro_hasMembershipLevel') && pmpro_hasMembershipLevel())
-	{
-		global $current_user;
-		$current_user->membership_level = pmpro_getMembershipLevelForUser($current_user->ID);
+	if($get_count_play) {
+		$countplay = intval($get_count_play) + 1;
+		update_post_meta($object_id, 'count_play_loop', $countplay);
+	} else {
+		$countplay = '1';
+		add_post_meta($object_id, 'count_play_loop', 1);
 	}
 
-	return wp_send_json ($current_user->membership_level);
+	return wp_send_json ($countplay);
 }
 
 // @see http://fr2.php.net/manual/en/function.mb-convert-encoding.php#103300

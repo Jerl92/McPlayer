@@ -8,17 +8,9 @@ function ajax_playlist_add_album($, object_id)  {
                     },
                     dataType: 'JSON',
                     success: function(data){
-                        //print stuff heres  
-                        var i = 0;
                         data.forEach(function(element, index) {
-                            if (index === i)  {
-                                ajax_playlist($, element);
-                                $("#album-class-artist-list-id-"+element+" a").addClass("saved");
-                                $("#album-class-artist-list-id-"+element+" a").attr("data-original-title", "Remove");
-                                ajax_playlist_add_sidebar($, element);
-                                sleep(100);
-                                [i++];
-                            }
+                            ajax_playlist($, element);
+                            ajax_playlist_add_sidebar($, element);
                         }, this);        
                     },
                     error: function(errorThrown){

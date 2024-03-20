@@ -26,22 +26,21 @@ class MCPlayer_bottom_playlist_widget extends WP_Widget {
 
 		$title = apply_filters( 'widget_title', $instance['title'] );
 		$matches = get_user_meta( user_if_login(), 'rs_saved_for_later', true );
-		$matches_ = array_reverse($matches);
-		if ( ! empty( $matches_ ) ) {
-			$matches_count = count($matches_);
+		if ( ! empty( $matches ) ) {
+			$matches_count = count($matches);
 		} else {
-			$matches_count = "0";
+			$matches_count = '0';
 		}
 
 		echo $args['before_widget'];
 		if ( ! empty( $title ) )
 		echo $args['before_title'] . $title . ' - <span class="playlist_matches_count">' . $matches_count . '</span>' . $args['after_title'];
 		
-		if ( ! empty( $matches_ ) ) {
+		if ( ! empty( $matches ) ) {
 			$args = array( 
 				'posts_per_page' => -1,	
 				'post_type' => 'music',
-				'post__in' => $matches_,
+				'post__in' => $matches,
 				'order'   => 'DESC',
 				'orderby'   => 'post__in',
 			);

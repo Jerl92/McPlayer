@@ -132,8 +132,6 @@ class Mcplayer {
 
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/McPlayer-admin-upload-meta-box.php';
 
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/McPlayer-admin-tax-page.php';
-
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/McPlayer-admin-bulk-add-album.php';
 
 		/**

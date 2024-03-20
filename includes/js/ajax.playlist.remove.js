@@ -14,7 +14,7 @@ function ajax_playlist_remove_track($, object_id) {
                         $("#player56s-removetrack").html(null);
                         $("#postid-"+object_id+" rs-item-nav a").removeClass("saved");
                         $("#add-play-now-id-"+object_id).removeClass("saved");
-                        ajax_playlist_remove_page_btn($, object_id);
+                        ajax_playlist_remove_page_btn($, data);
                     },
                     error: function(errorThrown){
                         console.log(errorThrown);
