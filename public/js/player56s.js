@@ -620,12 +620,12 @@ jQuery( function player56s($) {
         }
         pause() {
             if (typeof this.$jPlayer !== "undefined" && this.$jPlayer.jPlayer) {
-                $("#rs-item-" + this.tracks[this.currentTrack].postid + "").removeClass('playing');
-                $("#play-now-id-" + this.tracks[this.currentTrack].postid + "").removeClass('onplay');
-                $("#add-play-now-id-" + this.tracks[this.currentTrack].postid + "").removeClass('onplay');
-                $("#play-now-id-" + this.tracks[this.currentTrack].postid + "").addClass('onpause');
-                $("#add-play-now-id-" + this.tracks[this.currentTrack].postid + "").addClass('onpause');                    //
-                if (this.isPlaying) {
+                if (this.isPlaying && this.tracks[this.currentTrack].postid !== '0') {
+                    $("#rs-item-" + this.tracks[this.currentTrack].postid + "").removeClass('playing');
+                    $("#play-now-id-" + this.tracks[this.currentTrack].postid + "").removeClass('onplay');
+                    $("#add-play-now-id-" + this.tracks[this.currentTrack].postid + "").removeClass('onplay');
+                    $("#play-now-id-" + this.tracks[this.currentTrack].postid + "").addClass('onpause');
+                    $("#add-play-now-id-" + this.tracks[this.currentTrack].postid + "").addClass('onpause');                    //
                     this.isPlaying = false;
                     this.waitForLoad = false;
                     this.$jPlayer.jPlayer("pause");
@@ -642,12 +642,12 @@ jQuery( function player56s($) {
         }
         play() {
             if (typeof this.$jPlayer !== "undefined" && this.$jPlayer.jPlayer) {
-                $("#rs-item-" + this.tracks[this.currentTrack].postid + "").addClass("playing");
-                $("#play-now-id-" + this.tracks[this.currentTrack].postid + "").addClass('onplay');
-                $("#add-play-now-id-" + this.tracks[this.currentTrack].postid + "").addClass('onplay');
-                $("#play-now-id-" + this.tracks[this.currentTrack].postid + "").removeClass('onpause');
-                $("#add-play-now-id-" + this.tracks[this.currentTrack].postid + "").removeClass('onpause');
-                if (!this.isPlaying && this.tracks[this.currentTrack].postid !== 0) {
+                if (!this.isPlaying && this.tracks[this.currentTrack].postid !== '0') {
+                    $("#rs-item-" + this.tracks[this.currentTrack].postid + "").addClass("playing");
+                    $("#play-now-id-" + this.tracks[this.currentTrack].postid + "").addClass('onplay');
+                    $("#add-play-now-id-" + this.tracks[this.currentTrack].postid + "").addClass('onplay');
+                    $("#play-now-id-" + this.tracks[this.currentTrack].postid + "").removeClass('onpause');
+                    $("#add-play-now-id-" + this.tracks[this.currentTrack].postid + "").removeClass('onpause');
                     this.isPlayed = true;
                     this.waitForLoad = true;
                     this.$jPlayer.jPlayer("play");
@@ -741,7 +741,7 @@ jQuery( function player56s($) {
             if (to_next === undefined) {
                 to_next = true;
             } // next by default
-            if (typeof this.$jPlayer !== "undefined" && this.$jPlayer.jPlayer && this.tracks.length >= 1 ) {
+            if (typeof this.$jPlayer !== "undefined" && this.$jPlayer.jPlayer && this.tracks.length >= 1 && this.tracks[this.currentTrack].postid !== '0' ) {
                 var timelinedone = $(".player56s-timeline-done").width() / $('.player56s-timeline-done').parent().width() * 100;
                 var status = null;
                 if (this.$container.hasClass("status-onpause")) {
@@ -896,18 +896,19 @@ jQuery( function player56s($) {
                     self.$container.find(".player56s-button").on("click", function (event) {
                         event.stopPropagation();
                         event.preventDefault();
-                        if (self.isPlaying) {
-                            self.pseudoPause.call(self);
-                            self.pause.call(self);
-                        }
-                        else {
+                        event.stopImmediatePropagation();
+                        if (!self.isPlaying && self.tracks[self.currentTrack].postid !== '0') {
                             self.pseudoPlay.call(self);
                             self.play.call(self);
+                        } else {
+                            self.pseudoPause.call(self);
+                            self.pause.call(self);
                         }
                     });
                     self.$container.find(".player56s-volume .player56s-vol-pin").on("click", function (event) {
                         event.stopPropagation();
                         event.preventDefault();
+                        event.stopImmediatePropagation();
                         var $pin = $(this);
                         var $pinsBefore = self.minimal ? $pin.prevAll() : $pin.nextAll();
                         var lvl = $pinsBefore.length;
@@ -922,6 +923,7 @@ jQuery( function player56s($) {
                     self.$container.find(".player56s-track-nav").on("click", function (event) {
                         event.stopPropagation();
                         event.preventDefault();
+                        event.stopImmediatePropagation();
                         self.switchTrack($(this).hasClass('player56s-track-next'));
                     });
                     self.$container.find(".player56s-timeline").on("mousedown." + uniqueID, function (event) {
@@ -930,6 +932,7 @@ jQuery( function player56s($) {
                         }
                         event.stopPropagation();
                         event.preventDefault();
+                        event.stopImmediatePropagation();
                         self.isSeeking = true;
                         var $this = $(this), clickPoint = ((event.pageX - $this.offset().left) / $this.width()) * 100;
                         $(document).off("mouseup." + uniqueID).one("mouseup." + uniqueID, function () {
@@ -938,13 +941,18 @@ jQuery( function player56s($) {
                         $(document).off("mousemove." + uniqueID).on("mousemove." + uniqueID, function (event) {
                             event.stopPropagation();
                             event.preventDefault();
+                            event.stopImmediatePropagation();
                             if (!self.isSeeking) {
                                 return false;
                             }
                             var clickPoint = ((event.pageX - $this.offset().left) / $this.width()) * 100;
-                            willSeekTo(self, clickPoint);
+                            if(self.tracks[self.currentTrack].postid !== '0'){
+                                willSeekTo(self, clickPoint);
+                            }
                         });
-                        willSeekTo(self, clickPoint);
+                        if(self.tracks[self.currentTrack].postid !== '0'){
+                            willSeekTo(self, clickPoint);
+                        }
                     });
                 },
                 pause: function () {
