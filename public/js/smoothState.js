@@ -7,7 +7,7 @@
 			anchors: "a",
 			cache: false,
 			cacheLength: 0,
-			prefetch: true,
+			prefetch: false,
 			prefetchOn: 'mouseover touchstart',
 			scroll: false,
 			locationHeader: "X-SmoothState-Location",
@@ -55,6 +55,12 @@
 				}
 		    },
 			onAfter: function( $container , $newcontainer ) {
+
+				update();
+
+				sidebarheight($);
+
+				footer_stick($);
 
 				if ($.isFunction($.fn.theiaStickySidebar)){ 
 					if ( jQuery.browser.mobile && !mystickyside_name.device_mobile) {

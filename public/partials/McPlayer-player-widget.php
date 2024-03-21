@@ -129,23 +129,17 @@ class MCPlayer_bottom_player_widget extends WP_Widget {
 	
 		echo '</div>';
 
-		$mac = new GetMacAddr(PHP_OS);
-		$str = str_replace(":", '', $mac=$mac->mac_addr);
-
 		echo '<div id="player56s-ajax-wrap" style="display: none;">';
 			echo '<div id="player56s-currenttrack"></div>';
 			echo '<div id="player56s-addtrack"></div>';
 			echo '<div id="player56s-removetrack"></div>';
 			echo '<div id="player56s-removetracks-all"></div>';
 			echo '<div id="player56s-playnow"></div>';
-			echo '<div id="player56s-sortable"></div>';
 			echo '<div id="player56s-shuffle"></div>';
 			echo '<div id="player56s-no-shuffle"></div>';
 			echo '<div id="player56s-seek-percent"></div>';
 			echo '<div id="player56s-seek-current-percent"></div>';
-			echo '<div id="player56s-seek-percent-free"></div>';
 			echo '<div id="player56s-play-timer"></div>';
-			echo '<div id="player56s-mac-address">'. $str .'</div>';
 		echo '</div>';
 
 		echo $args['after_widget']; 

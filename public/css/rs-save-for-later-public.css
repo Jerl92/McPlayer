@@ -310,6 +310,12 @@ ul.rs-saved-for-later > li.rs-item-saved-for-later > .rs-item-content > .rs-item
 	-o-transition: all 0.3s ease-in-out;
 	transition: all 0.3s ease-in-out;
 }
+.rs-save-for-later-save-playlist a {
+	color: #fff !important;
+}
+.rs-save-for-later-load-playlist a {
+	color: #fff !important;
+}
 @media only screen and (max-width: 767px) {
 	ul.rs-saved-for-later > li.rs-item-saved-for-later > .rs-item-content > a > .rs-item-image,
 	ul.rs-saved-for-later > li.rs-item-saved-for-later > .rs-item-content > a > .rs-item-float {

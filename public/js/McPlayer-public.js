@@ -226,11 +226,10 @@ function setCookie(c_name, value, exdays) {
 }
 
 $( window ).bind('beforeunload', function(){
-    var player56sMacAddr = $("#player56s-mac-address");
     var player56scurrenttrack = $("#player56s-currenttrack");
-    setCookie(player56sMacAddr+"Player56sState", player56scurrenttrack[0].innerText, 1);
+    setCookie("Player56sState", player56scurrenttrack[0].innerText, 1);
     var player56scurrentseek = $("#player56s-seek-current-percent");
-    setCookie(player56sMacAddr+"Player56sSeek", player56scurrentseek[0].innerText, 1);
+    setCookie("Player56sSeek", player56scurrentseek[0].innerText, 1);
     return confirm("Confirm refresh");
 });
 
@@ -270,7 +269,7 @@ document.addEventListener('visibilitychange', function(){
     update();
 });
 
-jQuery(document).ready(function($) {
+$(window).on('load', function() {
     doVisualUpdates = !document.hidden;
     update();
     sidebarheight($);

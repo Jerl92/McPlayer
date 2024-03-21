@@ -1021,10 +1021,9 @@ jQuery( function player56s($) {
         }
         bindEvents() {
             var self = this, uniqueID = self.$container.attr("id");
-            
-            var player56sMacAddr = $("#player56s-mac-address");
-            var Player56sState = self.getCookie(player56sMacAddr+"Player56sState");
-            var Player56sSeek = self.getCookie(player56sMacAddr+"Player56sSeek");
+        
+            var Player56sState = self.getCookie("Player56sState");
+            var Player56sSeek = self.getCookie("Player56sSeek");
             if(Player56sState && Player56sSeek){
                 var Refersh = setInterval(function(){
                     var player56scurrenttrack = $("#player56s-currenttrack");

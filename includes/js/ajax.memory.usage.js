@@ -1,5 +1,4 @@
 function memory_ajax($)  {
-    setInterval(function(){
         $.ajax({    
             type: 'post',
             url: memory_usage_ajax_url,
@@ -15,9 +14,4 @@ function memory_ajax($)  {
                 //error stuff here.text
             }
         });
-    },2500);
 }
-
-jQuery(document).ready(function($) {
-	memory_ajax($);
-});
