@@ -34,7 +34,7 @@ jQuery(document).ready(function() {
     });
 });
 
-function footer_stick($) {
+function footer_stick() {
     var windowHeight_ = jQuery(window).height();
     var documentHeight_ = jQuery(document).height();
     var colophonHeight_ = jQuery('#colophon').height();
@@ -148,8 +148,8 @@ function sidebarheight() {
         if(windowheight <= primaryheight || primaryheight <= secondaryheight){
             jQuery('#secondary').height(primaryheight);
         }
-        footer_stick($);
     }
+    footer_stick($);
     if(loop === 25) {
         clearInterval(interval);
     }
@@ -221,5 +221,7 @@ document.addEventListener('visibilitychange', function(){
 
 $(window).on('load', function() {
     doVisualUpdates = !document.hidden;
+    footer_stick($);
+    sidebarheight();
     update();
 });
