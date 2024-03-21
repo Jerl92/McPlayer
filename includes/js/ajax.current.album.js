@@ -1,3 +1,4 @@
+
 function current_album($)  {
 
     $.ajax({    

@@ -1031,16 +1031,18 @@ jQuery( function player56s($) {
                     self.tracks.forEach(function(element, index) {
                         if(parseInt(element.postid) === parseInt(Player56sState)){
                             self.playNow(parseInt(index));
-                            willSeekTo(self, parseInt(Player56sSeek));
+                            setTimeout(function() {
+                                willSeekTo(self, parseInt(Player56sSeek));
+                            }, 250);
                         }
                     });
 
-                    if(player56scurrenttrack[0].innerText === Player56sState && player56scurrentseek > Player56sSeek) {
+                    if(player56scurrenttrack[0].innerText === Player56sState && player56scurrentseek >= Player56sSeek) {
                         clearInterval(Refersh);
                         self.DeleteCookie(Player56sState);
                         self.DeleteCookie(Player56sSeek);
                     }
-                },2500);
+                }, 1000);
             }
 
             $(document).on("player56s-pause." + uniqueID, function (event, triggeredPlayer56s) {

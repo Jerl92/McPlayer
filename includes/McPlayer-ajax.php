@@ -489,7 +489,7 @@ add_action( 'wp_ajax_current_album', 'current_album' );
 
 function current_album() {
 
-	$matches_album = get_user_meta( user_if_login(), 'rs_saved_for_later_album', true );
+	$matches_album = get_user_meta( user_if_login(), 'rs_saved_for_later_album', false );
 
 	if ( empty( $matches_album ) ) {
 		$matches_album = array();

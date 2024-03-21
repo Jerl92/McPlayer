@@ -9,7 +9,7 @@
 			cacheLength: 0,
 			prefetch: false,
 			prefetchOn: 'mouseover touchstart',
-			scroll: false,
+			scroll: true,
 			locationHeader: "X-SmoothState-Location",
 			onStart: {
 				duration: 100, // Duration of our animation
@@ -56,51 +56,20 @@
 		    },
 			onAfter: function( $container , $newcontainer ) {
 
-				update();
-
-				sidebarheight($);
-
-				footer_stick($);
-
-				if ($.isFunction($.fn.theiaStickySidebar)){ 
-					if ( jQuery.browser.mobile && !mystickyside_name.device_mobile) {
-						return false;
-					} else if ( !jQuery.browser.mobile && !mystickyside_name.device_desktop) {
-						return false;
-					}
-					var mysticky_sidebar_id = document.querySelector(mystickyside_name.mystickyside_string),
-					mystickyside_content_id = (mystickyside_name.mystickyside_content_string),
-					mystickyside_margin_top = parseInt(mystickyside_name.mystickyside_margin_top_string),
-					mystickyside_margin_bot = parseInt(mystickyside_name.mystickyside_margin_bot_string),
-					mystickyside_update_sidebar_height = Boolean(mystickyside_name.mystickyside_update_sidebar_height_string),
-					mystickyside_min_width = parseInt(mystickyside_name.mystickyside_min_width_string);
-					
-					$(mysticky_sidebar_id).theiaStickySidebar({
-						containerSelector: mystickyside_content_id,
-						additionalMarginTop: mystickyside_margin_top,
-						additionalMarginBottom: mystickyside_margin_bot,
-						updateSidebarHeight: mystickyside_update_sidebar_height,
-						minWidth: mystickyside_min_width
-					});  
-				}
+				// Remove your CSS animation reversing class
+				$('body').removeClass('no-scroll');
 								
 				play_now($);
 
 				play_pause($);
 
 				tooltip($);	
-				
-				footer_stick($);
                     
 				rs_save_for_later($);
 				
 				rs_save_for_later_album($);
 
-				current_album($);
-
 				ajax_playlist_update_sidebar($);
-
-				sidebarheight($);
 
 				mcplayer_load_playlist($);
 				
@@ -127,12 +96,36 @@
 					setInterval(getData, parseInt($('#interval').val(), 10) * 5000);
 				}
 
-				// Remove your CSS animation reversing class
-				$('body').removeClass('no-scroll');
+				loop = 0;
+				interval = setInterval(function(){sidebarheight();},250);
 
+				current_album($);
+				
 				// Add your CSS animation reversing class
 				$('body').addClass('on-scroll');
-				
+
+				if ($.isFunction($.fn.theiaStickySidebar)){ 
+					if ( jQuery.browser.mobile && !mystickyside_name.device_mobile) {
+						return false;
+					} else if ( !jQuery.browser.mobile && !mystickyside_name.device_desktop) {
+						return false;
+					}
+					var mysticky_sidebar_id = document.querySelector(mystickyside_name.mystickyside_string),
+					mystickyside_content_id = (mystickyside_name.mystickyside_content_string),
+					mystickyside_margin_top = parseInt(mystickyside_name.mystickyside_margin_top_string),
+					mystickyside_margin_bot = parseInt(mystickyside_name.mystickyside_margin_bot_string),
+					mystickyside_update_sidebar_height = Boolean(mystickyside_name.mystickyside_update_sidebar_height_string),
+					mystickyside_min_width = parseInt(mystickyside_name.mystickyside_min_width_string);
+					
+					$(mysticky_sidebar_id).theiaStickySidebar({
+						containerSelector: mystickyside_content_id,
+						additionalMarginTop: mystickyside_margin_top,
+						additionalMarginBottom: mystickyside_margin_bot,
+						updateSidebarHeight: mystickyside_update_sidebar_height,
+						minWidth: mystickyside_min_width
+					});  
+				}
+
 			}
 		};
 
