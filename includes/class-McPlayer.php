@@ -69,7 +69,7 @@ class Mcplayer {
 	public function __construct() {
 
 		$this->plugin_name = 'McPlayer';
-		$this->version = '1.0';
+		$this->version = '1.7';
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -101,8 +101,6 @@ class Mcplayer {
 		 * core plugin.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-McPlayer-loader.php';
-
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/McPlayer-settings.php';
 
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/McPlayer-cpt.php';
 

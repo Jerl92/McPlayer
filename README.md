@@ -2,7 +2,7 @@
 
 McPlayer is a full-width HTML5/CSS/PHP/JS/AJAX audio Player with Playlist, Plugin for WordPress.</br>
 
-<img style="max-width: 100%;" src="https://i.ibb.co/s697sgc/loadplaylist.gif" alt="MCPlayer" />
+<img style="max-width: 100%;" src="https://i.ibb.co/bNM9Hkx/mcplayer4186.png" alt="MCPlayer" />
 
 ## Description
 With McPlayer you can get your music from all around the world, from public Wi-Fi or your cellular network.</br>
@@ -18,23 +18,23 @@ Without any limitation.</br>
 McPlayer is build with the folloing JS</br>
 
 Unobtrusive page transitions with jQuery.</br>
-https://github.com/miguel-perez/smoothState.js</br>
+https://github.com/miguel-perez/smoothState.js/</br>
 
 HTML5 Audio & Video for jQuery</br>
-https://github.com/jplayer/jPlayer</br>
+https://github.com/jplayer/jPlayer/</br>
 
 Web audio-player with playlist and minimalistic view as option.</br>
-https://github.com/dymio/player-56s</br>
+https://github.com/dymio/player-56s/</br>
 
 Simplicity Save for Later will add a button to your posts/pages/custom post types so users can save that content so they can access it later.</br>
 https://WordPress.org/plugins/rs-save-for-later/</br>
 
 Interactions and Widgets for the web. jQuery UI is a curated set of user interface interactions, effects, widgets, and themes built on top of jQuery.</br>
-https://github.com/jquery/jquery-ui</br>
+https://github.com/jquery/jquery-ui/</br>
 
 ## Depend on this theme and plugins
 MCPlayer child theme based on Chichi</br>
-https://github.com/Jerl92/McPlayer-Child-Theme</br>
+https://github.com/Jerl92/McPlayer-Child-Theme/</br>
 
 The Categories Images Plugin allow you to add image with category</br>
 https://WordPress.org/plugins/categories-images/</br>
@@ -67,11 +67,12 @@ This section describes how to install the plugin and get it working.</br>
 16. Set shortcode in page.</br>
 
 ## Advandced installation
-You can have FFMPEG installed on it, to get compresed track over cellulair network.</br>
-https://github.com/FFmpeg/FFmpeg</br>
-</br>
+
 You can have youtube-dl installed on it, to download and add album playlist.</br>
-https://github.com/ytdl-org/youtube-dl</br>
+https://github.com/ytdl-org/youtube-dl/</br>
+</br>
+You can have FFMPEG installed on it, to covert to MP3 file.</br>
+https://github.com/FFmpeg/FFmpeg/</br>
 
 ## Shortcode
 To get info about how many you have in database</br>
@@ -109,6 +110,7 @@ Show the lasted played songs</br>
 <img style="max-width: 100%;" src="https://i.ibb.co/R6G5xTt/bulk-add-album.png" />
 
 ## Changelog
+1.7 - Fix stuff in full album add to playlist and fix height of content to feel more like a webapp.</br>
 1.6 - Remove artist private page, remove other stuff.</br>
 1.5 - Add AJAX search and add load state on page refresh.</br>
 1.4 - In shortcode for previously played show all user previously played.</br>

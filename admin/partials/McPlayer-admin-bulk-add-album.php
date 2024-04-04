@@ -35,7 +35,7 @@ function bulk_add_album_submenu_page_callback() {
 
         if (file_exists($ffmpeg_file)) {
             echo '<br />';
-            print "FFMPEG is install: Conversion to MP3 and OGG enable";
+            print "FFMPEG is install: Conversion to MP3 enable";
             echo '<br />';
         } else {
             echo '<br />';
@@ -106,8 +106,6 @@ function my_action_javascript() { ?>
 
     function add_chart_data($) {
         $('input[type="number"].tracknumber').each(function () {
-            console.log($(this).val());
-
             var path = $(this).attr('name');
             var number = $(this).val();
             var artist = $('#artistoptions').find(":selected").val(); 
@@ -122,7 +120,6 @@ function my_action_javascript() { ?>
 
             // since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php
             jQuery.post(ajaxurl, data, function(response) {
-                console.log(response);
                 $("#result").append(response);
             });
         });
@@ -131,8 +128,6 @@ function my_action_javascript() { ?>
 
     function yt_table($) {
         $('input[type="text"].yturl').each(function () {
-            console.log($(this).val());
-
             var url = $(this).val();
             var data = {
                 'action': 'my_table',
@@ -141,7 +136,6 @@ function my_action_javascript() { ?>
 
             // since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php
             jQuery.post(ajaxurl, data, function(response) {
-                console.log(response);
                 $("#filetable").html("");
                 $("#filetable").append(response);                         
             });
@@ -150,8 +144,6 @@ function my_action_javascript() { ?>
 
     function yt_url_error($) {
         $('input[type="text"].yturl').each(function () {
-                    console.log($(this).val());
-
                     var url = $(this).val();
                     var data = {
                         'action': 'my_url',
@@ -160,7 +152,6 @@ function my_action_javascript() { ?>
 
                     // since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php
                     jQuery.post(ajaxurl, data, function(response) {
-                        console.log(response);
                         $("#result").append(response);
                     });
                 });
@@ -208,8 +199,6 @@ function my_action_javascript() { ?>
 
     function yt_dl($) {
         $('input[type="text"].yturl').each(function () {
-            console.log($(this).val());
-
             var url = $(this).val();
             var data = {
                 'action': 'my_dl',
@@ -218,7 +207,6 @@ function my_action_javascript() { ?>
 
             // since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php
             jQuery.post(ajaxurl, data, function(response) {
-                console.log(response);
                 $("#result").html("");
                 jQuery.each( response[0], function( i, val ) {
                     $("#result").append('</br>');
@@ -247,8 +235,6 @@ function my_action_javascript() { ?>
     function yt_url($) {
 
         $('input[type="text"].yturl').each(function () {
-            console.log($(this).val());
-
             var url = $(this).val();
             var data = {
                 'action': 'my_url',
@@ -257,7 +243,6 @@ function my_action_javascript() { ?>
 
             // since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php
             jQuery.post(ajaxurl, data, function(response) {
-                console.log(response);
                 $("#result").append(response);
                 yt_dl($);
             });
@@ -280,7 +265,6 @@ function my_action_javascript() { ?>
 
         // since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php
         jQuery.post(ajaxurl, data, function(response) {
-            console.log(response);
             if(response != 'Finish'){
                 $('input[type="text"].yturl').val();
                 setTimeout(function(){ yt_url($); }, 5000);
@@ -299,6 +283,33 @@ function my_action_javascript() { ?>
         });
     });
 	</script> <?php
+}
+
+function slugify($text, string $divider = '-')
+{
+  // replace non letter or digits by divider
+  $text = preg_replace('~[^\pL\d]+~u', $divider, $text);
+
+  // transliterate
+  $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
+
+  // remove unwanted characters
+  $text = preg_replace('~[^-\w]+~', '', $text);
+
+  // trim
+  $text = trim($text, $divider);
+
+  // remove duplicate divider
+  $text = preg_replace('~-+~', $divider, $text);
+
+  // lowercase
+  $text = strtolower($text);
+
+  if (empty($text)) {
+    return 'n-a';
+  }
+
+  return $text;
 }
 
 add_action( 'wp_ajax_my_album', 'my_album' );
@@ -352,9 +363,7 @@ function my_album() {
 
     $key_artists = array_search(strval($counted_max_artists), $counted_artists);
 
-    $str_artists = str_replace(" ", "-", strtolower($key_artists));
-
-    $str_artists_ = str_replace("_", "+", $key_artists);
+    $str_artists = slugify(strtolower($key_artists));
 
     $counted = array_count_values($albums);
 
@@ -457,8 +466,8 @@ function my_artist() {
                     } else {
                         $artists[] .= $jsonfile['artist'];
                     }
-                    $albums[] = $jsonfile['album'];
-                    $years[] = $jsonfile['release_year'];
+                    $albums[] .= $jsonfile['album'];
+                    $years[] .= $jsonfile['release_year'];
                 }
             }
         }
@@ -474,34 +483,28 @@ function my_artist() {
 
     $key = array_search(strval($counted_max), $counted);
 
-    $str = str_replace("_", "-", strtolower($key));
-
-    $str_ = str_replace("_", " ", $key);
-
-    $str__ = str_replace("-", "-", strtolower($key));
-
+    $str = slugify(strtolower($key));
+    
     foreach ( $terms as $term ) {
-        if ( $term->slug == $str ) {
-            $html[2] = $term->slug;
+        if ( $term->slug === $str ) {
+            $html[1] = $term->slug;
             $x = 1;
         }
     }
 
     if($x == 0){
-        wp_create_term($str_, 'artist');
+        wp_create_term($key, 'artist');
         foreach ( $terms as $term ) {
-            if ( $term->slug == $str ) {
-                $html[2] = $term->slug;
+            if ( $term->slug === $str ) {
+                $html[1] = $term->slug;
             }
         }
     }
 
-    $html[1] = $str_;
-
     $terms_ = get_terms( 'artist', 'hide_empty=0');
     $html[0] .= "<select id='artistoptions' name='customartist[]'>";
     foreach ( $terms_ as $term_ ) {
-        if ($term_->slug == $str__) {
+        if ($term_->slug === $str) {
             $html[0] .= "<option value='".$term_->term_id."' selected='selected'>".$term_->name."</option>";
         } else {
             $html[0] .= "<option value='".$term_->term_id."'>".$term_->name."</option>";

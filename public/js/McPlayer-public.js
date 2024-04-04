@@ -84,44 +84,9 @@ function sleep(milliseconds) {
     }
 }
 
-
-let lastHeight = $("#hwm-area").height(); 
-  
-function checkHeightChange() { 
-    newHeight = $("#hwm-area").height(); 
-    var colophon = jQuery('#colophon').height();
-    var masthead = jQuery('#masthead').height();
-  
-    if (lastHeight != newHeight) { 
-        var windowwidth = jQuery(window).width();
-        var windowheight = jQuery(window).height();
-        var primaryheight = jQuery('#primary').height();
-        
-        if (windowwidth >= 720) {
-            if(primaryheight <= windowheight){
-                jQuery('body').height(windowheight);
-                jQuery('#primary').height(windowheight);
-                jQuery('#secondary').height(windowheight);
-            }
-            if(windowheight <= primaryheight || primaryheight <= secondaryheight){
-                jQuery('body').css('height', '100%');
-                jQuery('#primary').css('height', '100%');
-                jQuery('#secondary').height(primaryheight);
-            }
-        }
-
-     } 
-} 
-  
-if($("#hwm-area")){
-    var myTimer = setInterval(function(){
-            checkHeightChange();
-    }, 500);
-}
-
 var loop = 0;
 var interval;
-$(document).on('ready',function(){
+jQuery(document).ready(function(){	
     interval = setInterval(function(){sidebarheight();}, 1000);
 });
 
@@ -130,22 +95,27 @@ function sidebarheight() {
     var windowheight = jQuery(window).height();
     var primaryheight = jQuery('#primary').height();
     var secondaryheight = jQuery('#secondary').height();
+
     if (windowwidth >= 720) {
         if(primaryheight <= windowheight){
-            jQuery('body').height(windowheight);
-            jQuery('#primary').height(windowheight);
-            jQuery('#secondary').height(windowheight);
+            jQuery('#primary').height(windowheight-285);
+            jQuery('#secondary').height(windowheight-285);
         }
-        if(windowheight <= primaryheight || primaryheight <= secondaryheight){
-            jQuery('body').css('height', '100%');
+        if(primaryheight > windowheight){
             jQuery('#primary').css('height', '100%');
             jQuery('#secondary').height(primaryheight);
         }
+        if($('#hwm-area')){
+            jQuery('#primary').css('height', '100%');
+        }
+    } else {
+        jQuery('#primary').css('height', '100%');
+        jQuery('#secondary').css('height', '100%');
     }
-    footer_stick($);
-    if(loop === 25) {
+    /*if(loop === 25) {
         clearInterval(interval);
-    }
+    }*/
+    footer_stick($);
     loop = loop + 1;
 }
 

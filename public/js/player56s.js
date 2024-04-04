@@ -689,21 +689,7 @@ jQuery( function player56s($) {
                 var currentTracklength = this.tracks[this.currentTrack].length;
                 var currentTracklengthsechalf = parseInt(currentTracklength) * 0.75;
                 if(player56splaytimer[0].innerText >= parseInt(currentTracklengthsechalf)){
-                    $.ajax({    
-                        type: 'post',
-                        url: count_playlist_ajax_url,
-                        data: {
-                            'object_id': this.tracks[this.currentTrack].postid,
-                            'action': 'count_play'
-                        },
-                        dataType: 'JSON',
-                        success: function(data){
-                            //
-                        },
-                        error: function(errorThrown){
-                            console.log(errorThrown);
-                        }
-                    });
+                    count_playlist($, this.tracks[this.currentTrack].postid);
                 }
         
                 this.stop();
@@ -760,21 +746,7 @@ jQuery( function player56s($) {
                 var currentTracklength = this.tracks[this.currentTrack].length;
                 var currentTracklengthsechalf = parseInt(currentTracklength) * 0.75;
                 if(player56splaytimer[0].innerText >= parseInt(currentTracklengthsechalf)){
-                    $.ajax({    
-                        type: 'post',
-                        url: count_playlist_ajax_url,
-                        data: {
-                            'object_id': this.tracks[this.currentTrack].postid,
-                            'action': 'count_play'
-                        },
-                        dataType: 'JSON',
-                        success: function(data){
-                            //
-                        },
-                        error: function(errorThrown){
-                            console.log(errorThrown);
-                        }
-                    });
+                    count_playlist($, this.tracks[this.currentTrack].postid);
                 }
 
                 this.stop();
