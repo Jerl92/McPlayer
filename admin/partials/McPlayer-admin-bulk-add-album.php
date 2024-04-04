@@ -474,9 +474,9 @@ function my_artist() {
 
     $key = array_search(strval($counted_max), $counted);
 
-    $str = str_replace("_", "-", strtolower($key));
+    $str = str_replace(" ", "-", strtolower($key));
 
-    $str_ = str_replace("_", " ", $key);
+    $str_ = str_replace(" ", "-", $key);
 
     $str__ = str_replace("-", "-", strtolower($key));
 

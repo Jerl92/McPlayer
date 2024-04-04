@@ -130,22 +130,26 @@ function sidebarheight() {
     var windowheight = jQuery(window).height();
     var primaryheight = jQuery('#primary').height();
     var secondaryheight = jQuery('#secondary').height();
-    if (windowwidth >= 720) {
-        if(primaryheight <= windowheight){
-            jQuery('body').height(windowheight);
-            jQuery('#primary').height(windowheight);
-            jQuery('#secondary').height(windowheight);
-        }
-        if(windowheight <= primaryheight || primaryheight <= secondaryheight){
+
+    if(loop === 5) {
+        if (windowwidth >= 720) {
+            if(primaryheight <= windowheight){
+                jQuery('body').height(windowheight-285);
+                jQuery('#primary').height(windowheight-285);
+                jQuery('#secondary').height(windowheight-285);
+            }else if(windowheight <= primaryheight || primaryheight <= secondaryheight){
+                jQuery('body').css('height', '100%');
+                jQuery('#primary').css('height', '100%');
+                jQuery('#secondary').height(primaryheight);
+            }
+        } else {
             jQuery('body').css('height', '100%');
             jQuery('#primary').css('height', '100%');
-            jQuery('#secondary').height(primaryheight);
+            jQuery('#secondary').css('height', '100%');
         }
-    }
-    footer_stick($);
-    if(loop === 25) {
         clearInterval(interval);
     }
+    footer_stick($);
     loop = loop + 1;
 }
 
