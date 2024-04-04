@@ -16,7 +16,6 @@ function ajax_playlist_remove_track($, object_id) {
                         $("#add-play-now-id-"+object_id).removeClass("saved");
                         ajax_playlist_remove_sidebar($, data);
                         ajax_playlist_remove_page_btn($, data);
-                        sleep(50);
                     },
                     error: function(errorThrown){
                         console.log(errorThrown);

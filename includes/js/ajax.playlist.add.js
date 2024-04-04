@@ -15,8 +15,6 @@ function ajax_playlist($, object_id)  {
                     $(".player56s").player56s($);
                     
                     $("#player56s-addtrack").html(null);
-
-                    sleep(50);
                     
                 },
                 error: function(errorThrown){

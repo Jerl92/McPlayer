@@ -15,28 +15,19 @@ function ajax_playlist_add_sidebar($, object_id)  {
 
             if ( data ) {
                 $( "#rs-saved-for-later" ).prepend(data);
+
+                tooltip($);
+
+                rs_save_for_later($);
+                
+                rs_save_for_later_album($);
+    
+                play_pause($);
+                
+                play_now($);
+                
+                ajax_playlist_update_sidebar($);   
             }
-
-            if($('.play-now-button').length) {
-                $('.play-now-button[data-toggle="tooltip"]').tooltip($);
-                $('.play-now-button').on('click', function(event) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                    event.stopImmediatePropagation();
-            
-                    $('.add-play-now-button[data-toggle="tooltip"]').tooltip('hide');
-                    
-                    ajax_playlist_update_sidebar($);
-                });
-            }
-
-            rs_save_for_later($);
-            
-            rs_save_for_later_album($);
-
-            play_pause($);
-
-            tooltip($);
         
         },
         error: function(errorThrown){
@@ -45,15 +36,6 @@ function ajax_playlist_add_sidebar($, object_id)  {
     });
 
 }
-
-function ajax_playlist_flush_sidebar($)  {
-    $("#rs-saved-for-later").html('<li id="rs-saved-for-later-nothing" style="text-align: center; padding:15px 0;">Nothing in the playlist</li>');
-}
-
-function  ajax_playlist_sortable_sidebar($){
-        // var currenttrack = $("#player56s-currenttrack")[0].innerText;
-}
-    
 
 function  ajax_playlist_update_sidebar($) {
     

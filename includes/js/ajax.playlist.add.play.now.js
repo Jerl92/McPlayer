@@ -12,13 +12,15 @@ function ajax_playlist_play_now($, object_id)  {
 
             $("#player56s-addtrack").html(data);
 
+            $(".player56s").player56s($);
+                        
+            $("#player56s-addtrack").html(null);
+
             $('#player56s-playnow').html(object_id);
 
             $(".player56s").player56s($);
             
             $('#player56s-playnow').html(null);
-            
-            $("#player56s-addtrack").html(null);
 
         },
         error: function(errorThrown){
