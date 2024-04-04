@@ -55,6 +55,7 @@ function rs_remove_all($) {
 	$('a.rs-save-for-later-remove-all').on('click', function(event) {
         event.preventDefault();
         event.stopPropagation();
+		event.stopImmediatePropagation();
 
 		$.ajax({
 			type: 'post',
@@ -72,6 +73,10 @@ function rs_remove_all($) {
 				});
 				$( ".rs-save-for-later-button-album" ).each(function() {
 					$(this).removeClass("saved");
+				});
+				$( ".add-play-now-button" ).each(function() {
+					$(this).removeClass("onplay");
+					$(this).addClass("onpause");
 				});
 
 				ajax_playlist_flush_sidebar($);

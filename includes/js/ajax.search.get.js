@@ -45,6 +45,12 @@ function mcplayer_search_ajax($) {
                 //error stuff here.text
             }
         });
+        var base_url = window.location.origin;
+        if(inputVal === ''){
+            $(".widget-mcplayer-search-a").attr("href", base_url);
+        } else {
+            $(".widget-mcplayer-search-a").attr("href", base_url+"?s="+inputVal);
+        }
     });
     $('#target').mouseup(function(event) {
         var inputVal = document.getElementById("target").value;
@@ -93,20 +99,18 @@ function mcplayer_search_ajax($) {
                 }
             });
         }
+        var base_url = window.location.origin;
+        if(inputVal === ''){
+            $(".widget-mcplayer-search-a").attr("href", base_url);
+        } else {
+            $(".widget-mcplayer-search-a").attr("href", base_url+"?s="+inputVal);
+        }
     });
     $('#widget-mcplayer-search-result').mouseup(function(event) {
         event.preventDefault();
         event.stopPropagation();
         event.stopImmediatePropagation();
         $("#widget-mcplayer-search-result").css("display","none");
-    });
-    $( "#target" ).on( "keyup", function(event) {
-        event.preventDefault();
-        event.stopPropagation();
-        event.stopImmediatePropagation();
-        var base_url = window.location.origin;
-        var inputVal = document.getElementById("target").value;
-        $(".widget-mcplayer-search-a").attr("href", base_url+"?s="+inputVal);
     });
 }
 

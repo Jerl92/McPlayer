@@ -10,6 +10,8 @@ function wp_playlist_ajax_scripts() {
 	/* Plugin DIR URL */
 	$url = trailingslashit( plugin_dir_url( __FILE__ ) );
 
+	wp_enqueue_script( 'tooltip', $url . "js/tooltip.js", array( 'jquery' ), '1.0.0' );
+
 	/* Save-unsave */
 	wp_register_script( 'rs-save-for-later', $url . "js/rs-save-for-later-public.js", array( 'jquery' ), '1.0.0', true );
 	wp_localize_script( 'rs-save-for-later', 'rs_save_for_later_ajax', admin_url( 'admin-ajax.php' ) );
@@ -94,8 +96,6 @@ function wp_playlist_ajax_scripts() {
 	wp_register_script( 'wp-ajax-current-album', $url . "js/ajax.current.album.js", array( 'jquery' ), '1.0.0', true );
 	wp_localize_script( 'wp-ajax-current-album', 'current_album_ajax_url', admin_url( 'admin-ajax.php' ) );
 	wp_enqueue_script( 'wp-ajax-current-album' );
-	
-	wp_enqueue_script( 'tooltip', $url . "js/tooltip.js", array( 'jquery' ), '1.0.0' );
 
 }
 
@@ -110,7 +110,7 @@ function ajax_add_track($post) {
 		
 		$matche = $_POST['object_id'];
 		$posts = wp_get_attachment_url( get_post_meta( $matche , 'music_link_', true) );
-		$urllocal = realpath(ABSPATH.explode(site_url(), $posts)[1]);
+		$urllocal = realpath(ABSPATH.explode(site_url(), $posts )[1]);
         $plugin_dir = site_url().'/wp-content/plugins/McPlayer/includes/download.php';
 
 		$terms = wp_get_post_terms( $matche, 'artist' );
@@ -421,6 +421,8 @@ function save_unsave_for_later_album($post) {
 
 	$get_songs = get_posts( $get_songs_args );
 
+	$saved_album = false;
+
 	if ($get_songs) {
 
 		$matches_album = get_user_meta( user_if_login(), 'rs_saved_for_later_album', true );
@@ -451,14 +453,17 @@ function save_unsave_for_later_album($post) {
 			}
 			$count = count( $matches );
 			if ( in_array( $get_song->ID, $matches ) ) {
-				$saved = true;
-				unset( $matches[array_search( $get_song->ID, $matches )] );
+				if($saved_album == true){
+					$saved = true;
+					unset( $matches[array_search( $get_song->ID, $matches )] );
+					$html[$x++] = $get_song->ID;
+				}
 			} else {
 				$saved = false;
 				array_unshift( $matches, $get_song->ID );
+				$html[$x++] = $get_song->ID;
 			}
 
-			$html[$x++] = $get_song->ID;
 			update_user_meta( user_if_login(), 'rs_saved_for_later', $matches );
 
 			if ( $saved == true ) {
@@ -466,12 +471,11 @@ function save_unsave_for_later_album($post) {
 			} else {
 				$count = $count + 1;
 			}
-
 		}
 
 		$return = array(
 			'status'  => user_if_login(),
-			'update'  => $saved,
+			'update'  => $saved_album,
 			'postid' => $html,
 			'postid_album' => $object_id,
 			'count'   => esc_attr( $count ),

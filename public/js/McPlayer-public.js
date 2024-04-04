@@ -34,7 +34,7 @@ jQuery(document).ready(function() {
     });
 });
 
-function footer_stick($) {
+function footer_stick() {
     var windowHeight_ = jQuery(window).height();
     var documentHeight_ = jQuery(document).height();
     var colophonHeight_ = jQuery('#colophon').height();
@@ -98,17 +98,14 @@ function checkHeightChange() {
         var primaryheight = jQuery('#primary').height();
         
         if (windowwidth >= 720) {
-            jQuery('body').css('height', '100%');
-            jQuery('#primary').css('height', '100%');
-            jQuery('#secondary').css('height', '0px');
-            if(newHeight < 1080){
-                newHeight = 1080;
-            }
             if(primaryheight <= windowheight){
-                jQuery('#primary').height(newHeight+colophon+masthead);
-                jQuery('#secondary').height(newHeight+colophon+masthead);
+                jQuery('body').height(windowheight);
+                jQuery('#primary').height(windowheight);
+                jQuery('#secondary').height(windowheight);
             }
-            if(windowheight <= primaryheight){
+            if(windowheight <= primaryheight || primaryheight <= secondaryheight){
+                jQuery('body').css('height', '100%');
+                jQuery('#primary').css('height', '100%');
                 jQuery('#secondary').height(primaryheight);
             }
         }
@@ -125,31 +122,27 @@ if($("#hwm-area")){
 var loop = 0;
 var interval;
 $(document).on('ready',function(){
-    interval = setInterval(function(){sidebarheight();}, 250);
+    interval = setInterval(function(){sidebarheight();}, 1000);
 });
 
 function sidebarheight() {
     var windowwidth = jQuery(window).width();
     var windowheight = jQuery(window).height();
-    var wrapplayer = jQuery('#wrap-player').height();
-    var colophon = jQuery('#colophon').height();
-    var masthead = jQuery('#masthead').height();
     var primaryheight = jQuery('#primary').height();
     var secondaryheight = jQuery('#secondary').height();
     if (windowwidth >= 720) {
-        jQuery('body').css('height', '100%');
-        jQuery('#primary').css('height', '100%');
-        jQuery('#secondary').css('height', '0px');
         if(primaryheight <= windowheight){
             jQuery('body').height(windowheight);
             jQuery('#primary').height(windowheight);
             jQuery('#secondary').height(windowheight);
         }
         if(windowheight <= primaryheight || primaryheight <= secondaryheight){
+            jQuery('body').css('height', '100%');
+            jQuery('#primary').css('height', '100%');
             jQuery('#secondary').height(primaryheight);
         }
-        footer_stick($);
     }
+    footer_stick($);
     if(loop === 25) {
         clearInterval(interval);
     }
@@ -208,7 +201,7 @@ function update() {
         if (windowwidth <= 720) {
             navigator.wakeLock.request('screen')
             .then((wakeLock) => {
-                //
+                screenLock = wakeLock; 
             })
         }
     }
@@ -221,5 +214,7 @@ document.addEventListener('visibilitychange', function(){
 
 $(window).on('load', function() {
     doVisualUpdates = !document.hidden;
+    footer_stick($);
+    sidebarheight();
     update();
 });

@@ -82,7 +82,7 @@ class MCPlayer_bottom_player_widget extends WP_Widget {
 
 				$music_playlist = wp_get_attachment_url(get_post_meta( $post->ID, 'music_link_', true ));
 
-				$urllocal = realpath(ABSPATH.explode(site_url(), $music_playlist )[1]);
+				$urllocal = realpath(ABSPATH.explode(site_url(), $music_playlist )[1]); 
 
 				$plugin_dir = site_url().'/wp-content/plugins/McPlayer/includes/download.php';
 	

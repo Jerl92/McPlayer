@@ -34,7 +34,7 @@ class MCPlayer_search_widget extends WP_Widget {
 
         echo '<div class="search-container">';
             echo '<input id="target" type="text" placeholder="Search..." name="search" class="widget-mcplayer-search-input">';
-            echo '<a href="?s=" class="widget-mcplayer-search-a"><button type="submit" class="widget-mcplayer-search-button" style="min-width: 22.5%; margin-left: 2.5%;"><i class="fa fa-search"></i></button><a>';
+            echo '<a href="" class="widget-mcplayer-search-a"><button type="submit" class="widget-mcplayer-search-button" style="min-width: 22.5%; margin-left: 2.5%;"><i class="fa fa-search"></i></button><a>';
         echo '</div>';
 
         echo '<div id="widget-mcplayer-search-result" style="display:none;"></div>';

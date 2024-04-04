@@ -8,8 +8,8 @@ function ajax_playlist_add_album($, object_id)  {
                     },
                     dataType: 'JSON',
                     success: function(data){
-                        data.forEach(function(element, index) {
-                            if(index < data.length){
+                        object_id.forEach(function(element, index) {
+                            if(index < object_id.length){
                                 setTimeout(function() {
                                     ajax_playlist($, element);
                                     ajax_playlist_add_sidebar($, element);

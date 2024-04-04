@@ -585,6 +585,8 @@ jQuery( function player56s($) {
             this.$container.find(".player56s-track-prev").addClass('enabled');
         }
         removeAll() {
+            this.pseudoPause();
+            this.pause();
             this.stop();
             this.tracks = [];
             this.addTrack('#', '', '0', '0');
