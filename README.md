@@ -2,7 +2,7 @@
 
 McPlayer is a full-width HTML5/CSS/PHP/JS/AJAX audio Player with Playlist, Plugin for WordPress.</br>
 
-<img style="max-width: 100%;" src="https://i.ibb.co/s697sgc/loadplaylist.gif" alt="MCPlayer" />
+<img style="max-width: 100%;" src="https://i.ibb.co/bNM9Hkx/mcplayer4186.png" alt="MCPlayer" />
 
 ## Description
 With McPlayer you can get your music from all around the world, from public Wi-Fi or your cellular network.</br>
@@ -109,6 +109,7 @@ Show the lasted played songs</br>
 <img style="max-width: 100%;" src="https://i.ibb.co/R6G5xTt/bulk-add-album.png" />
 
 ## Changelog
+1.7 - Fix stuff in full album add to playlist and fix height of content to feel more like a webapp.</br>
 1.6 - Remove artist private page, remove other stuff.</br>
 1.5 - Add AJAX search and add load state on page refresh.</br>
 1.4 - In shortcode for previously played show all user previously played.</br>
