@@ -366,10 +366,6 @@ function custom_meta_box_lyrics($object)
 
 wp_nonce_field(basename(__FILE__), "meta-box-nonce");
 
-$apiaudd = shell_exec("curl https://api.audd.io/ -F url=".$link_url." -F return='apple_music,spotify' -F api_token='7416f31e4a0211a702d3fde1e7be3df9'");
-
-echo $apiaudd;
-
 ?>
     <div style="text-align: center;">
         <textarea name="meta-box-music-lyric" id="meta-box-music-lyric" rows="15" cols="40" style="width: 95%; margin-left: 2.5%;" ><?php echo get_post_meta($object->ID, "meta-box-music-lyric", true); ?></textarea>

@@ -30,16 +30,14 @@
 
         foreach ($matches as $matche) {
             foreach ($matche as $matche_) {
-                foreach ($matche_ as $matche__) {
-                    $matches___[] .= $matche__;
-                }  
+                    $matches__[] .= $matche_;
             }      
         }
 
         $args = array( 
             'posts_per_page' => -1,	
             'post_type' => 'music',
-            'post__in' => $matches___,
+            'post__in' => $matches__,
             'order'   => 'DESC',
             'orderby'   => 'post__in',
         );

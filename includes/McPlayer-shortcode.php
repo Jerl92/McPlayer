@@ -604,11 +604,6 @@ function get_albums_loop($end)
 function year_get_loop($atts)
 {
 
-	$previous = "javascript:history.go(-1)";
-	if(isset($_SERVER['HTTP_REFERER'])) {
-		$previous = $_SERVER['HTTP_REFERER'];
-	}
-
 	// Gets every "category" (term) in this taxonomy to get the respective posts
 	$get_years_args = array(
 		'post_type' => 'attachment',
@@ -647,7 +642,7 @@ function year_get_loop($atts)
 		echo '<h1>';
 			echo $_GET['y'];
 		echo '</h1>';
-		?><span style="font-size: 25px; font-weight: 400;"><a href="<?= $previous ?>">< Back</a></span></br><?php
+		?><span style="font-size: 25px; font-weight: 400;"><a href="<?php $_SERVER['SERVER_NAME'] ?>/years/">< Back</a></span></br><?php
 	}
 
 	$get_songs_args = array(
@@ -692,6 +687,11 @@ function year_get_loop($atts)
 		$i = 0;
 		$get_songs_calc = [];
 
+		$getslugid = wp_get_post_terms($get_song_cover->ID, 'artist');
+		foreach ($getslugid as $thisslug) {
+			// echo $thisslug->name; // Added a space between the slugs with . ' '
+		}
+
 		foreach ($get_songs as $get_songs_time) {
 			$get_songs_calc[$i++] =  seconds_from_time(get_post_meta($get_songs_time->ID, 'meta-box-track-length', true));
 		}
@@ -699,10 +699,10 @@ function year_get_loop($atts)
 		?>
 		<article id="album-class-year" class="page-music music type-music status-publish hentry">
 			<div class="entry-header">
-				<h2 style="margin: 0;"><a href="?album=<?php echo $get_song_cover->ID; ?>" rel="bookmark">
+				<h2 style="margin: 0;"><a href="<?php $_SERVER['SERVER_NAME'] ?>/artist/<?php echo $thisslug->slug ?>/?album=<?php echo $get_song_cover->ID; ?>" rel="bookmark">
 						<?php echo get_the_title($get_song_cover->ID); ?>
 					</a></h2>
-				<a href="?album=<?php echo $get_song_cover->ID; ?>"><?php echo wp_get_attachment_image($get_song_cover->ID, array('350', '350')); ?></a>
+				<a href="<?php $_SERVER['SERVER_NAME'] ?>/artist/<?php echo $thisslug->slug ?>/?album=<?php echo $get_song_cover->ID; ?>"><?php echo wp_get_attachment_image($get_song_cover->ID, array('350', '350')); ?></a>
 				<div style="float: left; max-width: calc(100% - 40px);">
 					<?php echo $artist_slug_name ?>
 					</br>
@@ -718,95 +718,7 @@ function year_get_loop($atts)
 	<?php
 
 	}
-
-	if ($_GET['album']) {
-
-		$args = array(
-			'post_type' => 'music',
-			'meta_query' => array(
-				array(
-					'key' => 'meta-box-media-cover_',
-					'value' => $_GET['album'],
-				)
-			),
-			'orderby' => 		'meta_value_num',
-			'order' => 			'ASC',
-			'posts_per_page'  => -1
-		);
-
-		$loop = new WP_Query($args);
-		$columns = absint($args['columns']);
-		$woocommerce_loop['columns'] = $columns;
-
-		echo '<div style="float: left;">';
-
-		$post = get_post($_GET['album']);
-		$title = $post->post_title;
-
-		echo $title;
-
-		echo '<br>';
-
-		$getslugid = wp_get_post_terms($_GET['album'], 'artist');
-		foreach ($getslugid as $thisslug) {
-			echo $thisslug->name; // Added a space between the slugs with . ' '
-		}
-
-		echo '<br>';
-
-		echo get_post_meta($_GET['album'], "meta-box-year", true);
-
-		echo '</div>';
-
-		?> <div class="entry-meta-cover">
-			<?php echo wp_get_attachment_image($_GET['album'], 'full', false, array('style' => 'max-width:450px;height:auto;margin-left: auto;display: grid;margin-right: 15px;')); ?>
-		</div> <?php
-
-		echo "<table id='album-class-artist-list'>";
-
-			while ($loop->have_posts()) : $loop->the_post();
-
-			$posts[$x][0] = get_post_meta( get_the_id(), "meta-box-track-number", true );
-			$posts[$x][1] = get_the_id();
-			$x++;
-
-			endwhile;
-			wp_reset_postdata();
-
-			asort($posts);
-
-			if ($_GET['album'] != '') { 
-
-				foreach($posts as $post) { ?>
-					<tr style='width: 100%; height: 60px;'>
-					<td id="album-class-artist-list-id-<?php echo $post[1]; ?>" style='text-align: center; width: 30px; padding: 0 10px;'>
-						<?php echo do_shortcode( '[simplicity-save-for-later-loop id="' . $post[1] . '"]' ); ?>
-					</td>
-					<td style='width: 30px; display: inline-flex; text-align: center; margin auto 0; padding: 0 5px;'>
-						<?php echo do_shortcode( '[add-play-now id="' . $post[1] . '"]' ); ?>
-					</td>
-					<td style='text-align: center; padding: 0 5px; width: 30px;'>
-						<?php echo get_post_meta( $post[1], "meta-box-track-number", true ); ?>
-					</td>
-					<td style='text-align: left; font-size: 18px; font-weight: 400; width: 100%; padding 0 25px;'>
-						<a href="<?php echo get_permalink( $post[1] ) ?>" class='entry-title'><?php echo get_the_title($post[1]) ?></a>	
-						<?php $if_feat = get_post_meta( $post[1], "meta-box-artist-feat", true);
-							if ($if_feat != '') {
-							?>
-								<?php echo      " Feat. "; ?>
-								<?php echo $if_feat; ?>
-							<br />
-							<?php } ?>
-					</td>
-					<td style="">
-						<?php echo get_post_meta( $post[1], "meta-box-track-length", true ); ?>
-					</td>
-				</tr>	
-				<?php }
-			} 
-
-		echo "</table>";
-	}
+	
 }
 
 add_shortcode('year_get_shortcode', 'year_get_loop');

@@ -7,7 +7,7 @@
 			anchors: "a",
 			cache: false,
 			cacheLength: 0,
-			prefetch: false,
+			prefetch: true,
 			prefetchOn: 'mouseover touchstart',
 			scroll: true,
 			locationHeader: "X-SmoothState-Location",
@@ -22,18 +22,18 @@
 					$('body').addClass('no-scroll');
 
 					// Add your CSS animation reversing class
-					$('#primary').removeClass('is-onready');
+					$('#main').removeClass('is-onready');
 
 					// Add your CSS animation reversing class
-					$('#primary').addClass('is-onstart');
+					$('#main').addClass('is-onstart');
 
-					$('#secondary').scrollTop(0);
+					$('.loader').css('display', 'table');
 
 					// Scroll user to the top, this is very important, transition may not work without this
 					$body.scrollTop(0);
 
 					// Restart your animation
-					//smoothState.restartCSSAnimations();
+					// smoothState.restartCSSAnimations();
 				}
 	        },
 			onReady: {
@@ -44,10 +44,12 @@
 					$container.html($newContent);
 
 					// Remove your CSS animation reversing class
-					$('#primary').removeClass('is-onstart');
+					$('#main').removeClass('is-onstart');
 
 					// Add your CSS animation reversing class
-					$('#primary').addClass('is-onready');
+					$('#main').addClass('is-onready');
+
+					$('.loader').css('display', 'none');
 
 					// Trigger load functions
 					$(document).ready();
@@ -96,8 +98,7 @@
 					setInterval(getData, parseInt($('#interval').val(), 10) * 5000);
 				}
 
-				loop = 0;
-				interval = setInterval(function(){sidebarheight();},250);
+				setInterval(function(){sidebarheight();},250);
 
 				current_album($);
 				

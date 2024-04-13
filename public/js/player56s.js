@@ -236,13 +236,6 @@ function shuffle(arra1) {
     return arra1;
 }
 
-function fileExists(url) {
-    var http = new XMLHttpRequest();
-    http.open('HEAD', url, false);
-    http.send();
-    return http.status;
-}
-
 function array_move(arr, old_index, new_index) {
     if (new_index >= arr.length) {
         var k = new_index - arr.length + 1;
@@ -323,19 +316,21 @@ jQuery( function player56s($) {
             if (goAndCreate) {
                 if (player56sInstance) {
                     if(typeof player56sInstance.tracks[player56sInstance.currentTrack] === undefined){
-                        player56sInstance.removeAll();
+                        return null;
                     }
 
-                    if (audiofileLink_add[0] !== undefined ) {
+                    if (audiofileLink_add[0] != undefined ) {
                         var allready = 0;
                         player56sInstance.tracks.forEach(function(element, index) {
-                            if (audiofileLink_add[2].innerText == element.postid) {
-                                allready = 1;
+                            if( typeof element != undefined){
+                                if (audiofileLink_add[2].innerText === element.postid) {
+                                    allready = 1;
+                                }
                             }
                         }, this);
                         if ( allready == 0 ) {
                             player56sInstance.addTrack(audiofileLink_add[0].innerText, audiofileLink_add[1].innerText, audiofileLink_add[3].innerText, audiofileLink_add[2].innerText);
-                            if (playlist_shuffle[0].innerText == "1") {
+                            if (playlist_shuffle[0].innerText === '1') {
                                 shuffle(player56sInstance.tracks);                    
                             }
                         }
@@ -446,46 +441,6 @@ jQuery( function player56s($) {
                             }
                         });
                         player56sInstance.tracks = tracks;
-                    }
-            
-                    if (currenttrack_index[0] !== undefined ) {
-                        if (player56sInstance.currentTrack == parseInt(currenttrack_index[0].innerText)) {
-                            player56sInstance.currentTrack = parseInt(currenttrack_index[1].innerText);
-                        }
-                        array_move(player56sInstance.tracks, currenttrack_index[0].innerText, currenttrack_index[1].innerText);
-            
-                        $.ajax({    
-                            type: 'post',
-                            url: shuffle_ajax_url,
-                            data: {
-                                'object_id': null,
-                                'action': 'if_shuffle'
-                            },
-                            dataType: 'JSON',
-                            success: function(data){
-                                if (data == "0") {
-                                    $.ajax({
-                                        type: 'post',
-                                        url: save_order_ajax_url,
-                                        data: {
-                                        //	'nonce': nonce,
-                                            'object_id': player56sInstance.tracks.reverse(),
-                                            'action': 'new_order'
-                                        },
-                                        success: function(data_) {
-                                            //
-                                        },
-                                        error: function(error) {
-                                            console.log(error);
-                                        }
-                                    });
-                                }
-                            },
-                            error: function(errorThrown){
-                                console.log(errorThrown);
-                            }
-                        });
-
                     }
             
                 } else {
@@ -621,16 +576,17 @@ jQuery( function player56s($) {
             this.$container.removeClass("player56s-status-playing");
         }
         pause() {
-            if (typeof this.$jPlayer !== "undefined" && this.$jPlayer.jPlayer) {
+            if (typeof this.$jPlayer != "undefined" && this.$jPlayer.jPlayer && typeof this.tracks[this.currentTrack] != "undefined") {
                 $("#rs-item-" + this.tracks[this.currentTrack].postid + "").removeClass('playing');
                 $("#play-now-id-" + this.tracks[this.currentTrack].postid + "").removeClass('onplay');
                 $("#add-play-now-id-" + this.tracks[this.currentTrack].postid + "").removeClass('onplay');
                 $("#play-now-id-" + this.tracks[this.currentTrack].postid + "").addClass('onpause');
                 $("#add-play-now-id-" + this.tracks[this.currentTrack].postid + "").addClass('onpause');     
-                if (this.isPlaying && this.tracks[this.currentTrack].postid !== '0') {               
+                if (this.isPlaying && this.tracks[this.currentTrack].postid != '0') {               
                     this.isPlaying = false;
                     this.waitForLoad = false;
                     this.$jPlayer.jPlayer("pause");
+                    this.setVolume(0, 1);
                     Clock.pause();
                 }
             }
@@ -643,13 +599,13 @@ jQuery( function player56s($) {
             this.$container.addClass("player56s-status-playing");
         }
         play() {
-            if (typeof this.$jPlayer !== "undefined" && this.$jPlayer.jPlayer) {
+            if (typeof this.$jPlayer != "undefined" && this.$jPlayer.jPlayer && typeof this.tracks[this.currentTrack] != "undefined") {
                 $("#rs-item-" + this.tracks[this.currentTrack].postid + "").addClass("playing");
                 $("#play-now-id-" + this.tracks[this.currentTrack].postid + "").addClass('onplay');
                 $("#add-play-now-id-" + this.tracks[this.currentTrack].postid + "").addClass('onplay');
                 $("#play-now-id-" + this.tracks[this.currentTrack].postid + "").removeClass('onpause');
                 $("#add-play-now-id-" + this.tracks[this.currentTrack].postid + "").removeClass('onpause');
-                if (!this.isPlaying && this.tracks[this.currentTrack].postid !== '0') {
+                if (!this.isPlaying && this.tracks[this.currentTrack].postid != '0') {
                     this.isPlayed = true;
                     this.waitForLoad = true;
                     this.$jPlayer.jPlayer("play");
@@ -712,8 +668,7 @@ jQuery( function player56s($) {
                 this.$container.find(".player56s-time").html(track.length ? formatTime(makeSeconds(track.length)) : "");
                 this.$container.find(".player56s-album-img").html('<span><img src="' + getTrackAlbumImg(track.filename) + '"></img></span>');
 
-                if (status == 1) {
-                    $("#rs-item-" + this.tracks[this.currentTrack].postid + "").addClass('playing');
+                if (status == 1 && !this.isPlaying) {
                     this.pseudoPlay();
                     this.play();
                 }
@@ -729,7 +684,7 @@ jQuery( function player56s($) {
             if (to_next === undefined) {
                 to_next = true;
             } // next by default
-            if (typeof this.$jPlayer !== "undefined" && this.$jPlayer.jPlayer && this.tracks.length >= 1 && this.tracks[this.currentTrack].postid !== '0' ) {
+            if (typeof this.$jPlayer !== "undefined" && this.$jPlayer.jPlayer && this.tracks.length >= 1 && typeof this.tracks[this.currentTrack] != undefined ) {
                 var timelinedone = $(".player56s-timeline-done").width() / $('.player56s-timeline-done').parent().width() * 100;
                 var status = null;
                 if (this.$container.hasClass("status-onpause")) {
@@ -783,7 +738,7 @@ jQuery( function player56s($) {
                 this.$container.find(".player56s-time").html(track.length ? formatTime(makeSeconds(track.length)) : "");
                 this.$container.find(".player56s-album-img").html('<span><img src="' + getTrackAlbumImg(track.filename) + '"></img></span>');
 
-                if (status == 1) {
+                if (status == 1 && !this.isPlaying) {
                     this.pseudoPlay();
                     this.play();
                 }
@@ -996,14 +951,14 @@ jQuery( function player56s($) {
         bindEvents() {
             var self = this, uniqueID = self.$container.attr("id");
         
-            var Player56sState = self.getCookie("Player56sState");
+            var Player56sCurrentTrack = self.getCookie("Player56sCurrentTrack");
             var Player56sSeek = self.getCookie("Player56sSeek");
-            if(Player56sState && Player56sSeek){
+            if(Player56sCurrentTrack && Player56sSeek){
                 var Refersh = setInterval(function(){
                     var player56scurrenttrack = $("#player56s-currenttrack");
                     var player56scurrentseek = $("#player56s-seek-current-percent");
                     self.tracks.forEach(function(element, index) {
-                        if(parseInt(element.postid) === parseInt(Player56sState)){
+                        if(parseInt(element.postid) === parseInt(Player56sCurrentTrack)){
                             self.playNow(parseInt(index));
                             setTimeout(function() {
                                 willSeekTo(self, parseInt(Player56sSeek));
@@ -1011,12 +966,12 @@ jQuery( function player56s($) {
                         }
                     });
 
-                    if(player56scurrenttrack[0].innerText === Player56sState && player56scurrentseek >= Player56sSeek) {
+                    if(player56scurrenttrack[0].innerText === Player56sCurrentTrack && player56scurrentseek >= Player56sSeek) {
                         clearInterval(Refersh);
-                        self.DeleteCookie(Player56sState);
+                        self.DeleteCookie(Player56sCurrentTrack);
                         self.DeleteCookie(Player56sSeek);
                     }
-                }, 1000);
+                }, 250);
             }
 
             $(document).on("player56s-pause." + uniqueID, function (event, triggeredPlayer56s) {

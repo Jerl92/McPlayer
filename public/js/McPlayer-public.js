@@ -86,24 +86,22 @@ function sleep(milliseconds) {
 
 var loop = 0;
 var interval;
-jQuery(document).ready(function(){	
-    interval = setInterval(function(){sidebarheight();}, 1000);
+jQuery(document).ready(function(){
+    interval = setInterval(function(){sidebarheight();}, 250);
 });
 
 function sidebarheight() {
     var windowwidth = jQuery(window).width();
     var windowheight = jQuery(window).height();
     var primaryheight = jQuery('#primary').height();
-    var secondaryheight = jQuery('#secondary').height();
 
     if (windowwidth >= 720) {
-        if(primaryheight <= windowheight){
+        if(primaryheight >= windowheight){
+            jQuery('#primary').height('100%');
+            jQuery('#secondary').height(primaryheight);
+        } else if (primaryheight < windowheight){
             jQuery('#primary').height(windowheight-285);
             jQuery('#secondary').height(windowheight-285);
-        }
-        if(primaryheight > windowheight){
-            jQuery('#primary').css('height', '100%');
-            jQuery('#secondary').height(primaryheight);
         }
         if($('#hwm-area')){
             jQuery('#primary').css('height', '100%');
@@ -112,11 +110,11 @@ function sidebarheight() {
         jQuery('#primary').css('height', '100%');
         jQuery('#secondary').css('height', '100%');
     }
-    /*if(loop === 25) {
-        clearInterval(interval);
-    }*/
+    loop = loop+1;
     footer_stick($);
-    loop = loop + 1;
+    if(loop === 25) {
+        clearInterval(interval);
+    }
 }
 
 window.addEventListener("orientationchange", (event) => {
@@ -144,9 +142,9 @@ function setCookie(c_name, value, exdays) {
 
 $( window ).bind('beforeunload', function(){
     var player56scurrenttrack = $("#player56s-currenttrack");
-    setCookie("Player56sState", parseInt(player56scurrenttrack[0].innerText), 256);
+    setCookie("Player56sCurrentTrack", parseInt(player56scurrenttrack[0].innerText), 64);
     var player56scurrentseek = $("#player56s-seek-current-percent");
-    setCookie("Player56sSeek", parseInt(player56scurrentseek[0].innerText), 256);
+    setCookie("Player56sSeek", parseInt(player56scurrentseek[0].innerText), 64);
     return confirm("Confirm refresh");
 });
 
@@ -186,7 +184,7 @@ document.addEventListener('visibilitychange', function(){
     update();
 });
 
-$(window).on('load', function() {
+jQuery(window).on('load', function() {
     doVisualUpdates = !document.hidden;
     footer_stick($);
     sidebarheight();

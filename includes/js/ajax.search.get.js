@@ -29,9 +29,9 @@ function mcplayer_search_ajax($) {
                     var wrapplayer = $('#wrap-player').height();
                     var searchwrapper = $('#widget-mcplayer-search-wrapper').height();
                     if(windowheight >= searchwrapper){
-                        $("#widget-mcplayer-search-result").css("height", searchwrapper+25);
+                        $("#widget-mcplayer-search-result").css("height", searchwrapper);
                     } else {
-                        $("#widget-mcplayer-search-result").css("height", windowheight-wrapplayer-350);
+                        $("#widget-mcplayer-search-result").css("height", windowheight-wrapplayer-250);
                     }
                     rs_save_for_later_album($);
                     rs_save_for_later($);
@@ -82,9 +82,9 @@ function mcplayer_search_ajax($) {
                         var wrapplayer = $('#wrap-player').height();
                         var searchwrapper = $('#widget-mcplayer-search-wrapper').height();
                         if(windowheight >= searchwrapper){
-                            $("#widget-mcplayer-search-result").css("height", searchwrapper+25);
+                            $("#widget-mcplayer-search-result").css("height", searchwrapper);
                         } else {
-                            $("#widget-mcplayer-search-result").css("height", windowheight-wrapplayer-350);
+                            $("#widget-mcplayer-search-result").css("height", windowheight-wrapplayer-250);
                         }
                         rs_save_for_later_album($);
                         rs_save_for_later($);

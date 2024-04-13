@@ -243,6 +243,7 @@ function my_action_javascript() { ?>
 
             // since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php
             jQuery.post(ajaxurl, data, function(response) {
+                console.log(response);
                 $("#result").append(response);
                 yt_dl($);
             });
@@ -576,7 +577,7 @@ function my_url() {
     $path_implode = $upload_dir['basedir'] . '/youtube-dl/';
     // shell_exec('rm '.$path_implode.'out.log');
     // $cmd = "youtube-dl -o '$path_implode%(playlist_index)s-|-%(title)s-|-%(artist)s-|-%(album)s-|-%(release_year)s.%(ext)s' -f 18 --extract-audio --audio-format mp3 --prefer-ffmpeg --write-thumbnail -k " . $url;
-    $cmd = "youtube-dl -o '$path_implode%(id)s.%(ext)s' -f best --extract-audio --audio-format mp3 --prefer-avconv --write-info-json -k " . $url;
+    $cmd = "youtube-dl -o '$path_implode%(id)s.%(ext)s' -f best --extract-audio --audio-format mp3 --prefer-avconv --write-info-json --embed-thumbnail -k " . $url;
     $res = shell_exec(''.$cmd.' > '.$path_implode.'out.log 2>&1 &');
     return wp_send_json ( $res );
 }
