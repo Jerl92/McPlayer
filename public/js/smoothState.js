@@ -7,12 +7,12 @@
 			anchors: "a",
 			cache: false,
 			cacheLength: 0,
-			prefetch: true,
+			prefetch: false,
 			prefetchOn: 'mouseover touchstart',
 			scroll: true,
 			locationHeader: "X-SmoothState-Location",
 			onStart: {
-				duration: 100, // Duration of our animation
+				duration: 250, // Duration of our animation
 				render: function ($container) {
 
 				// Remove your CSS animation reversing class
@@ -37,7 +37,7 @@
 				}
 	        },
 			onReady: {
-				duration: 100,
+				duration: 250,
 				render: function ($container, $newContent) {
 									
 					// Inject the new content
@@ -58,8 +58,9 @@
 		    },
 			onAfter: function( $container , $newcontainer ) {
 
-				// Remove your CSS animation reversing class
 				$('body').removeClass('no-scroll');
+
+				$('body').addClass('on-scroll');
 								
 				play_now($);
 
@@ -89,21 +90,21 @@
 
 				memory_ajax($);
 
+				current_album($);
+
+				var interval_hw;
 				hw_info = document.getElementById("hwm-area");
 				if (hw_info) {					
 					ajax_get_hw_shortcode($);
 					ajax_get_hw($);
 					hw_info.innerHTML = '';
 					getData();
-					setInterval(getData, parseInt($('#interval').val(), 10) * 5000);
+					interval_hw = setInterval(getData, parseInt($('#interval').val(), 10) * 1000);
+				} else {
+					clearInterval(interval_hw);
 				}
-
-				setInterval(function(){sidebarheight();},250);
-
-				current_album($);
 				
-				// Add your CSS animation reversing class
-				$('body').addClass('on-scroll');
+				interval = setInterval(function(){sidebarheight();},250);
 
 				if ($.isFunction($.fn.theiaStickySidebar)){ 
 					if ( jQuery.browser.mobile && !mystickyside_name.device_mobile) {

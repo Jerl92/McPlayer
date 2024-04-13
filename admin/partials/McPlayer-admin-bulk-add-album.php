@@ -110,12 +110,14 @@ function my_action_javascript() { ?>
             var number = $(this).val();
             var artist = $('#artistoptions').find(":selected").val(); 
             var cover = $('#cover').val();
+            var url = $('input[type="text"].yturl').val();
             var data = {
                 'action': 'my_action',
                 'path': path,
                 'number': number,
                 'artist': artist,
-                'cover': cover
+                'cover': cover,
+                'url': url
             };
 
             // since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php
@@ -128,10 +130,11 @@ function my_action_javascript() { ?>
 
     function yt_table($) {
         $('input[type="text"].yturl').each(function () {
+
             var url = $(this).val();
             var data = {
                 'action': 'my_table',
-                'url': url
+                'url': url,
             };
 
             // since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php
@@ -159,8 +162,6 @@ function my_action_javascript() { ?>
 
     function yt_artist($) {
         $('input[type="text"].yturl').each(function () {
-            console.log($(this).val());
-
             var url = $(this).val();
             var data = {
                 'action': 'my_artist',
@@ -178,7 +179,6 @@ function my_action_javascript() { ?>
 
     function yt_album($) {
         $('input[type="text"].yturl').each(function () {
-            console.log($(this).val());
 
             var url = $(this).val();
             var data = {
@@ -199,6 +199,7 @@ function my_action_javascript() { ?>
 
     function yt_dl($) {
         $('input[type="text"].yturl').each(function () {
+
             var url = $(this).val();
             var data = {
                 'action': 'my_dl',
@@ -235,6 +236,7 @@ function my_action_javascript() { ?>
     function yt_url($) {
 
         $('input[type="text"].yturl').each(function () {
+
             var url = $(this).val();
             var data = {
                 'action': 'my_url',
@@ -259,6 +261,7 @@ function my_action_javascript() { ?>
         $("#cover").val('');
 
         var url = $('input[type="text"].yturl').val();
+
         var data = {
             'action': 'my_url_fetch',
             'url': url
@@ -266,6 +269,7 @@ function my_action_javascript() { ?>
 
         // since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php
         jQuery.post(ajaxurl, data, function(response) {
+            console.log(response);
             if(response != 'Finish'){
                 $('input[type="text"].yturl').val();
                 setTimeout(function(){ yt_url($); }, 5000);
@@ -317,8 +321,13 @@ add_action( 'wp_ajax_my_album', 'my_album' );
 function my_album() {
 
     $x = 0;
+    $url = $_POST['url'];
+    $url_components = parse_url($url);
+    parse_str($url_components['query'], $params);
+    $playlist = $params['list'];
+
     $upload_dir = wp_upload_dir();
-    $path_implode = $upload_dir['basedir'] . '/youtube-dl/';
+    $path_implode = $upload_dir['basedir'] . '/'.$playlist.'/';
     $allFiles = scandir($path_implode, SCANDIR_SORT_DESCENDING);
     $files = array_diff($allFiles, array('.', '..'));
     $files_ = array_reverse($files);    
@@ -355,7 +364,7 @@ function my_album() {
     $content = file_get_contents($jsonfile['thumbnails'][4]['url']);
     file_put_contents($path_implode.'/'.$sanitized_filename, $content);
     $cover_path = $path_implode.'/'.$sanitized_filename;
-    $cover_url = get_site_url() .'/'. UPLOADS . '/youtube-dl/' . $sanitized_filename;
+    $cover_url = get_site_url() .'/'. UPLOADS . '/'.$playlist.'/' . $sanitized_filename;
     $cover_filename = $file;
 
     $counted_artists = array_count_values($artists);
@@ -393,8 +402,6 @@ function my_album() {
     file_put_contents( $file, $image_data );
     
     $wp_filetype = wp_check_filetype( $filename, null );
-
-    $url = $_POST['url'];
     
     $attachment = array(
       'post_mime_type' => $wp_filetype['type'],
@@ -441,9 +448,12 @@ function my_album() {
 
 add_action( 'wp_ajax_my_artist', 'my_artist' );
 function my_artist() {
-
+    $url = $_POST['url'];
+    $url_components = parse_url($url);
+    parse_str($url_components['query'], $params);
+    $playlist = $params['list'];
     $upload_dir = wp_upload_dir();
-    $path_implode = $upload_dir['basedir'] . '/youtube-dl/';
+    $path_implode = $upload_dir['basedir'] . '/'.$playlist.'/';
     $allFiles = scandir($path_implode, SCANDIR_SORT_DESCENDING);
     $files = array_diff($allFiles, array('.', '..'));
     $files_ = array_reverse($files);
@@ -522,8 +532,11 @@ function my_url_fetch() {
     $upload_dir = wp_upload_dir();
     $path_implode = $upload_dir['basedir'];
     $url = $_POST['url'];
+    $url_components = parse_url($url);
+    parse_str($url_components['query'], $params);
+    $playlist = $params['list'];
 
-    $path_implode_ytdl = $upload_dir['basedir'] . '/youtube-dl/';
+    $path_implode_ytdl = $upload_dir['basedir'] . '/'.$playlist.'/';
     $allFiles = scandir($path_implode_ytdl, SCANDIR_SORT_DESCENDING);
     $files = array_diff($allFiles, array('.', '..'));
     $files_ = array_reverse($files);
@@ -573,8 +586,12 @@ function my_url_fetch() {
 add_action( 'wp_ajax_my_url', 'my_url' );
 function my_url() {
     $url = $_POST['url'];
+    $url_components = parse_url($url);
+    parse_str($url_components['query'], $params);
+    $playlist = $params['list'];
     $upload_dir = wp_upload_dir();
-    $path_implode = $upload_dir['basedir'] . '/youtube-dl/';
+    $path_implode = $upload_dir['basedir'] . '/'.$playlist.'/';
+    mkdir($path_implode, 0775);
     // shell_exec('rm '.$path_implode.'out.log');
     // $cmd = "youtube-dl -o '$path_implode%(playlist_index)s-|-%(title)s-|-%(artist)s-|-%(album)s-|-%(release_year)s.%(ext)s' -f 18 --extract-audio --audio-format mp3 --prefer-ffmpeg --write-thumbnail -k " . $url;
     $cmd = "youtube-dl -o '$path_implode%(id)s.%(ext)s' -f best --extract-audio --audio-format mp3 --prefer-avconv --write-info-json --embed-thumbnail -k " . $url;
@@ -584,8 +601,12 @@ function my_url() {
 
 add_action( 'wp_ajax_my_dl', 'my_dl' );
 function my_dl() {
+    $url = $_POST['url'];
+    $url_components = parse_url($url);
+    parse_str($url_components['query'], $params);
+    $playlist = $params['list'];
     $upload_dir = wp_upload_dir();
-    $path_implode = $upload_dir['basedir'] . '/youtube-dl/';
+    $path_implode = $upload_dir['basedir'] . '/'.$playlist.'/';
     $html = file_get_contents($path_implode.'out.log');
     $res[0] = preg_split("/\r\n|\n|\r/", $html);
     // $res[0] = array_slice($fruits, -50, 50, true);
@@ -608,8 +629,12 @@ function my_dl() {
 add_action( 'wp_ajax_my_table', 'my_table' );
 function my_table() {
     $i = 1;
+    $url = $_POST['url'];
+    $url_components = parse_url($url);
+    parse_str($url_components['query'], $params);
+    $playlist = $params['list'];
     $upload_dir = wp_upload_dir();
-    $path_implode = $upload_dir['basedir'] . '/youtube-dl/';
+    $path_implode = $upload_dir['basedir'] . '/'.$playlist.'/';
     $allFiles = scandir($path_implode, SCANDIR_SORT_DESCENDING);
     $files = array_diff($allFiles, array('.', '..'));
     $files_ = array_reverse($files);
@@ -705,7 +730,11 @@ function my_action() {
 
     $wp_filetype = wp_check_filetype( $filename, null );
 
-    $path_implode = $upload_dir['basedir'] . '/youtube-dl/';
+    $url = $_POST['url'];
+    $url_components = parse_url($url);
+    parse_str($url_components['query'], $params);
+    $playlist = $params['list'];
+    $path_implode = $upload_dir['basedir'] . '/'.$playlist.'/';
 
     $jsonfileget = file_get_contents($path_implode.$path_parts['filename'].'.info.json');
     $jsonfile = json_decode($jsonfileget, true);
@@ -764,6 +793,8 @@ function my_action() {
     update_post_meta($post_id, "meta-box-media-cover-name", get_the_title($cover_media_id));
 
     $html[] .= '</br>';
+
+    rmdir($path_implode);
 
     return wp_send_json ( $html );
 }

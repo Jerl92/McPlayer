@@ -29,7 +29,7 @@ function mcplayer_search_ajax($) {
                     var wrapplayer = $('#wrap-player').height();
                     var searchwrapper = $('#widget-mcplayer-search-wrapper').height();
                     if(windowheight >= searchwrapper){
-                        $("#widget-mcplayer-search-result").css("height", searchwrapper);
+                        $("#widget-mcplayer-search-result").css("height", searchwrapper+35);
                     } else {
                         $("#widget-mcplayer-search-result").css("height", windowheight-wrapplayer-250);
                     }
@@ -82,7 +82,7 @@ function mcplayer_search_ajax($) {
                         var wrapplayer = $('#wrap-player').height();
                         var searchwrapper = $('#widget-mcplayer-search-wrapper').height();
                         if(windowheight >= searchwrapper){
-                            $("#widget-mcplayer-search-result").css("height", searchwrapper);
+                            $("#widget-mcplayer-search-result").css("height", searchwrapper+35);
                         } else {
                             $("#widget-mcplayer-search-result").css("height", windowheight-wrapplayer-250);
                         }
