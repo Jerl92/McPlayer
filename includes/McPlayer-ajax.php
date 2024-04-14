@@ -97,6 +97,11 @@ function wp_playlist_ajax_scripts() {
 	wp_localize_script( 'wp-ajax-current-album', 'current_album_ajax_url', admin_url( 'admin-ajax.php' ) );
 	wp_enqueue_script( 'wp-ajax-current-album' );
 
+	/*  */
+	wp_register_script( 'wp-ajax-update-playlist', $url . "js/ajax.update.playlist.js", array( 'jquery' ), '1.0.0', true );
+	wp_localize_script( 'wp-ajax-update-playlist', 'update_playlist_ajax_url', admin_url( 'admin-ajax.php' ) );
+	wp_enqueue_script( 'wp-ajax-update-playlist' );
+
 }
 
 /* 3. AJAX CALLBACK
@@ -872,6 +877,21 @@ function search_ajax_get() {
 	$html[] .= "</div>";
 
 	return wp_send_json ( implode($html) );
+}
+
+add_action( 'wp_ajax_update_playlist', 'update_playlist' );
+add_action( 'wp_ajax_nopriv_update_playlist', 'update_playlist' );
+
+function update_playlist() {
+
+	$matches = get_user_meta( user_if_login(), 'rs_saved_for_later', true );
+
+	foreach($matches as $matche){
+		$html[] .= $matche;
+	}
+
+	return wp_send_json ( $html );
+
 }
 
 ?>

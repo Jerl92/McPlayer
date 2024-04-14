@@ -458,6 +458,13 @@ a.rs-save-for-later-button.saved:after, a.rs-save-for-later-button-album.saved:a
         width: 100% !important;
     }
 
+    #album-class-year {
+        width: 48.5%;
+        padding: 0%;
+        list-style: none;
+        margin: 15px 0.5% 15px 0.5%;
+    }
+
 }
 
 @media only screen and (max-width: 450px) {
