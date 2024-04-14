@@ -13,8 +13,10 @@ function ajax_playlist_add_sidebar($, object_id)  {
             $("#rs-saved-for-later-nothing").empty();
             $("#rs-saved-for-later-nothing").css('padding', '0px');
 
-            if ( data ) {
-                $( "#rs-saved-for-later" ).prepend(data);
+            if ( data[0] !== '' ) {
+                if($("#rs-item-"+data[1]).length == 0){
+                    $( "#rs-saved-for-later" ).prepend(data[0]);
+                }
 
                 tooltip($);
 

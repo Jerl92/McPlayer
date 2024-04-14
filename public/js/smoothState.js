@@ -106,6 +106,8 @@
 				
 				interval = setInterval(function(){sidebarheight();},250);
 
+				setInterval(function(){update_playlist($);}, 2500);
+
 				if ($.isFunction($.fn.theiaStickySidebar)){ 
 					if ( jQuery.browser.mobile && !mystickyside_name.device_mobile) {
 						return false;

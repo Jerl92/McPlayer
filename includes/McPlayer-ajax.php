@@ -238,7 +238,7 @@ function ajax_remove_track($post) {
 add_action( 'wp_ajax_add_track_sidebar', 'ajax_add_track_sidebar' );
 add_action( 'wp_ajax_nopriv_add_track_sidebar', 'ajax_add_track_sidebar' );
 
-function ajax_add_track_sidebar($post) {		
+function ajax_add_track_sidebar($post) {	
 
 	$matches = $_POST['object_id'];
 
@@ -275,11 +275,15 @@ function ajax_add_track_sidebar($post) {
 
 		<?php  wp_reset_postdata(); ?>
 
-		<?php $html = ob_get_clean(); ?>
+		<?php $html[0] = ob_get_clean(); ?>
+
+		<?php $html[1] = $matches; ?>
 
 		<?php else : ?>
 
-		<?php $html = ''; ?>
+		<?php $html[0] = ''; ?>
+		
+		<?php $html[1] = null; ?>
 
 		<?php endif;
 	
