@@ -564,7 +564,7 @@ jQuery( function player56s($) {
             return changed;
         }
         stop() {
-            if (typeof this.$jPlayer !== "undefined" && this.$jPlayer.jPlayer && typeof this.tracks[this.currentTrack] != "undefined") {
+            if (typeof this.$jPlayer !== "undefined" && this.$jPlayer.jPlayer) {
                 this.$jPlayer.jPlayer( "stop" );
                 this.$jPlayer.jPlayer("setMedia", {
                     mp3: '#'
@@ -579,7 +579,10 @@ jQuery( function player56s($) {
             this.$container.removeClass("player56s-status-playing");
         }
         pause() {
-            if (typeof this.$jPlayer != "undefined" && this.$jPlayer.jPlayer && typeof this.tracks[this.currentTrack] != "undefined") {
+            if (this.tracks[this.currentTrack] === undefined) {
+                this.currentTrack = 0;
+            }
+            if (typeof this.$jPlayer != "undefined" && this.$jPlayer.jPlayer && this.tracks[this.currentTrack] !== "undefined") {
                 $("#rs-item-" + this.tracks[this.currentTrack].postid + "").removeClass('playing');
                 $("#play-now-id-" + this.tracks[this.currentTrack].postid + "").removeClass('onplay');
                 $("#add-play-now-id-" + this.tracks[this.currentTrack].postid + "").removeClass('onplay');
@@ -602,7 +605,10 @@ jQuery( function player56s($) {
             this.$container.addClass("player56s-status-playing");
         }
         play() {
-            if (typeof this.$jPlayer != "undefined" && this.$jPlayer.jPlayer && typeof this.tracks[this.currentTrack] != "undefined") {
+            if (this.tracks[this.currentTrack] === undefined) {
+                this.currentTrack = 0;
+            }
+            if (typeof this.$jPlayer != "undefined" && this.$jPlayer.jPlayer && this.tracks[this.currentTrack] !== "undefined") {
                 $("#rs-item-" + this.tracks[this.currentTrack].postid + "").addClass("playing");
                 $("#play-now-id-" + this.tracks[this.currentTrack].postid + "").addClass('onplay');
                 $("#add-play-now-id-" + this.tracks[this.currentTrack].postid + "").addClass('onplay');
@@ -619,7 +625,10 @@ jQuery( function player56s($) {
             return this;
         }
         playNow(index) {
-            if (typeof this.$jPlayer !== "undefined" && this.$jPlayer.jPlayer && typeof this.tracks[this.currentTrack] != undefined) {
+            if (this.tracks[this.currentTrack] === undefined) {
+                this.currentTrack = 0;
+            }
+            if (typeof this.$jPlayer !== "undefined" && this.$jPlayer.jPlayer && this.tracks[this.currentTrack] !== undefined) {
                 var status = null;
                 if (this.$container.hasClass("status-onpause")) {
                     status = 0;
@@ -647,8 +656,6 @@ jQuery( function player56s($) {
                     var track = this.tracks[this.currentTrack];
                 }
                 $("#player56s-currenttrack").html(track.postid);
-
-                this.sleep(250);
                 
                 this.$jPlayer.jPlayer("setMedia", {
                     mp3: track.audiofileLink
@@ -676,7 +683,10 @@ jQuery( function player56s($) {
             if (to_next === undefined) {
                 to_next = true;
             } // next by default
-            if (typeof this.$jPlayer !== "undefined" && this.$jPlayer.jPlayer && this.tracks.length >= 1 && typeof this.tracks[this.currentTrack] != undefined ) {
+            if (this.tracks[this.currentTrack] === undefined) {
+                this.currentTrack = 0;
+            }
+            if (typeof this.$jPlayer !== "undefined" && this.$jPlayer.jPlayer && this.tracks.length >= 1 && this.tracks[this.currentTrack] !== undefined ) {
                 var timelinedone = $(".player56s-timeline-done").width() / $('.player56s-timeline-done').parent().width() * 100;
                 var status = null;
                 if (this.$container.hasClass("status-onpause")) {
@@ -703,24 +713,18 @@ jQuery( function player56s($) {
                 } else {
                     if (to_next && (this.currentTrack === (this.tracks.length - 1))) {
                         this.currentTrack = 0;
-                    }
-                    else if (!to_next && this.currentTrack === 0) {
-                        this.currentTrack = this.tracks.length + 1;
-                    }
-                    else {
-                        this.currentTrack = this.currentTrack + (to_next ? 1 : -1);
+                    } else if (!to_next && this.currentTrack === 0) {
+                        this.currentTrack = this.tracks.length - 1;
+                    } else if (to_next) {
+                        this.currentTrack = this.currentTrack + 1;
+                    } else if (!to_next) {
+                        this.currentTrack = this.currentTrack - 1;
                     }
                 }
 
-                if (this.tracks[this.currentTrack] === undefined) {
-                    this.currentTrack = 0;
-                }
-                
                 var track = this.tracks[this.currentTrack];
                 
                 $("#player56s-currenttrack").html(track.postid);
-
-                this.sleep(250);
 
                 this.$jPlayer.jPlayer("setMedia", {
                     mp3: track.audiofileLink
@@ -741,6 +745,7 @@ jQuery( function player56s($) {
 
                 checkAndRunTicker(this);
                 checkAndRunTickerAlbum(this);
+
             }
         }
         onPause() {

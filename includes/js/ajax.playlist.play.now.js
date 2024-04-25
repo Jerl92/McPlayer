@@ -26,41 +26,37 @@ function play_now($) {
                     dataType: 'JSON',
                     success: function(data) {
 
-                    if ( ( $this.hasClass('onplay') || $this.hasClass('onpause') ) && $this.hasClass('saved') ) {
-
-                        ajax_playlist_play_now($, object_id);
-
-                        ajax_playlist_update_sidebar($, object_id);
-                    
-                    }
-
-                     if( ! $this.hasClass('saved') ) {
+                     if(!$this.hasClass('saved') ) {
 
                         if(!$('#rs-item-'+object_id).length){
                             ajax_playlist_add_sidebar($, object_id);
                         }
 
+                        $this.addClass('saved');
+
+                        $this.attr('data-original-title', 'Pause');
+
                         $('#postid-'+object_id+' a').addClass('saved');
 
                         $('#postid-'+object_id+' a').attr('data-original-title', 'Remove');
+
+                        $('add-play-now-id-'+object_id+' a').addClass('saved');
+
+                        $('add-play-now-id-'+object_id+' a').attr('data-original-title', 'Pause');
                         
                         $('#album-class-artist-list-id-'+object_id+' a').addClass('saved');
 
-                        $('#album-class-artist-list-id-'+object_id+' a').attr('data-original-title', 'Remove');
-
-                        ajax_playlist_play_now($, object_id);
-
-                        ajax_playlist_update_sidebar($, object_id);
+                        $('#album-class-artist-list-id-'+object_id+' a').attr('data-original-title', 'Pause');
 
                         $('.playlist_matches_count').html(null);
                         
 						$('.playlist_matches_count').html(data.count);		
 
-                        $this.attr('data-title', 'Pause');
-
                     }
 
-                    play_now($);
+                    ajax_playlist_play_now($, object_id);
+
+                    ajax_playlist_update_sidebar($, object_id);
 
                 },
                 error: function(error) {
@@ -90,7 +86,6 @@ function play_pause($) {
             
             ajax_playlist_update_sidebar($, object_id);
 
-            play_pause($);
         });
     }
 }

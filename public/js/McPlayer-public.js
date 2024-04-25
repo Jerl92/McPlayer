@@ -1,10 +1,13 @@
 
 
 jQuery(document).ready(function() {      
+    var header = $("#wpadminbar").height();
+
     jQuery('#btn_player_toggle').click(function() {
         if(jQuery('#wrap-player').hasClass('full-player')){
             jQuery('#wrap-player').removeClass('full-player');
             jQuery('.player_widget_name_up_btn').css('display', 'block');
+            jQuery('#wrap-player').css('top', 'auto');
         } else {
             jQuery('#player56s-ui-zone').addClass('hide-player');
             jQuery('.player_widget_name_hide_btn').css('display', 'none');
@@ -20,10 +23,14 @@ jQuery(document).ready(function() {
             jQuery('#page').css('padding-bottom', jQuery('#wrap-player').height() +'px');
             jQuery('.shuffle_player_toggle').css('display', 'block');
         } else {
+            if(header){
+                jQuery('#wrap-player').css('top', '47.5px');
+            } else {
+                //
+            }
             jQuery('#wrap-player').addClass('full-player');
             jQuery('.player_widget_name_up_btn').css('display', 'none');
         }
-
     });
 });
 
