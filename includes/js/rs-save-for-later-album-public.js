@@ -1,5 +1,8 @@
 function rs_save_for_later_album($) {
 
+	$.fn.ready();
+	'use strict';
+
 	if($('.rs-save-for-later-button-album').length) {
 		$('.rs-save-for-later-button-album[data-toggle="tooltip"]').tooltip();
 		$('.rs-save-for-later-button-album').on('click', function(event) {
@@ -31,8 +34,6 @@ function rs_save_for_later_album($) {
 						});     
 						$this.attr('data-title', 'Add to Playlist');
 						$this.attr('data-original-title', 'Add to Playlist');
-						$('.playlist_matches_count').html(null);
-						$('.playlist_matches_count').html(data.count);
 						ajax_playlist_remove_album($, data);
 					} else {	
 						$this.addClass('saved');
@@ -44,8 +45,6 @@ function rs_save_for_later_album($) {
                         });     
 						$this.attr('data-title', 'Remove');
 						$this.attr('data-original-title', 'Remove');
-						$('.playlist_matches_count').html(null);
-						$('.playlist_matches_count').html(data.count);
 						ajax_playlist_add_album($, data);
 					}
 				},

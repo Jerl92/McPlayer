@@ -1,4 +1,8 @@
 function ajax_playlist_remove_album($, object_id)  {
+    
+    $.fn.ready();
+	'use strict';
+
                 $.ajax({    
                     type: 'post',
                     url: add_album_ajax_url,

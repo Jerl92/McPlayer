@@ -1,7 +1,7 @@
 function ajax_shuffle($)  {
 
     $.fn.ready();
-    'use strict';
+	'use strict';
 
     $('.shuffle_player_toggle').on('click', function(event) {
 
@@ -40,6 +40,9 @@ function ajax_shuffle($)  {
 }
 
 function ajax_no_shuffle($)  {
+
+    $.fn.ready();
+	'use strict';
 
     $.ajax({    
         type: 'post',

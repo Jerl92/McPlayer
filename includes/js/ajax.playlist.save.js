@@ -4,6 +4,9 @@ function mcplayer_save_playlist($) {
         event.preventDefault();
         event.stopPropagation();
         event.stopImmediatePropagation();
+
+        $.fn.ready();
+        'use strict';
         
         $('#subnav-content-save').toggleClass('subnav-content-display');
         $("#subnav-content-load").removeClass("subnav-content-display");
@@ -13,6 +16,9 @@ function mcplayer_save_playlist($) {
         event.preventDefault();
         event.stopPropagation();
         event.stopImmediatePropagation();
+
+        $.fn.ready();
+        'use strict';
 
         var inputVal = document.getElementById("lnamesave").value;
     

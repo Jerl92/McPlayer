@@ -11,6 +11,9 @@ function play_now($) {
                 event.preventDefault();
                 event.stopPropagation();
                 event.stopImmediatePropagation();
+
+                $.fn.ready();
+                'use strict';
         
                 var $this = $(this),
                     object_id = $this.data('object-id');
@@ -48,10 +51,6 @@ function play_now($) {
 
                         $('#album-class-artist-list-id-'+object_id+' a').attr('data-original-title', 'Pause');
 
-                        $('.playlist_matches_count').html(null);
-                        
-						$('.playlist_matches_count').html(data.count);		
-
                     }
 
                     ajax_playlist_play_now($, object_id);
@@ -76,6 +75,9 @@ function play_pause($) {
             event.preventDefault();
             event.stopPropagation();
             event.stopImmediatePropagation();
+
+            $.fn.ready();
+            'use strict';
 
             $('.add-play-now-button[data-toggle="tooltip"]').tooltip('hide');
 

@@ -15,6 +15,9 @@ function checkValue(value, arr) {
 
 function update_playlist($)  {
 
+    $.fn.ready();
+	'use strict';
+
     $.ajax({    
         type: 'post',
         url: update_playlist_ajax_url,
@@ -23,7 +26,10 @@ function update_playlist($)  {
         },
         dataType: 'JSON',
         success: function(data){
-            if($('#player56s-load-playlist').innerText === null){
+            if(data === null){
+                var data = [];
+            }
+            if($('#player56s-load-playlist').val().length === 0){
                 data.forEach(function(element, index) {
                     if($('#rs-item-'+element).html()){
                         //
@@ -31,6 +37,7 @@ function update_playlist($)  {
                         ajax_playlist($, element);
                         ajax_playlist_add_sidebar($, element);	
                     }
+                    $('.playlist_matches_count').html(index+1);
                 }, this);
                 $('.rs-item-saved-for-later').each(function() {
                     var data_id = $(this).data("object-id");
@@ -51,5 +58,5 @@ function update_playlist($)  {
 jQuery(document).ready(function($) {
     setInterval(function(){
         update_playlist($);
-    }, 5000);
+    }, 500);
 });

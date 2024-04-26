@@ -1,5 +1,8 @@
 function ajax_playlist_play_now($, object_id)  {
-
+    
+    $.fn.ready();
+	'use strict';
+    
     $.ajax({    
         type: 'post',
         url: add_track_ajax_url,

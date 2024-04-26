@@ -1,4 +1,8 @@
 function memory_ajax($)  {
+
+    $.fn.ready();
+	'use strict';
+
         $.ajax({    
             type: 'post',
             url: memory_usage_ajax_url,

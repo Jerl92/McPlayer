@@ -1,5 +1,8 @@
 function rs_save_for_later($) {
 
+	$.fn.ready();
+	'use strict';
+
 	if($('.rs-save-for-later-button').length) {
 		$('.rs-save-for-later-button[data-toggle="tooltip"]').tooltip();
 		$('.rs-save-for-later-button').on('click', function(event) {
@@ -24,7 +27,6 @@ function rs_save_for_later($) {
 						$this.removeClass('saved');
 						$this.attr('data-title', 'Add to Playlist');
 						$this.attr('data-original-title', 'Add to Playlist');
-						$('.playlist_matches_count').html(null);
 						$('.playlist_matches_count').html(data.length);
 						ajax_playlist_remove_sidebar($, object_id);
 						ajax_playlist_remove_track($, object_id);
@@ -32,12 +34,10 @@ function rs_save_for_later($) {
 						$this.addClass('saved');
 						$this.attr('data-title', 'Remove');
 						$this.attr('data-original-title', 'Remove');
-						$('.playlist_matches_count').html(null);
 						$('.playlist_matches_count').html(data.length);			
 						ajax_playlist($, object_id);
 						ajax_playlist_add_sidebar($, object_id);					
 					}
-					sidebarheight($);
 				},
 				error: function(error) {
 					console.log(error);
@@ -64,7 +64,7 @@ function rs_remove_all($) {
 				'action': 'save_for_later_remove_all'
 			},
 			success: function(data) {
-				$(".playlist_matches_count").html(0);
+				$(".playlist_matches_count").html('0');
 				$( ".entry-save-for-later a" ).each(function() {
 					$(this).removeClass("saved");
 				});		
@@ -81,7 +81,7 @@ function rs_remove_all($) {
 
 				ajax_playlist_flush_sidebar($);
 
-				$("#player56s-removetracks-all").html("1");  
+				$("#player56s-removetracks-all").html("1");
 				$(".player56s").player56s($);
 				$("#player56s-removetracks-all").html(null);
 

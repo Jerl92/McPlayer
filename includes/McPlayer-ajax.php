@@ -732,6 +732,16 @@ function load_saved_playlist($post) {
 
 	foreach ($posts as $post) {
 		$matches = get_post_meta($post->ID, 'rs_saved_for_later', true);
+		foreach($matches as $matche){
+			$the_post = get_post( implode($matche) );
+			if(!isset($post)){
+				$key = array_search($matche, $matches);
+				if (false !== $key) {
+					unset($matches[$key]);
+				}
+			}
+		}
+		update_post_meta($post->ID, 'rs_saved_for_later', $matches);
 		$matches_count = count($matches);
 		$html[] .= "<div class='playlist-load-loop' data-id='".$post->ID."'>".get_the_title($post->ID)."<span style='text-align: right;right: 30px !important;float: right;'>".$matches_count."</span></div>";
 	}
