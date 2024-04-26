@@ -23,18 +23,19 @@ function rs_save_for_later($) {
 					'action': 'save_unsave_for_later'
 				},
 				success: function(data) {
+					console.log(data);
 					if($this.hasClass('saved')) {
 						$this.removeClass('saved');
 						$this.attr('data-title', 'Add to Playlist');
 						$this.attr('data-original-title', 'Add to Playlist');
-						$('.playlist_matches_count').html(data.length);
+						$('.playlist_matches_count').html(data.count);
 						ajax_playlist_remove_sidebar($, object_id);
 						ajax_playlist_remove_track($, object_id);
 					} else {	
 						$this.addClass('saved');
 						$this.attr('data-title', 'Remove');
 						$this.attr('data-original-title', 'Remove');
-						$('.playlist_matches_count').html(data.length);			
+						$('.playlist_matches_count').html(data.count);			
 						ajax_playlist($, object_id);
 						ajax_playlist_add_sidebar($, object_id);					
 					}
@@ -64,7 +65,7 @@ function rs_remove_all($) {
 				'action': 'save_for_later_remove_all'
 			},
 			success: function(data) {
-				$(".playlist_matches_count").html('0');
+				$(".playlist_matches_count").html(0);
 				$( ".entry-save-for-later a" ).each(function() {
 					$(this).removeClass("saved");
 				});		
@@ -106,6 +107,7 @@ function rs_remove_all($) {
 						minWidth: mystickyside_min_width
 					});  
 				}
+
 			},
 			error: function(error) {
 				console.log(error);

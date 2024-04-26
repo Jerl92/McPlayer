@@ -526,8 +526,8 @@ add_action( 'wp_ajax_save_for_later_remove_all', 'save_for_later_remove_all' );
 * @version  1.0.6
 */
 function save_for_later_remove_all() {
-	delete_user_meta( user_if_login(), 'rs_saved_for_later' );
-	delete_user_meta( user_if_login(), 'rs_saved_for_later_album' );
+	delete_user_meta( user_if_login(), 'rs_saved_for_later', null);
+	delete_user_meta( user_if_login(), 'rs_saved_for_later_album', null);
 }
 	
 /* AJAX action callback */

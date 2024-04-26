@@ -17,7 +17,7 @@ function ajax_playlist_add_sidebar($, object_id)  {
             $("#rs-saved-for-later-nothing").css('padding', '0px');
 
             if ( data[0] !== '' ) {
-                if($("#rs-item-"+data[1]).length == 0){
+                if($("#rs-item-"+data[1]).length === 0){
                     $( "#rs-saved-for-later" ).prepend(data[0]);
                 }
 
@@ -33,7 +33,7 @@ function ajax_playlist_add_sidebar($, object_id)  {
                 
                 ajax_playlist_update_sidebar($);   
 
-                if ($.isFunction($.fn.theiaStickySidebar)){ 
+				if ($.isFunction($.fn.theiaStickySidebar)){ 
 					if ( jQuery.browser.mobile && !mystickyside_name.device_mobile) {
 						return false;
 					} else if ( !jQuery.browser.mobile && !mystickyside_name.device_desktop) {
@@ -65,17 +65,11 @@ function ajax_playlist_add_sidebar($, object_id)  {
 }
 
 function ajax_playlist_flush_sidebar($)  {
-
-    $.fn.ready();
-	'use strict';
     
     $("#rs-saved-for-later").html('<li id="rs-saved-for-later-nothing" style="text-align: center; padding:15px 0;">Nothing in the playlist</li>');
 }
 
 function  ajax_playlist_update_sidebar($) {
-
-    $.fn.ready();
-	'use strict';
     
     var currenttrack = $("#player56s-currenttrack")[0].innerText;
     
@@ -94,9 +88,6 @@ function  ajax_playlist_update_sidebar($) {
     
 
 function  ajax_playlist_remove_page_btn($, object_id)  {
-
-    $.fn.ready();
-	'use strict';
     
     $("#postid-"+object_id+" a").removeClass('saved');
 

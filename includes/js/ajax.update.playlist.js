@@ -34,10 +34,12 @@ function update_playlist($)  {
                     if($('#rs-item-'+element).html()){
                         //
                     } else {
-                        ajax_playlist($, element);
-                        ajax_playlist_add_sidebar($, element);	
+                        setTimeout(function() {
+                            ajax_playlist($, element);
+                            ajax_playlist_add_sidebar($, element);
+                            $('.playlist_matches_count').html(data.length);
+                        }, index*250);
                     }
-                    $('.playlist_matches_count').html(index+1);
                 }, this);
                 $('.rs-item-saved-for-later').each(function() {
                     var data_id = $(this).data("object-id");
@@ -56,7 +58,9 @@ function update_playlist($)  {
 }
 
 jQuery(document).ready(function($) {
-    setInterval(function(){
-        update_playlist($);
-    }, 500);
+    setTimeout(function() {
+        setInterval(function(){
+            update_playlist($);
+        }, 500);
+    }, 5000);
 });

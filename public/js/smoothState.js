@@ -2,13 +2,13 @@
 
 	$( function() {
 
-		var $body = $('html, body');
+		var $body = $('body');
 		var settings = { 
 			anchors: "a",
 			cache: false,
 			cacheLength: 0,
-			prefetch: false,
-			prefetchOn: 'mouseover touchstart',
+			prefetch: true,
+			prefetchOn: 'touchstart',
 			scroll: true,
 			locationHeader: "X-SmoothState-Location",
 			onStart: {

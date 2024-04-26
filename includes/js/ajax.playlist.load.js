@@ -1,12 +1,13 @@
 
 function mcplayer_load_saved_playlist($) {    
+
+    $.fn.ready();
+    'use strict';
+
     $('.rs-save-for-later-load-playlist').on('click', function(event) {
         event.preventDefault();
         event.stopPropagation();
         event.stopImmediatePropagation();
-
-        $.fn.ready();
-        'use strict';
 
         jQuery.ajax({
             type: 'post',
@@ -32,13 +33,14 @@ function mcplayer_load_saved_playlist($) {
 }
     
 function mcplayer_load_playlist($) { 
+
+    $.fn.ready();
+    'use strict';
+
     $('.playlist-load-loop').on('click', function(event) {
         event.preventDefault();
         event.stopPropagation();
         event.stopImmediatePropagation();
-
-        $.fn.ready();
-        'use strict';
 
         var $this = $(this),
         object_id = $this.data('id');
@@ -52,12 +54,12 @@ function mcplayer_load_playlist($) {
             },
             dataType: 'json',
             success: function(data){
-				$("#player56s-removetracks-all").html("1");  
-				$(".player56s").player56s($);
-				$("#player56s-removetracks-all").html(null);
+                $("#player56s-removetracks-all").html("1");
+                $(".player56s").player56s($);
+                $("#player56s-removetracks-all").html(null);
+                $('#player56s-load-playlist').html("1");
                 links = data.playlist.reverse();
                 links.forEach(function(element, index) {
-                    $('#player56s-load-playlist').html('1');
                     setTimeout(function() {
                         ajax_playlist($, element);
                         ajax_playlist_add_playlist($, element);
@@ -73,29 +75,7 @@ function mcplayer_load_playlist($) {
                         if(index === index.length){
                             $('#player56s-load-playlist').html(null);
                         }
-                    }, index*250);
-
-                    if ($.isFunction($.fn.theiaStickySidebar)){ 
-                        if ( jQuery.browser.mobile && !mystickyside_name.device_mobile) {
-                            return false;
-                        } else if ( !jQuery.browser.mobile && !mystickyside_name.device_desktop) {
-                            return false;
-                        }
-                        var mysticky_sidebar_id = document.querySelector(mystickyside_name.mystickyside_string),
-                        mystickyside_content_id = (mystickyside_name.mystickyside_content_string),
-                        mystickyside_margin_top = parseInt(mystickyside_name.mystickyside_margin_top_string),
-                        mystickyside_margin_bot = parseInt(mystickyside_name.mystickyside_margin_bot_string),
-                        mystickyside_update_sidebar_height = Boolean(mystickyside_name.mystickyside_update_sidebar_height_string),
-                        mystickyside_min_width = parseInt(mystickyside_name.mystickyside_min_width_string);
-            
-                        $(mysticky_sidebar_id).theiaStickySidebar({
-                            containerSelector: mystickyside_content_id,
-                            additionalMarginTop: mystickyside_margin_top,
-                            additionalMarginBottom: mystickyside_margin_bot,
-                            updateSidebarHeight: mystickyside_update_sidebar_height,
-                            minWidth: mystickyside_min_width
-                        });  
-                    }
+                    }, index*500);
 
                 }, this);  
                 data.playlist_album.forEach(function(element) {
@@ -106,8 +86,8 @@ function mcplayer_load_playlist($) {
                             $(this).attr('data-original-title', 'Remove');
                         }
                     }); 
-                }, this);  
-
+                }, this);
+                
             },
             error: function(errorThrown){
                 console.log(errorThrown);
