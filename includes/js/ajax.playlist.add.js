@@ -23,3 +23,25 @@ function ajax_playlist($, object_id)  {
         });
 
 }
+
+function ajax_playlist_add_playlist($, element)  {
+
+    $.ajax({    
+        type: 'post',
+        url: add_track_playlist_ajax_url,
+        data: {
+            'object_id': element,
+            'action': 'add_track_playlist'
+        },
+        dataType: 'JSON',
+        success: function(data){
+
+            // console.log(data);
+            
+        },
+        error: function(errorThrown){
+            //error stuff here.text
+        }
+});
+
+}

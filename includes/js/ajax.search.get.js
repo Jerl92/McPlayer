@@ -123,7 +123,7 @@ jQuery(document).on('click', function (event) {
     }
 });
 
-$(document).on('keypress',function(event) {
+jQuery(document).on('keypress',function(event) {
     if(event.which == 13) {
         if($('#target').val() != ''){
             $( '.widget-mcplayer-search-button' ).click();

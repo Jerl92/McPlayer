@@ -51,50 +51,55 @@ function mcplayer_load_playlist($) {
 				$("#player56s-removetracks-all").html(null);
                 links = data.playlist.reverse();
                 links.forEach(function(element, index) {
-                    $('.rs-save-for-later-button').each(function(){
-                        if($(this).data('object-id') == element){
-                            $(this).addClass('saved');
-                            $(this).attr('data-title', 'Remove');
-                            $(this).attr('data-original-title', 'Remove');
-                        }
-                    });
+                    $('#player56s-load-playlist').html('1');
                     setTimeout(function() {
-                        $('.playlist_matches_count').html(null);
-                        $('.playlist_matches_count').html(index+1);
                         ajax_playlist($, element);
+                        ajax_playlist_add_playlist($, element);
                         ajax_playlist_add_sidebar($, element);
-                    }, index*100);
+                        $('.playlist_matches_count').html(index+1);
+
+                        $('.rs-save-for-later-button').each(function(){
+                            if($(this).data('object-id') == element){
+                                $(this).addClass('saved');
+                                $(this).attr('data-original-title', 'Remove');
+                            }
+                        });
+                    }, index*75);
+
+                    if ($.isFunction($.fn.theiaStickySidebar)){ 
+                        if ( jQuery.browser.mobile && !mystickyside_name.device_mobile) {
+                            return false;
+                        } else if ( !jQuery.browser.mobile && !mystickyside_name.device_desktop) {
+                            return false;
+                        }
+                        var mysticky_sidebar_id = document.querySelector(mystickyside_name.mystickyside_string),
+                        mystickyside_content_id = (mystickyside_name.mystickyside_content_string),
+                        mystickyside_margin_top = parseInt(mystickyside_name.mystickyside_margin_top_string),
+                        mystickyside_margin_bot = parseInt(mystickyside_name.mystickyside_margin_bot_string),
+                        mystickyside_update_sidebar_height = Boolean(mystickyside_name.mystickyside_update_sidebar_height_string),
+                        mystickyside_min_width = parseInt(mystickyside_name.mystickyside_min_width_string);
+            
+                        $(mysticky_sidebar_id).theiaStickySidebar({
+                            containerSelector: mystickyside_content_id,
+                            additionalMarginTop: mystickyside_margin_top,
+                            additionalMarginBottom: mystickyside_margin_bot,
+                            updateSidebarHeight: mystickyside_update_sidebar_height,
+                            minWidth: mystickyside_min_width
+                        });  
+                    }
+
                 }, this);  
                 data.playlist_album.forEach(function(element) {
                     $('.rs-save-for-later-button-album').each(function() {
                         var data_id = $(this).data("object-id");
                         if(data_id == element){
                             $(this).addClass('saved');
+                            $(this).attr('data-original-title', 'Remove');
                         }
                     }); 
                 }, this);  
 
-				if ($.isFunction($.fn.theiaStickySidebar)){ 
-					if ( jQuery.browser.mobile && !mystickyside_name.device_mobile) {
-						return false;
-					} else if ( !jQuery.browser.mobile && !mystickyside_name.device_desktop) {
-						return false;
-					}
-					var mysticky_sidebar_id = document.querySelector(mystickyside_name.mystickyside_string),
-					mystickyside_content_id = (mystickyside_name.mystickyside_content_string),
-					mystickyside_margin_top = parseInt(mystickyside_name.mystickyside_margin_top_string),
-					mystickyside_margin_bot = parseInt(mystickyside_name.mystickyside_margin_bot_string),
-					mystickyside_update_sidebar_height = Boolean(mystickyside_name.mystickyside_update_sidebar_height_string),
-					mystickyside_min_width = parseInt(mystickyside_name.mystickyside_min_width_string);
-		
-					$(mysticky_sidebar_id).theiaStickySidebar({
-						containerSelector: mystickyside_content_id,
-						additionalMarginTop: mystickyside_margin_top,
-						additionalMarginBottom: mystickyside_margin_bot,
-						updateSidebarHeight: mystickyside_update_sidebar_height,
-						minWidth: mystickyside_min_width
-					});  
-				}
+                $('#player56s-load-playlist').html(null);
 
             },
             error: function(errorThrown){

@@ -226,23 +226,7 @@ function shuffle(arra1) {
     return arra1;
 }
 
-function array_move(arr, old_index, new_index) {
-    if (new_index >= arr.length) {
-        var k = new_index - arr.length + 1;
-        while (k--) {
-            arr.push(undefined);
-        }
-    }
-    arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
-    return arr; // for testing
-};
-
-function generateRandom(max) { // min and max included 
-    var min = 1;
-    return Math.floor(Math.random() * (max - min + 1) + min)
-}
-
-jQuery( function player56s($) { 
+jQuery( function player56s($) {
     var Clock = { 
         totalSeconds: 0, 
         start: function () { 
@@ -957,8 +941,8 @@ jQuery( function player56s($) {
             var Player56sSeek = self.getCookie("Player56sSeek");
             if(Player56sCurrentTrack && Player56sSeek){
                 var Refersh = setInterval(function(){
-                    var player56scurrenttrack = $("#player56s-currenttrack");
-                    var player56scurrentseek = $("#player56s-seek-current-percent");
+                    var player56scurrenttrack = jQuery("#player56s-currenttrack");
+                    var player56scurrentseek = jQuery("#player56s-seek-current-percent");
                     self.tracks.forEach(function(element, index) {
                         if(parseInt(element.postid) === parseInt(Player56sCurrentTrack)){
                             self.playNow(parseInt(index));

@@ -1,7 +1,7 @@
 
 
 jQuery(document).ready(function() {      
-    var header = $("#wpadminbar").height();
+    var header = jQuery("#wpadminbar").height();
 
     jQuery('#btn_player_toggle').click(function() {
         if(jQuery('#wrap-player').hasClass('full-player')){
@@ -110,7 +110,7 @@ function sidebarheight() {
             jQuery('#primary').height(windowheight-285);
             jQuery('#secondary').height(windowheight-285);
         }
-        if($('#hwm-area')){
+        if(jQuery('#hwm-area')){
             jQuery('#primary').css('height', '100%');
         }
     } else {
@@ -143,7 +143,7 @@ function setCookie(c_name, value, exdays) {
     document.cookie = c_name + "=" + c_value;
 }
 
-$( window ).bind('beforeunload', function(){
+jQuery( window ).bind('beforeunload', function(){
     var player56scurrenttrack = $("#player56s-currenttrack");
     setCookie("Player56sCurrentTrack", parseInt(player56scurrenttrack[0].innerText), 64);
     var player56scurrentseek = $("#player56s-seek-current-percent");

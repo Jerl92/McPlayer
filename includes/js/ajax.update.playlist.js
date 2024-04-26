@@ -23,21 +23,23 @@ function update_playlist($)  {
         },
         dataType: 'JSON',
         success: function(data){
-            data.forEach(function(element, index) {
-                if($('#rs-item-'+element).html()){
-                    //
-                } else {
-                    ajax_playlist($, element);
-                    ajax_playlist_add_sidebar($, element);	
-                }
-            }, this);
-            $('.rs-item-saved-for-later').each(function() {
-                var data_id = $(this).data("object-id");
-                if(checkValue(data_id, data) === 0) {
-                    ajax_playlist_remove_sidebar($, data_id);
-                    ajax_playlist_remove_track($, data_id);
-                }
-            }, this);
+            if($('#player56s-load-playlist').innerText === null){
+                data.forEach(function(element, index) {
+                    if($('#rs-item-'+element).html()){
+                        //
+                    } else {
+                        ajax_playlist($, element);
+                        ajax_playlist_add_sidebar($, element);	
+                    }
+                }, this);
+                $('.rs-item-saved-for-later').each(function() {
+                    var data_id = $(this).data("object-id");
+                    if(checkValue(data_id, data) === 0) {
+                        ajax_playlist_remove_sidebar($, data_id);
+                        ajax_playlist_remove_track($, data_id);
+                    }
+                }, this);
+            }
         },
         error: function(errorThrown){
             //error stuff here.text
@@ -49,5 +51,5 @@ function update_playlist($)  {
 jQuery(document).ready(function($) {
     setInterval(function(){
         update_playlist($);
-    }, 2500);
+    }, 5000);
 });

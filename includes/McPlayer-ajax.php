@@ -32,6 +32,11 @@ function wp_playlist_ajax_scripts() {
 	wp_localize_script( 'wp-playlist-ajax-add-track-scripts', 'add_track_ajax_url', admin_url( 'admin-ajax.php' ) );
 	wp_enqueue_script( 'wp-playlist-ajax-add-track-scripts' );
 
+	/* AJAX add track to playlist */
+	wp_register_script( 'wp-playlist-ajax-add-track-playlist-scripts', $url . "js/ajax.playlist.add.js", array( 'jquery' ), '1.0.0', true );
+	wp_localize_script( 'wp-playlist-ajax-add-track-playlist-scripts', 'add_track_playlist_ajax_url', admin_url( 'admin-ajax.php' ) );
+	wp_enqueue_script( 'wp-playlist-ajax-add-track-playlist-scripts' );
+
 	/* Ajax remove track from playlist */
 	wp_register_script( 'wp-playlist-ajax-remove-track-scripts', $url . "js/ajax.playlist.remove.js", array( 'jquery' ), '1.0.0', true );
 	wp_localize_script( 'wp-playlist-ajax-remove-track-scripts', 'remove_track_ajax_url', admin_url( 'admin-ajax.php' ) );
@@ -681,17 +686,34 @@ function load_playlist($post) {
 	}
 	update_user_meta( user_if_login(), 'rs_saved_for_later_album', $matches_albums );
 
-	if ( empty( $matches ) ) {
-		$matches = array();
-	}
-	update_user_meta( user_if_login(), 'rs_saved_for_later', $matches );
-
 	$return = array(
 		'playlist'   => $matches,
 		'playlist_album'   => $matches_albums
 	);
 
 	return wp_send_json ( $return );
+}
+
+/* AJAX action callback */
+add_action( 'wp_ajax_add_track_playlist', 'add_track_playlist' );
+add_action( 'wp_ajax_nopriv_add_track_playlist', 'add_track_playlist' );
+
+function add_track_playlist($post) {
+
+	$object_id = $_POST['object_id'];
+
+	$matches = get_user_meta( user_if_login(), 'rs_saved_for_later', true);
+
+
+	if ( empty( $matches ) ) {
+		$matches = array();
+	}
+
+	array_unshift($matches, $object_id);
+
+	update_user_meta( user_if_login(), 'rs_saved_for_later', $matches );
+
+	return wp_send_json ( $matches );
 }
 
 /* AJAX action callback */

@@ -20,10 +20,10 @@ require_once 'config.php';
         $start  = 0;               // Start byte
         $end    = $size - 1;       // End byte
         
-        header("Content-Disposition: attachment; filename=$fileName");
-        header('Content-type: audio/mpeg3');
-        header("Accept-Ranges: 0-$length");
         if (isset($_SERVER['HTTP_RANGE'])) {
+            header("Content-Disposition: attachment; filename=$fileName");
+            header('Content-type: audio/mpeg3');
+            header("Accept-Ranges: 0-$length");
         
             $c_start = $start;
             $c_end   = $end;
@@ -52,22 +52,23 @@ require_once 'config.php';
             $length = $end - $start + 1;
             fseek($fp, $start);
             header('HTTP/1.1 206 Partial Content');
-        }
-        header("Content-Range: bytes $start-$end/$size");
-        header ('Content-Length:'. $length);
+            header("Content-Range: bytes $start-$end/$size");
+            header ('Content-Length:'. $length);
         
         
-        $buffer = 1024 * 2;
-        while(!feof($fp) && ($p = ftell($fp)) <= $end) {
-        
-            if ($p + $buffer > $end) {
-                $buffer = $end - $p + 1;
+            $buffer = 1024 * 2;
+            while(!feof($fp) && ($p = ftell($fp)) <= $end) {
+            
+                if ($p + $buffer > $end) {
+                    $buffer = $end - $p + 1;
+                }
+                set_time_limit(5);
+                echo fread($fp, $buffer);
+                flush();
             }
-            set_time_limit(5);
-            echo fread($fp, $buffer);
-            flush();
+            
+            fclose($fp);
+
         }
-        
-        fclose($fp);
     }
 ?>

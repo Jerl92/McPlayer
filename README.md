@@ -42,6 +42,9 @@ https://WordPress.org/plugins/categories-images/</br>
 This plugin is needed if you want the scroll bar to be sticky</br>
 https://wordpress.org/plugins/mystickysidebar/</br>
 
+This plugin is needed to avoid jQuery error</br>
+https://fr-ca.wordpress.org/plugins/jquery-updater/</br>
+
 ## Installation
 This plugin have been designed on:</br>
     -   Ubuntu Sever</br>
