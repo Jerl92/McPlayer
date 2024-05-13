@@ -92,11 +92,11 @@ function sleep(milliseconds) {
 }
 
 var interval;
-jQuery(document).ready(function(){
-    interval = setInterval(function(){sidebarheight();}, 250);
+jQuery(document).ready(function($){
+    interval = setInterval(function($){sidebarheight($);}, 250);
 });
 
-function sidebarheight() {
+function sidebarheight($) {
     var windowwidth = jQuery(window).width();
     var windowheight = jQuery(window).height();
     var primaryheight = jQuery('#primary').height();

@@ -1,9 +1,6 @@
 
 function current_album($)  {
 
-    $.fn.ready();
-	'use strict';
-
     $.ajax({    
         type: 'post',
         url: current_album_ajax_url,

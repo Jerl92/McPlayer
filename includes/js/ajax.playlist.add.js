@@ -1,8 +1,5 @@
 function ajax_playlist($, object_id)  {
 
-    $.fn.ready();
-	'use strict';
-
             $.ajax({    
                 type: 'post',
                 url: add_track_ajax_url,
@@ -28,9 +25,6 @@ function ajax_playlist($, object_id)  {
 }
 
 function ajax_playlist_add_playlist($, element)  {
-
-    $.fn.ready();
-	'use strict';
 
     $.ajax({    
         type: 'post',

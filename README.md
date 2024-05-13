@@ -47,7 +47,7 @@ https://fr-ca.wordpress.org/plugins/jquery-updater/</br>
 
 ## Installation
 This plugin have been designed on:</br>
-    -   Ubuntu Sever</br>
+    -   Ubuntu Server</br>
     -   NGINX</br>
     -   PHP 7.4</br>
 

@@ -1,8 +1,5 @@
 function count_playlist($, currentTrack) {
 
-    $.fn.ready();
-	'use strict';
-
     $.ajax({    
         type: 'post',
         url: count_playlist_ajax_url,

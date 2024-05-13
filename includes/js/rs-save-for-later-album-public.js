@@ -1,8 +1,5 @@
 function rs_save_for_later_album($) {
-
-	$.fn.ready();
-	'use strict';
-
+	
 	if($('.rs-save-for-later-button-album').length) {
 		$('.rs-save-for-later-button-album[data-toggle="tooltip"]').tooltip();
 		$('.rs-save-for-later-button-album').on('click', function(event) {

@@ -1,9 +1,6 @@
 
 function play_now($) {                  
 
-         /**
-         * Save/Unsave for Later
-         */
         if($('.add-play-now-button').length) {
             $('.add-play-now-button[data-toggle="tooltip"]').tooltip();
     
@@ -11,9 +8,6 @@ function play_now($) {
                 event.preventDefault();
                 event.stopPropagation();
                 event.stopImmediatePropagation();
-
-                $.fn.ready();
-                'use strict';
         
                 var $this = $(this),
                     object_id = $this.data('object-id');
@@ -75,9 +69,6 @@ function play_pause($) {
             event.preventDefault();
             event.stopPropagation();
             event.stopImmediatePropagation();
-
-            $.fn.ready();
-            'use strict';
 
             $('.add-play-now-button[data-toggle="tooltip"]').tooltip('hide');
 

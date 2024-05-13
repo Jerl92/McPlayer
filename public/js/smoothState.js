@@ -2,7 +2,7 @@
 
 	$( function() {
 
-		var $body = $('body');
+		var $body = $('html');
 		var settings = { 
 			anchors: "a",
 			cache: false,
@@ -54,6 +54,7 @@
 					// Trigger load functions
 					$(document).ready();
                 	$(window).trigger('load');
+					
 				}
 		    },
 			onAfter: function( $container , $newcontainer ) {
@@ -103,12 +104,9 @@
 				} else {
 					clearInterval(interval_hw);
 				}
-				
-				interval = setInterval(function(){sidebarheight();},250);
 
-				// setInterval(function(){update_playlist($);},5000);
+				interval = setInterval(function(){sidebarheight($);},250);
 
-				
 				if ($.isFunction($.fn.theiaStickySidebar)){ 
 					if ( jQuery.browser.mobile && !mystickyside_name.device_mobile) {
 						return false;

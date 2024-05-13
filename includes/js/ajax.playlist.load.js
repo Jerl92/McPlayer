@@ -1,9 +1,6 @@
 
 function mcplayer_load_saved_playlist($) {    
 
-    $.fn.ready();
-    'use strict';
-
     $('.rs-save-for-later-load-playlist').on('click', function(event) {
         event.preventDefault();
         event.stopPropagation();
@@ -56,9 +53,6 @@ function mcplayer_load_saved_playlist($) {
 }
     
 function mcplayer_load_playlist($) { 
-
-    $.fn.ready();
-    'use strict';
 
     $('.playlist-load-loop').on('click', function(event) {
         event.preventDefault();

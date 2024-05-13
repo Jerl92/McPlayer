@@ -6,9 +6,6 @@ function mcplayer_search_ajax($) {
         event.stopPropagation();
         event.stopImmediatePropagation();
 
-        $.fn.ready();
-        'use strict';
-
         jQuery.ajax({
             type: 'post',
             url: search_get_ajax_url,
@@ -61,9 +58,6 @@ function mcplayer_search_ajax($) {
         event.preventDefault();
         event.stopPropagation();
         event.stopImmediatePropagation();
-
-        $.fn.ready();
-        'use strict';
 
         if(inputVal != ''){
             jQuery.ajax({
