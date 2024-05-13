@@ -343,11 +343,33 @@ function save_unsave_for_later() {
 		$count = $count + 1;
 	}
 
+	$matches_update = get_user_meta( user_if_login(), 'rs_saved_for_later', true );
+
+	if ( ! empty( $matches_update ) ) {
+		$argv = array( 
+			'posts_per_page' => -1,	
+			'post_type' => 'music',
+			'post__in' => $matches_update,
+			'order'   => 'DESC',
+			'orderby'   => 'post__in',
+		);
+	} else {
+		$argv = null;
+	}
+
+	$posts = get_posts($argv);
+
+	$i = 0;
+	foreach($posts as $post){
+		$songs_length_calc_[$i++] = seconds_from_time(get_post_meta($post->ID, 'meta-box-track-length', true));
+	}
+
 	$return = array(
 		'status'  => user_if_login(),
 		'update'  => $saved,
 		'message' => $no_content,
-		'count'   => esc_attr( $count )
+		'count'   => esc_attr( $count ),
+		'length'  => time_from_seconds(array_sum($songs_length_calc_))
 	);
 
 	return wp_send_json( $return );
@@ -681,9 +703,29 @@ function load_playlist($post) {
 	}
 	update_user_meta( user_if_login(), 'rs_saved_for_later_album', $matches_albums );
 
+	if ( ! empty( $matches ) ) {
+		$argv = array( 
+			'posts_per_page' => -1,	
+			'post_type' => 'music',
+			'post__in' => $matches,
+			'order'   => 'DESC',
+			'orderby'   => 'post__in',
+		);
+	} else {
+		$argv = null;
+	}
+
+	$posts = get_posts($argv);
+
+	$i = 0;
+	foreach($posts as $post){
+		$songs_length_calc[$i++] = seconds_from_time(get_post_meta($post->ID, 'meta-box-track-length', true));
+	}
+
 	$return = array(
 		'playlist'   => $matches,
-		'playlist_album'   => $matches_albums
+		'playlist_album'   => $matches_albums,
+		'length' => time_from_seconds(array_sum($songs_length_calc))
 	);
 
 	return wp_send_json ( $return );

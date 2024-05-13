@@ -32,9 +32,28 @@ class MCPlayer_bottom_playlist_widget extends WP_Widget {
 			$matches_count = '0';
 		}
 
+		if ( ! empty( $matches ) ) {
+			$argv = array( 
+				'posts_per_page' => -1,	
+				'post_type' => 'music',
+				'post__in' => $matches,
+				'order'   => 'DESC',
+				'orderby'   => 'post__in',
+			);
+		} else {
+			$argv = null;
+		}
+
+		$posts = get_posts($argv);
+
+		$i = 0;
+		foreach($posts as $post){
+			$songs_length_calc[$i++] = seconds_from_time(get_post_meta($post->ID, 'meta-box-track-length', true));
+		}
+
 		echo $args['before_widget'];
 		if ( ! empty( $title ) )
-		echo $args['before_title'] . $title . ' - <span class="playlist_matches_count">' . $matches_count . '</span>' . $args['after_title'];
+		echo $args['before_title'] . $title . ' - <span class="playlist_matches_count">' . $matches_count . '</span> - <span class="playlist_matches_length">' .  time_from_seconds(array_sum($songs_length_calc)) . '</span>' . $args['after_title'];
 		
 		if ( ! empty( $matches ) ) {
 			$args = array( 

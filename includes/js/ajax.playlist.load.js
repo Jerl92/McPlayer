@@ -88,7 +88,8 @@ function mcplayer_load_playlist($) {
                         ajax_playlist_add_playlist($, element);
                         ajax_playlist_add_sidebar($, element);
                         $('.playlist_matches_count').html(index+1);
-
+                        $(".playlist_matches_length").html(data.length);
+                        
                         $('.rs-save-for-later-button').each(function(){
                             if($(this).data('object-id') == element){
                                 $(this).addClass('saved');
