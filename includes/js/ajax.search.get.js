@@ -21,7 +21,7 @@ function mcplayer_search_ajax($) {
                 if(inputVal != '' && data != ''){
                     $("#widget-mcplayer-search-result").css("display","block");
                     $("#widget-mcplayer-search-result").css("position","absolute");
-                    $("#widget-mcplayer-search-result").css("z-index","999");
+                    $("#widget-mcplayer-search-result").css("z-index","99");
                     $("#widget-mcplayer-search-result").css("margin-top","15px");
                     $("#widget-mcplayer-search-result").css("border","0.05px solid #000");
                     $("#widget-mcplayer-search-result").css("background","#fff");
@@ -78,7 +78,7 @@ function mcplayer_search_ajax($) {
                     if(inputVal != '' && data != ''){
                         $("#widget-mcplayer-search-result").css("display","block");
                         $("#widget-mcplayer-search-result").css("position","absolute");
-                        $("#widget-mcplayer-search-result").css("z-index","999");
+                        $("#widget-mcplayer-search-result").css("z-index","99");
                         $("#widget-mcplayer-search-result").css("margin-top","15px");
                         $("#widget-mcplayer-search-result").css("border","0.05px solid #000");
                         $("#widget-mcplayer-search-result").css("background","#fff");

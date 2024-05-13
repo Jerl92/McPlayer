@@ -558,16 +558,17 @@ jQuery( function player56s($) {
             return this;
         }
         pseudoPause() {
+            $(document).trigger("player56s-play", this);
             this.$container.removeClass("status-playing");
             this.$container.addClass("status-onpause");
             this.$container.removeClass("player56s-status-playing");
+            $("#rs-item-" + this.tracks[this.currentTrack].postid + "").removeClass('playing');
         }
         pause() {
             if (this.tracks[this.currentTrack] === undefined) {
                 this.currentTrack = 0;
             }
             if (typeof this.$jPlayer != "undefined" && this.$jPlayer.jPlayer && this.tracks[this.currentTrack] !== "undefined") {
-                $("#rs-item-" + this.tracks[this.currentTrack].postid + "").removeClass('playing');
                 $("#play-now-id-" + this.tracks[this.currentTrack].postid + "").removeClass('onplay');
                 $("#add-play-now-id-" + this.tracks[this.currentTrack].postid + "").removeClass('onplay');
                 $("#play-now-id-" + this.tracks[this.currentTrack].postid + "").addClass('onpause');
@@ -587,13 +588,13 @@ jQuery( function player56s($) {
             this.$container.addClass("status-playing");
             this.$container.removeClass("status-onpause");
             this.$container.addClass("player56s-status-playing");
+            $("#rs-item-" + this.tracks[this.currentTrack].postid + "").addClass("playing");
         }
         play() {
             if (this.tracks[this.currentTrack] === undefined) {
                 this.currentTrack = 0;
             }
             if (typeof this.$jPlayer != "undefined" && this.$jPlayer.jPlayer && this.tracks[this.currentTrack] !== "undefined") {
-                $("#rs-item-" + this.tracks[this.currentTrack].postid + "").addClass("playing");
                 $("#play-now-id-" + this.tracks[this.currentTrack].postid + "").addClass('onplay');
                 $("#add-play-now-id-" + this.tracks[this.currentTrack].postid + "").addClass('onplay');
                 $("#play-now-id-" + this.tracks[this.currentTrack].postid + "").removeClass('onpause');
