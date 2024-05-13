@@ -792,7 +792,6 @@ add_action( 'wp_ajax_nopriv_count_play', 'count_play' );
 
 function count_play($post) {
 	$i = 0;
-	$x = 0;
 	$object_id = $_POST['object_id'];
 	$get_count_play = get_post_meta($object_id, 'count_play_loop', true);
 	$get_saved_played = get_user_meta( user_if_login(), 'rs_saved_played', true );
@@ -804,11 +803,11 @@ function count_play($post) {
 		$get_saved_played_array[$i] = array($strtodate, $object_id);
 		$i++;
 		foreach($get_saved_played as $get_saved_played_){
-			$get_saved_played_array[$x] = $get_saved_played_;
-			$x++;
+			$get_saved_played_array[$i] = $get_saved_played_;
+			$i++;
 		}
 	} else {
-		$get_saved_played_array[$x] = array($strtodate, $object_id);
+		$get_saved_played_array[$i] = array($strtodate, $object_id);
 	}
 
 	update_user_meta( user_if_login(), 'rs_saved_played', $get_saved_played_array );
@@ -842,7 +841,7 @@ function count_play($post) {
 	array_unshift($get_earn_play, $return);
 	update_post_meta( $object_id, 'earn_play_loop', $get_earn_play );
 
-	return wp_send_json ($get_earn_play);
+	return wp_send_json ($countplay);
 }
 
 // @see http://fr2.php.net/manual/en/function.mb-convert-encoding.php#103300
