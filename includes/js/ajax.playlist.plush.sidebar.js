@@ -16,7 +16,51 @@ function ajax_playlist_add_sidebar($, object_id)  {
             if ( data[0] !== null ) {
                 if($("#rs-item-"+data[1]).length === 0){
                     $( "#rs-saved-for-later" ).prepend(data[0]);
+
+                    rs_save_for_later($);
+                
+                    rs_save_for_later_album($);
+        
+                    play_pause($);
+                    
+                    play_now($);
+                    
+                    ajax_playlist_update_sidebar($);   
+                    
+                    tooltip($);
                 }
+                
+            }
+        
+        },
+        error: function(errorThrown){
+            //error stuff here
+        }
+    });
+
+}
+
+function ajax_playlist_add_sidebar_load($)  {
+
+    $.ajax({    
+        url: add_track_sidebar_ajax_url,
+        type: 'post',
+        data: {
+            'action': 'add_track_sidebar_load'
+        },
+        dataType: 'JSON',
+        success: function(data){
+
+            $("#rs-saved-for-later-nothing").empty();
+            $("#rs-saved-for-later-nothing").css('padding', '0px');
+
+            $('.playlist_matches_count').html(data[1]);
+            $('.playlist_matches_length').html(data[2]);
+
+            if ( data !== null ) {
+                $( "#rs-saved-for-later" ).empty();
+
+                $( "#rs-saved-for-later" ).append(data[0]);
 
                 rs_save_for_later($);
                 

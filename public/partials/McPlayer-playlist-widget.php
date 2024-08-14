@@ -26,6 +26,7 @@ class MCPlayer_bottom_playlist_widget extends WP_Widget {
 
 		$title = apply_filters( 'widget_title', $instance['title'] );
 		$matches = get_user_meta( user_if_login(), 'rs_saved_for_later', true );
+		$matches = array_filter($matches);
 		if ( ! empty( $matches ) ) {
 			$matches_count = count($matches);
 		} else {

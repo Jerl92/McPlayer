@@ -2,20 +2,20 @@
 
 	$( function() {
 
-		var $body = $('html');
+		var $body = $('body');
 		var settings = { 
 			anchors: "a",
-			cache: false,
+			cache: true,
 			cacheLength: 0,
 			prefetch: true,
 			prefetchOn: 'touchstart',
 			scroll: true,
 			locationHeader: "X-SmoothState-Location",
 			onStart: {
-				duration: 1000, // Duration of our animation
+				duration: 2500, // Duration of our animation
 				render: function ($container) {
 
-				// Remove your CSS animation reversing class
+					// Remove your CSS animation reversing class
 					$('body').removeClass('on-scroll');
 
 					// Add your CSS animation reversing class
@@ -29,15 +29,12 @@
 
 					$('.loader').css('display', 'table');
 
-					// Scroll user to the top, this is very important, transition may not work without this
-					$body.scrollTop(0);
-
 					// Restart your animation
 					// smoothState.restartCSSAnimations();
 				}
 	        },
 			onReady: {
-				duration: 1000,
+				duration: 2500,
 				render: function ($container, $newContent) {
 									
 					// Inject the new content
@@ -62,6 +59,10 @@
 				$('body').removeClass('no-scroll');
 
 				$('body').addClass('on-scroll');
+
+				ajax_playlist_add_sidebar_load($);
+
+				ajax_playlist_update_sidebar($);
 								
 				play_now($);
 
@@ -72,8 +73,6 @@
 				rs_save_for_later($);
 				
 				rs_save_for_later_album($);
-
-				ajax_playlist_update_sidebar($);
 
 				mcplayer_load_playlist($);
 				

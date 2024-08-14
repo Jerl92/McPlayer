@@ -24,14 +24,44 @@ function ajax_playlist($, object_id)  {
 
 }
 
-function ajax_playlist_add_playlist($, element)  {
+function ajax_playlist_add_playlist($)  {
+
+    $.ajax({    
+        type: 'post',
+        url: add_track_playlist_ajax_url,
+        data: {
+            'action': 'add_track_playlist'
+        },
+        dataType: 'JSON',
+        success: function(data){
+
+            data.forEach(function(element, index) {
+                $('.rs-save-for-later-button').each(function() {
+                    var $this = $(this),
+                    object_id = $this.data('object-id');
+                    if(object_id === element){
+                        $(this).addClass('saved');
+                        $(this).attr('data-original-title', 'Remove');
+                    }
+                });
+            }, this); 
+            
+        },
+        error: function(errorThrown){
+            //error stuff here.text
+        }
+});
+
+}
+
+function ajax_playlist_load_playlist($)  {
 
     $.ajax({    
         type: 'post',
         url: add_track_playlist_ajax_url,
         data: {
             'object_id': element,
-            'action': 'add_track_playlist'
+            'action': 'load_track_playlist'
         },
         dataType: 'JSON',
         success: function(data){

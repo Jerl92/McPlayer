@@ -20,7 +20,6 @@ function rs_save_for_later($) {
 					'action': 'save_unsave_for_later'
 				},
 				success: function(data) {
-					console.log(data);
 					if($this.hasClass('saved')) {
 						$this.removeClass('saved');
 						$this.attr('data-title', 'Add to Playlist');
