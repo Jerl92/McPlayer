@@ -24,6 +24,7 @@ function rs_save_for_later($) {
 						$this.removeClass('saved');
 						$this.attr('data-title', 'Add to Playlist');
 						$this.attr('data-original-title', 'Add to Playlist');
+						$('.genre_widget').html(data.genres);
 						$('.playlist_matches_count').html(data.count);
 						$('.playlist_matches_length').html(data.length);
 						ajax_playlist_remove_sidebar($, object_id);
@@ -32,6 +33,7 @@ function rs_save_for_later($) {
 						$this.addClass('saved');
 						$this.attr('data-title', 'Remove');
 						$this.attr('data-original-title', 'Remove');
+						$('.genre_widget').html(data.genres);
 						$('.playlist_matches_count').html(data.count);		
 						$('.playlist_matches_length').html(data.length);	
 						ajax_playlist($, object_id);

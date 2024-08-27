@@ -124,7 +124,7 @@ class MCPlayer_bottom_player_widget extends WP_Widget {
 		wp_reset_postdata();
 			
 		} else {
-			echo '<audio href="" class="player56s" rel="playlist" data-length="0" postid="0">Just another WordPress site || McPlayer || Nothing in the playlist || https://'. $_SERVER['SERVER_NAME'] .'/wp-content/plugins/McPlayer/public/css/blue-note.png</audio>';
+			echo '<audio href="#" class="player56s" rel="playlist" data-length="0" postid="0">Just another WordPress site || McPlayer || Nothing in the playlist || https://'. $_SERVER['SERVER_NAME'] .'/wp-content/plugins/McPlayer/public/css/blue-note.png</audio>';
 		}
 	
 		echo '</div>';

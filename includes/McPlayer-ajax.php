@@ -102,6 +102,11 @@ function wp_playlist_ajax_scripts() {
 	wp_localize_script( 'wp-ajax-current-album', 'current_album_ajax_url', admin_url( 'admin-ajax.php' ) );
 	wp_enqueue_script( 'wp-ajax-current-album' );
 
+	/* Get current genre of playlist */
+	wp_register_script( 'wp-ajax-current-genre', $url . "js/ajax.current.genre.js", array( 'jquery' ), '1.0.0', true );
+	wp_localize_script( 'wp-ajax-current-genre', 'current_genre_ajax_url', admin_url( 'admin-ajax.php' ) );
+	wp_enqueue_script( 'wp-ajax-current-genre' );
+
 }
 
 /* 3. AJAX CALLBACK
@@ -362,7 +367,7 @@ function add_track_sidebar_load($post) {
 		<?php $html[1] = $matchescount; ?>
 
 		<?php $html[2] = time_from_seconds(array_sum($songs_length_calc_));
-	
+
 	return wp_send_json ( $html );
 
 }
@@ -388,6 +393,7 @@ add_action( 'wp_ajax_save_unsave_for_later', 'save_unsave_for_later' );
 function save_unsave_for_later() {
 
 	$matches = get_user_meta( user_if_login(), 'rs_saved_for_later', true );
+	$matches = array_filter($matches);
 
 	if ( empty( $matches ) ) {
 		$matches = array();
@@ -405,8 +411,6 @@ function save_unsave_for_later() {
 		$saved = false;
 		array_unshift( $matches, $object_id );
 	}
-
-	$matches = array_filter($matches);
 
 	$count = count( $matches );
 
@@ -431,12 +435,41 @@ function save_unsave_for_later() {
 		$songs_length_calc_[$i++] = seconds_from_time(get_post_meta($post->ID, 'meta-box-track-length', true));
 	}
 
+	$x = 0;
+	foreach($posts as $the_query_post){
+		foreach ( get_the_terms( $the_query_post->ID, 'genre' ) as $tax ) {
+			$taxname[$x] = $tax->name;
+			$taxid[$x] = $tax->term_id;
+			$x++;
+		}
+	}
+
+	$taxname_count = array_count_values($taxname);
+	$taxid_count = array_count_values($taxid);
+
+	arsort($taxname_count);
+	arsort($taxid_count);
+
+	if ( ! empty( $matches ) ) {
+		for ($x = 0; $x <= 12; $x++) {
+			$value = get_term_link( key($taxid_count), 'genre' );
+			if(!is_wp_error( $value )){
+				$arraykey .= '<a href="'.get_term_link( intval(key($taxid_count)), 'genre' ).'">'.key($taxname_count).'</a>'.' ';
+				next($taxname_count);
+				next($taxid_count);
+			}
+		}
+	} else {
+		$arraykey = '<li style="text-align: center; padding:15px 0; list-style-type:none;">Nothing in the playlist</li>';
+	}
+
 	$return = array(
 		'status'  => user_if_login(),
 		'update'  => $saved,
 		'message' => $no_content,
 		'count'   => $count,
-		'length'  => time_from_seconds(array_sum($songs_length_calc_))
+		'length'  => time_from_seconds(array_sum($songs_length_calc_)),
+		'genres'  => $arraykey
 	);
 
 	return wp_send_json( $return );
@@ -772,6 +805,7 @@ function load_playlist($post) {
 	$object_id = $_POST['object_id'];
 
 	$matches = get_post_meta($object_id, 'rs_saved_for_later', true);
+	$matches = array_filter($matches);
 
 	if ( empty( $matches ) ) {
 		$matches = array();
@@ -779,6 +813,7 @@ function load_playlist($post) {
 	update_user_meta( user_if_login(), 'rs_saved_for_later', $matches );
 
 	$matches_albums = get_post_meta($object_id, 'rs_saved_for_later_album', true);
+	$matches_albums = array_filter($matches_albums);
 
 	if ( empty( $matches_albums ) ) {
 		$matches_albums = array();
@@ -804,10 +839,58 @@ function load_playlist($post) {
 		$songs_length_calc[$i++] = seconds_from_time(get_post_meta($post->ID, 'meta-box-track-length', true));
 	}
 
+	if ( ! empty( $matches ) ) {
+		$argv = array( 
+			'posts_per_page' => -1,	
+			'post_type' => 'music',
+			'post__in' => $matches,
+			'order'   => 'DESC',
+			'orderby'   => 'post__in',
+		);
+	} else {
+		$argv = null;
+	}
+
+	$posts = get_posts($argv);
+
+	$i = 0;
+	foreach($posts as $post){
+		$songs_length_calc_[$i++] = seconds_from_time(get_post_meta($post->ID, 'meta-box-track-length', true));
+	}
+
+	$x = 0;
+	foreach($posts as $the_query_post){
+		foreach ( get_the_terms( $the_query_post->ID, 'genre' ) as $tax ) {
+			$taxname[$x] = $tax->name;
+			$taxid[$x] = $tax->term_id;
+			$x++;
+		}
+	}
+
+	$taxname_count = array_count_values($taxname);
+	$taxid_count = array_count_values($taxid);
+
+	arsort($taxname_count);
+	arsort($taxid_count);
+
+	if ( ! empty( $matches ) ) {
+		for ($x = 0; $x <= 12; $x++) {
+			$value = get_term_link( key($taxid_count), 'genre' );
+			if(!is_wp_error( $value )){
+				$arraykey .= '<a href="'.get_term_link( intval(key($taxid_count)), 'genre' ).'">'.key($taxname_count).'</a>'.' ';
+				next($taxname_count);
+				next($taxid_count);
+			}
+		}
+	} else {
+		$arraykey = '<li style="text-align: center; padding:15px 0; list-style-type:none;">Nothing in the playlist</li>';
+	}
+
 	$return = array(
 		'playlist'   => $matches,
 		'playlist_album'   => $matches_albums,
-		'length' => time_from_seconds(array_sum($songs_length_calc))
+		'length' => time_from_seconds(array_sum($songs_length_calc)),
+		'genres' => $arraykey
 	);
 
 	return wp_send_json ( $return );
@@ -878,6 +961,62 @@ function load_saved_playlist($post) {
 		update_post_meta($post->ID, 'rs_saved_for_later', $matches);
 		$matches_count = count($matches);
 		$html[] .= "<div class='playlist-load-loop' data-id='".$post->ID."'>".get_the_title($post->ID)."<span style='text-align: right;right: 30px !important;float: right;'>".$matches_count."</span></div>";
+	}
+
+	return wp_send_json ( $html );
+}
+
+/* AJAX action callback */
+add_action( 'wp_ajax_load_genre_playlist', 'load_genre_playlist' );
+add_action( 'wp_ajax_nopriv_load_genre_playlist', 'load_genre_playlist' );
+
+function load_genre_playlist($post) {
+	
+	$matches = get_user_meta( user_if_login(), 'rs_saved_for_later', true );
+	$matches = array_filter($matches);
+	
+	if ( ! empty( $matches ) ) {
+		$args_ = array( 
+			'posts_per_page' => -1,	
+			'post_type' => 'music',
+			'post__in' => $matches,
+			'order'   => 'DESC',
+			'orderby'   => 'post__in',
+		);
+	} else {
+		$args_ = 0;
+	}
+	
+	$the_query_posts = get_posts( $args_ );
+
+	$x = 0;
+	foreach($the_query_posts as $the_query_post){
+		foreach ( get_the_terms( $the_query_post->ID, 'genre' ) as $tax ) {
+			$taxname[$x] = $tax->name;
+			$taxid[$x] = $tax->term_id;
+			$x++;
+		}
+	}
+
+	$taxname_count = array_count_values($taxname);
+	$taxid_count = array_count_values($taxid);
+
+	arsort($taxname_count);
+	arsort($taxid_count);
+
+	if ( ! empty( $matches ) ) {
+	echo '<div class="genre_widget">';
+		for ($x = 0; $x <= 12; $x++) {
+			$value = get_term_link( key($taxid_count), 'genre' );
+			if(!is_wp_error( $value )){
+				$html .= '<a href="'.get_term_link( intval(key($taxid_count)), 'genre' ).'">'.key($taxname_count).'</a>'.' ';
+				next($taxname_count);
+				next($taxid_count);
+			}
+		}
+	echo '</div>';
+	} else {
+		$html = '<li style="text-align: center; padding:15px 0; list-style-type:none;">Nothing in the playlist</li>';
 	}
 
 	return wp_send_json ( $html );

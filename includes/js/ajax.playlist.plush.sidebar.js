@@ -85,7 +85,8 @@ function ajax_playlist_add_sidebar_load($)  {
 }
 
 function ajax_playlist_flush_sidebar($)  {
-    
+
+    $('.genre_widget').html('<li style="text-align: center; padding:15px 0; list-style-type:none;">Nothing in the playlist</li>');
     $("#rs-saved-for-later").html('<li id="rs-saved-for-later-nothing" style="text-align: center; padding:15px 0;">Nothing in the playlist</li>');
 }
 

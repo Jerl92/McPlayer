@@ -22,6 +22,10 @@ class MCPlayer_bottom_playlist_widget extends WP_Widget {
 
 	}
 
+	function sort_cb($a, $b) {
+		return count($b) - count($a);
+	}
+
 	function widget( $args, $instance ) {
 
 		$title = apply_filters( 'widget_title', $instance['title'] );

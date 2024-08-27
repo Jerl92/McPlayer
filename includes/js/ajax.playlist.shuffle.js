@@ -23,7 +23,6 @@ function ajax_shuffle($)  {
                     $(".shuffle_player_toggle").css("box-shadow", "2.5px 2.5px 2.5px #000");
                     $(".player56s").player56s($);
                 }
-                // $("#player56s-shuffle").html(null);
 
             },
             error: function(errorThrown){
@@ -51,7 +50,6 @@ function ajax_no_shuffle($)  {
             $("#player56s-no-shuffle").html(data);
             $("#player56s-shuffle").html('0');
             $(".player56s").player56s($);  
-            //$("#player56s-shuffle").html(null);        
         },
         error: function(errorThrown){
             //error stuff here.text

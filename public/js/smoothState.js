@@ -60,15 +60,9 @@
 
 				$('body').addClass('on-scroll');
 
-				ajax_playlist_add_sidebar_load($);
+				$newcontainer;
 
-				ajax_playlist_update_sidebar($);
-								
-				play_now($);
-
-				play_pause($);
-
-				tooltip($);	
+				scrolltosecondary($);
                     
 				rs_save_for_later($);
 				
@@ -81,8 +75,6 @@
 				mcplayer_save_playlist($);
 
 				mcplayer_search_ajax($);
-
-				scrolltosecondary($);
 				
 				topmenucontainer($);
 
@@ -91,6 +83,16 @@
 				memory_ajax($);
 
 				current_album($);
+
+				ajax_playlist_add_sidebar_load($);
+
+				mcplayer_load_genre($);
+
+				play_now($);
+
+				play_pause($);
+				
+				tooltip($);	
 
 				var interval_hw;
 				hw_info = document.getElementById("hwm-area");

@@ -148,6 +148,8 @@ class Mcplayer {
 
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/partials/McPlayer-search-widget.php';
 
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/partials/McPlayer-genre-widget.php';
+
 		$this->loader = new Mcplayer_Loader();
 
 	}

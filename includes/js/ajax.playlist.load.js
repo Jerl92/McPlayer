@@ -59,6 +59,7 @@ function mcplayer_load_playlist($) {
                         ajax_playlist($, element);
                         ajax_playlist_add_playlist($, element);
                         ajax_playlist_add_sidebar($, element);
+                        $('.genre_widget').html(data.genres);
                         $('.playlist_matches_count').html(index+1);
                         $(".playlist_matches_length").html(data.length);
                         

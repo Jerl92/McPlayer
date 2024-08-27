@@ -155,6 +155,108 @@ add_shortcode('pre_order_products', 'woocommerce_get_pre_order_loop');
 /***************************************************************************/
 /******************** Short code to display single music *******************/
 
+function woocommerce_get_genres_loop($atts) {
+
+	$matches = get_user_meta( user_if_login(), 'rs_saved_for_later', true);
+
+	if ( ! empty( $matches ) ) {
+		$argv = array( 
+			'posts_per_page' => -1,	
+			'post_type' => 'music',
+			'post__in' => $matches,
+			'order'   => 'DESC',
+			'orderby'   => 'post__in',
+		);
+	} else {
+		$argv = null;
+	}
+
+	$posts = get_posts($argv);
+
+	foreach($posts as $the_query_post){
+		foreach ( get_the_terms( $the_query_post->ID, 'genre' ) as $tax ) {
+			$taxname[] = $tax->slug;
+		}
+	}
+
+	$taxname_count = array_count_values($taxname);
+
+	arsort($taxname_count);
+
+	$arraykey = array();
+
+	if ( ! empty( $matches ) ) {
+		$i = 0;
+		for ($x = 0; $x <= 12; $x++) {
+			$arraykey[$i] = key($taxname_count);
+			next($taxname_count);
+			$i++;
+		}
+	}
+
+	$atts = shortcode_atts(array(
+		'per_page' => '12',
+		'columns'  => '1',
+		'orderby'  => 'rand',
+		'order'    => 'rand'
+	), $atts);
+
+	$args = array(
+		'post_type' => 'music',
+		'orderby'    => $atts['orderby'],
+		'order'      => $atts['order'],
+		'columns'  => $atts['columns'],
+		'posts_per_page'  => $atts['per_page'],
+		'post__not_in'   => $matches,
+		'tax_query' => array(
+            array(
+                'taxonomy' => 'genre',
+                'field' => 'slug',
+                'terms' => $arraykey,
+            )
+        )
+	);
+
+	$loop = new WP_Query($args);
+	$columns = absint($args['columns']);
+	$woocommerce_loop['columns'] = $columns;
+
+	ob_start();
+
+	if ($loop->have_posts()) : ?>
+
+		<?php // do_action( "woocommerce_shortcode_before_featured_products_loop" ); 
+		?>
+
+		<?php // woocommerce_product_loop_start(); 
+		?>
+
+		<?php while ($loop->have_posts()) : $loop->the_post(); ?>
+
+			<?php get_template_part('template-parts/page-music-archive', get_post_format()); ?>
+
+		<?php endwhile; // end of the loop. 
+		?>
+
+		<?php // woocommerce_product_loop_end(); 
+		?>
+
+		<?php  // do_action( "woocommerce_shortcode_after_featured_products_loop" ); 
+		?>
+
+	<?php endif;
+
+	// woocommerce_reset_loop();
+	wp_reset_postdata();
+
+	return '<div class="columns-' . $columns . '">' . ob_get_clean() . '</div>';
+}
+add_shortcode('genres_products', 'woocommerce_get_genres_loop');
+
+/***************************************************************************/
+/***************************************************************************/
+/******************** Short code to display single music *******************/
+
 function woocommerce_get_already_played_loop($atts) {
 	
 	$blogusers = get_users();
