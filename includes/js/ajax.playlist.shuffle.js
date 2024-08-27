@@ -50,6 +50,7 @@ function ajax_no_shuffle($)  {
             $("#player56s-no-shuffle").html(data);
             $("#player56s-shuffle").html('0');
             $(".player56s").player56s($);  
+            $("#player56s-no-shuffle").empty();
         },
         error: function(errorThrown){
             //error stuff here.text

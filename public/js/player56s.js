@@ -404,8 +404,10 @@ jQuery( function player56s($) {
                         currentTrack = player56sInstance.tracks[player56sInstance.currentTrack];
                         player56sInstance.tracks.forEach(function(element_, index) {
                             player56sInstance.tracks.forEach(function(element, index_) {
-                                if ( playlist_no_shuffle[index_].innerHTML == player56sInstance.tracks[index].postid ) {                                 
-                                    tracks[index_] = player56sInstance.tracks[index];
+                                if (playlist_no_shuffle[index_].innerHTML !== undefined) {
+                                    if ( playlist_no_shuffle[index_].innerHTML == player56sInstance.tracks[index].postid ) {                                 
+                                        tracks[index_] = player56sInstance.tracks[index];
+                                    }
                                 }
                             });
                         });
