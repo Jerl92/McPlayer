@@ -404,8 +404,10 @@ jQuery( function player56s($) {
                         currentTrack = player56sInstance.tracks[player56sInstance.currentTrack];
                         player56sInstance.tracks.forEach(function(element_, index) {
                             player56sInstance.tracks.forEach(function(element, index_) {
-                                if ( playlist_no_shuffle[index_].innerHTML == player56sInstance.tracks[index].postid ) {                                 
-                                    tracks[index_] = player56sInstance.tracks[index];
+                                if (playlist_no_shuffle[index_] !== null) {
+                                    if ( playlist_no_shuffle[index_].innerHTML == player56sInstance.tracks[index].postid ) {                                 
+                                        tracks[index_] = player56sInstance.tracks[index];
+                                    }
                                 }
                             });
                         });
@@ -558,16 +560,15 @@ jQuery( function player56s($) {
             return this;
         }
         pseudoPause() {
-            $(document).trigger("player56s-play", this);
-            this.$container.removeClass("status-playing");
-            this.$container.addClass("status-onpause");
-            this.$container.removeClass("player56s-status-playing");
-            $("#rs-item-" + this.tracks[this.currentTrack].postid + "").removeClass('playing');
+            if (this.tracks[this.currentTrack] !== "undefined") {
+                $(document).trigger("player56s-play", this);
+                this.$container.removeClass("status-playing");
+                this.$container.addClass("status-onpause");
+                this.$container.removeClass("player56s-status-playing");
+                $("#rs-item-" + this.tracks[this.currentTrack].postid + "").removeClass('playing');
+            }
         }
         pause() {
-            if (this.tracks[this.currentTrack] === undefined) {
-                this.currentTrack = 0;
-            }
             if (typeof this.$jPlayer != "undefined" && this.$jPlayer.jPlayer && this.tracks[this.currentTrack] !== "undefined") {
                 $("#play-now-id-" + this.tracks[this.currentTrack].postid + "").removeClass('onplay');
                 $("#add-play-now-id-" + this.tracks[this.currentTrack].postid + "").removeClass('onplay');
@@ -584,16 +585,15 @@ jQuery( function player56s($) {
             return this;
         }
         pseudoPlay() {
-            $(document).trigger("player56s-pause", this);
-            this.$container.addClass("status-playing");
-            this.$container.removeClass("status-onpause");
-            this.$container.addClass("player56s-status-playing");
-            $("#rs-item-" + this.tracks[this.currentTrack].postid + "").addClass("playing");
+            if (this.tracks[this.currentTrack] !== "undefined") {
+                $(document).trigger("player56s-pause", this);
+                this.$container.addClass("status-playing");
+                this.$container.removeClass("status-onpause");
+                this.$container.addClass("player56s-status-playing");
+                $("#rs-item-" + this.tracks[this.currentTrack].postid + "").addClass("playing");
+            }
         }
         play() {
-            if (this.tracks[this.currentTrack] === undefined) {
-                this.currentTrack = 0;
-            }
             if (typeof this.$jPlayer != "undefined" && this.$jPlayer.jPlayer && this.tracks[this.currentTrack] !== "undefined") {
                 $("#play-now-id-" + this.tracks[this.currentTrack].postid + "").addClass('onplay');
                 $("#add-play-now-id-" + this.tracks[this.currentTrack].postid + "").addClass('onplay');

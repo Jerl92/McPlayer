@@ -8,9 +8,10 @@
 			cache: true,
 			cacheLength: 0,
 			prefetch: true,
-			prefetchOn: 'touchstart',
+			prefetchOn: 'aim',
 			scroll: true,
 			locationHeader: "X-SmoothState-Location",
+			allowFormCaching: false,
 			onStart: {
 				duration: 2500, // Duration of our animation
 				render: function ($container) {

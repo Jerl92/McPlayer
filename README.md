@@ -87,6 +87,9 @@ Show random song</br>
 Show alphabet and artist</br>
 [artist_get_shortcode]</br>
 </br>
+Show genres</br>
+[genre_get_shortcode]</br>
+</br>
 Show all the years of all album</br>
 [year_get_shortcode]</br>
 </br>
@@ -98,6 +101,9 @@ Show the most played songs</br>
 </br>
 Show the lasted played songs</br>
 [get_already_played per_page="10" columns="5" order="ASC" orderby="post__in"]</br>
+</br>
+Show suggested songs with the playlist songs genres</br>
+[genres_products per_page="50" columns="5" order="rand" orderby="rand"]</br>
 
 ## Screenshot
 <img style="max-width: 100%;" src="https://i.ibb.co/x7wRzmX/screencapture-192-168-2-110-artists-2024-02-19-11-26-22.png" />
@@ -113,6 +119,7 @@ Show the lasted played songs</br>
 <img style="max-width: 100%;" src="https://i.ibb.co/R6G5xTt/bulk-add-album.png" />
 
 ## Changelog
+2.0 - Add genre widget and shortcode to show suggested songs and fix various things.</br>
 1.8 - Add a earn count play, add playlist time length to title, various fix.</br>
 1.7 - Fix stuff in full album add to playlist and fix height of content to feel more like a webapp.</br>
 1.6 - Remove artist private page, remove other stuff.</br>
