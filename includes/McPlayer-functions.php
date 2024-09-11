@@ -238,4 +238,175 @@ function memory_usage() {
 	}
 	add_action( 'template_redirect', 'myprefix_redirect_attachment_page' );
 
+add_action( 'show_user_profile', 'nopio_admin_user_profile_category_select' );
+add_action( 'edit_user_profile', 'nopio_admin_user_profile_category_select' );
+
+function nopio_admin_user_profile_category_select( $user ) {
+	$taxonomy = get_taxonomy( USER_CATEGORY_NAME );
+
+	if ( !user_can( $user, 'artist' ) ) {
+		return;
+	}
+	?>
+	<table class="form-table">
+		<tr>
+			<th>
+				<label>Artist</label>
+			</th>
+			<td>
+				<select name="artist" id="artist[]">
+					<?php
+
+					$terms = get_terms("artist", "orderby=name&hide_empty=0");
+					$artist = get_user_meta( $user->id, '_artist_role_set', true );
+					echo $artist;
+					if ( !is_wp_error( $terms ) ) {
+						if ( current_user_can('artist') ) {
+							foreach ( $terms as $term ) {
+								if($artist == $term->term_id) {
+									echo "<option value='" . $term->term_id . "' selected='selected'>" . $term->name . "</option>";
+								}
+							}
+						} else {
+							foreach ( $terms as $term ) {
+								if($artist == $term->term_id) {
+									echo "<option value='" . $term->term_id . "' selected='selected'>" . $term->name . "</option>";
+								} else {
+									echo "<option value='" . $term->term_id . "'>" . $term->name . "</option>";
+								}
+							}
+						}
+					}
+
+					?>
+				</select>
+			</td>
+		</tr>
+	</table>
+	<?php
+}
+
+add_action( 'personal_options_update', 'nopio_admin_save_user_categories' );
+add_action( 'edit_user_profile_update', 'nopio_admin_save_user_categories' );
+
+function nopio_admin_save_user_categories( $user_id ) {
+	$user = get_userdata( $user_id );
+
+	$new_categories_ids = $_POST['artist'];
+
+	if( current_user_can( 'administrator' ) ) {
+		update_user_meta( $user_id, '_artist_role_set', $new_categories_ids );
+	}
+}
+
+/**
+ * Overwrite args of custom post type registered by plugin
+ */
+add_filter( 'register_post_type_args', 'change_capabilities_of_course_document' , 10, 2 );
+
+function change_capabilities_of_course_document( $args, $post_type ){
+
+ // Do not filter any other post type
+ if ( 'music' !== $post_type ) {
+
+     // Give other post_types their original arguments
+     return $args;
+
+ }
+
+// Change the capabilities of the "course_document" post_type
+$args['capabilities'] = array(
+	'edit_post'          => 'edit_music', 
+	'read_post'          => 'read_music', 
+	'delete_post'        => 'delete_music', 
+	'edit_posts'         => 'edit_musics', 
+	'publish_posts'      => 'publish_musics',       
+	'read_private_posts' => 'read_private_musics', 
+	'create_posts'       => 'edit_musics', 
+);
+
+  // Give the course_document post type it's arguments
+  return $args;
+
+}
+
+function kurse_role_caps() {
+	global $pagenow;
+	$artist = get_user_meta( get_current_user_id(), '_artist_role_set', true );
+	if ($pagenow == 'edit-tags.php' && is_admin() && $_GET['taxonomy'] == 'artist' && $_GET['tag_ID'] == null && $artist != null) {
+		if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')   
+			$url = "https://";   
+		else  
+			$url = "http://"; 
+
+		// Append the host(domain name, ip) to the URL.   
+		$url.= $_SERVER['HTTP_HOST'];   
+
+		$url.= "/wp-admin/term.php?taxonomy=artist&post_type=music&tag_ID=" . $artist;
+
+		header('Location: '.$url);
+	}
+}
+add_action('init', 'kurse_role_caps', 11);
+
+function my_media_article_category_query( $query ) {
+		$artist = get_user_meta( get_current_user_id(), '_artist_role_set', true );
+		if (is_admin() && $query->query["post_type"] == "music" && $artist != null){
+			$query->set( 'tax_query', array(
+				array (
+					'taxonomy' => 'artist',
+					'field' => 'id',
+					'terms' => array( $artist ),
+				)
+			) );
+		}
+}
+add_filter( 'pre_get_posts', 'my_media_article_category_query' );
+
+
+add_filter( 'ajax_query_attachments_args', 'role_external' );
+function role_external( $query ) {
+    $user_id = get_current_user_id();
+    if ( $user_id && current_user_can('artist') ) {
+        $query['author'] = $user_id;
+    }
+    return $query;
+}
+
+add_action('admin_init','rpt_add_role_caps',999);
+
+    function rpt_add_role_caps() {
+
+        // Add the roles you'd like to administer the custom post types
+        $roles = array('artist');
+
+        // Loop through each role and assign capabilities
+        foreach($roles as $the_role) {    
+             $role = get_role($the_role);               
+             $role->add_cap( 'read' );
+             $role->add_cap( 'read_music');
+             $role->add_cap( 'edit_music' );
+             $role->add_cap( 'edit_musics' );
+             $role->add_cap( 'edit_published_musics' );
+             $role->add_cap( 'publish_musics' );
+             $role->add_cap( 'delete_published_musics' );
+        }
+	}
+
+	add_action('admin_menu','rpt_remove_role_caps',999);
+    function rpt_remove_role_caps() {
+		if( !current_user_can( 'administrator' ) ):
+			remove_menu_page('edit.php'); // Posts
+			remove_menu_page('upload.php'); // Media
+			remove_menu_page('link-manager.php'); // Links
+			remove_menu_page('edit-comments.php'); // Comments
+			remove_menu_page('edit.php?post_type=page'); // Pages
+			remove_menu_page('plugins.php'); // Plugins
+			remove_menu_page('themes.php'); // Appearance
+			remove_menu_page('users.php'); // Users
+			remove_menu_page('tools.php'); // Tools
+			remove_menu_page('options-general.php'); // Settings
+		endif;
+	}
+
 ?>

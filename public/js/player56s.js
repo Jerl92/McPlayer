@@ -577,7 +577,6 @@ jQuery( function player56s($) {
                 if (this.isPlaying && this.tracks[this.currentTrack].postid != '0') {               
                     this.isPlaying = false;
                     this.waitForLoad = false;
-                    this.setVolume(0, 1);
                     this.$jPlayer.jPlayer("pause");
                     Clock.pause();
                 }
@@ -602,7 +601,6 @@ jQuery( function player56s($) {
                 if (!this.isPlaying && this.tracks[this.currentTrack].postid != '0') {
                     this.isPlayed = true;
                     this.waitForLoad = true;
-                    this.setVolume(1, 1);
                     this.$jPlayer.jPlayer("play");
                     Clock.resume();
                 }
@@ -810,9 +808,6 @@ jQuery( function player56s($) {
                     $("#player56s-currenttrack").html(self.tracks[self.currentTrack].postid);
 
                     self.$container.find(".player56s-button").on("click", function (event) {
-                        event.stopPropagation();
-                        event.preventDefault();
-                        event.stopImmediatePropagation();
                         if (!self.isPlaying && self.tracks[self.currentTrack].postid !== '0') {
                             self.pseudoPlay.call(self);
                             self.play.call(self);
@@ -822,9 +817,6 @@ jQuery( function player56s($) {
                         }
                     });
                     self.$container.find(".player56s-volume .player56s-vol-pin").on("click", function (event) {
-                        event.stopPropagation();
-                        event.preventDefault();
-                        event.stopImmediatePropagation();
                         var $pin = $(this);
                         var $pinsBefore = self.minimal ? $pin.prevAll() : $pin.nextAll();
                         var lvl = $pinsBefore.length;
@@ -837,27 +829,18 @@ jQuery( function player56s($) {
                         }
                     });
                     self.$container.find(".player56s-track-nav").on("click", function (event) {
-                        event.stopPropagation();
-                        event.preventDefault();
-                        event.stopImmediatePropagation();
                         self.switchTrack($(this).hasClass('player56s-track-next'));
                     });
                     self.$container.find(".player56s-timeline").on("mousedown." + uniqueID, function (event) {
                         if (event.which !== 1) {
                             return false;
                         }
-                        event.stopPropagation();
-                        event.preventDefault();
-                        event.stopImmediatePropagation();
                         self.isSeeking = true;
                         var $this = $(this), clickPoint = ((event.pageX - $this.offset().left) / $this.width()) * 100;
                         $(document).off("mouseup." + uniqueID).one("mouseup." + uniqueID, function () {
                             self.isSeeking = false;
                         });
                         $(document).off("mousemove." + uniqueID).on("mousemove." + uniqueID, function (event) {
-                            event.stopPropagation();
-                            event.preventDefault();
-                            event.stopImmediatePropagation();
                             if (!self.isSeeking) {
                                 return false;
                             }

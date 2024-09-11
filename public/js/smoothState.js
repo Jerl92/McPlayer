@@ -95,6 +95,8 @@
 				
 				tooltip($);	
 
+				topmenu($);
+
 				var interval_hw;
 				hw_info = document.getElementById("hwm-area");
 				if (hw_info) {					

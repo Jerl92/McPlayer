@@ -148,7 +148,6 @@ jQuery( window ).bind('beforeunload', function(){
     setCookie("Player56sCurrentTrack", parseInt(player56scurrenttrack[0].innerText), 64);
     var player56scurrentseek = $("#player56s-seek-current-percent");
     setCookie("Player56sSeek", parseInt(player56scurrentseek[0].innerText), 64);
-    return confirm("Confirm refresh");
 });
 
 var interval = null;

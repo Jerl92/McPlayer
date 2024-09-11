@@ -775,18 +775,8 @@ function save_playlist($post) {
 	$post_id = wp_insert_post($new_post);
 	$playlist = get_user_meta( user_if_login(), 'rs_saved_for_later', true);
 	$playlist_album = get_user_meta( user_if_login(), 'rs_saved_for_later_album', true);
-	$matches = $playlist;
-	foreach($matches as $matche){
-		$the_post = get_post( implode($matche) );
-		if(!isset($post)){
-			$key = array_search($matche, $matches);
-			if (false !== $key) {
-				unset($matches[$key]);
-			}
-		}
-	}
-	add_post_meta($post_id, 'rs_saved_for_later', $matches);
-	add_post_meta($post_id, 'rs_saved_for_later_album', $playlist_album);
+	add_post_meta($post_id, 'rs_saved_for_later', array_values($playlist));
+	add_post_meta($post_id, 'rs_saved_for_later_album', array_values($playlist_album));
 
 	$return = array(
 		'playlist'   => $playlist,
@@ -1079,26 +1069,15 @@ function count_play($post) {
 	array_unshift($get_earn_play, $return);
 	update_post_meta( $object_id, 'earn_play_loop', $get_earn_play );
 
-	if($get_count_play_term === null){
-		$get_count_play_term = array(
-			'earn'   => $get_term_color,
-			'userid' => user_if_login()
-		);
-	} else {
-		foreach($get_count_play_term as $get_count_play_term_){
-			$get_count_play_term__[] = $get_count_play_term_;
-		}
-		$get_count_play_term = array(
-			'earn'   => $get_term_color,
-			'userid' => user_if_login()
-		);
-		array_push($get_count_play_term, $get_count_play_term__);
-	}
-
+	$get_count_play_term_ = array(
+		'earn'   => $get_term_color,
+		'userid' => user_if_login()
+	);
 	if($get_count_play_term) {
+		array_push($get_count_play_term, $get_count_play_term_);
 		update_term_meta(implode($termid), 'earn_play_loop', $get_count_play_term );
 	} else {
-		add_term_meta(implode($termid), 'earn_play_loop', $get_count_play_term );
+		add_term_meta(implode($termid), 'earn_play_loop', [$get_count_play_term_] );
 	}
 
 	return wp_send_json ($countplay);

@@ -361,7 +361,7 @@ function my_album() {
     $sanitized_filename = str_replace('-.', '.', $sanitized_filename); // Remove last - if at the end
     $sanitized_filename = strtolower( $sanitized_filename ); // Lowercase
 
-    $content = file_get_contents($jsonfile['thumbnails'][4]['url']);
+    $content = file_get_contents($jsonfile['thumbnails'][5]['url']);
     file_put_contents($path_implode.'/'.$sanitized_filename, $content);
     $cover_path = $path_implode.'/'.$sanitized_filename;
     $cover_url = get_site_url() .'/'. UPLOADS . '/'.$playlist.'/' . $sanitized_filename;
@@ -418,11 +418,6 @@ function my_album() {
     $pathmedia = get_attached_file($attach_id);
 
     header('Content-type: image/jpeg');
-
-    $image = new Imagick($pathmedia);
-    $image->cropImage(720,720,280,0);
-
-    $image->writeImage($pathmedia);
 
     $terms = get_terms( 'artist', 'hide_empty=0');
 
@@ -594,7 +589,7 @@ function my_url() {
     mkdir($path_implode, 0775);
     // shell_exec('rm '.$path_implode.'out.log');
     // $cmd = "youtube-dl -o '$path_implode%(playlist_index)s-|-%(title)s-|-%(artist)s-|-%(album)s-|-%(release_year)s.%(ext)s' -f 18 --extract-audio --audio-format mp3 --prefer-ffmpeg --write-thumbnail -k " . $url;
-    $cmd = "youtube-dl -o '$path_implode%(id)s.%(ext)s' -f best --extract-audio --audio-format mp3 --prefer-avconv --write-info-json --embed-thumbnail -k " . $url;
+    $cmd = "yt-dlp -o '$path_implode%(id)s.%(ext)s' -f best --extract-audio --audio-format mp3 --prefer-avconv --write-info-json --embed-thumbnail -k " . $url;
     $res = shell_exec(''.$cmd.' > '.$path_implode.'out.log 2>&1 &');
     return wp_send_json ( $res );
 }
