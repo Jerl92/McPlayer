@@ -29,6 +29,9 @@ function rs_save_for_later_album($) {
 								$(this).removeClass('saved');
 							}
 						});     
+						$('.genre_widget').html(data.genres);
+						$('.playlist_matches_count').html(data.count);		
+						$('.playlist_matches_length').html(data.length);
 						$this.attr('data-title', 'Add to Playlist');
 						$this.attr('data-original-title', 'Add to Playlist');
 						ajax_playlist_remove_album($, data);
@@ -40,6 +43,9 @@ function rs_save_for_later_album($) {
                                 $(this).addClass("saved");
                             }
                         });     
+						$('.genre_widget').html(data.genres);
+						$('.playlist_matches_count').html(data.count);		
+						$('.playlist_matches_length').html(data.length);
 						$this.attr('data-title', 'Remove');
 						$this.attr('data-original-title', 'Remove');
 						ajax_playlist_add_album($, data);

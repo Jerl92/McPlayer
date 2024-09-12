@@ -604,13 +604,63 @@ function save_unsave_for_later_album($post) {
 			}
 		}
 
+		
+		if ( ! empty( $matches ) ) {
+			$argv = array( 
+				'posts_per_page' => -1,	
+				'post_type' => 'music',
+				'post__in' => $matches,
+				'order'   => 'DESC',
+				'orderby'   => 'post__in',
+			);
+		} else {
+			$argv = null;
+		}
+
+		$posts = get_posts($argv);
+
+		$i = 0;
+		foreach($posts as $post){
+			$songs_length_calc_[$i++] = seconds_from_time(get_post_meta($post->ID, 'meta-box-track-length', true));
+		}
+
+		$x = 0;
+		foreach($posts as $the_query_post){
+			foreach ( get_the_terms( $the_query_post->ID, 'genre' ) as $tax ) {
+				$taxname[$x] = $tax->name;
+				$taxid[$x] = $tax->term_id;
+				$x++;
+			}
+		}
+
+		$taxname_count = array_count_values($taxname);
+		$taxid_count = array_count_values($taxid);
+
+		arsort($taxname_count);
+		arsort($taxid_count);
+
+		if ( ! empty( $matches ) ) {
+			for ($x = 0; $x <= 12; $x++) {
+				$value = get_term_link( key($taxid_count), 'genre' );
+				if(!is_wp_error( $value )){
+					$arraykey .= '<a href="'.get_term_link( intval(key($taxid_count)), 'genre' ).'">'.key($taxname_count).'</a>'.' ';
+					next($taxname_count);
+					next($taxid_count);
+				}
+			}
+		} else {
+			$arraykey = '<li style="text-align: center; padding:15px 0; list-style-type:none;">Nothing in the playlist</li>';
+		}
+
 		$return = array(
 			'status'  => user_if_login(),
 			'update'  => $saved_album,
 			'postid' => $html,
 			'postid_album' => $object_id,
-			'count'   => esc_attr( $count ),
-			'count_album'   => esc_attr( $count_album ),
+			'count'   => $count,
+			'count_album'   => $count_album,
+			'length'  => time_from_seconds(array_sum($songs_length_calc_)),
+			'genres'  => $arraykey
 		);
 		
 		return wp_send_json ( $return );
