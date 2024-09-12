@@ -59,10 +59,31 @@ function artist_count_taxonomy_custom_fields($tag) {
             $user_count[$i] = $get_earn_count['userid'];
             $i++;
      }
-     echo array_sum($count_earn);
+     echo array_sum($count_earn).'$';
      echo '<br>';
-     $user_count_array_ = array_count_values($user_count);
-     print_r($user_count_array_);
+     $user_count_arrays = array_count_values($user_count);
+     for ($x = 0; $x <= 120; $x++) {
+        if(intval(key($user_count_arrays)) != 0){
+            $user_count_key = key($user_count_arrays);
+            $author_obj = get_user_by('id', intval($user_count_key));
+            if($author_obj != null){
+                echo $author_obj->user_login;
+                echo ' - ';
+                echo $author_obj->user_nicename;
+                echo ' - ';
+                echo $author_obj->user_email;
+                echo ' - Plays: ';
+                echo $user_count_arrays[$user_count_key];
+                echo '<br>';   
+            } else {
+                echo intval($user_count_key);
+                echo ' - Plays: ';
+                echo $user_count_arrays[$user_count_key];
+                echo '<br>';   
+            }
+            next($user_count_arrays);
+        }
+    }
      ?>
      </td>  
  </tr>
