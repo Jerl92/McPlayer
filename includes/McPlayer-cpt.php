@@ -49,7 +49,7 @@ if ( ! function_exists('music_file') ) {
 			'label'                 => __( 'Music', 'McPlayer' ),
 			'description'           => __( 'music', 'McPlayer' ),
 			'labels'                => $labels,
-			'supports'              => array( 'title', 'page-attributes' ),
+			'supports'              => array( 'title', 'page-attributes', 'comments' ),
 			'taxonomies'             => array( 'artist', 'genre' ),
 			'hierarchical'          => true,
 			'public'                => true,

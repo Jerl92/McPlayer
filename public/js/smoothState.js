@@ -2,18 +2,16 @@
 
 	$( function() {
 
-		var $body = $('body');
 		var settings = { 
 			anchors: "a",
-			cache: true,
+			cache: false,
 			cacheLength: 0,
 			prefetch: true,
 			prefetchOn: 'aim',
 			scroll: true,
 			locationHeader: "X-SmoothState-Location",
-			allowFormCaching: false,
 			onStart: {
-				duration: 2500, // Duration of our animation
+				duration: 500, // Duration of our animation
 				render: function ($container) {
 
 					// Remove your CSS animation reversing class
@@ -35,7 +33,7 @@
 				}
 	        },
 			onReady: {
-				duration: 2500,
+				duration: 500,
 				render: function ($container, $newContent) {
 									
 					// Inject the new content
@@ -60,8 +58,6 @@
 				$('body').removeClass('no-scroll');
 
 				$('body').addClass('on-scroll');
-
-				$newcontainer;
 
 				scrolltosecondary($);
                     
