@@ -808,6 +808,9 @@ jQuery( function player56s($) {
                     $("#player56s-currenttrack").html(self.tracks[self.currentTrack].postid);
 
                     self.$container.find(".player56s-button").on("click", function (event) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        event.stopImmediatePropagation();
                         if (!self.isPlaying && self.tracks[self.currentTrack].postid !== '0') {
                             self.pseudoPlay.call(self);
                             self.play.call(self);
@@ -817,6 +820,9 @@ jQuery( function player56s($) {
                         }
                     });
                     self.$container.find(".player56s-volume .player56s-vol-pin").on("click", function (event) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        event.stopImmediatePropagation();
                         var $pin = $(this);
                         var $pinsBefore = self.minimal ? $pin.prevAll() : $pin.nextAll();
                         var lvl = $pinsBefore.length;
@@ -829,9 +835,15 @@ jQuery( function player56s($) {
                         }
                     });
                     self.$container.find(".player56s-track-nav").on("click", function (event) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        event.stopImmediatePropagation();
                         self.switchTrack($(this).hasClass('player56s-track-next'));
                     });
                     self.$container.find(".player56s-timeline").on("mousedown." + uniqueID, function (event) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        event.stopImmediatePropagation();
                         if (event.which !== 1) {
                             return false;
                         }
@@ -876,10 +888,16 @@ jQuery( function player56s($) {
                     self.onPlay();
                 },
                 progress: function (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    event.stopImmediatePropagation();
                     updateLoadBar(self, event.jPlayer.status);
                     updateTimeDisplay(self, event.jPlayer.status.currentTime);
                 },
                 timeupdate: function (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    event.stopImmediatePropagation();
                     updateLoadBar(self, event.jPlayer.status);
                     updateTimeDisplay(self, event.jPlayer.status.currentTime);
                     updatePlayBar(self, event.jPlayer.status.currentPercentAbsolute.toFixed(2));

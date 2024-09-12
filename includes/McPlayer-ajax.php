@@ -995,7 +995,6 @@ function load_genre_playlist($post) {
 	arsort($taxid_count);
 
 	if ( ! empty( $matches ) ) {
-	echo '<div class="genre_widget">';
 		for ($x = 0; $x <= 12; $x++) {
 			$value = get_term_link( key($taxid_count), 'genre' );
 			if(!is_wp_error( $value )){
@@ -1004,7 +1003,6 @@ function load_genre_playlist($post) {
 				next($taxid_count);
 			}
 		}
-	echo '</div>';
 	} else {
 		$html = '<li style="text-align: center; padding:15px 0; list-style-type:none;">Nothing in the playlist</li>';
 	}

@@ -71,7 +71,8 @@ function play_pause($) {
 
                 var $this = $(this),
                     object_id = $this.data('object-id');
-                ajax_playlist_play_now($, object_id); 
+
+                ajax_playlist_play_now($, object_id);
                 
                 ajax_playlist_update_sidebar($, object_id);
             });
