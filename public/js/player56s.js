@@ -226,16 +226,36 @@ function shuffle(arra1) {
     return arra1;
 }
 
+function getCookie(c_name) {
+    var i, x, y, ARRcookies = document.cookie.split(";");
+    for (i = 0; i < ARRcookies.length; i++) {
+        x = ARRcookies[i].substr(0, ARRcookies[i].indexOf("="));
+        y = ARRcookies[i].substr(ARRcookies[i].indexOf("=") + 1);
+        x = x.replace(/^\s+|\s+$/g, "");
+        if (x == c_name) {
+            return unescape(y);
+        }
+    }
+}
+function DeleteCookie(name) {
+    document.cookie = name + '=; expires=Thu, 01-Jan-70 00:00:01 GMT;';
+}
+
 jQuery( function player56s($) {
-    var Clock = { 
-        totalSeconds: 0, 
+    var player56splaytimer = getCookie("player56splaytimer");
+    var player56sisRefresh = $("#player56s-isRefresh");
+    var Clock = {
         start: function () { 
+            if(player56sisRefresh[0].innerText == 1){
+                var totalSeconds = parseInt(player56splaytimer);
+            } else {
+                var totalSeconds = 0;
+            }
             var self = this; this.interval = setInterval(function () { 
-                self.totalSeconds += 1; 
-                $("#player56s-play-timer").text(parseInt(self.totalSeconds)); 
+                totalSeconds += 1; 
+                $("#player56s-play-timer").text(parseInt(totalSeconds)); 
             }, 1000); 
-        }, 
-        
+        },         
         pause: function () { 
             clearInterval(this.interval); 
             delete this.interval; 
@@ -244,10 +264,12 @@ jQuery( function player56s($) {
             if (!this.interval) this.start(); 
         },
         stop: function () { 
+            $("#player56s-isRefresh").html(0);
+            DeleteCookie("player56splaytimer");
             clearInterval(this.interval); 
             delete this.interval; 
-            this.totalSeconds = 0; 
-            $("#player56s-play-timer").text(parseInt(this.totalSeconds)); 
+            totalSeconds = 0; 
+            $("#player56s-play-timer").text(parseInt(totalSeconds)); 
         } 
     }; 
     $.fn.player56s = function(options) {
@@ -807,6 +829,8 @@ jQuery( function player56s($) {
 
                     $("#player56s-currenttrack").html(self.tracks[self.currentTrack].postid);
 
+                    $("#player56s-isRefresh").html(1);
+
                     self.$container.find(".player56s-button").on("click", function (event) {
                         event.preventDefault();
                         event.stopPropagation();
@@ -950,6 +974,7 @@ jQuery( function player56s($) {
                             self.playNow(parseInt(index));
                             setTimeout(function() {
                                 willSeekTo(self, parseInt(Player56sSeek));
+                                $("#player56s-isRefresh").html(1);
                             }, 250);
                         }
                     });
