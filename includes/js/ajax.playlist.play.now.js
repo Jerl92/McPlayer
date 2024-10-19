@@ -24,6 +24,10 @@ function play_now($) {
 
                         if(!$this.hasClass('saved') ) {
 
+                            $('.genre_widget').html(data.genres);
+                            $('.playlist_matches_count').html(data.count);
+                            $('.playlist_matches_length').html(data.length);
+
                             if(!$('#rs-item-'+object_id).length){
                                 ajax_playlist_add_sidebar($, object_id);
                             }

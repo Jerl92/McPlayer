@@ -32,11 +32,6 @@ function wp_playlist_ajax_scripts() {
 	wp_localize_script( 'wp-playlist-ajax-add-track-scripts', 'add_track_ajax_url', admin_url( 'admin-ajax.php' ) );
 	wp_enqueue_script( 'wp-playlist-ajax-add-track-scripts' );
 
-	/* AJAX add track to playlist */
-	wp_register_script( 'wp-playlist-ajax-add-track-playlist-scripts', $url . "js/ajax.playlist.add.js", array( 'jquery' ), '1.0.0', true );
-	wp_localize_script( 'wp-playlist-ajax-add-track-playlist-scripts', 'add_track_playlist_ajax_url', admin_url( 'admin-ajax.php' ) );
-	wp_enqueue_script( 'wp-playlist-ajax-add-track-playlist-scripts' );
-
 	/* Ajax remove track from playlist */
 	wp_register_script( 'wp-playlist-ajax-remove-track-scripts', $url . "js/ajax.playlist.remove.js", array( 'jquery' ), '1.0.0', true );
 	wp_localize_script( 'wp-playlist-ajax-remove-track-scripts', 'remove_track_ajax_url', admin_url( 'admin-ajax.php' ) );
@@ -511,11 +506,60 @@ function save_and_play_now() {
 		update_user_meta( user_if_login(), 'rs_saved_for_later', $matches );
 	}
 
+	if ( ! empty( $matches ) ) {
+		$argv = array( 
+			'posts_per_page' => -1,	
+			'post_type' => 'music',
+			'post__in' => $matches,
+			'order'   => 'DESC',
+			'orderby'   => 'post__in',
+		);
+	} else {
+		$argv = null;
+	}
+
+	$posts = get_posts($argv);
+
+	$i = 0;
+	foreach($posts as $post){
+		$songs_length_calc_[$i++] = seconds_from_time(get_post_meta($post->ID, 'meta-box-track-length', true));
+	}
+
+	$x = 0;
+	foreach($posts as $the_query_post){
+		foreach ( get_the_terms( $the_query_post->ID, 'genre' ) as $tax ) {
+			$taxname[$x] = $tax->name;
+			$taxid[$x] = $tax->term_id;
+			$x++;
+		}
+	}
+
+	$taxname_count = array_count_values($taxname);
+	$taxid_count = array_count_values($taxid);
+
+	arsort($taxname_count);
+	arsort($taxid_count);
+
+	if ( ! empty( $matches ) ) {
+		for ($x = 0; $x <= 12; $x++) {
+			$value = get_term_link( key($taxid_count), 'genre' );
+			if(!is_wp_error( $value )){
+				$arraykey .= '<a href="'.get_term_link( intval(key($taxid_count)), 'genre' ).'">'.key($taxname_count).'</a>'.' ';
+				next($taxname_count);
+				next($taxid_count);
+			}
+		}
+	} else {
+		$arraykey = '<li style="text-align: center; padding:15px 0; list-style-type:none;">Nothing in the playlist</li>';
+	}
+
 	$return = array(
 		'status'  => user_if_login(),
 		'update'  => $saved,
 		'message' => $no_content,
-		'count'   => esc_attr( $count )
+		'count'   => $count,
+		'length'  => time_from_seconds(array_sum($songs_length_calc_)),
+		'genres'  => $arraykey
 	);
 
 	return wp_send_json( $return );
@@ -879,25 +923,6 @@ function load_playlist($post) {
 		$songs_length_calc[$i++] = seconds_from_time(get_post_meta($post->ID, 'meta-box-track-length', true));
 	}
 
-	if ( ! empty( $matches ) ) {
-		$argv = array( 
-			'posts_per_page' => -1,	
-			'post_type' => 'music',
-			'post__in' => $matches,
-			'order'   => 'DESC',
-			'orderby'   => 'post__in',
-		);
-	} else {
-		$argv = null;
-	}
-
-	$posts = get_posts($argv);
-
-	$i = 0;
-	foreach($posts as $post){
-		$songs_length_calc_[$i++] = seconds_from_time(get_post_meta($post->ID, 'meta-box-track-length', true));
-	}
-
 	$x = 0;
 	foreach($posts as $the_query_post){
 		foreach ( get_the_terms( $the_query_post->ID, 'genre' ) as $tax ) {
@@ -934,28 +959,6 @@ function load_playlist($post) {
 	);
 
 	return wp_send_json ( $return );
-}
-
-/* AJAX action callback */
-add_action( 'wp_ajax_add_track_playlist', 'add_track_playlist' );
-add_action( 'wp_ajax_nopriv_add_track_playlist', 'add_track_playlist' );
-
-function add_track_playlist($post) {
-
-	$object_id = $_POST['object_id'];
-
-	$matches = get_user_meta( user_if_login(), 'rs_saved_for_later', true);
-
-
-	if ( empty( $matches ) ) {
-		$matches = array();
-	}
-
-	array_unshift($matches, $object_id);
-
-	update_user_meta( user_if_login(), 'rs_saved_for_later', $matches );
-
-	return wp_send_json ( $matches );
 }
 
 /* AJAX action callback */

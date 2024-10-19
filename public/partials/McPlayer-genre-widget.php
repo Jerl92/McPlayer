@@ -66,8 +66,8 @@ class MCPlayer_bottom_genre_widget extends WP_Widget {
 		arsort($taxname_count);
 		arsort($taxid_count);
 
+		echo '<div class="genre_widget">';
         if ( ! empty( $matches ) ) {
-        echo '<div class="genre_widget">';
             for ($x = 0; $x <= 12; $x++) {
 				$value = get_term_link( key($taxid_count), 'genre' );
 				if(!is_wp_error( $value )){
@@ -76,10 +76,10 @@ class MCPlayer_bottom_genre_widget extends WP_Widget {
 					next($taxid_count);
 				}
             }
-        echo '</div>';
         } else {
             echo '<li style="text-align: center; padding:15px 0; list-style-type:none;">Nothing in the playlist</li>';
         }
+		echo '</div>';
 		
 		echo $args['after_widget'];		
 

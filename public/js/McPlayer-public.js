@@ -120,10 +120,6 @@ function sidebarheight($) {
     footer_stick($);
 }
 
-window.addEventListener("orientationchange", (event) => {
-    $( "#player56s-orientation" ).text( `${event.target.screen.orientation.angle}` );
-});
-
 jQuery(document).ready(function($){	
     var max=0;
     jQuery("entry-meta-cover img").each(function(index, el) {

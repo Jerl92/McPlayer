@@ -63,6 +63,8 @@ function rs_remove_all($) {
 				'action': 'save_for_later_remove_all'
 			},
 			success: function(data) {
+				$(".genre_widget").html('<li style="text-align: center; padding:15px 0; list-style-type:none;">Nothing in the playlist</li>');
+				$("#rs-saved-for-later").html('<li id="rs-saved-for-later-nothing" style="text-align: center; padding:15px 0;">Nothing in the playlist</li>');
 				$(".playlist_matches_count").html(0);
 				$(".playlist_matches_length").html('0m0s');
 				$( ".entry-save-for-later a" ).each(function() {
@@ -78,8 +80,6 @@ function rs_remove_all($) {
 					$(this).removeClass("onplay");
 					$(this).addClass("onpause");
 				});
-
-				ajax_playlist_flush_sidebar($);
 
 				$("#player56s-removetracks-all").html("1");
 				$(".player56s").player56s($);

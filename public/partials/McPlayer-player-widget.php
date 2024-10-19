@@ -135,13 +135,11 @@ class MCPlayer_bottom_player_widget extends WP_Widget {
 			echo '<div id="player56s-removetrack"></div>';
 			echo '<div id="player56s-removetracks-all"></div>';
 			echo '<div id="player56s-playnow"></div>';
-			echo '<div id="player56s-shuffle"></div>';
-			echo '<div id="player56s-no-shuffle"></div>';
 			echo '<div id="player56s-seek-percent"></div>';
 			echo '<div id="player56s-seek-current-percent"></div>';
 			echo '<div id="player56s-play-timer"></div>';
-			echo '<div id="player56s-orientation"></div>';
-			echo '<div id="player56s-load-playlist"></div>';
+			echo '<div id="player56s-shuffle"></div>';
+			echo '<div id="player56s-no-shuffle"></div>';
 			echo '<div id="player56s-isRefresh"></div>';
 		echo '</div>';
 

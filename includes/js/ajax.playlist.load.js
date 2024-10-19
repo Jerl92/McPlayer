@@ -52,28 +52,22 @@ function mcplayer_load_playlist($) {
                 $("#player56s-removetracks-all").html("1");
                 $(".player56s").player56s($);
                 $("#player56s-removetracks-all").html(null);
-                $('#player56s-load-playlist').html("1");
                 links = data.playlist.reverse();
                 links.forEach(function(element, index) {
                     setTimeout(function() {
                         ajax_playlist($, element);
-                        ajax_playlist_add_playlist($, element);
                         ajax_playlist_add_sidebar($, element);
                         $('.genre_widget').html(data.genres);
                         $('.playlist_matches_count').html(index+1);
                         $(".playlist_matches_length").html(data.length);
                         
                         $('.rs-save-for-later-button').each(function(){
-                            if($(this).data('object-id') == element){
+                            if($(this).data('object-id') === element){
                                 $(this).addClass('saved');
                                 $(this).attr('data-original-title', 'Remove');
                             }
                         });
-                        if(index === index.length){
-                            $('#player56s-load-playlist').html(null);
-                        }
                     }, index*250);
-
                 }, this);  
                 data.playlist_album.forEach(function(element) {
                     $('.rs-save-for-later-button-album').each(function() {
