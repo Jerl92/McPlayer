@@ -75,7 +75,7 @@ function my_fetch_genre() {
         'post_type' => 'music',
         'posts_per_page' => 5000,
         'orderby'           => 'date',
-        'order'             => 'ASC'
+        'order'             => 'DESC'
     ); 
 
 

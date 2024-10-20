@@ -108,12 +108,6 @@ function mcplayer_search_ajax($) {
             $(".widget-mcplayer-search-a").attr("href", base_url+"?s="+inputVal);
         }
     });
-    $('#widget-mcplayer-search-result').mouseup(function(event) {
-        event.preventDefault();
-        event.stopPropagation();
-        event.stopImmediatePropagation();
-        $("#widget-mcplayer-search-result").css("display","none");
-    });
 }
 
 jQuery(document).on('click', function (event) {

@@ -45,6 +45,7 @@ function artist_count_taxonomy_custom_fields($tag) {
     // Check for existing taxonomy meta for the term you're editing  
      $t_id = $tag->term_id; // Get the ID of the term you're editing
      $get_earn_counts = get_term_meta($t_id, 'earn_play_loop', true);
+     $get_counts = get_term_meta($t_id, 'count_play_loop', true);
  ?>  
 
  <tr class="form-field">  
@@ -62,7 +63,13 @@ function artist_count_taxonomy_custom_fields($tag) {
      echo array_sum($count_earn).'$';
      echo '<br>';
      $user_count_arrays = array_count_values($user_count);
-     for ($x = 0; $x <= 120; $x++) {
+     $user_count_arrays_values = array_values($user_count_arrays);
+     foreach($user_count_arrays_values as $user_count_arrays_value){
+        $arrays_value += $user_count_arrays_value;
+     }
+     echo $arrays_value . ' Total Plays';
+     echo '<br>';
+     for ($x = 0; $x <= 25; $x++) {
         if(intval(key($user_count_arrays)) != 0){
             $user_count_key = key($user_count_arrays);
             $author_obj = get_user_by('id', intval($user_count_key));
@@ -84,6 +91,34 @@ function artist_count_taxonomy_custom_fields($tag) {
             next($user_count_arrays);
         }
     }
+    echo '<br>';
+    echo '<canvas id="myChart" style="width:100%;"></canvas>';
+    for ($x = 0; $x <= count($get_counts)-1; $x++) {
+       $get_counts_key[$x] = date('d/m/Y H:i:s', key($get_counts));
+       next($get_counts);
+    }
+    $x = 0;
+    foreach($get_counts as $get_count){
+       $get_counts_value[$x] = $get_count;
+       $x++;
+    }
+    ?><script>
+    var get_counts_key = <?php echo json_encode($get_counts_key); ?>;
+    var get_counts_value = <?php echo json_encode($get_counts_value); ?>;
+    const myChart = new Chart("myChart", {
+       type: "bar",
+       data: {
+           labels: get_counts_key,
+           datasets: [
+               {
+               label: "Plays",
+               backgroundColor: '#26B99A', 
+               data: get_counts_value
+               }
+           ]
+       },
+       options: {}
+     });</script><?php
      ?>
      </td>  
  </tr>

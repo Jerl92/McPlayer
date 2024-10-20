@@ -138,5 +138,52 @@ function artist_count_cron_function() {
 
 }
 
+add_action( 'init', function () {
+
+    ///Hook into that action that'll fire every six hours
+    add_action( 'count_cron_hook', 'count_cron_function' );
+
+    //Schedule an action if it's not already scheduled
+    if ( ! wp_next_scheduled( 'count_cron_hook' ) ) {
+        wp_schedule_event( time(), 'every_six_hours', 'count_cron_hook' );
+    }
+});
+
+//create your function, that runs on cron
+function count_cron_function() {
+
+    $terms = get_terms( 'artist', 'hide_empty=0');
+
+    foreach ($terms as $term){
+        $i = 0;
+        echo $term->name;
+        $get_counts = get_term_meta($term->term_id, 'count_play_loop', true);
+        $get_earn_counts = get_term_meta($term->term_id, 'earn_play_loop', true);
+        if(!empty($get_earn_counts)){
+            foreach($get_earn_counts as $get_earn_count){
+                $count_earn[$i] = $get_earn_count['earn'];
+                $user_count[$i] = $get_earn_count['userid'];
+                $i++;
+            }
+            $user_count_arrays = array_count_values($user_count);
+            $user_count_arrays_values = array_values($user_count_arrays);
+            foreach($user_count_arrays_values as $user_count_arrays_value){
+               $arrays_value += $user_count_arrays_value;
+            }
+        } else {
+            $arrays_value = 0;
+        }
+        if(empty($get_counts)){
+            $get_counts = [time() => $arrays_value];
+            print_r($get_counts);
+            add_term_meta($term->term_id, 'count_play_loop', $get_counts);
+        } else {
+            $get_counts[time()] = $arrays_value;
+            print_r($get_counts);
+            update_term_meta($term->term_id, 'count_play_loop', $get_counts);
+        }
+    }
+}
+
 
 ?>

@@ -374,7 +374,7 @@ jQuery( function player56s($) {
                     if ( audiofileLink_remove !== null ) {
                         var audiofileLink_remove_id = audiofileLink_remove[0].innerText; 
                         player56sInstance.tracks.forEach(function(element, index) {
-                            if (element.postid == audiofileLink_remove_id) {
+                            if (element.postid === audiofileLink_remove_id) {
                                 if (player56sInstance.tracks.length > 1) {
                                     if (player56sInstance.currentTrack === index) {
                                         if (player56sInstance.currentTrack === 0) {

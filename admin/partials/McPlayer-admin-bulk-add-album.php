@@ -361,7 +361,7 @@ function my_album() {
     $sanitized_filename = str_replace('-.', '.', $sanitized_filename); // Remove last - if at the end
     $sanitized_filename = strtolower( $sanitized_filename ); // Lowercase
 
-    $content = file_get_contents($jsonfile['thumbnails'][5]['url']);
+    $content = file_get_contents($jsonfile['thumbnails'][3]['url']);
     file_put_contents($path_implode.'/'.$sanitized_filename, $content);
     $cover_path = $path_implode.'/'.$sanitized_filename;
     $cover_url = get_site_url() .'/'. UPLOADS . '/'.$playlist.'/' . $sanitized_filename;

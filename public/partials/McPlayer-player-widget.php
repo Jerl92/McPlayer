@@ -26,8 +26,6 @@ class MCPlayer_bottom_player_widget extends WP_Widget {
 
 		$title = apply_filters( 'widget_title', $instance['title'] );
 
-		$title_i = "<div id='current_music_name'></div>";
-
 		$shuffle = get_user_meta( user_if_login(), 'user_playlist_shuffle', true );
 
 		if ( $shuffle == 1 ) {

@@ -13,7 +13,7 @@ function ajax_playlist_remove_album($, object_id)  {
                             setTimeout(function() {
                                 ajax_playlist_remove_sidebar($, element);
                                 ajax_playlist_remove_track($, element);
-                            }, index*100);
+                            }, index*250);
                         }, this);
 
                     },
