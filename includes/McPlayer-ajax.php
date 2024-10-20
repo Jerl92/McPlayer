@@ -1122,7 +1122,8 @@ function count_play($post) {
 
 	$get_count_play_term_ = array(
 		'earn'   => $get_term_color,
-		'userid' => user_if_login()
+		'userid' => user_if_login(),
+		'postid' => $object_id
 	);
 	if($get_count_play_term) {
 		array_push($get_count_play_term, $get_count_play_term_);
