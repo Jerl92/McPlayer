@@ -54,13 +54,20 @@ function artist_count_taxonomy_custom_fields($tag) {
      </th>  
      <td>  
      <?php 
-     $i = 0;
-     foreach($get_earn_counts as $get_earn_count){
-            $count_earn[$i] = $get_earn_count['earn'];
-            $user_count[$i] = $get_earn_count['userid'];
-            $i++;
-     }
-     echo array_sum($count_earn).'$';
+
+
+    $i = 0;
+    foreach($get_earn_counts as $get_earn_count){
+        $count_earn[$i] = $get_earn_count['earn'];
+        $user_count[$i] = $get_earn_count['userid'];
+        $i++;
+    }
+    echo array_sum($count_earn).'$';
+
+    echo '<input type="submit" id="withdraw" value="withdraw">';
+
+    echo '<div id="paypal"></div>';
+
      echo '<br>';
      $user_count_arrays = array_count_values($user_count);
      $user_count_arrays_values = array_values($user_count_arrays);
@@ -129,5 +136,65 @@ function artist_count_taxonomy_custom_fields($tag) {
 // Add the fields to the "presenters" taxonomy, using our callback function  
 add_action( 'artist_edit_form_fields', 'artist_count_taxonomy_custom_fields', 60, 2 );  
 add_action( 'artist_add_form_fields', 'artist_count_taxonomy_custom_fields', 60, 2 ); 
+
+
+add_action( 'admin_footer', 'my_paypal_javascript' ); // Write our JS below here
+function my_paypal_javascript() { ?>
+	<script type="text/javascript" >
+
+    function withdraw_fetch($) {
+
+        var data = {
+            'action': 'my_paypal_fetch'
+        };
+
+        // since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php
+        jQuery.post(ajaxurl, data, function(response) {
+            $("#paypal").html(response);
+        });
+        
+    }
+
+    jQuery(document).ready(function($) {
+        $("#withdraw").on( "click", function(event) {
+            event.preventDefault();
+            withdraw_fetch($);
+        });
+    });
+	</script> <?php
+}
+
+add_action( 'wp_ajax_my_paypal_fetch', 'my_paypal_fetch' );
+function my_paypal_fetch() {
+
+    $curl = curl_init();
+
+    $url = "https://api.sandbox.paypal.com/v1/oauth2/token";
+    $clientId = "AXUR-qsubY11BcbY5BDvcB9OQXbqqYfa5N4r3x3QTGDckgMeRfwvfthfBB4_99wbXSVhQY9xmElSFuC0";
+    $secret = "EAEshZBm33rQLPXkS4lYqpAFUZqGmSFisqA9uUcxCwgUhvUAVS5N8q5q1lJTFlGS8Fb9r6ll5SZlOeVb";
+
+    curl_setopt_array($curl, array(
+    CURLOPT_URL => $url,
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_ENCODING => "",
+    CURLOPT_MAXREDIRS => 10,
+    CURLOPT_TIMEOUT => 0,
+    CURLOPT_FOLLOWLOCATION => true,
+    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+    CURLOPT_CUSTOMREQUEST => "POST",
+    //We need to send grant_type=client_credentials in POST Request Body
+    CURLOPT_POSTFIELDS => "grant_type=client_credentials",
+    //Setting Basic Authentication using Client ID and Secret
+    CURLOPT_USERPWD => $clientId.":".$secret,
+    // This specific header needs to be set for the API call to work
+    CURLOPT_HTTPHEADER => array("Content-Type: application/x-www-form-urlencoded"),)
+    ); 
+
+    //make API request
+    $result = curl_exec($curl);
+
+    return wp_send_json ($result);
+
+}
 
 ?>

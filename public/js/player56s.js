@@ -573,6 +573,7 @@ jQuery( function player56s($) {
         }
         stop() {
             if (typeof this.$jPlayer !== "undefined" && this.$jPlayer.jPlayer) {
+                $("#rs-item-" + this.tracks[this.currentTrack].postid + "").removeClass('playing');
                 this.$jPlayer.jPlayer( "stop" );
                 this.$jPlayer.jPlayer("setMedia", {
                     mp3: '#'
@@ -587,7 +588,6 @@ jQuery( function player56s($) {
                 this.$container.removeClass("status-playing");
                 this.$container.addClass("status-onpause");
                 this.$container.removeClass("player56s-status-playing");
-                $("#rs-item-" + this.tracks[this.currentTrack].postid + "").removeClass('playing');
             }
         }
         pause() {
