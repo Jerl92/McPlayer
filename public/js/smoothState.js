@@ -93,18 +93,6 @@
 
 				topmenu($);
 
-				var interval_hw;
-				hw_info = document.getElementById("hwm-area");
-				if (hw_info) {					
-					ajax_get_hw_shortcode($);
-					ajax_get_hw($);
-					hw_info.innerHTML = '';
-					getData();
-					interval_hw = setInterval(getData, parseInt($('#interval').val(), 10) * 1000);
-				} else {
-					clearInterval(interval_hw);
-				}
-
 				interval = setInterval(function(){sidebarheight($);},250);
 
 				if ($.isFunction($.fn.theiaStickySidebar)){ 

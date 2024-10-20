@@ -60,6 +60,7 @@ function artist_count_taxonomy_custom_fields($tag) {
     foreach($get_earn_counts as $get_earn_count){
         $count_earn[$i] = $get_earn_count['earn'];
         $user_count[$i] = $get_earn_count['userid'];
+        $postid_count[$i] = $get_earn_count['postid'];
         $i++;
     }
     echo array_sum($count_earn).'$';

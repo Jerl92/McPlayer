@@ -127,11 +127,11 @@ function artist_count_cron_function() {
 
         echo "\n";
 
-        $getcountplay = get_term_meta( $term->term_id, 'count_play_loop' , true );
+        $getcountplay = get_term_meta( $term->term_id, 'count_play_loop_' , true );
         if($getcountplay == null) {
-            add_term_meta( $term->term_id, 'count_play_loop' , array_sum($sum_count_play) );
+            add_term_meta( $term->term_id, 'count_play_loop_' , array_sum($sum_count_play) );
         } else {
-            update_term_meta( $term->term_id, 'count_play_loop' , array_sum($sum_count_play) );
+            update_term_meta( $term->term_id, 'count_play_loop_' , array_sum($sum_count_play) );
         }
 
     }
@@ -171,7 +171,7 @@ function count_cron_function() {
                $arrays_value += $user_count_arrays_value;
             }
         } else {
-            $arrays_value = 0;
+            $arrays_value = intval(0);
         }
         if(empty($get_counts)){
             $get_counts = [time() => $arrays_value];

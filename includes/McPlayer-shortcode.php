@@ -459,8 +459,8 @@ function artist_get_loop($atts) {
 			$i = 0;
 			$terms_count_plays = array();
 			foreach ($terms as $term) {
-				$terms_count_plays[$i]['COUNT'] = get_term_meta( $term->term_id, 'count_play_loop' , true );
-				$terms_count_plays[$i]['ID'] = $term->term_id;
+				$terms_count_plays[$i]['count'] = get_term_meta( $term->term_id, 'count_play_loop_' , true );
+				$terms_count_plays[$i]['id'] = $term->term_id;
 				$i++;
 			}
 	
@@ -471,7 +471,7 @@ function artist_get_loop($atts) {
 		$outputs = array_slice($terms_count_plays, 0, 100); 
 	
 		foreach($outputs as $output){
-			$term = get_term($output['ID']);
+			$term = get_term($output['id']);
 			$artist_slug_name = $term->name; // Added a space between the slugs with . ' '
 	
 			$get_albums_args = array(
