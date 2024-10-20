@@ -71,8 +71,9 @@ This section describes how to install the plugin and get it working.</br>
 
 ## Advandced installation
 
-You can have youtube-dl installed on it, to download and add album playlist.</br>
-https://github.com/ytdl-org/youtube-dl/</br>
+You can have yt-dlp installed on it, to download and add album playlist.</br>
+https://github.com/yt-dlp</br>
+https://github.com/yt-dlp/yt-dlp/wiki/Installation</br>
 </br>
 You can have FFMPEG installed on it, to covert to MP3 file.</br>
 https://github.com/FFmpeg/FFmpeg/</br>
@@ -119,6 +120,7 @@ Show suggested songs with the playlist songs genres</br>
 <img style="max-width: 100%;" src="https://i.ibb.co/R6G5xTt/bulk-add-album.png" />
 
 ## Changelog
+2.2 - fix various things, add Chart JS in admin taxonomy private page, add Paypal sandbox integration in admin taxonomy private page.</br>
 2.0 - Add genre widget and shortcode to show suggested songs and fix various things.</br>
 1.8 - Add a earn count play, add playlist time length to title, various fix.</br>
 1.7 - Fix stuff in full album add to playlist and fix height of content to feel more like a webapp.</br>
