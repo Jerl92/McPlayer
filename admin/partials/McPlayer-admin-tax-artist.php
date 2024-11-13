@@ -75,6 +75,7 @@ function artist_count_taxonomy_custom_fields($tag) {
      foreach($user_count_arrays_values as $user_count_arrays_value){
         $arrays_value += $user_count_arrays_value;
      }
+     arsort($user_count_arrays);
      echo $arrays_value . ' Total Plays';
      echo '<br>';
      for ($x = 0; $x <= 25; $x++) {
@@ -91,7 +92,7 @@ function artist_count_taxonomy_custom_fields($tag) {
                 echo $user_count_arrays[$user_count_key];
                 echo '<br>';   
             } else {
-                echo intval($user_count_key);
+                echo $user_count_key;
                 echo ' - Plays: ';
                 echo $user_count_arrays[$user_count_key];
                 echo '<br>';   
@@ -193,8 +194,10 @@ function my_paypal_fetch() {
 
     //make API request
     $result = curl_exec($curl);
+    $json = json_decode($result);
+    $access_token = $json->access_token;
 
-    return wp_send_json ($result);
+    return wp_send_json ($access_token);
 
 }
 
