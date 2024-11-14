@@ -9,7 +9,10 @@ function count_playlist($, currentTrack) {
         },
         dataType: 'JSON',
         success: function(data){
-            //
+            $( "#add_count" ).html(data);
+            setTimeout(function() {
+                $( "#add_count" ).html(null);
+            }, 7500);
         },
         error: function(errorThrown){
             console.log(errorThrown);

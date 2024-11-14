@@ -188,7 +188,6 @@ class GetMacAddr{
 
 function set_userid_cookie() {
 	$cookie_name = 'userid';
-	if(!isset($_COOKIE[$cookie_name])) {
 		$mac = new GetMacAddr(PHP_OS);
 		$str = str_replace(":", '', $mac=$mac->mac_addr);
 
@@ -198,9 +197,10 @@ function set_userid_cookie() {
 		}
 
 		$cookie_value = implode($hash);
+		if(!isset($_COOKIE[$cookie_name])) {
+			header('Refresh: 0');
+		}
 		setcookie($cookie_name, $cookie_value, time() + (86400 * 30)); // 86400 = 1 day
-		return $cookie_value;
-	}
 }
 add_action( 'init', 'set_userid_cookie');
 

@@ -40,10 +40,12 @@ class MCPlayer_bottom_player_widget extends WP_Widget {
 
 		$title_toggle = "<div id='title_player_toggle' class='player_widget_name' style='margin-left: auto; margin-right: auto;	display: inline;'>$title</div>";
 
+		$add_count_toggle = "<div id='add_count' style='display: inline;right: 105px;position: absolute;'></div>";
+
 		// before and after widget arguments are defined by themes
 		echo $args['before_widget'];
 		if ( ! empty( $title ) )
-		echo $args['before_title'] . $title_toggle . $btn_toggle_down .  $btn_toggle_up . $shuffle_toggle . $args['after_title'];
+		echo $args['before_title'] . $title_toggle  .  '<div class="widget_after_title" style="display: inline;">' . $add_count_toggle . $btn_toggle_down .  $btn_toggle_up . $shuffle_toggle . '</div>' . $args['after_title'];
 
 		global $post;
 

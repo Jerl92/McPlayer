@@ -829,7 +829,7 @@ jQuery( function player56s($) {
 
                     $("#player56s-currenttrack").html(self.tracks[self.currentTrack].postid);
 
-                    $("#player56s-isRefresh").html(1);
+                    $("#player56s-isRefresh").html('1');
 
                     self.$container.find(".player56s-button").on("click", function (event) {
                         event.preventDefault();
@@ -973,9 +973,9 @@ jQuery( function player56s($) {
                         if(parseInt(element.postid) === parseInt(Player56sCurrentTrack)){
                             self.playNow(parseInt(index));
                             setTimeout(function() {
-                                willSeekTo(self, parseInt(Player56sSeek));
                                 $("#player56s-isRefresh").html(1);
-                            }, 250);
+                                willSeekTo(self, parseInt(Player56sSeek));
+                            }, 1000);
                         }
                     });
 

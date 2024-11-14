@@ -297,8 +297,6 @@ function add_track_sidebar_load($post) {
 
 	$matches = get_user_meta( user_if_login(), 'rs_saved_for_later', true );
 
-	$matches = array_filter($matches);
-
 	$matchescount = count($matches);
 		
 	if ( ! empty( $matches ) ) {
@@ -889,19 +887,19 @@ function load_playlist($post) {
 	$object_id = $_POST['object_id'];
 
 	$matches = get_post_meta($object_id, 'rs_saved_for_later', true);
-	$matches = array_filter($matches);
 
 	if ( empty( $matches ) ) {
 		$matches = array();
 	}
+
 	update_user_meta( user_if_login(), 'rs_saved_for_later', $matches );
 
 	$matches_albums = get_post_meta($object_id, 'rs_saved_for_later_album', true);
-	$matches_albums = array_filter($matches_albums);
 
 	if ( empty( $matches_albums ) ) {
 		$matches_albums = array();
 	}
+
 	update_user_meta( user_if_login(), 'rs_saved_for_later_album', $matches_albums );
 
 	if ( ! empty( $matches ) ) {
@@ -1020,7 +1018,6 @@ add_action( 'wp_ajax_nopriv_load_genre_playlist', 'load_genre_playlist' );
 function load_genre_playlist($post) {
 	
 	$matches = get_user_meta( user_if_login(), 'rs_saved_for_later', true );
-	$matches = array_filter($matches);
 	
 	if ( ! empty( $matches ) ) {
 		$args_ = array( 
@@ -1105,8 +1102,8 @@ function count_play($post) {
 		$countplay = intval($get_count_play) + 1;
 		update_post_meta($object_id, 'count_play_loop', $countplay);
 	} else {
-		$countplay = '1';
-		add_post_meta($object_id, 'count_play_loop', 1);
+		$countplay = intval(1);
+		add_post_meta($object_id, 'count_play_loop', $countplay);
 	}
 
 	$get_term_color = get_term_meta( implode($termid), 'meta_count_earn', true );
