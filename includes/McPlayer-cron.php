@@ -163,23 +163,22 @@ function count_cron_function() {
             foreach($get_earn_counts as $get_earn_count){
                 $count_earn[$i] = $get_earn_count['earn'];
                 $user_count[$i] = $get_earn_count['userid'];
+                $postid_count[$i] = $get_earn_count['postid'];
                 $i++;
             }
             $user_count_arrays = array_count_values($user_count);
-            $user_count_arrays_values = array_values($user_count_arrays);
-            foreach($user_count_arrays_values as $user_count_arrays_value){
-               $arrays_value += $user_count_arrays_value;
+            foreach($user_count_arrays as $user_count_array){
+                $arrays_value += $user_count_array;
             }
         } else {
             $arrays_value = intval(0);
         }
+
         if(empty($get_counts)){
             $get_counts = [time() => $arrays_value];
-            print_r($get_counts);
             add_term_meta($term->term_id, 'count_play_loop', $get_counts);
         } else {
             $get_counts[time()] = $arrays_value;
-            print_r($get_counts);
             update_term_meta($term->term_id, 'count_play_loop', $get_counts);
         }
     }

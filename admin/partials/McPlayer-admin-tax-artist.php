@@ -43,9 +43,6 @@ add_action( 'create_artist', 'save_taxonomy_custom_meta', 50, 2 );
 // A callback function to add a custom field to our "presenters" taxonomy  
 function artist_count_taxonomy_custom_fields($tag) { 
     // Check for existing taxonomy meta for the term you're editing  
-     $t_id = $tag->term_id; // Get the ID of the term you're editing
-     $get_earn_counts = get_term_meta($t_id, 'earn_play_loop', true);
-     $get_counts = get_term_meta($t_id, 'count_play_loop', true);
  ?>  
 
  <tr class="form-field">  
@@ -55,6 +52,9 @@ function artist_count_taxonomy_custom_fields($tag) {
      <td>  
      <?php 
 
+    $t_id = $tag->term_id; // Get the ID of the term you're editing
+    $get_counts = get_term_meta($t_id, 'count_play_loop', true);
+    $get_earn_counts = get_term_meta($t_id, 'earn_play_loop', true);
 
     $i = 0;
     foreach($get_earn_counts as $get_earn_count){
@@ -71,9 +71,8 @@ function artist_count_taxonomy_custom_fields($tag) {
 
      echo '<br>';
      $user_count_arrays = array_count_values($user_count);
-     $user_count_arrays_values = array_values($user_count_arrays);
-     foreach($user_count_arrays_values as $user_count_arrays_value){
-        $arrays_value += $user_count_arrays_value;
+     foreach($user_count_arrays as $user_count_array){
+         $arrays_value += $user_count_array;
      }
      arsort($user_count_arrays);
      echo $arrays_value . ' Total Plays';
