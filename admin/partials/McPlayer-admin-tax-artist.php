@@ -60,6 +60,8 @@ function artist_count_taxonomy_custom_fields($tag) {
     foreach($get_earn_counts as $get_earn_count){
         $count_earn[$i] = $get_earn_count['earn'];
         $user_count[$i] = $get_earn_count['userid'];
+        $ipv4_count[$i] = $get_earn_count['ipv4'];
+        $loc_count[$i] = $get_earn_count['loc'];
         $postid_count[$i] = $get_earn_count['postid'];
         $i++;
     }
@@ -101,6 +103,15 @@ function artist_count_taxonomy_custom_fields($tag) {
     }
     echo '<br>';
     echo '<canvas id="myChart" style="width:100%;"></canvas>';
+    $y = 0;
+    foreach($loc_count as $loc){
+        if(isset($loc['city'])){
+            $locs[$y] = $loc['country'] ;
+            $y++;
+        }
+    }
+    echo '<br>';
+    echo ' <div id="regions_div" style="width: 100%; height: 1200px;"></div>';
     for ($x = 0; $x <= count($get_counts)-1; $x++) {
        $get_counts_key[$x] = date('d/m/Y H:i:s', key($get_counts));
        next($get_counts);
@@ -126,7 +137,37 @@ function artist_count_taxonomy_custom_fields($tag) {
            ]
        },
        options: {}
-     });</script><?php
+     });</script><script>
+      google.charts.load('current', {
+        'packages':['geochart'],
+      });
+      google.charts.setOnLoadCallback(drawRegionsMap);
+
+      var key_country = [];
+      var key_value = [];
+
+      var get_locs_value = <?php echo json_encode($locs); ?>;
+     const counts = [];
+    get_locs_value.forEach(function (x) { counts[x] = (counts[x] || 0) + 1; });
+    Object.entries(counts).forEach(([key, value]) => {
+        key_country = key;
+        key_value = value;
+    })
+
+      function drawRegionsMap() {
+
+        var data = google.visualization.arrayToDataTable([
+          ['Country', 'Popularity'],
+          [key_country, key_value]
+        ]);
+
+        var options = {};
+
+        var chart = new google.visualization.GeoChart(document.getElementById('regions_div'));
+
+        chart.draw(data, options);
+      }
+    </script><?php
      ?>
      </td>  
  </tr>

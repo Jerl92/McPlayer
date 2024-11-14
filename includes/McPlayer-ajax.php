@@ -1121,11 +1121,29 @@ function count_play($post) {
 	array_unshift($get_earn_play, $return);
 	update_post_meta( $object_id, 'earn_play_loop', $get_earn_play );
 
+	if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+		$ip = $_SERVER['HTTP_CLIENT_IP'];
+	} elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+		$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+	} elseif (!empty($_SERVER["HTTP_CF_CONNECTING_IP"])) {
+		$ip = $_SERVER["HTTP_CF_CONNECTING_IP"];
+	} else {
+		$ip = $_SERVER['REMOTE_ADDR'];
+	}
+
+	$details = json_decode(file_get_contents("https://ip-get-geolocation.com/api/json/{$ip}?key=4e2a13a94c44f3dee6f02ab9b436bd26"), true);
+	$loc['city'] = $details['city'];
+	$loc['regionName'] = $details['regionName'];
+	$loc['country'] = $details['country'];
+
 	$get_count_play_term_ = array(
 		'earn'   => $get_term_color,
 		'userid' => user_if_login(),
+		'ipv4'	=> $ip,
+		'loc'	=> $loc,
 		'postid' => $object_id
 	);
+
 	if($get_count_play_term) {
 		array_push($get_count_play_term, $get_count_play_term_);
 		update_term_meta(implode($termid), 'earn_play_loop', $get_count_play_term );

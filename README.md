@@ -77,6 +77,9 @@ https://github.com/yt-dlp/yt-dlp/wiki/Installation</br>
 </br>
 You can have FFMPEG installed on it, to covert to MP3 file.</br>
 https://github.com/FFmpeg/FFmpeg/</br>
+</br>
+net-tools, the collection of base networking utilities for Linux.</br>
+sudo apt install net-tools</br>
 
 ## Shortcode
 To get info about how many you have in database</br>
