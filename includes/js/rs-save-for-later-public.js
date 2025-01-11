@@ -1,18 +1,18 @@
 function rs_save_for_later($) {
 
-	if($('.rs-save-for-later-button').length) {
-		$('.rs-save-for-later-button[data-toggle="tooltip"]').tooltip();
-		$('.rs-save-for-later-button').on('click', function(event) {
+	if(jQuery('.rs-save-for-later-button').length) {
+		jQuery('.rs-save-for-later-button[data-toggle="tooltip"]').tooltip();
+		jQuery('.rs-save-for-later-button').on('click', function(event) {
 			event.preventDefault();
 			event.stopPropagation();
 			event.stopImmediatePropagation();
 
-			$('.rs-save-for-later-button[data-toggle="tooltip"]').tooltip('hide');
+			jQuery('.rs-save-for-later-button[data-toggle="tooltip"]').tooltip('hide');
 
-			var $this = $(this),
+			var $this = jQuery(this),
 				object_id = $this.data('object-id');
 
-			$.ajax({
+			jQuery.ajax({
 				type: 'post',
 				url: rs_save_for_later_ajax,
 				data: {
@@ -24,18 +24,18 @@ function rs_save_for_later($) {
 						$this.removeClass('saved');
 						$this.attr('data-title', 'Add to Playlist');
 						$this.attr('data-original-title', 'Add to Playlist');
-						$('.genre_widget').html(data.genres);
-						$('.playlist_matches_count').html(data.count);
-						$('.playlist_matches_length').html(data.length);
+						jQuery('.genre_widget').html(data.genres);
+						jQuery('.playlist_matches_count').html(data.count);
+						jQuery('.playlist_matches_length').html(data.length);
 						ajax_playlist_remove_sidebar($, object_id);
 						ajax_playlist_remove_track($, object_id);
 					} else {	
 						$this.addClass('saved');
 						$this.attr('data-title', 'Remove');
 						$this.attr('data-original-title', 'Remove');
-						$('.genre_widget').html(data.genres);
-						$('.playlist_matches_count').html(data.count);		
-						$('.playlist_matches_length').html(data.length);	
+						jQuery('.genre_widget').html(data.genres);
+						jQuery('.playlist_matches_count').html(data.count);		
+						jQuery('.playlist_matches_length').html(data.length);	
 						ajax_playlist($, object_id);
 						ajax_playlist_add_sidebar($, object_id);					
 					}
@@ -51,41 +51,41 @@ function rs_save_for_later($) {
 
 function rs_remove_all($) {
 
-	$('a.rs-save-for-later-remove-all').on('click', function(event) {
+	jQuery('a.rs-save-for-later-remove-all').on('click', function(event) {
         event.preventDefault();
         event.stopPropagation();
 		event.stopImmediatePropagation();
 
-		$.ajax({
+		jQuery.ajax({
 			type: 'post',
 			url: rs_save_for_later_ajax,
 			data: {
 				'action': 'save_for_later_remove_all'
 			},
 			success: function(data) {
-				$(".genre_widget").html('<li style="text-align: center; padding:15px 0; list-style-type:none;">Nothing in the playlist</li>');
-				$("#rs-saved-for-later").html('<li id="rs-saved-for-later-nothing" style="text-align: center; padding:15px 0;">Nothing in the playlist</li>');
-				$(".playlist_matches_count").html(0);
-				$(".playlist_matches_length").html('0m0s');
-				$( ".entry-save-for-later a" ).each(function() {
-					$(this).removeClass("saved");
+				jQuery(".genre_widget").html('<li style="text-align: center; padding:15px 0; list-style-type:none;">Nothing in the playlist</li>');
+				jQuery("#rs-saved-for-later").html('<li id="rs-saved-for-later-nothing" style="text-align: center; padding:15px 0;">Nothing in the playlist</li>');
+				jQuery(".playlist_matches_count").html(0);
+				jQuery(".playlist_matches_length").html('0m0s');
+				jQuery( ".entry-save-for-later a" ).each(function() {
+					jQuery(this).removeClass("saved");
 				});		
-				$( ".rs-save-for-later-button" ).each(function() {
-					$(this).removeClass("saved");
+				jQuery( ".rs-save-for-later-button" ).each(function() {
+					jQuery(this).removeClass("saved");
 				});
-				$( ".rs-save-for-later-button-album" ).each(function() {
-					$(this).removeClass("saved");
+				jQuery( ".rs-save-for-later-button-album" ).each(function() {
+					jQuery(this).removeClass("saved");
 				});
-				$( ".add-play-now-button" ).each(function() {
-					$(this).removeClass("onplay");
-					$(this).addClass("onpause");
+				jQuery( ".add-play-now-button" ).each(function() {
+					jQuery(this).removeClass("onplay");
+					jQuery(this).addClass("onpause");
 				});
 
-				$("#player56s-removetracks-all").html("1");
-				$(".player56s").player56s($);
-				$("#player56s-removetracks-all").html(null);
+				jQuery("#player56s-removetracks-all").html("1");
+				jQuery(".player56s").player56s(jQuery);
+				jQuery("#player56s-removetracks-all").html(null);
 
-				if ($.isFunction($.fn.theiaStickySidebar)){ 
+				if (jQuery.isFunction($.fn.theiaStickySidebar)){ 
 					if ( jQuery.browser.mobile && !mystickyside_name.device_mobile) {
 						return false;
 					} else if ( !jQuery.browser.mobile && !mystickyside_name.device_desktop) {
@@ -98,7 +98,7 @@ function rs_remove_all($) {
 					mystickyside_update_sidebar_height = Boolean(mystickyside_name.mystickyside_update_sidebar_height_string),
 					mystickyside_min_width = parseInt(mystickyside_name.mystickyside_min_width_string);
 		
-					$(mysticky_sidebar_id).theiaStickySidebar({
+					jQuery(mysticky_sidebar_id).theiaStickySidebar({
 						containerSelector: mystickyside_content_id,
 						additionalMarginTop: mystickyside_margin_top,
 						additionalMarginBottom: mystickyside_margin_bot,

@@ -105,11 +105,19 @@ function artist_count_taxonomy_custom_fields($tag) {
     echo '<canvas id="myChart" style="width:100%;"></canvas>';
     $y = 0;
     foreach($loc_count as $loc){
-        if(isset($loc['city'])){
-            $locs[$y] = $loc['country'] ;
+        if(isset($loc['country'])){
+            $locs[$y] = $loc['country'];
             $y++;
         }
     }
+    $i = 0;
+    foreach($locs as $loc){
+        if($loc = $locs[$i]){
+            $locs_array[$loc] += 1;
+        }
+        $i++;
+    }
+    print_r($locs_array);
     echo '<br>';
     echo ' <div id="regions_div" style="width: 100%; height: 1200px;"></div>';
     for ($x = 0; $x <= count($get_counts)-1; $x++) {
@@ -145,20 +153,32 @@ function artist_count_taxonomy_custom_fields($tag) {
 
       var key_country = [];
       var key_value = [];
+      var i = 0;
 
       var get_locs_value = <?php echo json_encode($locs); ?>;
      const counts = [];
     get_locs_value.forEach(function (x) { counts[x] = (counts[x] || 0) + 1; });
     Object.entries(counts).forEach(([key, value]) => {
-        key_country = key;
-        key_value = value;
+        key_country[i] = key;
+        key_value[i] = value;
+        i++;
     })
 
       function drawRegionsMap() {
 
         var data = google.visualization.arrayToDataTable([
-          ['Country', 'Popularity'],
-          [key_country, key_value]
+            ['Country', 'Popularity'],
+            [key_country[0], key_value[0]],
+            [key_country[1], key_value[1]],
+            [key_country[2], key_value[2]],
+            [key_country[3], key_value[3]],
+            [key_country[4], key_value[4]],
+            [key_country[5], key_value[5]],
+            [key_country[6], key_value[6]],
+            [key_country[7], key_value[7]],
+            [key_country[8], key_value[8]],
+            [key_country[9], key_value[9]],
+            [key_country[10], key_value[10]],
         ]);
 
         var options = {};

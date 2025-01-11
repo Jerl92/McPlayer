@@ -1,18 +1,18 @@
 
 function play_now($) {        
-            if($('.add-play-now-button').length) {
-                $('.add-play-now-button[data-toggle="tooltip"]').tooltip();
+            if(jQuery('.add-play-now-button').length) {
+                jQuery('.add-play-now-button[data-toggle="tooltip"]').tooltip();
 
-                $('.add-play-now-button').on('click', function(event) {
+                jQuery('.add-play-now-button').on('click', function(event) {
                     event.preventDefault();
                     event.stopPropagation();
                     event.stopImmediatePropagation();
             
-                    var $this = $(this),
+                    var $this = jQuery(this),
                         object_id = $this.data('object-id');
 
-                    $('.add-play-now-button[data-toggle="tooltip"]').tooltip("hide");
-                    $.ajax({
+                    jQuery('.add-play-now-button[data-toggle="tooltip"]').tooltip("hide");
+                    jQuery.ajax({
                         type: 'post',
                         url: play_now_ajax_url,
                         data: {
@@ -24,29 +24,29 @@ function play_now($) {
 
                         if(!$this.hasClass('saved') ) {
 
-                            $('.genre_widget').html(data.genres);
-                            $('.playlist_matches_count').html(data.count);
-                            $('.playlist_matches_length').html(data.length);
+                            jQuery('.genre_widget').html(data.genres);
+                            jQuery('.playlist_matches_count').html(data.count);
+                            jQuery('.playlist_matches_length').html(data.length);
 
-                            if(!$('#rs-item-'+object_id).length){
+                            if(!jQuery('#rs-item-'+object_id).length){
                                 ajax_playlist_add_sidebar($, object_id);
                             }
 
-                            $this.addClass('saved');
+                            jQuerythis.addClass('saved');
 
-                            $this.attr('data-original-title', 'Pause');
+                            jQuerythis.attr('data-original-title', 'Pause');
 
-                            $('#postid-'+object_id+' a').addClass('saved');
+                            jQuery('#postid-'+object_id+' a').addClass('saved');
 
-                            $('#postid-'+object_id+' a').attr('data-original-title', 'Remove');
+                            jQuery('#postid-'+object_id+' a').attr('data-original-title', 'Remove');
 
-                            $('add-play-now-id-'+object_id+' a').addClass('saved');
+                            jQuery('add-play-now-id-'+object_id+' a').addClass('saved');
 
-                            $('add-play-now-id-'+object_id+' a').attr('data-original-title', 'Pause');
+                            jQuery('add-play-now-id-'+object_id+' a').attr('data-original-title', 'Pause');
                             
-                            $('#album-class-artist-list-id-'+object_id+' a').addClass('saved');
+                            jQuery('#album-class-artist-list-id-'+object_id+' a').addClass('saved');
 
-                            $('#album-class-artist-list-id-'+object_id+' a').attr('data-original-title', 'Pause');
+                            jQuery('#album-class-artist-list-id-'+object_id+' a').attr('data-original-title', 'Pause');
 
                         }
                             ajax_playlist_play_now($, object_id);
@@ -64,14 +64,14 @@ function play_now($) {
 
 
 function play_pause($) {             
-        if($('.play-now-button').length) {
-            $('.play-now-button[data-toggle="tooltip"]').tooltip();
-            $('.play-now-button').on('click', function(event) {
+        if(jQuery('.play-now-button').length) {
+            jQuery('.play-now-button[data-toggle="tooltip"]').tooltip();
+            jQuery('.play-now-button').on('click', function(event) {
                 event.preventDefault();
                 event.stopPropagation();
                 event.stopImmediatePropagation();
 
-                $('.add-play-now-button[data-toggle="tooltip"]').tooltip('hide');
+                jQuery('.add-play-now-button[data-toggle="tooltip"]').tooltip('hide');
 
                 var $this = $(this),
                     object_id = $this.data('object-id');

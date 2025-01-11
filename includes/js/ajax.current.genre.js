@@ -9,8 +9,8 @@ function mcplayer_load_genre($) {
             },
             dataType: 'json',
             success: function(data){
-                $('.genre_widget').empty();
-                $('.genre_widget').html(data);
+                jQuery('.genre_widget').empty();
+                jQuery('.genre_widget').html(data);
             },
             error: function(errorThrown){
                 console.log(errorThrown);

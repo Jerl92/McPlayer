@@ -1,6 +1,6 @@
 function ajax_playlist($, object_id)  {
 
-            $.ajax({    
+            jQuery.ajax({    
                 type: 'post',
                 url: add_track_ajax_url,
                 data: {
@@ -10,11 +10,11 @@ function ajax_playlist($, object_id)  {
                 dataType: 'JSON',
                 success: function(data){
 
-                    $("#player56s-addtrack").html(data);
+                    jQuery("#player56s-addtrack").html(data);
 
-                    $(".player56s").player56s($);
+                    jQuery(".player56s").player56s($);
                     
-                    $("#player56s-addtrack").html(null);
+                    jQuery("#player56s-addtrack").html(null);
                     
                 },
                 error: function(errorThrown){
@@ -26,7 +26,7 @@ function ajax_playlist($, object_id)  {
 
 function ajax_playlist_load_playlist($)  {
 
-    $.ajax({    
+    jQuery.ajax({    
         type: 'post',
         url: add_track_playlist_ajax_url,
         data: {

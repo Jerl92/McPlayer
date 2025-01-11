@@ -1,6 +1,6 @@
 function ajax_playlist_add_album($, object_id)  {
     
-                $.ajax({    
+                jQuery.ajax({    
                     type: 'post',
                     url: add_album_ajax_url,
                     data: {

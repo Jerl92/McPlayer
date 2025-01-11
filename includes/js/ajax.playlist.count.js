@@ -1,6 +1,6 @@
 function count_playlist($, currentTrack) {
 
-    $.ajax({    
+    jQuery.ajax({    
         type: 'post',
         url: count_playlist_ajax_url,
         data: {
@@ -9,9 +9,10 @@ function count_playlist($, currentTrack) {
         },
         dataType: 'JSON',
         success: function(data){
-            $( "#add_count" ).html(data);
+            console.log(data);
+            jQuery( "#add_count" ).html(data);
             setTimeout(function() {
-                $( "#add_count" ).html(null);
+                jQuery( "#add_count" ).html(null);
             }, 7500);
         },
         error: function(errorThrown){

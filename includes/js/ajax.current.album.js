@@ -1,7 +1,7 @@
 
 function current_album($)  {
 
-    $.ajax({    
+    jQuery.ajax({    
         type: 'post',
         url: current_album_ajax_url,
         data: {
@@ -10,10 +10,10 @@ function current_album($)  {
         dataType: 'JSON',
         success: function(data){
             data.forEach(function(element) {
-                $('.rs-save-for-later-button-album').each(function() {
-                    var data_id = $(this).data("object-id");
+                jQuery('.rs-save-for-later-button-album').each(function() {
+                    var data_id = jQuery(this).data("object-id");
                     if(data_id == element){
-                        $(this).addClass('saved');
+                        jQuery(this).addClass('saved');
                     }
                 }); 
             }, this); 

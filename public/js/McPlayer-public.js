@@ -148,43 +148,13 @@ jQuery( window ).bind('beforeunload', function(){
     setCookie("player56splaytimer", parseInt(player56splaytimer[0].innerText), 64);
 });
 
-var interval = null;
-function startTimer(duration) {
-    var timer = duration
-      
-      interval = setInterval(function() {
-  
-      if (--timer < 0) {
-        play_pause($);
-        clearInterval(interval);
-      }
-      
-    }, 1000);
-}
-
-var doVisualUpdates = true;
-function update() {
-    var windowwidth = jQuery(window).width();
-    if (!doVisualUpdates) {
-          var fiveMinutes = 216000
-          startTimer(fiveMinutes);
-    } else {
-        clearInterval(interval);
-        if (windowwidth <= 720) {
-            navigator.wakeLock.request('screen')
-            .then((wakeLock) => {
-                screenLock = wakeLock; 
-            })
-        }
-    }
-}
-
-document.addEventListener('visibilitychange', function(){
-    doVisualUpdates = !document.hidden;
-    update();
-});
-
-jQuery(window).on('load', function() {
-    doVisualUpdates = !document.hidden;
-    update();
+jQuery(document).ready(function($){	
+    $("body").click(function($){
+        var i = 0;
+        setTimeout(function($) {
+            play_pause($);
+            console.log(i);
+            i += 1;
+       }, 1000);
+    });
 });

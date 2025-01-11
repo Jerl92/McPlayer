@@ -289,6 +289,7 @@ jQuery( function player56s($) {
                 audiofileLink_play_now = $("#player56s-playnow"),
                 currenttrack_index = $("#player56s-sortable ul li"),
                 playlist_shuffle = $("#player56s-shuffle"),
+                playlist_pause = $("#player56s-pause"),
                 playlist_no_shuffle = $("#player56s-no-shuffle ul li"),
 
                 skin = "",
@@ -401,6 +402,11 @@ jQuery( function player56s($) {
                                 }                             
                             }
                         }, this);
+                    }
+
+                    if(playlist_pause[0].innerText === "1"){
+                        player56sInstance.pseudoPause();
+                        player56sInstance.pause();
                     }
 
                     if (player56sInstance.tracks.length === 0) {

@@ -140,7 +140,9 @@ class MCPlayer_bottom_player_widget extends WP_Widget {
 			echo '<div id="player56s-play-timer"></div>';
 			echo '<div id="player56s-shuffle"></div>';
 			echo '<div id="player56s-no-shuffle"></div>';
+			echo '<div id="player56s-pause"></div>';
 			echo '<div id="player56s-isRefresh"></div>';
+			echo '<div id="countdown"></div>';
 		echo '</div>';
 
 		echo $args['after_widget']; 

@@ -1,8 +1,8 @@
 function ajax_shuffle($)  {
 
-    $('.shuffle_player_toggle').on('click', function(event) {
+    jQuery('.shuffle_player_toggle').on('click', function(event) {
 
-        $.ajax({    
+        jQuery.ajax({    
             type: 'post',
             url: shuffle_ajax_url,
             data: {
@@ -12,16 +12,16 @@ function ajax_shuffle($)  {
             dataType: 'JSON',
             success: function(data){
                 //print stuff heres
-                $("#player56s-shuffle").html(data);
+                jQuery("#player56s-shuffle").html(data);
 
                 if (data == 0){
-                    $(".shuffle_player_toggle").css("box-shadow", "");
+                    jQuery(".shuffle_player_toggle").css("box-shadow", "");
                     ajax_no_shuffle($);
                 }
 
                 if (data == 1){
-                    $(".shuffle_player_toggle").css("box-shadow", "2.5px 2.5px 2.5px #000");
-                    $(".player56s").player56s($);
+                    jQuery(".shuffle_player_toggle").css("box-shadow", "2.5px 2.5px 2.5px #000");
+                    jQuery(".player56s").player56s($);
                 }
 
             },
@@ -37,7 +37,7 @@ function ajax_shuffle($)  {
 
 function ajax_no_shuffle($)  {
 
-    $.ajax({    
+    jQuery.ajax({    
         type: 'post',
         url: shuffle_ajax_url,
         data: {
@@ -47,9 +47,9 @@ function ajax_no_shuffle($)  {
         dataType: 'JSON',
         success: function(data){
             //print stuff heres
-            $("#player56s-no-shuffle").html(data);
-            $("#player56s-shuffle").html('0');
-            $(".player56s").player56s($);  
+            jQuery("#player56s-no-shuffle").html(data);
+            jQuery("#player56s-shuffle").html('0');
+            jQuery(".player56s").player56s($);  
         },
         error: function(errorThrown){
             //error stuff here.text

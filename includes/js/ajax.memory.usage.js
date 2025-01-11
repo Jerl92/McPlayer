@@ -1,6 +1,6 @@
 function memory_ajax($)  {
 
-        $.ajax({    
+        jQuery.ajax({    
             type: 'post',
             url: memory_usage_ajax_url,
             data: {
@@ -8,8 +8,8 @@ function memory_ajax($)  {
             },
             dataType: 'JSON',
             success: function(data){
-                $('.memory-usage').html(null);
-                $('.memory-usage').html(data);
+                jQuery('.memory-usage').html(null);
+                jQuery('.memory-usage').html(data);
             },
             error: function(errorThrown){
                 //error stuff here.text
