@@ -32,9 +32,9 @@ function play_now($) {
                                 ajax_playlist_add_sidebar($, object_id);
                             }
 
-                            jQuerythis.addClass('saved');
+                            $this.addClass('saved');
 
-                            jQuerythis.attr('data-original-title', 'Pause');
+                            $this.attr('data-original-title', 'Pause');
 
                             jQuery('#postid-'+object_id+' a').addClass('saved');
 

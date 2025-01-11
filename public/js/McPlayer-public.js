@@ -148,13 +148,44 @@ jQuery( window ).bind('beforeunload', function(){
     setCookie("player56splaytimer", parseInt(player56splaytimer[0].innerText), 64);
 });
 
-jQuery(document).ready(function($){	
-    $("body").click(function($){
-        var i = 0;
-        setTimeout(function($) {
-            play_pause($);
-            console.log(i);
-            i += 1;
-       }, 1000);
+var id;
+var timer = 0;
+
+function countdown() {
+    jQuery('a').click(function($){
+        timer = 0;
+        if(id){
+            clearInterval(id);
+        }
+        id = setInterval(frame, 1000);
     });
+    jQuery('div').click(function($){
+        timer = 0;
+        if(id){
+            clearInterval(id);
+        }
+        id = setInterval(frame, 1000);
+    })
+    jQuery('#page').click(function($){
+        timer = 0;
+        if(id){
+            clearInterval(id);
+        }
+        id = setInterval(frame, 1000);
+    })
+}
+
+function frame($) {
+    if (timer == 5400) {
+        jQuery('#player56s-pause').html('1');
+        jQuery('.player56s').player56s($);
+        jQuery('#player56s-pause').html(null);
+        clearInterval(id);
+    } else {
+        timer++;
+    }
+}
+
+jQuery(document).ready(function(){	
+    countdown();
 });

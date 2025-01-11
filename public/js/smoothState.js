@@ -1,6 +1,41 @@
+function countdown() {
+    jQuery('a').click(function($){
+        timer = 0;
+        if(id){
+            clearInterval(id);
+        }
+        id = setInterval(frame, 1000);
+    });
+    jQuery('div').click(function($){
+        timer = 0;
+        if(id){
+            clearInterval(id);
+        }
+        id = setInterval(frame, 1000);
+    })
+    jQuery('#page').click(function($){
+        timer = 0;
+        if(id){
+            clearInterval(id);
+        }
+        id = setInterval(frame, 1000);
+    })
+}
+
+function frame($) {
+    if (timer == 5400) {
+		jQuery('#player56s-pause').html('1');
+		jQuery('.player56s').player56s($);
+		jQuery('#player56s-pause').html(null);
+		clearInterval(id);
+    } else {
+      	timer++;
+    }
+}
+
 ( function( $ ) {
 
-	$( function() {
+	jQuery( function() {
 
 		var settings = { 
 			anchors: "a",
@@ -15,18 +50,18 @@
 				render: function ($container) {
 
 					// Remove your CSS animation reversing class
-					$('body').removeClass('on-scroll');
+					jQuery('body').removeClass('on-scroll');
 
 					// Add your CSS animation reversing class
-					$('body').addClass('no-scroll');
+					jQuery('body').addClass('no-scroll');
 
 					// Add your CSS animation reversing class
-					$('#main').removeClass('is-onready');
+					jQuery('#main').removeClass('is-onready');
 
 					// Add your CSS animation reversing class
-					$('#main').addClass('is-onstart');
+					jQuery('#main').addClass('is-onstart');
 
-					$('.loader').css('display', 'table');
+					jQuery('.loader').css('display', 'table');
 
 					// Restart your animation
 					// smoothState.restartCSSAnimations();
@@ -40,24 +75,24 @@
 					$container.html($newContent);
 
 					// Remove your CSS animation reversing class
-					$('#main').removeClass('is-onstart');
+					jQuery('#main').removeClass('is-onstart');
 
 					// Add your CSS animation reversing class
-					$('#main').addClass('is-onready');
+					jQuery('#main').addClass('is-onready');
 
-					$('.loader').css('display', 'none');
+					jQuery('.loader').css('display', 'none');
 
 					// Trigger load functions
-					$(document).ready();
-                	$(window).trigger('load');
+					jQuery(document).ready();
+                	jQuery(window).trigger('load');
 					
 				}
 		    },
 			onAfter: function( $container , $newcontainer ) {
 
-				$('body').removeClass('no-scroll');
+				jQuery('body').removeClass('no-scroll');
 
-				$('body').addClass('on-scroll');
+				jQuery('body').addClass('on-scroll');
 
 				scrolltosecondary($);
                     
@@ -93,9 +128,11 @@
 
 				topmenu($);
 
+				countdown();
+
 				interval = setInterval(function(){sidebarheight($);},250);
 
-				if ($.isFunction($.fn.theiaStickySidebar)){ 
+				if (jQuery.isFunction($.fn.theiaStickySidebar)){ 
 					if ( jQuery.browser.mobile && !mystickyside_name.device_mobile) {
 						return false;
 					} else if ( !jQuery.browser.mobile && !mystickyside_name.device_desktop) {
@@ -108,7 +145,7 @@
 					mystickyside_update_sidebar_height = Boolean(mystickyside_name.mystickyside_update_sidebar_height_string),
 					mystickyside_min_width = parseInt(mystickyside_name.mystickyside_min_width_string);
 		
-					$(mysticky_sidebar_id).theiaStickySidebar({
+					jQuery(mysticky_sidebar_id).theiaStickySidebar({
 						containerSelector: mystickyside_content_id,
 						additionalMarginTop: mystickyside_margin_top,
 						additionalMarginBottom: mystickyside_margin_bot,
@@ -120,8 +157,8 @@
 			}
 		};
 
-		if (!$("body").hasClass("elementor-editor-active")) {
-			$( "#page" ).smoothState( settings ).data("smoothState");
+		if (!jQuery("body").hasClass("elementor-editor-active")) {
+			jQuery( "#page" ).smoothState( settings ).data("smoothState");
 		}
 
 	});

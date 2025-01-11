@@ -973,16 +973,18 @@ jQuery( function player56s($) {
             var Player56sSeek = self.getCookie("Player56sSeek");
             if(Player56sCurrentTrack && Player56sSeek){
                 var Refersh = setInterval(function(){
+                    var i = 0;
                     var player56scurrenttrack = jQuery("#player56s-currenttrack");
                     var player56scurrentseek = jQuery("#player56s-seek-current-percent");
                     self.tracks.forEach(function(element, index) {
                         if(parseInt(element.postid) === parseInt(Player56sCurrentTrack)){
-                            self.playNow(parseInt(index));
+                            self.playNow(parseInt(i));
                             setTimeout(function() {
                                 $("#player56s-isRefresh").html(1);
                                 willSeekTo(self, parseInt(Player56sSeek));
                             }, 1000);
                         }
+                        i++;
                     });
 
                     if(player56scurrenttrack[0].innerText === Player56sCurrentTrack && player56scurrentseek >= Player56sSeek) {
