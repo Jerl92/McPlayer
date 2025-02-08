@@ -102,6 +102,21 @@ function wp_playlist_ajax_scripts() {
 	wp_localize_script( 'wp-ajax-current-genre', 'current_genre_ajax_url', admin_url( 'admin-ajax.php' ) );
 	wp_enqueue_script( 'wp-ajax-current-genre' );
 
+	/* Add comment */
+	wp_register_script( 'wp-ajax-add-comment', $url . "js/ajax.add.comment.js", array( 'jquery' ), '1.0.0', true );
+	wp_localize_script( 'wp-ajax-add-comment', 'add_comment_ajax_url', admin_url( 'admin-ajax.php' ) );
+	wp_enqueue_script( 'wp-ajax-add-comment' );
+	
+	/* Delete comment */
+	wp_register_script( 'wp-ajax-delete-comment', $url . "js/ajax.delete.comment.js", array( 'jquery' ), '1.0.0', true );
+	wp_localize_script( 'wp-ajax-delete-comment', 'delete_comment_ajax_url', admin_url( 'admin-ajax.php' ) );
+	wp_enqueue_script( 'wp-ajax-delete-comment' );
+
+	/* Get comment */
+	wp_register_script( 'wp-ajax-get-comment', $url . "js/ajax.get.comment.js", array( 'jquery' ), '1.0.0', true );
+	wp_localize_script( 'wp-ajax-get-comment', 'get_comment_ajax_url', admin_url( 'admin-ajax.php' ) );
+	wp_enqueue_script( 'wp-ajax-get-comment' );
+
 }
 
 /* 3. AJAX CALLBACK
@@ -1283,4 +1298,68 @@ function search_ajax_get() {
 	return wp_send_json ( implode($html) );
 }
 
+add_action( 'wp_ajax_add_comment', 'add_comment' );
+add_action( 'wp_ajax_nopriv_add_comment', 'add_comment' );
+function add_comment() {
+	$text = $_POST['text'];
+	$postId = $_POST['postid'];
+	$email = $_POST['email'];
+	$author = $_POST['author'];
+
+	$data = array(
+		'comment_post_ID'      => intval($postId),
+		'comment_content'      => $text,
+		// 'comment_parent'       => $field['comment_parent'],
+		'user_id'              => user_if_login(),
+		'comment_author'       => $author,
+		'comment_author_email' => $email,
+		// 'comment_author_url'   => $current_user->user_url,
+	);
+
+	$comment_id = wp_insert_comment( $data );
+	if ( ! is_wp_error( $comment_id ) ) {
+		return $comment_id;
+	}
+
+	return wp_send_json ( $comment_id );
+}
+
+add_action( 'wp_ajax_delete_comment', 'delete_comment' );
+add_action( 'wp_ajax_nopriv_delete_comment', 'delete_comment' );
+function delete_comment() {
+	$postId = $_POST['postid'];
+
+	wp_delete_comment($postId);
+
+	return wp_send_json ( $postId );
+}
+
+add_action( 'wp_ajax_get_comment_ajax', 'get_comment_ajax' );
+add_action( 'wp_ajax_nopriv_get_comment_ajax', 'get_comment_ajax' );
+function get_comment_ajax() {
+	$postId = $_POST['postid'];
+
+	$args = array(
+		'post_id' => intval($postId),
+		'orderby' => 'comment_date',
+		'order' => 'ASC'
+	);
+	$comments = get_comments($args);
+	foreach($comments as $comment){
+		$html[] =  '<div style="display:flex; padding-bottom:15px;" class="comment_ID_'.$comment->comment_ID.'">';
+			$html[] .=  '<div style="width:95%;">';
+				$html[] .=  $comment->comment_author;
+			$html[] .=  '<br>';
+				$html[] .=  $comment->comment_content;
+			$html[] .=  '</div>';
+			if (intval($comment->user_id) === intval(user_if_login())){
+				$html[] .=  '<div class="comment_delete" data-object-id="'.$comment->comment_ID.'">';
+					$html[] .=  'X';
+				$html[] .=  '</div>';
+			}
+		$html[] .= '</div>';
+	}
+
+	return wp_send_json ( implode($html) );
+}
 ?>

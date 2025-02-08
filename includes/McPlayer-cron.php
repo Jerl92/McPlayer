@@ -155,20 +155,12 @@ function count_cron_function() {
     $terms = get_terms( 'artist', 'hide_empty=0');
 
     foreach ($terms as $term){
-        $i = 0;
         echo $term->name;
         $get_counts = get_term_meta($term->term_id, 'count_play_loop', true);
         $get_earn_counts = get_term_meta($term->term_id, 'earn_play_loop', true);
         if(!empty($get_earn_counts)){
             foreach($get_earn_counts as $get_earn_count){
-                $count_earn[$i] = $get_earn_count['earn'];
-                $user_count[$i] = $get_earn_count['userid'];
-                $postid_count[$i] = $get_earn_count['postid'];
-                $i++;
-            }
-            $user_count_arrays = array_count_values($user_count);
-            foreach($user_count_arrays as $user_count_array){
-                $arrays_value += $user_count_array;
+                $arrays_value += 1;
             }
         } else {
             $arrays_value = intval(0);

@@ -124,7 +124,7 @@ function artist_count_taxonomy_custom_fields($tag) {
     echo ' <div id="regions_div" style="width: 100%; height: 1200px;"></div>';
     $x = 0;
     foreach($get_counts as $get_count){
-       $get_counts_value[$x] = $x + 1;
+       $get_counts_value[$x] = $get_count;
        $get_counts_key[$x] = date('d/m/Y H:i:s', key($get_counts));
        next($get_counts);
        $x++;

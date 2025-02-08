@@ -130,6 +130,10 @@ function frame($) {
 
 				countdown();
 
+				add_comment($);
+
+				delete_comment($);
+
 				interval = setInterval(function(){sidebarheight($);},250);
 
 				if (jQuery.isFunction($.fn.theiaStickySidebar)){ 
