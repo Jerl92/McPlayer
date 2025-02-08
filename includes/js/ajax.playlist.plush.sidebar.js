@@ -84,6 +84,10 @@ function ajax_playlist_add_sidebar_load($)  {
 
 }
 
+jQuery(document).ready(function($) {
+    ajax_playlist_add_sidebar_load($);
+});
+
 function  ajax_playlist_update_sidebar($) {
     
     var currenttrack = jQuery("#player56s-currenttrack")[0].innerText;

@@ -110,6 +110,8 @@ class Mcplayer_Admin {
 
 		wp_enqueue_script( 'loader', plugin_dir_url( __FILE__ ) . 'js/loader.js', array( 'jquery' ), $this->version, false );
 
+		wp_enqueue_script( 'paypal', 'https://www.paypal.com/sdk/js?client-id=AY4Kaqz0jFkY-J4Whwhe2UgDngqz4ydHobRfSdrAwUqe_MKto7Y9cw77YjN527kLdmaNQlUdwexkPBW8¤cy=CAD', array( 'jquery' ), $this->version, false );
+
 	}
 
 }

@@ -53,6 +53,7 @@ function artist_count_taxonomy_custom_fields($tag) {
      <?php 
 
     $t_id = $tag->term_id; // Get the ID of the term you're editing
+    ?><div id="termid" style="display: none;"><?php echo $t_id ?></div><?php
     $get_counts = get_term_meta($t_id, 'count_play_loop', true);
     $get_earn_counts = get_term_meta($t_id, 'earn_play_loop', true);
 
@@ -65,7 +66,9 @@ function artist_count_taxonomy_custom_fields($tag) {
         $postid_count[$i] = $get_earn_count['postid'];
         $i++;
     }
-    echo array_sum($count_earn).'$';
+    $count_earn_array_sum = array_sum($count_earn);
+
+    echo round($count_earn_array_sum, 2).'$';
 
     echo '<input type="submit" id="withdraw" value="withdraw">';
 
@@ -117,16 +120,13 @@ function artist_count_taxonomy_custom_fields($tag) {
         }
         $i++;
     }
-    print_r($locs_array);
     echo '<br>';
     echo ' <div id="regions_div" style="width: 100%; height: 1200px;"></div>';
-    for ($x = 0; $x <= count($get_counts)-1; $x++) {
-       $get_counts_key[$x] = date('d/m/Y H:i:s', key($get_counts));
-       next($get_counts);
-    }
     $x = 0;
     foreach($get_counts as $get_count){
-       $get_counts_value[$x] = $get_count;
+       $get_counts_value[$x] = $x + 1;
+       $get_counts_key[$x] = date('d/m/Y H:i:s', key($get_counts));
+       next($get_counts);
        $x++;
     }
     ?><script>
@@ -206,7 +206,10 @@ function my_paypal_javascript() { ?>
 
     function withdraw_fetch($) {
 
+        var term = $("#termid").html();
+
         var data = {
+            'term': term,
             'action': 'my_paypal_fetch'
         };
 
@@ -229,36 +232,47 @@ function my_paypal_javascript() { ?>
 add_action( 'wp_ajax_my_paypal_fetch', 'my_paypal_fetch' );
 function my_paypal_fetch() {
 
-    $curl = curl_init();
+    $termid = $_POST['term'];
 
-    $url = "https://api.sandbox.paypal.com/v1/oauth2/token";
+    $ch = curl_init();
     $clientId = "AXUR-qsubY11BcbY5BDvcB9OQXbqqYfa5N4r3x3QTGDckgMeRfwvfthfBB4_99wbXSVhQY9xmElSFuC0";
     $secret = "EAEshZBm33rQLPXkS4lYqpAFUZqGmSFisqA9uUcxCwgUhvUAVS5N8q5q1lJTFlGS8Fb9r6ll5SZlOeVb";
 
-    curl_setopt_array($curl, array(
-    CURLOPT_URL => $url,
-    CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_ENCODING => "",
-    CURLOPT_MAXREDIRS => 10,
-    CURLOPT_TIMEOUT => 0,
-    CURLOPT_FOLLOWLOCATION => true,
-    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-    CURLOPT_CUSTOMREQUEST => "POST",
-    //We need to send grant_type=client_credentials in POST Request Body
-    CURLOPT_POSTFIELDS => "grant_type=client_credentials",
-    //Setting Basic Authentication using Client ID and Secret
-    CURLOPT_USERPWD => $clientId.":".$secret,
-    // This specific header needs to be set for the API call to work
-    CURLOPT_HTTPHEADER => array("Content-Type: application/x-www-form-urlencoded"),)
-    ); 
+    curl_setopt($ch, CURLOPT_URL, "https://api.sandbox.paypal.com/v1/oauth2/token");
+    curl_setopt($ch, CURLOPT_HEADER, false);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
+    curl_setopt($ch, CURLOPT_USERPWD, $clientId.":".$secret);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, "grant_type=client_credentials");
+    curl_setopt($ch, CURLOPT_HTTPHEADER, "Accept: application/json, Accept-Language: fr_CA");
 
-    //make API request
-    $result = curl_exec($curl);
-    $json = json_decode($result);
-    $access_token = $json->access_token;
+    $result = curl_exec($ch);
+    $err = curl_error($ch);
 
-    return wp_send_json ($access_token);
+    $access_token="";
+    if ($err) {
+        echo "cURL Error #:" . $err;
+    } else {
+        $json = json_decode($result);
+        $access_token = $json->access_token;
+    }
 
+    $current_user = wp_get_current_user();
+
+    $get_earn_counts = get_term_meta($termid, 'earn_play_loop', true);
+
+    $i = 0;
+    foreach($get_earn_counts as $get_earn_count){
+        $count_earn[$i] = $get_earn_count['earn'];
+        $i++;
+    }
+    $array_sum_get_counts = array_sum($count_earn);
+
+    $command = dirname(__FILE__).'/paypal.sh ' . $access_token . ' ' . $current_user->user_email . ' ' . round($array_sum_get_counts, 2) . ' ' . time() .' 2>&1 & ';
+    $output = shell_exec($command);
+    
+    return wp_send_json ($output);
 }
 
 ?>

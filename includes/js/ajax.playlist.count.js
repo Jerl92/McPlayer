@@ -9,7 +9,6 @@ function count_playlist($, currentTrack) {
         },
         dataType: 'JSON',
         success: function(data){
-            console.log(data);
             jQuery( "#add_count" ).html(data);
             setTimeout(function() {
                 jQuery( "#add_count" ).html(null);
