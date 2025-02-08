@@ -128,79 +128,68 @@ function user_if_login() {
 	} else {
 		if(isset($_COOKIE['userid'])) {
 			return $_COOKIE['userid'];
-		}
-	}
-}
-
-class GetMacAddr{
-
-	var $return_array = array(); // ????MAC???????
-	var $mac_addr;
-	
-	function __construct($os_type){
-		switch ( strtolower($os_type) ){
-			case "linux":
-			$this->forLinux();
-			break;
-			case "solaris":
-			break;
-			case "unix":
-			break;
-			case "aix":
-			break;
-			default:
-			$this->forWindows();
-			break;
-		}
-		$temp_array = array();
-		foreach ( $this->return_array as $value ){
-			if (preg_match("/[0-9a-f][0-9a-f][:-]"."[0-9a-f][0-9a-f][:-]"."[0-9a-f][0-9a-f][:-]"."[0-9a-f][0-9a-f][:-]"."[0-9a-f][0-9a-f][:-]"."[0-9a-f][0-9a-f]/i",$value,
-			$temp_array ) ){
-				$this->mac_addr = $temp_array[0];
-				break;
-			}
-			
-		}
-		unset($temp_array);
-		return $this->mac_addr;
-	}
-	
-	function forWindows(){
-		@exec("ipconfig /all", $this->return_array);
-		if ( $this->return_array )
-		return $this->return_array;
-		else{
-			$ipconfig = $_SERVER["WINDIR"]."\system32\ipconfig.exe";
-			if ( is_file($ipconfig) )
-				@exec($ipconfig." /all", $this->return_array);
-			else
-			@exec($_SERVER["WINDIR"]."\system\ipconfig.exe /all", $this->return_array);
-			return $this->return_array;
-		}
-	}
-	
-	function forLinux(){
-		@exec("ifconfig -a", $this->return_array);
-		return $this->return_array;
-	}
-
-}
-
-function set_userid_cookie() {
-	$cookie_name = 'userid';
-		$mac = new GetMacAddr(PHP_OS);
-		$str = str_replace(":", '', $mac=$mac->mac_addr);
-
-		for ( $pos=0; $pos < strlen($str); $pos ++ ) {
-			$byte = substr($str, $pos);
-			$hash[] .=  ord($byte);
-		}
-
-		$cookie_value = implode($hash);
-		if(!isset($_COOKIE[$cookie_name])) {
+		} else {
 			header('Refresh: 0');
 		}
-		setcookie($cookie_name, $cookie_value, time() + (86400 * 30)); // 86400 = 1 day
+	}
+}
+
+function ip2int($ip){
+	$chunks = explode(".", $ip);
+	$i = 0;
+	foreach($chunks as $chunk){
+	  $int[$i] = $chunk;
+	  $i++;
+	}
+	return implode($int);
+}
+
+function ip2long_v6($ip) {
+    $ip_n = inet_pton($ip);
+    $bin = '';
+    for ($bit = strlen($ip_n) - 1; $bit >= 0; $bit--) {
+        $bin = sprintf('%08b', ord($ip_n[$bit])) . $bin;
+    }
+
+    if (function_exists('gmp_init')) {
+        return gmp_strval(gmp_init($bin, 2), 10);
+    } elseif (function_exists('bcadd')) {
+        $dec = '0';
+        for ($i = 0; $i < strlen($bin); $i++) {
+            $dec = bcmul($dec, '2', 0);
+            $dec = bcadd($dec, $bin[$i], 0);
+        }
+        return $dec;
+    } else {
+        trigger_error('GMP or BCMATH extension not installed!', E_USER_ERROR);
+    }
+}
+  
+function set_userid_cookie() {
+	$cookie_name = 'userid';
+	if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+		$ip = $_SERVER['HTTP_CLIENT_IP'];
+	} elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+		$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+	} elseif (!empty($_SERVER["HTTP_CF_CONNECTING_IP"])) {
+		$ip = $_SERVER["HTTP_CF_CONNECTING_IP"];
+	} else {
+		$ip = $_SERVER['REMOTE_ADDR'];
+	}
+    $output = rand(1,9);
+    for($i=0; $i<12; $i++) {
+        $output .= rand(0,9);
+    }
+	$isValid = filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4);
+	if($isValid === false){
+		$ip_ = ip2long_v6($ip);
+	} else {
+		$ip_ = ip2int($ip);
+	}
+	$cookie_value = $ip_.$output;
+	if(!isset($_COOKIE[$cookie_name])) {
+		setcookie($cookie_name, $cookie_value, time() + ((86400 * 30) * 12)); // 86400 = 1 day * 12 = 1 year
+	}
 }
 add_action( 'init', 'set_userid_cookie');
 
