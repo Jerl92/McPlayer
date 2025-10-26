@@ -57,6 +57,8 @@ function artist_count_taxonomy_custom_fields($tag) {
     $get_counts = get_term_meta($t_id, 'count_play_loop', true);
     $get_earn_counts = get_term_meta($t_id, 'earn_play_loop', true);
 
+    $count_earn = array();
+    $user_count = array();
     $i = 0;
     foreach($get_earn_counts as $get_earn_count){
         $count_earn[$i] = $get_earn_count['earn'];
