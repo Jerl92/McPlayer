@@ -365,6 +365,12 @@ function role_external( $query ) {
 add_action('admin_init','rpt_add_role_caps',999);
 
     function rpt_add_role_caps() {
+        
+        add_role('artist', 'artist', array(
+        'read' => true, // True allows that capability
+        'edit_posts' => true,
+        'delete_posts' => false, // Use false to explicitly deny
+        ));
 
         // Add the roles you'd like to administer the custom post types
         $roles = array('artist');
