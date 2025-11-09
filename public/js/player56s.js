@@ -207,23 +207,12 @@ var initMediaSession = function(filename) {
     return navigator.mediaSession.metadata;
 };
 
-function shuffle(arra1) {
-    let ctr = arra1.length;
-    let temp;
-    let index;
-
-    // While there are elements in the array
-    while (ctr > 0) {
-// Pick a random index
-        index = Math.floor(Math.random() * ctr);
-// Decrease ctr by 1
-        ctr--;
-// And swap the last element with it
-        temp = arra1[ctr];
-        arra1[ctr] = arra1[index];
-        arra1[index] = temp;
-    }
-    return arra1;
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]]; // Swap elements
+  }
+  return array;
 }
 
 function getCookie(c_name) {
@@ -327,12 +316,12 @@ jQuery( function player56s($) {
                         }, this);
                         if ( allready == 0 ) {
                             player56sInstance.addTrack(audiofileLink_add[0].innerText, audiofileLink_add[1].innerText, audiofileLink_add[3].innerText, audiofileLink_add[2].innerText);
-                            if (playlist_shuffle[0].innerText === '1') {
+                            if (playlist_shuffle[0].innerText === "1") {
                                 shuffle(player56sInstance.tracks);                    
                             }
                         }
                         player56sInstance.tracks.forEach(function(element, index) {
-                            if (element.postid === '0' && player56sInstance.tracks.length >= 2) {
+                            if (element.postid === "0" && player56sInstance.tracks.length >= 2) {
                                 player56sInstance.pseudoPause();
                                 player56sInstance.pause();
                                 player56sInstance.tracks.splice(index, 1);
