@@ -319,12 +319,10 @@ jQuery( function player56s($) {
                                 }
                             }
                         }, this);
-                        if ( allready == 0 ) {
+                        if ( allready === 0 ) {
                             player56sInstance.addTrack(audiofileLink_add[0].innerText, audiofileLink_add[1].innerText, audiofileLink_add[3].innerText, audiofileLink_add[2].innerText);
-                            if (playlist_shuffle[0].innerText === "1") {
-                                shuffle(player56sInstance.tracks);                    
-                            }
                         }
+                      
                         player56sInstance.tracks.forEach(function(element, index) {
                             if (element.postid === "0" && player56sInstance.tracks.length >= 2) {
                                 player56sInstance.pseudoPause();
