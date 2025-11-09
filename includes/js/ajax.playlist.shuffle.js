@@ -1,5 +1,23 @@
 function ajax_shuffle($)  {
 
+jQuery.ajax({    
+            type: 'post',
+            url: shuffle_ajax_url,
+            data: {
+                'object_id': null,
+                'action': 'shuffle_playlist'
+            },
+            dataType: 'JSON',
+            success: function(data){
+                //print stuff heres
+                jQuery("#player56s-shuffle").html(data);
+            },
+            error: function(errorThrown){
+                console.log(errorThrown);
+                //error stuff here.text
+            }
+        });
+    
     jQuery('.shuffle_player_toggle').on('click', function(event) {
 
         jQuery.ajax({    
