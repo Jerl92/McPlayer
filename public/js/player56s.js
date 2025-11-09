@@ -534,6 +534,8 @@ jQuery( function player56s($) {
             });
             this.$container.find(".player56s-track-next").addClass('enabled');
             this.$container.find(".player56s-track-prev").addClass('enabled');
+            this.$container.find(".player56s-track-next").css('display', 'block');
+            this.$container.find(".player56s-track-prev").css('display', 'block');
         }
         removeAll() {
             this.pseudoPause();
@@ -548,6 +550,8 @@ jQuery( function player56s($) {
             this.$container.find(".player56s-album").html('<span>Just another WordPress site</span>');
             this.$container.find(".player56s-album-img").html('<img src="' + window.location.origin + '/wp-content/plugins/McPlayer/public/css/blue-note.png"></img>');
             $("#rs-saved-for-later").html('<li id="rs-saved-for-later-nothing" style="text-align: center; padding:15px 0px;">Nothing in the playlist</li>');
+            this.$container.find(".player56s-track-next").css('display', 'none');
+            this.$container.find(".player56s-track-prev").css('display', 'none');
         }
         destroy() {
             var uniqueID = this.$container.attr("id");
