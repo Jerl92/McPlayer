@@ -1,10 +1,10 @@
 <?php
 
 // Base URL of the application
-define('BASE_URL','https://'. $_SERVER['HTTP_HOST'].'/wp-content/plugins/McPlayer/includes/');
+define('BASE_URL_MCPLAYER','https://'. $_SERVER['HTTP_HOST'].'/wp-content/plugins/McPlayer/includes/');
 
 // Path of the download-link.php file
-define('DOWNLOAD_PATH', BASE_URL.'download.php');
+define('DOWNLOAD_PATH', BASE_URL_MCPLAYER.'download.php');
 
 // Path of the token directory to store keys
 define('TOKEN_DIR', dirname(__FILE__) . '/tokens');
