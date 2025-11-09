@@ -15,7 +15,7 @@ In the admin panel, there a sub-page to let's do bulk add albums from music.yout
 Without any limitation.</br>
 
 ## Build-with
-McPlayer is build with the folloing JS</br>
+McPlayer is build with the following JS</br>
 
 Unobtrusive page transitions with jQuery.</br>
 https://github.com/miguel-perez/smoothState.js/</br>
