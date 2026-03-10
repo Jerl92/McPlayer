@@ -105,12 +105,6 @@ class Mcplayer_Public
 		 * class.
 		 */
 
-		wp_enqueue_script('jquery-ui', plugin_dir_url(__FILE__) . 'js/jquery-ui.js', array('jquery'), $this->version, false);
-
-		wp_enqueue_script( 'aim',  plugin_dir_url( __FILE__ ) . 'js/jquery.aim.js', array( 'jquery' ), $this->version, false );
-
-		wp_enqueue_script( 'resizesensor',  plugin_dir_url( __FILE__ ) . 'js/resizeSensor.js', array( 'jplayer' ), $this->version, false );
-
 		wp_enqueue_script('jplayer',  plugin_dir_url(__FILE__) . 'js/jplayer.js', array('jquery'), $this->version, false);
 
 		wp_enqueue_script('player56s',  plugin_dir_url(__FILE__) . 'js/player56s.js', array('jplayer'), $this->version, false);
