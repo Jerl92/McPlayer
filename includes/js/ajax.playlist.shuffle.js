@@ -27,6 +27,9 @@ function ajax_shuffle($)  {
                     jQuery(".player56s").player56s($);
                 }
 
+                jQuery("#player56s-shuffle").html(null);
+                ajax_shuffle($);
+
             },
             error: function(errorThrown){
                 console.log(errorThrown);
@@ -36,6 +39,41 @@ function ajax_shuffle($)  {
 
     });
 
+}
+
+function ajax_shuffle_init($) {
+    
+        jQuery.ajax({    
+            type: 'post',
+            url: shuffle_ajax_url,
+            data: {
+                'object_id': null,
+                'action': 'if_shuffle'
+            },
+            dataType: 'JSON',
+            success: function(data){
+                //print stuff heres
+                jQuery("#player56s-shuffle").html(data);
+                
+                if (data == 0){
+                    jQuery(".shuffle_player_toggle").css("box-shadow", "");
+                    ajax_no_shuffle($);
+                }
+
+                if (data == 1){
+                    jQuery(".shuffle_player_toggle").css("box-shadow", "2.5px 2.5px 2.5px #000");
+                    jQuery(".player56s").player56s($);
+                }
+
+                jQuery("#player56s-shuffle").html(null);
+
+            },
+            error: function(errorThrown){
+                console.log(errorThrown);
+                //error stuff here.text
+            }
+        });
+    
 }
 
 function ajax_no_shuffle($)  {
@@ -63,4 +101,5 @@ function ajax_no_shuffle($)  {
 
 jQuery(document).ready(function($) {
     ajax_shuffle($);
+    ajax_shuffle_init($);
 });

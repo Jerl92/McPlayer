@@ -16,6 +16,7 @@ function ajax_playlist($, object_id)  {
                     
                     jQuery("#player56s-addtrack").html(null);
                     
+                    ajax_shuffle_init($);
                 },
                 error: function(errorThrown){
                     //error stuff here.text

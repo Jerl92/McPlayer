@@ -107,7 +107,7 @@ function url_error_genre() {
         $term_artist = $term_obj_list;
     }
 
-    $result = shell_exec('sh /var/www/mcplayer.ca/wp-content/plugins/McPlayer/admin/partials/spotify.sh'.' '.$term_artist->slug);
+    $result = shell_exec('sh /var/www/mcplayer.ca/wp-content/plugins/McPlayer/admin/partials/spotify.sh' . ' ' . $term_artist->slug);
 
     $json_decode = json_decode($result);
 
