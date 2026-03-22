@@ -965,25 +965,21 @@ jQuery( function player56s($) {
         bindEvents() {
             var self = this, uniqueID = self.$container.attr("id");
         
-            var Player56sCurrentTrack = self.getCookie("Player56sCurrentTrack");
+            var Player56sTrack = self.getCookie("Player56sCurrentTrack");
             var Player56sSeek = self.getCookie("Player56sSeek");
-            if(Player56sCurrentTrack && Player56sSeek){
+            if(Player56sTrack && Player56sSeek){
                 var Refersh = setInterval(function(){
-                    var i = 0;
                     var player56scurrenttrack = jQuery("#player56s-currenttrack");
                     var player56scurrentseek = jQuery("#player56s-seek-current-percent");
                     self.tracks.forEach(function(element, index) {
-                        if(parseInt(element.postid) === parseInt(Player56sCurrentTrack)){
-                            self.playNow(parseInt(i));
-                            setTimeout(function() {
-                                $("#player56s-isRefresh").html(1);
-                                willSeekTo(self, parseInt(Player56sSeek));
-                            }, 1000);
+                        if(parseInt(element.postid) === parseInt(Player56sTrack)){
+                            self.playNow(parseInt(index));
+                            $("#player56s-isRefresh").html(1);
+                            willSeekTo(self, parseInt(Player56sSeek));
                         }
-                        i++;
                     });
 
-                    if(player56scurrenttrack[0].innerText === Player56sCurrentTrack && player56scurrentseek >= Player56sSeek) {
+                    if(player56scurrenttrack[0].innerText === Player56sTrack && player56scurrentseek >= Player56sSeek) {
                         clearInterval(Refersh);
                         self.DeleteCookie(Player56sCurrentTrack);
                         self.DeleteCookie(Player56sSeek);
