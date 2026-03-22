@@ -973,8 +973,8 @@ jQuery( function player56s($) {
                     var player56scurrentseek = jQuery("#player56s-seek-current-percent");
                     self.tracks.forEach(function(element, index) {
                         if(parseInt(element.postid) === parseInt(Player56sTrack)){
-                            self.playNow(parseInt(index));
                             $("#player56s-isRefresh").html(1);
+                            self.playNow(parseInt(index));
                             willSeekTo(self, parseInt(Player56sSeek));
                         }
                     });
