@@ -92,7 +92,7 @@ function wp_playlist_ajax_scripts() {
 	wp_localize_script( 'wp-ajax-search-get-scripts', 'search_get_ajax_url', admin_url( 'admin-ajax.php' ) );
 	wp_enqueue_script( 'wp-ajax-search-get-scripts' );
 
-	/* Load current added album to add saved on pâge load */
+	/* Load current added album to add saved on p창ge load */
 	wp_register_script( 'wp-ajax-current-album', $url . "js/ajax.current.album.js", array( 'jquery' ), '1.0.0', true );
 	wp_localize_script( 'wp-ajax-current-album', 'current_album_ajax_url', admin_url( 'admin-ajax.php' ) );
 	wp_enqueue_script( 'wp-ajax-current-album' );
@@ -1101,7 +1101,7 @@ function count_play($post) {
 		$ip = $_SERVER['REMOTE_ADDR'];
 	}
 
-	$details = json_decode(file_get_contents("https://ip-get-geolocation.com/api/json/{$ip}?key=4e2a13a94c44f3dee6f02ab9b436bd26"), true);
+	$details = json_decode(file_get_contents("http://ip-api.com/json/' . $ip . '"), true);
 	$loc['city'] = $details['city'];
 	$loc['regionName'] = $details['regionName'];
 	$loc['country'] = $details['country'];
