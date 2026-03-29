@@ -5,25 +5,26 @@ function presenters_taxonomy_custom_fields($tag) {
     // Check for existing taxonomy meta for the term you're editing  
      $t_id = $tag->term_id; // Get the ID of the term you're editing
      $get_term_color = get_term_meta($t_id, 'meta_count_earn', true);
-     
-     if($_GET['tag_ID']){
  ?>  
 	
-		 <tr class="form-field">  
-		     <th scope="row" valign="top">  
-		         <label for="presenter_id"><?php _e('Earn for eatch play'); ?></label>  
-		     </th>  
-		     <td>  
+	<tr class="form-field">  
+		<th scope="row" valign="top">  
+		 	<label for="presenter_id"><?php _e('Earn for each play'); ?></label>  
+		</th>  
+		<td>  
 			<?php if(current_user_can('artist')) {
-	        		echo '<input type="text" name="none" id="none" value="'. $get_term_color .'" class="my-color-field" style="width: 75px;" step="0.0001" disabled></input>';
+				echo '<input type="text" name="none" id="none" value="'. $get_term_color .'" class="my-color-field" style="width: 75px;" step="0.0001" disabled></input>';
 			} else {
-				echo '<input type="text" name="meta_color" id="meta_color" value="'. $get_term_color .'" class="my-color-field" style="width: 75px;" step="0.0001"></input>';
+				if($get_term_color == ''){
+					echo '<input type="text" name="meta_color" id="meta_color" value="0.049" class="my-color-field" style="width: 75px;" step="0.0001"></input>';
+				} else {
+					echo '<input type="text" name="meta_color" id="meta_color" value="'. $get_term_color .'" class="my-color-field" style="width: 75px;" step="0.0001"></input>';
+				} 
 			} ?>
-		     </td>  
-		 </tr>
-		
-		 <?php  
-	 }  
+		</td>  
+	</tr>
+	
+	<?php
  }  
 
  // A callback function to save our extra taxonomy field(s)  
@@ -33,7 +34,11 @@ function presenters_taxonomy_custom_fields($tag) {
 	} elseif ( isset($_POST['meta_color']) && is_numeric($_POST['meta_color']) ) {
         	update_term_meta( $term_id, 'meta_count_earn', $_POST['meta_color'] );
     	} else {
-    		wp_die('Not a valide numeric number for Earn for eatch play');
+    		if(!isset($_POST['meta_color']) && !is_numeric($_POST['meta_color'])) {
+    			update_term_meta( $term_id, 'meta_count_earn', '0' );
+    		} else {
+    			wp_die('Not a valide numeric number for Earn for each play');
+    		}
     	} 
 } 
 
