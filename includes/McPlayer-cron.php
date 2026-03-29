@@ -162,11 +162,11 @@ function count_cron_function() {
         }
         
         $get_counts_ = array(date( 'Y-m-d H:i:s', current_time( 'timestamp' ) ), arrays_value);
-        if($get_counts != '' && $get_counts != null){
-        	update_term_meta($term->term_id, 'count_play_loop', array($get_counts_));
-        } else {
-	        array_push($get_counts, $get_counts_);
+        if(is_array($get_counts)){
+        	array_push($get_counts, $get_counts_);
 	        update_term_meta($term->term_id, 'count_play_loop', $get_counts);
+        } else {
+        	update_term_meta($term->term_id, 'count_play_loop', array($get_counts_));
         }
    
     }

@@ -1088,7 +1088,7 @@ function count_play($post) {
 		update_post_meta($object_id, 'count_play_loop', $countplay);
 	} else {
 		$countplay = intval(1);
-		update_post_meta($object_id, 'count_play_loop', $countplay);
+		add_post_meta($object_id, 'count_play_loop', $countplay);
 	}
 
 	if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
@@ -1109,6 +1109,8 @@ function count_play($post) {
 	$date = current_time( 'timestamp' );
 	
 	$get_term_color = get_term_meta( implode($termid), 'meta_count_earn', true );
+	
+	$get_count_play_term = get_term_meta(implode($termid), 'earn_play_loop', true );
 
 	$get_count_play_term_ = array(
 		'earn'   => $get_term_color,
@@ -1118,14 +1120,12 @@ function count_play($post) {
 		'postid' => $object_id,
 		'datetime' => $date
 	);
-	
-	$get_count_play_term = update_term_meta(implode($termid), 'earn_play_loop', true );
 
-	if($get_count_play_term != '' && $get_count_play_term != null) {
+	if(is_array($get_count_play_term)) {
 		array_push($get_count_play_term, $get_count_play_term_);
 		update_term_meta(implode($termid), 'earn_play_loop', $get_count_play_term );
 	} else {
-		update_term_meta(implode($termid), 'earn_play_loop', array($get_count_play_term_) );
+		update_term_meta(implode($termid), 'earn_play_loop', [$get_count_play_term_] );
 	}
 
 	return wp_send_json ($countplay);

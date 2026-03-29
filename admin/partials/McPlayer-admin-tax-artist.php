@@ -67,6 +67,22 @@ function artist_count_taxonomy_custom_fields($tag) {
 	$get_counts = get_term_meta($t_id, 'count_play_loop', true);
 	$get_earn_counts = get_term_meta($t_id, 'earn_play_loop', true);
 	
+	
+	
+	$get_songs_args = array(
+		'post_type' => 'music',
+		'posts_per_page' => -1,
+	);
+
+	$get_songs = get_posts($get_songs_args);
+	
+	foreach($get_songs as $get_song){
+		delete_post_meta( $get_song->ID, "count_play_loop");
+	}
+	
+	delete_term_meta($t_id, 'count_play_loop');
+	delete_term_meta($t_id, 'earn_play_loop');
+	
 	$count_earn = array();
 	$user_count = array();
 	$i = 0;
