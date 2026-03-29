@@ -275,9 +275,6 @@ function nopio_admin_user_profile_category_select( $user ) {
 	<?php
 }
 
-add_action( 'personal_options_update', 'nopio_admin_save_user_categories' );
-add_action( 'edit_user_profile_update', 'nopio_admin_save_user_categories' );
-
 function nopio_admin_save_user_categories( $user_id ) {
 	$user = get_userdata( $user_id );
 
@@ -287,37 +284,8 @@ function nopio_admin_save_user_categories( $user_id ) {
 		update_user_meta( $user_id, '_artist_role_set', $new_categories_ids );
 	}
 }
-
-/**
- * Overwrite args of custom post type registered by plugin
- */
-add_filter( 'register_post_type_args', 'change_capabilities_of_course_document' , 10, 2 );
-
-function change_capabilities_of_course_document( $args, $post_type ){
-
- // Do not filter any other post type
- if ( 'music' !== $post_type ) {
-
-     // Give other post_types their original arguments
-     return $args;
-
- }
-
-// Change the capabilities of the "course_document" post_type
-$args['capabilities'] = array(
-	'edit_post'          => 'edit_music', 
-	'read_post'          => 'read_music', 
-	'delete_post'        => 'delete_music', 
-	'edit_posts'         => 'edit_musics', 
-	'publish_posts'      => 'publish_musics',       
-	'read_private_posts' => 'read_private_musics', 
-	'create_posts'       => 'edit_musics', 
-);
-
-  // Give the course_document post type it's arguments
-  return $args;
-
-}
+add_action( 'personal_options_update', 'nopio_admin_save_user_categories' );
+add_action( 'edit_user_profile_update', 'nopio_admin_save_user_categories' );
 
 function kurse_role_caps() {
 	global $pagenow;
@@ -344,7 +312,7 @@ function my_media_article_category_query( $query ) {
 			$query->set( 'tax_query', array(
 				array (
 					'taxonomy' => 'artist',
-					'field' => 'id',
+					'field' => 'term_id',
 					'terms' => array( $artist ),
 				)
 			) );
@@ -353,7 +321,6 @@ function my_media_article_category_query( $query ) {
 add_filter( 'pre_get_posts', 'my_media_article_category_query' );
 
 
-add_filter( 'ajax_query_attachments_args', 'role_external' );
 function role_external( $query ) {
     $user_id = get_current_user_id();
     if ( $user_id && current_user_can('artist') ) {
@@ -361,47 +328,60 @@ function role_external( $query ) {
     }
     return $query;
 }
+add_filter( 'ajax_query_attachments_args', 'role_external' );
 
-add_action('admin_init','rpt_add_role_caps',999);
+function role_exists( $role ) {
+    if ( ! empty( $role ) ) {
+        return wp_roles()->is_role( $role );
+    }
 
-    function rpt_add_role_caps() {
+    return false;
+}
+
+function rpt_add_role_caps() {
+    
+    	if(!role_exists('artist')) {	
         
-        add_role('artist', 'artist', array(
-        'read' => true, // True allows that capability
-        'edit_posts' => true,
-        'delete_posts' => false, // Use false to explicitly deny
-        ));
-
-        // Add the roles you'd like to administer the custom post types
-        $roles = array('artist');
-
-        // Loop through each role and assign capabilities
-        foreach($roles as $the_role) {    
-             $role = get_role($the_role);               
-             $role->add_cap( 'read' );
-             $role->add_cap( 'read_music');
-             $role->add_cap( 'edit_music' );
-             $role->add_cap( 'edit_musics' );
-             $role->add_cap( 'edit_published_musics' );
-             $role->add_cap( 'publish_musics' );
-             $role->add_cap( 'delete_published_musics' );
+	        add_role('artist', 'Artist', array(
+	        'read' => true, // True allows that capability
+	        'edit_posts' => true,
+	        'delete_posts' => false, // Use false to explicitly deny
+	        ));
+	
+	        // Add the roles you'd like to administer the custom post types
+	        $roles = array('artist');
+	
+	        // Loop through each role and assign capabilities
+	        foreach($roles as $the_role) {    
+	             $role = get_role($the_role);               
+	             $role->add_cap( 'read' );
+	             $role->add_cap( 'read_music');
+	             $role->add_cap( 'edit_music' );
+	             $role->add_cap( 'edit_musics' );
+	             $role->add_cap( 'edit_published_musics' );
+	             $role->add_cap( 'publish_musics' );
+	             $role->add_cap( 'delete_published_musics' );
+	             $role->add_cap( 'manage_artist_terms' );
+	             $role->add_cap( 'edit_artist_terms' );
+	        }
+	        
         }
-	}
+}
+add_action('admin_init','rpt_add_role_caps', 100);
 
-	add_action('admin_menu','rpt_remove_role_caps',999);
-    function rpt_remove_role_caps() {
-		if( !current_user_can( 'administrator' ) ):
-			remove_menu_page('edit.php'); // Posts
-			remove_menu_page('upload.php'); // Media
-			remove_menu_page('link-manager.php'); // Links
-			remove_menu_page('edit-comments.php'); // Comments
-			remove_menu_page('edit.php?post_type=page'); // Pages
-			remove_menu_page('plugins.php'); // Plugins
-			remove_menu_page('themes.php'); // Appearance
-			remove_menu_page('users.php'); // Users
-			remove_menu_page('tools.php'); // Tools
-			remove_menu_page('options-general.php'); // Settings
-		endif;
-	}
+function rpt_remove_role_caps() {
+	if( current_user_can( 'artist' ) ):
+		remove_menu_page('edit.php'); // Posts
+		remove_menu_page('link-manager.php'); // Links
+		remove_menu_page('edit-comments.php'); // Comments
+		remove_menu_page('edit.php?post_type=page'); // Pages
+		remove_menu_page('plugins.php'); // Plugins
+		remove_menu_page('themes.php'); // Appearance
+		remove_menu_page('users.php'); // Users
+		remove_menu_page('tools.php'); // Tools
+		remove_menu_page('options-general.php'); // Settings
+	endif;
+}
+add_action('admin_menu','rpt_remove_role_caps', 100);
 
 ?>
