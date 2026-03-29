@@ -42,7 +42,7 @@ function frame($) {
 			cache: false,
 			cacheLength: 0,
 			prefetch: true,
-			prefetchOn: 'aim',
+			prefetchOn: 'mouseover touchstart',
 			scroll: true,
 			locationHeader: "X-SmoothState-Location",
 			onStart: {

@@ -1074,13 +1074,8 @@ add_action( 'wp_ajax_count_play', 'count_play' );
 add_action( 'wp_ajax_nopriv_count_play', 'count_play' );
 
 function count_play($post) {
-	$i = 0;
 	$object_id = $_POST['object_id'];
 	$get_count_play = get_post_meta($object_id, 'count_play_loop', true);
-	$get_saved_played = get_user_meta( user_if_login(), 'rs_saved_played', true );
-
-	$date = date('m/d/Y h:i:s a', time());
-	$strtodate = strtotime($date);
 
 	$term_obj_lists = get_the_terms( $object_id, 'artist' );
 
@@ -1088,43 +1083,13 @@ function count_play($post) {
 		$termid[] = $term->term_id;
 	}
 
-	$get_count_play_term = get_term_meta(implode($termid), 'earn_play_loop', true );
-
-	if($get_saved_played != null){
-		$get_saved_played_array[$i] = array($strtodate, $object_id);
-		$i++;
-		foreach($get_saved_played as $get_saved_played_){
-			$get_saved_played_array[$i] = $get_saved_played_;
-			$i++;
-		}
-	} else {
-		$get_saved_played_array[$i] = array($strtodate, $object_id);
-	}
-
-	update_user_meta( user_if_login(), 'rs_saved_played', $get_saved_played_array );
-
-	if($get_count_play) {
+	if($get_count_play != '' && $get_count_play != null) {
 		$countplay = intval($get_count_play) + 1;
 		update_post_meta($object_id, 'count_play_loop', $countplay);
 	} else {
 		$countplay = intval(1);
-		add_post_meta($object_id, 'count_play_loop', $countplay);
+		update_post_meta($object_id, 'count_play_loop', $countplay);
 	}
-
-	$get_term_color = get_term_meta( implode($termid), 'meta_count_earn', true );
-	$get_earn_play = get_post_meta($object_id, 'earn_play_loop', true);
-
-	$return = array(
-		'earn'   => $get_term_color,
-		'userid' => user_if_login()
-	);
-
-	if ( empty( $get_earn_play ) ) {
-		$get_earn_play = array();
-	}
-
-	array_unshift($get_earn_play, $return);
-	update_post_meta( $object_id, 'earn_play_loop', $get_earn_play );
 
 	if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
 		$ip = $_SERVER['HTTP_CLIENT_IP'];
@@ -1140,20 +1105,27 @@ function count_play($post) {
 	$loc['city'] = $details['city'];
 	$loc['regionName'] = $details['regionName'];
 	$loc['country'] = $details['country'];
+	
+	$date = current_time( 'timestamp' );
+	
+	$get_term_color = get_term_meta( implode($termid), 'meta_count_earn', true );
 
 	$get_count_play_term_ = array(
 		'earn'   => $get_term_color,
 		'userid' => user_if_login(),
 		'ipv4'	=> $ip,
 		'loc'	=> $loc,
-		'postid' => $object_id
+		'postid' => $object_id,
+		'datetime' => $date
 	);
+	
+	$get_count_play_term = update_term_meta(implode($termid), 'earn_play_loop', true );
 
-	if($get_count_play_term) {
+	if($get_count_play_term != '' && $get_count_play_term != null) {
 		array_push($get_count_play_term, $get_count_play_term_);
 		update_term_meta(implode($termid), 'earn_play_loop', $get_count_play_term );
 	} else {
-		add_term_meta(implode($termid), 'earn_play_loop', [$get_count_play_term_] );
+		update_term_meta(implode($termid), 'earn_play_loop', array($get_count_play_term_) );
 	}
 
 	return wp_send_json ($countplay);

@@ -1,4 +1,4 @@
-function count_playlist($, currentTrack) {
+function count_playlist(currentTrack) {
 
     jQuery.ajax({    
         type: 'post',

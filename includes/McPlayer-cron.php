@@ -127,12 +127,7 @@ function artist_count_cron_function() {
 
         echo "\n";
 
-        $getcountplay = get_term_meta( $term->term_id, 'count_play_loop_' , true );
-        if($getcountplay == null) {
-            add_term_meta( $term->term_id, 'count_play_loop_' , array_sum($sum_count_play) );
-        } else {
-            update_term_meta( $term->term_id, 'count_play_loop_' , array_sum($sum_count_play) );
-        }
+        update_term_meta( $term->term_id, 'count_play_loop_' , array_sum($sum_count_play));
 
     }
 
@@ -157,22 +152,23 @@ function count_cron_function() {
     foreach ($terms as $term){
         echo $term->name;
         $get_counts = get_term_meta($term->term_id, 'count_play_loop', true);
-        $get_earn_counts = get_term_meta($term->term_id, 'earn_play_loop', true);
-        if(!empty($get_earn_counts)){
-            foreach($get_earn_counts as $get_earn_count){
+        $get_earns = get_term_meta($term->term_id, 'earn_play_loop', true );
+        if(!empty($get_earns)){
+            foreach($get_earns as  $get_earn){
                 $arrays_value += 1;
             }
         } else {
             $arrays_value = intval(0);
         }
-
-        if(empty($get_counts)){
-            $get_counts = [time() => $arrays_value];
-            add_term_meta($term->term_id, 'count_play_loop', $get_counts);
+        
+        $get_counts_ = array(date( 'Y-m-d H:i:s', current_time( 'timestamp' ) ), arrays_value);
+        if($get_counts != '' && $get_counts != null){
+        	update_term_meta($term->term_id, 'count_play_loop', array($get_counts_));
         } else {
-            $get_counts[time()] = $arrays_value;
-            update_term_meta($term->term_id, 'count_play_loop', $get_counts);
+	        array_push($get_counts, $get_counts_);
+	        update_term_meta($term->term_id, 'count_play_loop', $get_counts);
         }
+   
     }
 }
 

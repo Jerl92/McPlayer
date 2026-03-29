@@ -1,38 +1,45 @@
-
 <?php
 
 add_action('admin_menu', 'register_genre_add_submenu_page');
 
 
 function register_genre_add_submenu_page() {
-  add_submenu_page( 'edit.php?post_type=music', 'Genre add Page', 'Genre add page', 'manage_options', 'genre-add-page', 'genre_add_submenu_page_callback' ); 
-  remove_submenu_page( 'edit.php?post_type=music', 'artist-private-page' );
+  add_submenu_page( 'edit.php?post_type=music', 'Genre add Page', 'Genre add page', 'manage_options', 'genre-add-page', 'genre_add_submenu_page_callback' );
 }
 
 
 function genre_add_submenu_page_callback() {
-        echo '<input type="submit" id="genreaddsubmit">';
+        echo '<br>';
+        echo '<button id="genreaddsubmit">start</button>';
+        echo '<div id="genreaddbox"></div>';
 }
 
 
 add_action( 'admin_footer', 'my_javascript' ); // Write our JS below here
 function my_javascript() { ?>
-    <script type="text/javascript" >
-
+    <script>
 
     function url_error($, element) {
 
-
-        var data = {
-            'action': 'url_error_genre',
+    $.ajax({
+        url: '<?php echo admin_url("admin-ajax.php"); ?>', // or use a localized script variable
+        type: 'POST',
+        dataType: 'json', // Expecting a JSON response
+        data: {
+            action: 'url_error_genre', // The action hook name for PHP
             'postid': element
-        };
+        },
+        success: function(response) {
+            console.log(response); // The 'response' will be a JSON object
+            $('#genreaddbox').append(element);
+            $('#genreaddbox').append(response);
+            $('#genreaddbox').append('<br>');
+        },
+        error: function(xhr, textStatus, errorThrown) {
+            $('#genreaddbox').append('AJAX error:'+ textStatus + errorThrown);
+        }
+    });
 
-
-        // since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php
-        jQuery.post(ajaxurl, data, function(response) {
-            console.log(response);
-        });
     }
 
 
@@ -51,7 +58,7 @@ function my_javascript() { ?>
                 setTimeout(function() {url_error($, element);}, index*500);
             }, this);
         });
-        
+
     }
 
 
@@ -107,19 +114,21 @@ function url_error_genre() {
         $term_artist = $term_obj_list;
     }
 
-    $result = shell_exec('sh /var/www/mcplayer.ca/wp-content/plugins/McPlayer/admin/partials/spotify.sh' . ' ' . $term_artist->slug);
-
-    $json_decode = json_decode($result);
-
-    $artists_items = $json_decode->artists->items;
-
-    foreach($artists_items as $artists_item){
-        $artist_item[] = $artists_item;
-    }
+    // $result = shell_exec('sh ' . plugin_dir_path( __FILE__ ) . 'spotify.sh' . ' ' . $term_artist->slug);
     
-    $terms = get_terms( 'genre', 'hide_empty=0');
+    $response = file_get_contents('https://tivomusicapi-staging-elb.digitalsmiths.net/sd/tivomusicapi/taps/v3/search/artist?name=' . $term_artist->slug);
 
-    $html = $artist_item[0]->genres;
+    $data = get_object_vars($response);
+
+    // $artists_items = $data['hits']['musicGenres'];
+    /*
+    $x = 0;
+    foreach($artists_items as $artists_item){
+        $html[$x] = $artists_item['name'];
+        $x++;
+    }
+
+    $terms = get_terms( 'genre', 'hide_empty=0');
 
     foreach($html as $genre){
         $allready = 0;
@@ -141,8 +150,8 @@ function url_error_genre() {
     }
 
     wp_set_object_terms($postid, $html_, 'genre');
-
-    return wp_send_json( $html );
+    */
+    wp_send_json($response);
 
 }
 
