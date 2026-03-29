@@ -92,7 +92,7 @@ function wp_playlist_ajax_scripts() {
 	wp_localize_script( 'wp-ajax-search-get-scripts', 'search_get_ajax_url', admin_url( 'admin-ajax.php' ) );
 	wp_enqueue_script( 'wp-ajax-search-get-scripts' );
 
-	/* Load current added album to add saved on p창ge load */
+	/* Load current added album to add saved on page load */
 	wp_register_script( 'wp-ajax-current-album', $url . "js/ajax.current.album.js", array( 'jquery' ), '1.0.0', true );
 	wp_localize_script( 'wp-ajax-current-album', 'current_album_ajax_url', admin_url( 'admin-ajax.php' ) );
 	wp_enqueue_script( 'wp-ajax-current-album' );
