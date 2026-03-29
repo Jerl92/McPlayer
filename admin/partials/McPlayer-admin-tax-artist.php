@@ -16,7 +16,7 @@ function presenters_taxonomy_custom_fields($tag) {
 				echo '<input type="text" name="none" id="none" value="'. $get_term_color .'" class="my-color-field" style="width: 75px;" step="0.0001" disabled></input>';
 			} else {
 				if($get_term_color == ''){
-					echo '<input type="text" name="meta_color" id="meta_color" value="0.049" class="my-color-field" style="width: 75px;" step="0.0001"></input>';
+					echo '<input type="text" name="meta_color" id="meta_color" value="0.047" class="my-color-field" style="width: 75px;" step="0.0001"></input>';
 				} else {
 					echo '<input type="text" name="meta_color" id="meta_color" value="'. $get_term_color .'" class="my-color-field" style="width: 75px;" step="0.0001"></input>';
 				} 
