@@ -237,7 +237,7 @@ function DeleteCookie(name) {
 
 jQuery( function player56s($) {
     var player56splaytimer = getCookie("player56splaytimer");
-    var player56sisRefresh = $("#player56s-isRefresh");
+    var player56sisRefresh = jQuery("#player56s-isRefresh");
     var Clock = {
         start: function () { 
             if(player56sisRefresh[0].innerText == 1){
@@ -247,7 +247,7 @@ jQuery( function player56s($) {
             }
             var self = this; this.interval = setInterval(function () { 
                 totalSeconds += 1; 
-                $("#player56s-play-timer").text(parseInt(totalSeconds)); 
+                jQuery("#player56s-play-timer").text(parseInt(totalSeconds)); 
             }, 1000); 
         },         
         pause: function () { 
@@ -258,33 +258,33 @@ jQuery( function player56s($) {
             if (!this.interval) this.start(); 
         },
         stop: function () { 
-            $("#player56s-isRefresh").html(0);
+            jQuery("#player56s-isRefresh").html(0);
             DeleteCookie("player56splaytimer");
             clearInterval(this.interval); 
             delete this.interval; 
             totalSeconds = 0; 
-            $("#player56s-play-timer").text(parseInt(totalSeconds)); 
+            jQuery("#player56s-play-timer").text(parseInt(totalSeconds)); 
         } 
     }; 
     $.fn.player56s = function(options) {
         var relGroups = [];
         return this.each(function() {
-            var $this = $(this),
+            var $this = jQuery(this),
                 thisClass = $this.attr("class"),
                 thisRel = $this.attr("rel"),
                 thisIsMinimal = (thisClass.indexOf("minimal") > -1),
                 canHaveGroup = (!thisIsMinimal && thisRel),
                 skinClassPosition = thisClass.indexOf("player56s-skin-"),
                 player56sInstance = $this.data("player56s"),
-                audiofileLink_add = $("#player56s-addtrack ul li"),
-                audiofileLink_remove = $("#player56s-removetrack"),
-                audiofileLink_remove_all = $("#player56s-removetracks-all"),
-                audiofileLink_currenttrack = $("#player56s-currenttrack"),
-                audiofileLink_play_now = $("#player56s-playnow"),
-                currenttrack_index = $("#player56s-sortable ul li"),
-                playlist_shuffle = $("#player56s-shuffle"),
-                playlist_pause = $("#player56s-pause"),
-                playlist_no_shuffle = $("#player56s-no-shuffle ul li"),
+                audiofileLink_add = jQuery("#player56s-addtrack ul li"),
+                audiofileLink_remove = jQuery("#player56s-removetrack"),
+                audiofileLink_remove_all = jQuery("#player56s-removetracks-all"),
+                audiofileLink_currenttrack = jQuery("#player56s-currenttrack"),
+                audiofileLink_play_now = jQuery("#player56s-playnow"),
+                currenttrack_index = jQuery("#player56s-sortable ul li"),
+                playlist_shuffle = jQuery("#player56s-shuffle"),
+                playlist_pause = jQuery("#player56s-pause"),
+                playlist_no_shuffle = jQuery("#player56s-no-shuffle ul li"),
 
                 skin = "",
                 goAndCreate = true;
@@ -335,7 +335,7 @@ jQuery( function player56s($) {
                     
                     player56sInstance.currentTrack = 0;
                     player56sInstance.tracks.forEach(function(element, index) {
-                        var player56scurrenttrack = $("#player56s-currenttrack");
+                        var player56scurrenttrack = jQuery("#player56s-currenttrack");
                         if(element.postid === player56scurrenttrack[0].innerText){
                             player56sInstance.currentTrack = index;
                         }
@@ -520,8 +520,8 @@ jQuery( function player56s($) {
             }
         }
         GetSeek() {
-            var audiofileLink_add = $("#player56s-seek-percent");
-            var timelinedone = $(".player56s-timeline-done").width() / $('.player56s-timeline-done').parent().width() * 100;
+            var audiofileLink_add = jQuery("#player56s-seek-percent");
+            var timelinedone = jQuery(".player56s-timeline-done").width() / jQuery('.player56s-timeline-done').parent().width() * 100;
             audiofileLink_add.html(timelinedone);
             return timelinedone;
         }
@@ -549,14 +549,14 @@ jQuery( function player56s($) {
             this.$container.find(".player56s-author").html('<span>Music Player</span>');
             this.$container.find(".player56s-album").html('<span>Just another WordPress site</span>');
             this.$container.find(".player56s-album-img").html('<img src="' + window.location.origin + '/wp-content/plugins/McPlayer/public/css/blue-note.png"></img>');
-            $("#rs-saved-for-later").html('<li id="rs-saved-for-later-nothing" style="text-align: center; padding:15px 0px;">Nothing in the playlist</li>');
+            jQuery("#rs-saved-for-later").html('<li id="rs-saved-for-later-nothing" style="text-align: center; padding:15px 0px;">Nothing in the playlist</li>');
             this.$container.find(".player56s-track-next").css('display', 'none');
             this.$container.find(".player56s-track-prev").css('display', 'none');
         }
         destroy() {
             var uniqueID = this.$container.attr("id");
             this.$container.after(this.$link).remove();
-            $(document).off("." + uniqueID);
+            jQuery(document).off("." + uniqueID);
             this.$link.removeData("player56s");
             return this.$link;
         }
@@ -575,7 +575,7 @@ jQuery( function player56s($) {
         }
         stop() {
             if (typeof this.$jPlayer !== "undefined" && this.$jPlayer.jPlayer) {
-                $("#rs-item-" + this.tracks[this.currentTrack].postid + "").removeClass('playing');
+                jQuery("#rs-item-" + this.tracks[this.currentTrack].postid + "").removeClass('playing');
                 this.$jPlayer.jPlayer( "stop" );
                 this.$jPlayer.jPlayer("setMedia", {
                     mp3: '#'
@@ -586,7 +586,7 @@ jQuery( function player56s($) {
         }
         pseudoPause() {
             if (this.tracks[this.currentTrack] !== "undefined") {
-                $(document).trigger("player56s-play", this);
+                jQuery(document).trigger("player56s-play", this);
                 this.$container.removeClass("status-playing");
                 this.$container.addClass("status-onpause");
                 this.$container.removeClass("player56s-status-playing");
@@ -594,10 +594,10 @@ jQuery( function player56s($) {
         }
         pause() {
             if (typeof this.$jPlayer != "undefined" && this.$jPlayer.jPlayer && this.tracks[this.currentTrack] !== "undefined") {
-                $("#play-now-id-" + this.tracks[this.currentTrack].postid + "").removeClass('onplay');
-                $("#add-play-now-id-" + this.tracks[this.currentTrack].postid + "").removeClass('onplay');
-                $("#play-now-id-" + this.tracks[this.currentTrack].postid + "").addClass('onpause');
-                $("#add-play-now-id-" + this.tracks[this.currentTrack].postid + "").addClass('onpause');     
+                jQuery("#play-now-id-" + this.tracks[this.currentTrack].postid + "").removeClass('onplay');
+                jQuery("#add-play-now-id-" + this.tracks[this.currentTrack].postid + "").removeClass('onplay');
+                jQuery("#play-now-id-" + this.tracks[this.currentTrack].postid + "").addClass('onpause');
+                jQuery("#add-play-now-id-" + this.tracks[this.currentTrack].postid + "").addClass('onpause');     
                 if (this.isPlaying && this.tracks[this.currentTrack].postid != '0') {               
                     this.isPlaying = false;
                     this.waitForLoad = false;
@@ -609,19 +609,19 @@ jQuery( function player56s($) {
         }
         pseudoPlay() {
             if (this.tracks[this.currentTrack] !== "undefined") {
-                $(document).trigger("player56s-pause", this);
+                jQuery(document).trigger("player56s-pause", this);
                 this.$container.addClass("status-playing");
                 this.$container.removeClass("status-onpause");
                 this.$container.addClass("player56s-status-playing");
-                $("#rs-item-" + this.tracks[this.currentTrack].postid + "").addClass("playing");
+                jQuery("#rs-item-" + this.tracks[this.currentTrack].postid + "").addClass("playing");
             }
         }
         play() {
             if (typeof this.$jPlayer != "undefined" && this.$jPlayer.jPlayer && this.tracks[this.currentTrack] !== "undefined") {
-                $("#play-now-id-" + this.tracks[this.currentTrack].postid + "").addClass('onplay');
-                $("#add-play-now-id-" + this.tracks[this.currentTrack].postid + "").addClass('onplay');
-                $("#play-now-id-" + this.tracks[this.currentTrack].postid + "").removeClass('onpause');
-                $("#add-play-now-id-" + this.tracks[this.currentTrack].postid + "").removeClass('onpause');
+                jQuery("#play-now-id-" + this.tracks[this.currentTrack].postid + "").addClass('onplay');
+                jQuery("#add-play-now-id-" + this.tracks[this.currentTrack].postid + "").addClass('onplay');
+                jQuery("#play-now-id-" + this.tracks[this.currentTrack].postid + "").removeClass('onpause');
+                jQuery("#add-play-now-id-" + this.tracks[this.currentTrack].postid + "").removeClass('onpause');
                 if (!this.isPlaying && this.tracks[this.currentTrack].postid != '0') {
                     this.isPlayed = true;
                     this.waitForLoad = true;
@@ -647,7 +647,7 @@ jQuery( function player56s($) {
                 this.pseudoPause();
                 this.pause();
 
-                var player56splaytimer = $("#player56s-play-timer");
+                var player56splaytimer = jQuery("#player56s-play-timer");
                 var currentTracklength = this.tracks[this.currentTrack].length;
                 var currentTracklengthsechalf = parseInt(currentTracklength) * 0.65;
                 if(player56splaytimer[0].innerText >= parseInt(currentTracklengthsechalf)){
@@ -662,7 +662,7 @@ jQuery( function player56s($) {
                     this.currentTrack = index;
                     var track = this.tracks[this.currentTrack];
                 }
-                $("#player56s-currenttrack").html(track.postid);
+                jQuery("#player56s-currenttrack").html(track.postid);
                 
                 this.$jPlayer.jPlayer("setMedia", {
                     mp3: track.audiofileLink
@@ -694,7 +694,7 @@ jQuery( function player56s($) {
                 this.currentTrack = 0;
             }
             if (typeof this.$jPlayer !== "undefined" && this.$jPlayer.jPlayer && this.tracks.length >= 1 && this.tracks[this.currentTrack] !== undefined ) {
-                var timelinedone = $(".player56s-timeline-done").width() / $('.player56s-timeline-done').parent().width() * 100;
+                var timelinedone = jQuery(".player56s-timeline-done").width() / jQuery('.player56s-timeline-done').parent().width() * 100;
                 var status = null;
                 if (this.$container.hasClass("status-onpause")) {
                     status = 0;
@@ -706,7 +706,7 @@ jQuery( function player56s($) {
                 this.pseudoPause();
                 this.pause();
 
-                var player56splaytimer = $("#player56s-play-timer");
+                var player56splaytimer = jQuery("#player56s-play-timer");
                 var currentTracklength = this.tracks[this.currentTrack].length;
                 var currentTracklengthsechalf = parseInt(currentTracklength) * 0.65;
                 if(player56splaytimer[0].innerText >= parseInt(currentTracklengthsechalf)){
@@ -731,7 +731,7 @@ jQuery( function player56s($) {
 
                 var track = this.tracks[this.currentTrack];
                 
-                $("#player56s-currenttrack").html(track.postid);
+                jQuery("#player56s-currenttrack").html(track.postid);
 
                 this.$jPlayer.jPlayer("setMedia", {
                     mp3: track.audiofileLink
@@ -767,7 +767,7 @@ jQuery( function player56s($) {
             this.$container.removeClass("player56s-status-playing");
         }
         onPlay() {
-            $(document).trigger("player56s-pause", this);
+            jQuery(document).trigger("player56s-pause", this);
             this.$container.addClass("player56s-status-playing");
             this.isPlaying = true;
             this.isPlayed = true;
@@ -776,25 +776,25 @@ jQuery( function player56s($) {
             //
         }
         createDOM() {
-            var $container = $(document.createElement("div")), $invisibleObject = $(document.createElement("div")), $infoArea = $(document.createElement("div")), filename = this.tracks[0].filename, self = this;
+            var $container = jQuery(document.createElement("div")), $invisibleObject = jQuery(document.createElement("div")), $infoArea = jQuery(document.createElement("div")), filename = this.tracks[0].filename, self = this;
             var createMinimanContentDOM = function () {
                 return [
-                    $(document.createElement("div")).addClass("player56s-timeline").append($(document.createElement("div")).addClass("player56s-timeline-load"), $(document.createElement("div")).addClass("player56s-timeline-done")),
-                    $(document.createElement("div")).addClass("player56s-button"),
-                    $(document.createElement("div")).addClass("player56s-volume").append($(document.createElement("div")).addClass("player56s-vol-pin").addClass("active").addClass("zero-vol"), $(document.createElement("div")).addClass("player56s-vol-pin").addClass("active"), $(document.createElement("div")).addClass("player56s-vol-pin").addClass("active"), $(document.createElement("div")).addClass("player56s-vol-pin").addClass("active"), $(document.createElement("div")).addClass("player56s-vol-pin"), $(document.createElement("div")).addClass("player56s-vol-pin").addClass("max-vol")),
-                    $(document.createElement("div")).addClass("player56s-time").html(self.options.length ? formatTime(makeSeconds(self.options.length)) : "")
+                    jQuery(document.createElement("div")).addClass("player56s-timeline").append(jQuery(document.createElement("div")).addClass("player56s-timeline-load"), jQuery(document.createElement("div")).addClass("player56s-timeline-done")),
+                    jQuery(document.createElement("div")).addClass("player56s-button"),
+                    jQuery(document.createElement("div")).addClass("player56s-volume").append(jQuery(document.createElement("div")).addClass("player56s-vol-pin").addClass("active").addClass("zero-vol"), jQuery(document.createElement("div")).addClass("player56s-vol-pin").addClass("active"), jQuery(document.createElement("div")).addClass("player56s-vol-pin").addClass("active"), jQuery(document.createElement("div")).addClass("player56s-vol-pin").addClass("active"), jQuery(document.createElement("div")).addClass("player56s-vol-pin"), jQuery(document.createElement("div")).addClass("player56s-vol-pin").addClass("max-vol")),
+                    jQuery(document.createElement("div")).addClass("player56s-time").html(self.options.length ? formatTime(makeSeconds(self.options.length)) : "")
                 ];
             };
             var createNormalContentDOM = function () {
                 return [
-                    $(document.createElement("div")).addClass("player56s-album-img").html('<span><img src="' + getTrackAlbumImg(filename) + '"></img></span>'),
-                    $(document.createElement("div")).addClass("player56s-title").html('<span>' + getTrackTitle(filename) + '</span>'),
-                    $(document.createElement("div")).addClass("player56s-author").html('<span>' + getTrackAuthor(filename) + '</span>'),
-                    $(document.createElement("div")).addClass("player56s-bottom").append($(document.createElement("div")).addClass("player56s-time-done").html("0:00"), $(document.createElement("div")).addClass("player56s-album").html('<span>' + getTrackAlbum(filename) + '</span>'), $(document.createElement("div")).addClass("player56s-time").html(self.options.length ? formatTime(makeSeconds(self.options.length)) : "")),
-                    $(document.createElement("div")).addClass("player56s-timeline").append($(document.createElement("div")).addClass("player56s-timeline-load"), $(document.createElement("div")).addClass("player56s-timeline-done")),
-                    $(document.createElement("div")).addClass("player56s-button"),
-                    $(document.createElement("div")).addClass("player56s-volume").append($(document.createElement("div")).addClass("player56s-vol-pin").addClass("max-vol").addClass("active"), $(document.createElement("div")).addClass("player56s-vol-pin").addClass("active"), $(document.createElement("div")).addClass("player56s-vol-pin").addClass("active"), $(document.createElement("div")).addClass("player56s-vol-pin").addClass("active"), $(document.createElement("div")).addClass("player56s-vol-pin").addClass("active"), $(document.createElement("div")).addClass("player56s-vol-pin").addClass("active"), $(document.createElement("div")).addClass("player56s-vol-pin").addClass("active"), $(document.createElement("div")).addClass("player56s-vol-pin").addClass("active").addClass("zero-vol")),
-                    $(document.createElement("div")).addClass("player56s-tracks").append($(document.createElement("div")).addClass("player56s-track-nav").addClass("player56s-track-prev"), $(document.createElement("div")).addClass("player56s-track-nav").addClass("player56s-track-next"))
+                    jQuery(document.createElement("div")).addClass("player56s-album-img").html('<span><img src="' + getTrackAlbumImg(filename) + '"></img></span>'),
+                    jQuery(document.createElement("div")).addClass("player56s-title").html('<span>' + getTrackTitle(filename) + '</span>'),
+                    jQuery(document.createElement("div")).addClass("player56s-author").html('<span>' + getTrackAuthor(filename) + '</span>'),
+                    jQuery(document.createElement("div")).addClass("player56s-bottom").append(jQuery(document.createElement("div")).addClass("player56s-time-done").html("0:00"), jQuery(document.createElement("div")).addClass("player56s-album").html('<span>' + getTrackAlbum(filename) + '</span>'), jQuery(document.createElement("div")).addClass("player56s-time").html(self.options.length ? formatTime(makeSeconds(self.options.length)) : "")),
+                    jQuery(document.createElement("div")).addClass("player56s-timeline").append(jQuery(document.createElement("div")).addClass("player56s-timeline-load"), jQuery(document.createElement("div")).addClass("player56s-timeline-done")),
+                    jQuery(document.createElement("div")).addClass("player56s-button"),
+                    jQuery(document.createElement("div")).addClass("player56s-volume").append(jQuery(document.createElement("div")).addClass("player56s-vol-pin").addClass("max-vol").addClass("active"), jQuery(document.createElement("div")).addClass("player56s-vol-pin").addClass("active"), jQuery(document.createElement("div")).addClass("player56s-vol-pin").addClass("active"), jQuery(document.createElement("div")).addClass("player56s-vol-pin").addClass("active"), jQuery(document.createElement("div")).addClass("player56s-vol-pin").addClass("active"), jQuery(document.createElement("div")).addClass("player56s-vol-pin").addClass("active"), jQuery(document.createElement("div")).addClass("player56s-vol-pin").addClass("active"), jQuery(document.createElement("div")).addClass("player56s-vol-pin").addClass("active").addClass("zero-vol")),
+                    jQuery(document.createElement("div")).addClass("player56s-tracks").append(jQuery(document.createElement("div")).addClass("player56s-track-nav").addClass("player56s-track-prev"), jQuery(document.createElement("div")).addClass("player56s-track-nav").addClass("player56s-track-next"))
                 ];
             };
             var createContentAreaDOM = function () {
@@ -829,9 +829,9 @@ jQuery( function player56s($) {
                         mp3: audiofileLink
                     });
 
-                    $("#player56s-currenttrack").html(self.tracks[self.currentTrack].postid);
+                    jQuery("#player56s-currenttrack").html(self.tracks[self.currentTrack].postid);
 
-                    $("#player56s-isRefresh").html('1');
+                    jQuery("#player56s-isRefresh").html('1');
 
                     self.$container.find(".player56s-button").on("click", function (event) {
                         event.preventDefault();
@@ -849,7 +849,7 @@ jQuery( function player56s($) {
                         event.preventDefault();
                         event.stopPropagation();
                         event.stopImmediatePropagation();
-                        var $pin = $(this);
+                        var $pin = jQuery(this);
                         var $pinsBefore = self.minimal ? $pin.prevAll() : $pin.nextAll();
                         var lvl = $pinsBefore.length;
                         var maxLvl = $pin.siblings().length;
@@ -864,7 +864,7 @@ jQuery( function player56s($) {
                         event.preventDefault();
                         event.stopPropagation();
                         event.stopImmediatePropagation();
-                        self.switchTrack($(this).hasClass('player56s-track-next'));
+                        self.switchTrack(jQuery(this).hasClass('player56s-track-next'));
                     });
                     self.$container.find(".player56s-timeline").on("mousedown." + uniqueID, function (event) {
                         event.preventDefault();
@@ -874,11 +874,11 @@ jQuery( function player56s($) {
                             return false;
                         }
                         self.isSeeking = true;
-                        var $this = $(this), clickPoint = ((event.pageX - $this.offset().left) / $this.width()) * 100;
-                        $(document).off("mouseup." + uniqueID).one("mouseup." + uniqueID, function () {
+                        var $this = jQuery(this), clickPoint = ((event.pageX - $this.offset().left) / $this.width()) * 100;
+                        jQuery(document).off("mouseup." + uniqueID).one("mouseup." + uniqueID, function () {
                             self.isSeeking = false;
                         });
-                        $(document).off("mousemove." + uniqueID).on("mousemove." + uniqueID, function (event) {
+                        jQuery(document).off("mousemove." + uniqueID).on("mousemove." + uniqueID, function (event) {
                             if (!self.isSeeking) {
                                 return false;
                             }
@@ -927,10 +927,10 @@ jQuery( function player56s($) {
                     updateLoadBar(self, event.jPlayer.status);
                     updateTimeDisplay(self, event.jPlayer.status.currentTime);
                     updatePlayBar(self, event.jPlayer.status.currentPercentAbsolute.toFixed(2));
-                    $("#player56s-seek-current-percent").html(event.jPlayer.status.currentPercentAbsolute.toFixed(2));
+                    jQuery("#player56s-seek-current-percent").html(event.jPlayer.status.currentPercentAbsolute.toFixed(2));
                     if (self.waitForLoad) {
                         self.waitForLoad = false;
-                        self.seekTime = (self.totalTime / 100) * $("#player56s-seek-percent").html();
+                        self.seekTime = (self.totalTime / 100) * jQuery("#player56s-seek-percent").html();
                     }
                     if (self.$container.hasClass("status-playing")) {
                         self.pseudoPlay();
@@ -973,7 +973,7 @@ jQuery( function player56s($) {
                     var player56scurrentseek = jQuery("#player56s-seek-current-percent");
                     self.tracks.forEach(function(element, index) {
                         if(parseInt(element.postid) === parseInt(Player56sTrack)){
-                            $("#player56s-isRefresh").html(1);
+                            jQuery("#player56s-isRefresh").html(1);
                             self.playNow(parseInt(index));
                             willSeekTo(self, parseInt(Player56sSeek));
                         }
@@ -987,7 +987,7 @@ jQuery( function player56s($) {
                 }, 250);
             }
 
-            $(document).on("player56s-pause." + uniqueID, function (event, triggeredPlayer56s) {
+            jQuery(document).on("player56s-pause." + uniqueID, function (event, triggeredPlayer56s) {
                 if (self !== triggeredPlayer56s) {
                     self.pause();
                 }
@@ -1008,17 +1008,17 @@ jQuery( function player56s($) {
                 self.switchTrack(true);
             });
             navigator.mediaSession.setActionHandler('seekforward', function () {
-                var timelinedone = $(".player56s-timeline-done").width() / $('.player56s-timeline-done').parent().width() * 100;
+                var timelinedone = jQuery(".player56s-timeline-done").width() / jQuery('.player56s-timeline-done').parent().width() * 100;
                 var timeSeek = parseInt(timelinedone) + 5;
                 willSeekTo(self, timeSeek);
             });
             navigator.mediaSession.setActionHandler('seekbackward', function () {
-                var timelinedone = $(".player56s-timeline-done").width() / $('.player56s-timeline-done').parent().width() * 100;
+                var timelinedone = jQuery(".player56s-timeline-done").width() / jQuery('.player56s-timeline-done').parent().width() * 100;
                 var timeSeek = parseInt(timelinedone) - 5;
                 willSeekTo(self, timeSeek);
             });      
             initMediaSession(self.tracks[self.currentTrack].filename);
-            $(document).on("keydown." + uniqueID, function (event) {
+            jQuery(document).on("keydown." + uniqueID, function (event) {
                 if (event.keyCode === 176) {
                     event.preventDefault();
                     event.stopPropagation();
