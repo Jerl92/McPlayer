@@ -4,42 +4,74 @@ add_action('admin_menu', 'register_genre_add_submenu_page');
 
 
 function register_genre_add_submenu_page() {
-  add_submenu_page( 'edit.php?post_type=music', 'Genre add Page', 'Genre add page', 'manage_options', 'genre-add-page', 'genre_add_submenu_page_callback' );
+  add_submenu_page( 'edit.php?post_type=music', 'Genre add Page', 'Genre add page', 'manage_options', 'genre-add-page', 'genre_add_submenu_page_callback' ); 
+  remove_submenu_page( 'edit.php?post_type=music', 'artist-private-page' );
 }
 
 
 function genre_add_submenu_page_callback() {
         echo '<br>';
-        echo '<button id="genreaddsubmit">start</button>';
-        echo '<div id="genreaddbox"></div>';
+        echo '<input type="submit" id="genreaddsubmit">';
+        echo '<br>';
+        echo '<div class="genreaddwrapper"></div>';
 }
 
 
 add_action( 'admin_footer', 'my_javascript' ); // Write our JS below here
 function my_javascript() { ?>
-    <script>
+    <script type="text/javascript" >
+        
+getTrackInfo(getToken());
+
+const client_id = '1a6fd3a7fd774b1e9b09937d0ac27211'; 
+const client_secret = '31a6ac6866f24c63af9e0caa4d20a003';
+
+async function getToken() {
+  const response = await fetch('https://accounts.spotify.com/api/token', {
+    method: 'POST',
+    body: new URLSearchParams({
+      'grant_type': 'client_credentials',
+    }),
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Authorization': 'Basic ' + (Buffer.from(client_id + ':' + client_secret).toString('base64')),
+    },
+  });
+
+  return await response.json();
+}
+
+async function getTrackInfo(access_token) {
+  const response = await fetch("https://api.spotify.com/v1/tracks/4cOdK2wGLETKBW3PvgPWqT", {
+    method: 'GET',
+    headers: { 'Authorization': 'Bearer ' + access_token },
+  });
+
+  return await response.json();
+}
+
+getToken().then(response => {
+  getTrackInfo(response.access_token).then(profile => {
+    console.log(profile);
+    jQuery(".genreaddwrapper").append(profile);
+  })
+});
+
 
     function url_error($, element) {
 
-    $.ajax({
-        url: '<?php echo admin_url("admin-ajax.php"); ?>', // or use a localized script variable
-        type: 'POST',
-        dataType: 'json', // Expecting a JSON response
-        data: {
-            action: 'url_error_genre', // The action hook name for PHP
-            'postid': element
-        },
-        success: function(response) {
-            console.log(response); // The 'response' will be a JSON object
-            $('#genreaddbox').append(element);
-            $('#genreaddbox').append(response);
-            $('#genreaddbox').append('<br>');
-        },
-        error: function(xhr, textStatus, errorThrown) {
-            $('#genreaddbox').append('AJAX error:'+ textStatus + errorThrown);
-        }
-    });
 
+        var data = {
+            'action': 'url_error_genre',
+            'postid': element
+        };
+
+
+        // since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php
+        jQuery.post(ajaxurl, data, function(response) {
+            console.log(response);
+             // jQuery(".genreaddwrapper").append(response);
+        });
     }
 
 
@@ -58,7 +90,7 @@ function my_javascript() { ?>
                 setTimeout(function() {url_error($, element);}, index*500);
             }, this);
         });
-
+        
     }
 
 
@@ -114,21 +146,21 @@ function url_error_genre() {
         $term_artist = $term_obj_list;
     }
 
-    // $result = shell_exec('sh ' . plugin_dir_path( __FILE__ ) . 'spotify.sh' . ' ' . $term_artist->slug);
-    
-    $response = file_get_contents('https://tivomusicapi-staging-elb.digitalsmiths.net/sd/tivomusicapi/taps/v3/search/artist?name=' . $term_artist->slug);
+    $plugin_path = plugin_dir_path( __FILE__ );
 
-    $data = get_object_vars($response);
+    $result = shell_exec('sh '.$plugin_path.'/spotify.sh' . ' ' . $term_artist->slug);
 
-    // $artists_items = $data['hits']['musicGenres'];
-    /*
-    $x = 0;
+    $json_decode = json_decode($result);
+
+    $artists_items = $json_decode->artists->items;
+
     foreach($artists_items as $artists_item){
-        $html[$x] = $artists_item['name'];
-        $x++;
+        $artist_item[] = $artists_item;
     }
-
+    
     $terms = get_terms( 'genre', 'hide_empty=0');
+
+    $html = $artist_item[0]->genres;
 
     foreach($html as $genre){
         $allready = 0;
@@ -150,8 +182,8 @@ function url_error_genre() {
     }
 
     wp_set_object_terms($postid, $html_, 'genre');
-    */
-    wp_send_json($response);
+
+    return wp_send_json($result);
 
 }
 

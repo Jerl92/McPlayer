@@ -948,25 +948,11 @@ jQuery( function player56s($) {
             checkAndRunTickerAlbum(this);
             return this;
         }
-        getCookie(c_name) {
-            var i, x, y, ARRcookies = document.cookie.split(";");
-            for (i = 0; i < ARRcookies.length; i++) {
-                x = ARRcookies[i].substr(0, ARRcookies[i].indexOf("="));
-                y = ARRcookies[i].substr(ARRcookies[i].indexOf("=") + 1);
-                x = x.replace(/^\s+|\s+$/g, "");
-                if (x == c_name) {
-                    return unescape(y);
-                }
-            }
-        }
-        DeleteCookie(name) {
-            document.cookie = name + '=; expires=Thu, 01-Jan-70 00:00:01 GMT;';
-        }
         bindEvents() {
             var self = this, uniqueID = self.$container.attr("id");
         
-            var Player56sTrack = self.getCookie("Player56sCurrentTrack");
-            var Player56sSeek = self.getCookie("Player56sSeek");
+            var Player56sTrack = Cookies.get("Player56sCurrentTrack");
+            var Player56sSeek = Cookies.get("Player56sSeek");
             if(Player56sTrack && Player56sSeek){
                 var Refersh = setInterval(function(){
                     var player56scurrenttrack = jQuery("#player56s-currenttrack");
@@ -981,8 +967,8 @@ jQuery( function player56s($) {
 
                     if(player56scurrenttrack[0].innerText === Player56sTrack && player56scurrentseek >= Player56sSeek) {
                         clearInterval(Refersh);
-                        self.DeleteCookie(Player56sCurrentTrack);
-                        self.DeleteCookie(Player56sSeek);
+                        Cookies.remove("Player56sCurrentTrack");
+                        Cookies.remove("Player56sSeek");
                     }
                 }, 250);
             }

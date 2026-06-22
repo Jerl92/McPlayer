@@ -105,6 +105,8 @@ class Mcplayer_Public
 		 * class.
 		 */
 
+	    wp_enqueue_script('js-cookie',  plugin_dir_url(__FILE__) . 'js/js-cookie.js', array('jquery'), $this->version, false);
+
 		wp_enqueue_script('jplayer',  plugin_dir_url(__FILE__) . 'js/jplayer.js', array('jquery'), $this->version, false);
 
 		wp_enqueue_script('player56s',  plugin_dir_url(__FILE__) . 'js/player56s.js', array('jplayer'), $this->version, false);
