@@ -116,6 +116,12 @@ function wp_playlist_ajax_scripts() {
 	wp_register_script( 'wp-ajax-get-comment', $url . "js/ajax.get.comment.js", array( 'jquery' ), '1.0.0', true );
 	wp_localize_script( 'wp-ajax-get-comment', 'get_comment_ajax_url', admin_url( 'admin-ajax.php' ) );
 	wp_enqueue_script( 'wp-ajax-get-comment' );
+	
+	
+	/* Get comment */
+	wp_register_script( 'wp-ajax-save-score', $url . "js/ajax.save.score.js", array( 'jquery' ), '1.0.0', true );
+	wp_localize_script( 'wp-ajax-save-score', 'save_score_ajax_url', admin_url( 'admin-ajax.php' ) );
+	wp_enqueue_script( 'wp-ajax-save-score' );
 
 }
 
@@ -1324,4 +1330,42 @@ function get_comment_ajax() {
 
 	return wp_send_json ( implode($html) );
 }
+
+add_action( 'wp_ajax_save_score', 'save_score' );
+add_action( 'wp_ajax_nopriv_save_score', 'save_score' );
+function save_score() {
+
+	$allready = 0;
+
+	$value_score = $_POST['value'];
+	$postid = $_POST['postid'];
+	$userid = $_POST['userid'];
+	
+	$song_score_uniques = get_post_meta($postid, 'song_score_unique', true);
+	
+	if(!is_array($song_score_uniques)){
+		$new_array = array($userid, $value_score);
+		update_post_meta($postid, 'song_score_unique', [$new_array]);
+	} else {
+		foreach($song_score_uniques as $key => $value){
+			if(intval($userid) === intval($value[0])){
+				$allready = 1;
+				$value[1] = $value_score;
+				$song_score_uniques[$key] = $value;
+				$new_array = array($value[0], $value[1]);
+			}
+		}
+		
+		if($allready == 0){
+			$new_array = array($userid, $value_score);
+			array_push($song_score_uniques, $new_array);
+		}
+		
+		update_post_meta($postid, 'song_score_unique', $song_score_uniques);
+		
+	}
+
+	return wp_send_json ( $new_array );
+}
+
 ?>
