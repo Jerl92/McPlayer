@@ -1365,7 +1365,7 @@ function save_score() {
 		
 	}
 
-	return wp_send_json ( $new_array );
+	return wp_send_json ( $new_array[1] );
 }
 
 ?>
