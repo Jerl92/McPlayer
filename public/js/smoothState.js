@@ -36,6 +36,23 @@ function frame($) {
 ( function( $ ) {
 
 	jQuery( function() {
+	    
+            var doVisualUpdates = true;
+            function update() {
+                if (!doVisualUpdates) {
+                    console.log("Tab not visible");
+                }
+                navigator.wakeLock.request('screen')
+                .then((wakeLock) => {
+                    console.log(wakeLock);
+                    console.log('acquired');
+                })
+            }
+        
+            document.addEventListener('visibilitychange', function(){
+                doVisualUpdates = !document.hidden;
+                update();
+            });
 
 		var settings = { 
 			anchors: "a",

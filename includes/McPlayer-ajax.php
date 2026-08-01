@@ -1090,10 +1090,10 @@ function count_play($post) {
 	}
 
 	if($get_count_play != '' && $get_count_play != null) {
-		$countplay = intval($get_count_play) + 1;
+		$countplay = $get_count_play + 1;
 		update_post_meta($object_id, 'count_play_loop', $countplay);
 	} else {
-		$countplay = intval(1);
+		$countplay = 1;
 		add_post_meta($object_id, 'count_play_loop', $countplay);
 	}
 
@@ -1132,6 +1132,15 @@ function count_play($post) {
 		update_term_meta(implode($termid), 'earn_play_loop', $get_count_play_term );
 	} else {
 		update_term_meta(implode($termid), 'earn_play_loop', [$get_count_play_term_] );
+	}
+	
+	$rs_saved_played = get_user_meta( user_if_login(), 'rs_saved_played', true );
+	
+	if(is_array($rs_saved_played)) {
+		array_push($rs_saved_played, $object_id);
+		update_user_meta( user_if_login(), 'rs_saved_played', $rs_saved_played );
+	} else {	
+		update_user_meta( user_if_login(), 'rs_saved_played', [$object_id] );
 	}
 
 	return wp_send_json ($countplay);

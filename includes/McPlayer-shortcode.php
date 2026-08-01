@@ -259,28 +259,31 @@ add_shortcode('genres_products', 'woocommerce_get_genres_loop');
 
 function woocommerce_get_already_played_loop($atts) {
 	
+	$i = 0;
 	$blogusers = get_users();
 	foreach ( $blogusers as $user ) {
-		$users_id[] .= $user->ID;
+		$users_id[$i] = $user->ID;
+		$i++;
 	}
 
 	$i = 0;
 	foreach ( $users_id as $user_id ) {
-		$get_saved_played[$i++] = get_user_meta( $user_id, 'rs_saved_played', true );
+		$get_saved_played[$i] = get_user_meta( $user_id, 'rs_saved_played', true );
+		$i++;
 	}
+	
+	$get_saved_played[$i+1] = get_user_meta( user_if_login(), 'rs_saved_played', true );
+	
 
 	$i = 0;
 	foreach($get_saved_played as $get_saved_played_) {
 		foreach($get_saved_played_ as $get_saved_played__) {
-			$get_saved_played___[$i++] = $get_saved_played__;
+			$get_saved_played___[$i] = $get_saved_played__;
+			$i++;
 		}
 	}
 
-	$i = 0;
 	rsort($get_saved_played___);
-	foreach($get_saved_played___ as $get_saved_played____) {
-		$get_saved_played_x[$i++] = $get_saved_played____[1];
-	}
 
 	$atts = shortcode_atts(array(
 		'per_page' => '12',
@@ -296,7 +299,7 @@ function woocommerce_get_already_played_loop($atts) {
 			'order'      => $atts['order'],
 			'columns'  => $atts['columns'],
 			'posts_per_page'  => $atts['per_page'],
-			'post__in' => $get_saved_played_x
+			'post__in' => $get_saved_played___
 		);
 	
 		$loop = new WP_Query($args);

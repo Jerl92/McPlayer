@@ -97,7 +97,6 @@ var updatePlayBar = function(instance, percents) {
 };
 
 var updateTimeDisplay = function(instance, seconds) {
-    // we haven't total time info
     instance.$container.find(".player56s-time-done").html(formatTime(seconds));
 
     return instance;
@@ -241,7 +240,11 @@ jQuery( function player56s($) {
     var Clock = {
         start: function () { 
             if(player56sisRefresh[0].innerText == 1){
-                var totalSeconds = parseInt(player56splaytimer);
+            	if(player56splaytimer != 'NaN'){
+                	var totalSeconds = parseInt(player56splaytimer);
+                } else {
+                	var totalSeconds = 0;
+                }                
             } else {
                 var totalSeconds = 0;
             }
