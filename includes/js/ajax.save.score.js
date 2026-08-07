@@ -6,7 +6,7 @@ function save_score($){
         var input = jQuery(this);
         typingTimer = setTimeout(function() {
         	
-        var error = 0;
+        	var error = 0;
 		var finalNumber = input.val();
 		var postid = jQuery('.postid').html();
 		var userid = jQuery('.userid').html();
@@ -28,7 +28,7 @@ function save_score($){
 			jQuery('.song-unique-score-input').css('border', '0.5px solid gray');
 		}
             
-        if(error === 0){
+        	if(error === 0){
 			jQuery.ajax({
 				type: 'post',
 				url: save_score_ajax_url,

@@ -152,6 +152,8 @@ function frame($) {
 				delete_comment($);
 				
 				save_score($);
+				
+				send_form($);
 
 				interval = setInterval(function(){sidebarheight($);},250);
 

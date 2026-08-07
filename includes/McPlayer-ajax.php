@@ -117,11 +117,15 @@ function wp_playlist_ajax_scripts() {
 	wp_localize_script( 'wp-ajax-get-comment', 'get_comment_ajax_url', admin_url( 'admin-ajax.php' ) );
 	wp_enqueue_script( 'wp-ajax-get-comment' );
 	
-	
-	/* Get comment */
+	/* Save score */
 	wp_register_script( 'wp-ajax-save-score', $url . "js/ajax.save.score.js", array( 'jquery' ), '1.0.0', true );
 	wp_localize_script( 'wp-ajax-save-score', 'save_score_ajax_url', admin_url( 'admin-ajax.php' ) );
 	wp_enqueue_script( 'wp-ajax-save-score' );
+	
+	/* Send formulair */
+	wp_register_script( 'wp-ajax-send-form', $url . "js/ajax.send.form.js", array( 'jquery' ), '1.0.0', true );
+	wp_localize_script( 'wp-ajax-send-form', 'send_form_ajax_url', admin_url( 'admin-ajax.php' ) );
+	wp_enqueue_script( 'wp-ajax-send-form' );
 
 }
 
@@ -1375,6 +1379,34 @@ function save_score() {
 	}
 
 	return wp_send_json ( $new_array[1] );
+}
+
+add_action( 'wp_ajax_send_form', 'send_form' );
+add_action( 'wp_ajax_nopriv_send_form', 'send_form' );
+function send_form() {
+
+	$fullname = $_POST['fullname'];
+	$email = $_POST['email'];
+	$feedback = $_POST['feedback'];
+	
+	$admin_email = get_bloginfo('admin_email');
+
+	$subject = sprintf ( __( '%s - %s - %s', 'McPlayer' ), $fullname, $email, get_bloginfo( 'name', 'display' ) );
+	$headers = array('Content-Type: text/html; charset=UTF-8');
+	
+	$message[] .= '<p>';
+	$message[] .= $fullname;
+	$message[] .= '</p>';
+	$message[] .= '<p>';
+	$message[] .= $email;
+	$message[] .= '</p>';
+	$message[] .= '<p>';
+	$message[] .= $feedback;
+	$message[] .= '</p>';
+
+	wp_mail($admin_email, $subject, implode($message), $headers);
+	
+	return wp_send_json ( 'The feedback has been sent to the administrator.' );
 }
 
 ?>

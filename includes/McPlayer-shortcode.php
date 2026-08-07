@@ -1015,4 +1015,39 @@ function mcplayer_get_count_music_loop($atts) {
 	return '<div class="columns-' . $columns . '">' . ob_get_clean() . '</div>';
 }
 add_shortcode('get_count_music', 'mcplayer_get_count_music_loop');
+
+
+/***************************************************************************/
+/***************************************************************************/
+/******************** Short code to display contact from *******************/
+
+function contact_from_mcplayer_function($atts) {
+
+	echo '<br>';
+	echo 'To get in touch with me. Send me a contact form.';
+	echo '<br>';
+	echo '<br>';
+	echo 'If you want a account and add music contact me by the contact form below and I will make you a special account to upload only and you can add all the music you want.';
+	echo '<br>';
+	echo '<br>';
+	echo '<div class="send_form">';
+		echo '<label for="fullname" style="width: 75%; margin: 0 12.5%;">Frist name and last name</label>';
+		echo '<br>';
+		echo '<input type="text" id="fullname" name="fullname" style="width: 75%; margin: 0 12.5%; border: 1px solid gray;">';
+		echo '<br>';
+		echo '<label for="email" style="width: 75%; margin: 0 12.5%;">Adress E-mail</label>';
+		echo '<br>';
+		echo '<input type="text" id="email" name="email" style="width: 75%; margin: 0 12.5%; border: 1px solid gray;">';
+		echo '<br>';
+		echo '<label for="feedback" style="width: 75%; margin: 0 12.5%;">Your Feedback</label>';
+		echo '<br>';
+		echo '<textarea id="feedback" name="feedback" rows="4" cols="50" style="width: 75%; margin: 0 12.5%; border: 1px solid gray;">';
+		echo '</textarea>';
+		echo '<br>';
+		echo '<button class="mcplayer-contact-from" style="width: 150px; margin: 0 12.5%;">Send</button>';
+	echo '</div>';
+	
+}
+add_shortcode('contact-from-mcplayer', 'contact_from_mcplayer_function');
+
 ?>
