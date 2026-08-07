@@ -131,21 +131,13 @@ jQuery(document).ready(function($){
     jQuery("entry-meta-cover img").css('height', max);
 });
 
-
-function setCookie(cname, cvalue, exdays) {
-  const d = new Date();
-  d.setTime(d.getTime() + (exdays*24*60*60*1000));
-  let expires = "expires="+ d.toUTCString();
-  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-}
-
 jQuery( window ).bind('beforeunload', function(){
-    var player56scurrenttrack = $("#player56s-currenttrack");
-    setCookie("Player56sCurrentTrack", parseInt(player56scurrenttrack[0].innerText), 64);
-    var player56scurrentseek = $("#player56s-seek-current-percent");
-    setCookie("Player56sSeek", parseInt(player56scurrentseek[0].innerText), 64);
-    var player56splaytimer = $("#player56s-play-timer");
-    setCookie("player56splaytimer", parseInt(player56splaytimer[0].innerText), 64);
+    var Player56sCurrentTrack = jQuery("#player56s-currenttrack");
+    Cookies.set('Player56sCurrentTrack', parseInt(Player56sCurrentTrack[0].innerText));
+    var Player56sCurrentSeek = jQuery("#player56s-seek-current-percent");
+    Cookies.set('Player56sSeek', parseInt(Player56sCurrentSeek[0].innerText));
+    var Player56sPlayTimer = jQuery("#player56s-play-timer");
+    Cookies.set('Player56sPlayTimer', parseInt(Player56sPlayTimer[0].innerText));
 });
 
 var id;

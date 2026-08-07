@@ -214,43 +214,19 @@ function shuffle(array) {
   return array;
 }
 
-function getCookie(cname) {
-  let name = cname + "=";
-  let decodedCookie = decodeURIComponent(document.cookie);
-  let ca = decodedCookie.split(';');
-  for(let i = 0; i <ca.length; i++) {
-    let c = ca[i];
-    while (c.charAt(0) == ' ') {
-      c = c.substring(1);
-    }
-    if (c.indexOf(name) == 0) {
-      return c.substring(name.length, c.length);
-    }
-  }
-  return "";
-}
-
-function DeleteCookie(name) {
-    document.cookie = name + '=; expires=Thu, 01-Jan-70 00:00:01 GMT;';
-}
-
 jQuery( function player56s($) {
-    var player56splaytimer = getCookie("player56splaytimer");
+    var player56splaytimer = Cookies.get('Player56sPlayTimer');
     var player56sisRefresh = jQuery("#player56s-isRefresh");
     var Clock = {
         start: function () { 
-            if(player56sisRefresh[0].innerText == 1){
-            	if(player56splaytimer != 'NaN'){
-                	var totalSeconds = parseInt(player56splaytimer);
-                } else {
-                	var totalSeconds = 0;
-                }                
-            } else {
+            if(isNaN(parseInt(player56splaytimer))){
                 var totalSeconds = 0;
+            } else {
+                var totalSeconds = parseInt(player56splaytimer);
             }
             var self = this; this.interval = setInterval(function () { 
                 totalSeconds += 1; 
-                jQuery("#player56s-play-timer").text(parseInt(totalSeconds)); 
+                jQuery("#player56s-play-timer").html(parseInt(totalSeconds)); 
             }, 1000); 
         },         
         pause: function () { 
@@ -262,11 +238,11 @@ jQuery( function player56s($) {
         },
         stop: function () { 
             jQuery("#player56s-isRefresh").html(0);
-            DeleteCookie("player56splaytimer");
+            Cookies.remove('Player56sPlayTimer');
             clearInterval(this.interval); 
             delete this.interval; 
             totalSeconds = 0; 
-            jQuery("#player56s-play-timer").text(parseInt(totalSeconds)); 
+            jQuery("#player56s-play-timer").html(parseInt(totalSeconds)); 
         } 
     }; 
     $.fn.player56s = function(options) {
@@ -954,8 +930,8 @@ jQuery( function player56s($) {
         bindEvents() {
             var self = this, uniqueID = self.$container.attr("id");
         
-            var Player56sTrack = Cookies.get("Player56sCurrentTrack");
-            var Player56sSeek = Cookies.get("Player56sSeek");
+            var Player56sTrack = Cookies.get('Player56sCurrentTrack');
+            var Player56sSeek = Cookies.get('Player56sSeek');
             if(Player56sTrack && Player56sSeek){
                 var Refersh = setInterval(function(){
                     var player56scurrenttrack = jQuery("#player56s-currenttrack");
@@ -970,8 +946,8 @@ jQuery( function player56s($) {
 
                     if(player56scurrenttrack[0].innerText === Player56sTrack && player56scurrentseek >= Player56sSeek) {
                         clearInterval(Refersh);
-                        Cookies.remove("Player56sCurrentTrack");
-                        Cookies.remove("Player56sSeek");
+                        Cookies.remove('Player56sCurrentTrack');
+                        Cookies.remove('Player56sSeek');
                     }
                 }, 250);
             }

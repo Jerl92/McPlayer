@@ -258,7 +258,7 @@ add_shortcode('genres_products', 'woocommerce_get_genres_loop');
 /******************** Short code to display single music *******************/
 
 function woocommerce_get_already_played_loop($atts) {
-	
+    
 	$i = 0;
 	$blogusers = get_users();
 	foreach ( $blogusers as $user ) {
@@ -270,10 +270,7 @@ function woocommerce_get_already_played_loop($atts) {
 	foreach ( $users_id as $user_id ) {
 		$get_saved_played[$i] = get_user_meta( $user_id, 'rs_saved_played', true );
 		$i++;
-	}
-	
-	$get_saved_played[$i+1] = get_user_meta( user_if_login(), 'rs_saved_played', true );
-	
+	}	
 
 	$i = 0;
 	foreach($get_saved_played as $get_saved_played_) {
