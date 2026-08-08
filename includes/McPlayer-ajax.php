@@ -1382,8 +1382,24 @@ function save_score() {
 		update_post_meta($postid, 'song_score_unique', $song_score_uniques);
 		
 	}
+	
+	$i = 0;
+	$calcvalue = 0;
+	$song_score_uniques = get_post_meta($postid, 'song_score_unique', true);
+	foreach($song_score_uniques as $key => $value){
+		$calcvalue = $calcvalue + $value[1];
+		$i++;
+	}
+	if($i == 0){
+		$calcvaluemoyenne = '';
+	} else {
+		$calcvaluemoyenne = $calcvalue / $i;
+	}
+	$calcvaluemoyenneround = number_format($calcvaluemoyenne, 2).'/5';
+	
+	$new_array = array('The score is set to '.$new_array[1], $calcvaluemoyenneround);
 
-	return wp_send_json ( $new_array[1] );
+	return wp_send_json ( $new_array );
 }
 
 add_action( 'wp_ajax_send_form', 'send_form' );

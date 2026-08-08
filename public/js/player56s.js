@@ -240,9 +240,8 @@ jQuery( function player56s($) {
             jQuery("#player56s-isRefresh").html(0);
             Cookies.remove('Player56sPlayTimer');
             clearInterval(this.interval); 
-            delete this.interval; 
-            totalSeconds = 0; 
-            jQuery("#player56s-play-timer").html(parseInt(totalSeconds)); 
+            delete this.interval;
+            jQuery("#player56s-play-timer").html(0); 
         } 
     }; 
     $.fn.player56s = function(options) {
@@ -932,28 +931,28 @@ jQuery( function player56s($) {
         
             var Player56sTrack = Cookies.get('Player56sCurrentTrack');
             var Player56sSeek = Cookies.get('Player56sSeek');
+            var player56scurrenttrack = jQuery("#player56s-currenttrack");
+            var player56scurrentseek = jQuery("#player56s-seek-current-percent");
             if(Player56sTrack && Player56sSeek){
                 var Refersh = setInterval(function(){
-                    var player56scurrenttrack = jQuery("#player56s-currenttrack");
-                    var player56scurrentseek = jQuery("#player56s-seek-current-percent");
                     self.tracks.forEach(function(element, index) {
-                        if(parseInt(element.postid) === parseInt(Player56sTrack)){
+                        if(element.postid == Player56sTrack){
                             jQuery("#player56s-isRefresh").html(1);
-                            self.playNow(parseInt(index));
+                            self.playNow(index);
                             willSeekTo(self, parseInt(Player56sSeek));
                         }
                     });
 
-                    if(player56scurrenttrack[0].innerText === Player56sTrack && player56scurrentseek >= Player56sSeek) {
+                    if(player56scurrenttrack[0].innerText == Player56sTrack && player56scurrentseek >= Player56sSeek) {
                         clearInterval(Refersh);
                         Cookies.remove('Player56sCurrentTrack');
                         Cookies.remove('Player56sSeek');
                     }
-                }, 250);
+                }, 50);
             }
 
             jQuery(document).on("player56s-pause." + uniqueID, function (event, triggeredPlayer56s) {
-                if (self !== triggeredPlayer56s) {
+                if (self != triggeredPlayer56s) {
                     self.pause();
                 }
             });

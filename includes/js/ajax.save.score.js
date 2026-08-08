@@ -18,13 +18,19 @@ function save_score($){
 		if(input.val() > 5){	
 			error = 1;
 			jQuery('.song-unique-score-input').css('border', '0.5px solid red');
-			jQuery('.newarray').html('Value need to be under 5.');
+			jQuery('.newarray').html('Score need to be under 5.');
 		}
 		
 		if(input.val() < 0){	
 			error = 1;
 			jQuery('.song-unique-score-input').css('border', '0.5px solid red');
-			jQuery('.newarray').html('Value need to be below 0.');
+			jQuery('.newarray').html('Score need to be below 0.');
+		}
+		
+	        if(input.val() == ''){
+			error = 1;
+			jQuery('.song-unique-score-input').css('border', '0.5px solid red');
+			jQuery('.newarray').html('Score need to be a number between 0 and 5.');
 		}
 		
 		if(input.val() > 0 && input.val() < 5){	
@@ -32,7 +38,7 @@ function save_score($){
 			jQuery('.song-unique-score-input').css('border', '0.5px solid gray');
 		}
             
-        	if(error == 0){
+        	if(error === 0){
 			jQuery.ajax({
 				type: 'post',
 				url: save_score_ajax_url,
@@ -44,7 +50,8 @@ function save_score($){
 				},
 				dataType: 'json',
 				success: function(data){
-				        jQuery('.newarray').html(data);
+				        jQuery('.newarray').html(data[0]);
+				        jQuery('.calcvaluemoyenne').html(data[1]);
 				},
 				error: function(errorThrown){
 				    console.log(errorThrown);
@@ -58,4 +65,4 @@ function save_score($){
 
 jQuery(document).ready(function($) {
     save_score($);
-});
+});t

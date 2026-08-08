@@ -1037,21 +1037,24 @@ function contact_from_mcplayer_function($atts) {
 		echo '<br>';
 		echo '<br>';
 	echo '</div>';
-	echo '<div class="send_form">';
-		echo '<label for="fullname" style="width: 75%; margin: 0 12.5%;">First name and last name</label>';
+	echo '<div class="send_form" style="width: 75%; margin: 0 12.5%;">';
+		echo '<label for="fullname">First name and last name</label>';
 		echo '<br>';
-		echo '<input type="text" id="fullname" name="fullname" style="width: 75%; margin: 0 12.5%; border: 1px solid gray;">';
+		echo '<input type="text" id="fullname" name="fullname" style="width: 100%; border: 1px solid gray;">';
+		echo '<span class="mcplayer-contact-from-error-fullname"></span>';
 		echo '<br>';
-		echo '<label for="email" style="width: 75%; margin: 0 12.5%;">Adress E-mail</label>';
+		echo '<label for="email">Adress E-mail</label>';
 		echo '<br>';
-		echo '<input type="text" id="email" name="email" style="width: 75%; margin: 0 12.5%; border: 1px solid gray;">';
+		echo '<input type="text" id="email" name="email" style="width: 100%; border: 1px solid gray;">';
+		echo '<span class="mcplayer-contact-from-error-email"></span>';
 		echo '<br>';
-		echo '<label for="feedback" style="width: 75%; margin: 0 12.5%;">Your Feedback</label>';
+		echo '<label for="feedback">Your Feedback</label>';
 		echo '<br>';
-		echo '<textarea id="feedback" name="feedback" rows="4" cols="50" style="width: 75%; margin: 0 12.5%; border: 1px solid gray;">';
+		echo '<textarea id="feedback" name="feedback" rows="4" cols="50" style="width: 100%; border: 1px solid gray;">';
 		echo '</textarea>';
+		echo '<span class="mcplayer-contact-from-error-feedback"></span>';
 		echo '<br>';
-		echo '<button class="mcplayer-contact-from" style="width: 150px; margin: 0 12.5%;">Send</button>';
+		echo '<button class="mcplayer-contact-from" style="width: 150px;">Send</button>';
 	echo '</div>';
 	
 }
