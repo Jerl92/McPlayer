@@ -1,8 +1,3 @@
-function validateEmail($email) {
-  var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
-  return emailReg.test( $email );
-}
-
 function send_form($){
 
 	$(".mcplayer-contact-from").on("click", function() {
@@ -21,7 +16,9 @@ function send_form($){
 			jQuery('.mcplayer-contact-from-error-fullname').html('');
 		}
 		
-		if(!validateEmail(email) && email.length < 3) { 
+		var regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+		if (!regex.test(email)) {
+		    event.preventDefault();
 			error = 1;
 			jQuery('#email').css('border', '0.5px solid red');
 			jQuery('.mcplayer-contact-from-error-email').html('Not a valid Email adresse.<br>');
