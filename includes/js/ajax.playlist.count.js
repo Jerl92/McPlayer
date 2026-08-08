@@ -13,6 +13,8 @@ function count_playlist(currentTrack) {
             setTimeout(function() {
                 jQuery( "#add_count" ).html(null);
             }, 7500);
+           jQuery( ".count-play-loop-sidebar-"+currentTrack).html(data);
+           jQuery( ".count-play-loop-album-"+currentTrack).html(data);
         },
         error: function(errorThrown){
             console.log(errorThrown);
