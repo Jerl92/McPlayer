@@ -1084,8 +1084,10 @@ add_action( 'wp_ajax_count_play', 'count_play' );
 add_action( 'wp_ajax_nopriv_count_play', 'count_play' );
 
 function count_play($post) {
+	
 	$object_id = $_POST['object_id'];
-	$get_count_play = get_post_meta($object_id, 'count_play_loop', true);
+	
+	$get_count_play = get_post_meta( $object_id, 'count_play_loop', true);
 
 	$term_obj_lists = get_the_terms( $object_id, 'artist' );
 
@@ -1138,13 +1140,16 @@ function count_play($post) {
 		update_term_meta(implode($termid), 'earn_play_loop', [$get_count_play_term_] );
 	}
 	
+	$current_time = current_time( 'timestamp' );
 	$rs_saved_played = get_user_meta( user_if_login(), 'rs_saved_played', true );
 	
 	if(is_array($rs_saved_played)) {
-		array_push($rs_saved_played, $object_id);
+		$new_array[$current_time] = $object_id;
+		array_push($rs_saved_played, $new_array);
 		update_user_meta( user_if_login(), 'rs_saved_played', $rs_saved_played );
 	} else {	
-		update_user_meta( user_if_login(), 'rs_saved_played', [$object_id] );
+		$new_array[$current_time] = $object_id;
+		update_user_meta( user_if_login(), 'rs_saved_played', [$new_array] );
 	}
 
 	return wp_send_json ($countplay);

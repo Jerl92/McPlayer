@@ -268,19 +268,24 @@ function woocommerce_get_already_played_loop($atts) {
 
 	$i = 0;
 	foreach ( $users_id as $user_id ) {
-		$get_saved_played[$i] = get_user_meta( $user_id, 'rs_saved_played', true );
-		$i++;
-	}	
-
-	$i = 0;
-	foreach($get_saved_played as $get_saved_played_) {
-		foreach($get_saved_played_ as $get_saved_played__) {
-			$get_saved_played___[$i] = $get_saved_played__;
-			$i++;
+		$get_saved_played[$user_id] = get_user_meta( $user_id, 'rs_saved_played', true );
+		foreach ( $get_saved_played as $key => $value) {
+			foreach ( $value as $key_ => $value_) {
+				$get_saved_played_[$key_] = $value_;
+				$i++;
+			}
 		}
 	}
 
-	rsort($get_saved_played___);
+	sort($get_saved_played_);
+	
+	$i = 0;
+	foreach ( $get_saved_played_ as $key => $value ) {
+	    foreach ( $value as $key_ => $value_ ) {
+    		$get_saved_played_list[$i] = $value_;
+    		$i++;
+	    }
+	}
 
 	$atts = shortcode_atts(array(
 		'per_page' => '12',
@@ -296,7 +301,7 @@ function woocommerce_get_already_played_loop($atts) {
 			'order'      => $atts['order'],
 			'columns'  => $atts['columns'],
 			'posts_per_page'  => $atts['per_page'],
-			'post__in' => $get_saved_played___
+			'post__in' => $get_saved_played_list
 		);
 	
 		$loop = new WP_Query($args);
@@ -1031,7 +1036,7 @@ function contact_from_mcplayer_function($atts) {
 	echo '<br>';
 	echo '<br>';
 	echo '<div class="send_form">';
-		echo '<label for="fullname" style="width: 75%; margin: 0 12.5%;">Frist name and last name</label>';
+		echo '<label for="fullname" style="width: 75%; margin: 0 12.5%;">First name and last name</label>';
 		echo '<br>';
 		echo '<input type="text" id="fullname" name="fullname" style="width: 75%; margin: 0 12.5%; border: 1px solid gray;">';
 		echo '<br>';
