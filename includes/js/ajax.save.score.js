@@ -1,3 +1,7 @@
+function round(value, decimals) {
+    return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
+}
+
 function save_score($){
     var typingTimer;
     var doneTypingInterval = 1000;
@@ -28,14 +32,14 @@ function save_score($){
 			jQuery('.song-unique-score-input').css('border', '0.5px solid gray');
 		}
             
-        	if(error === 0){
+        	if(error == 0){
 			jQuery.ajax({
 				type: 'post',
 				url: save_score_ajax_url,
 				data: {
 				    'userid':userid,
 				    'postid': postid,
-				    'value': finalNumber,
+				    'value': round(finalNumber, 2),
 				    'action': 'save_score'
 				},
 				dataType: 'json',
