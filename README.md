@@ -108,6 +108,9 @@ Show the lasted played songs</br>
 </br>
 Show suggested songs with the playlist songs genres</br>
 [genres_products per_page="50" columns="5" order="rand" orderby="rand"]</br>
+</br>
+Show the contact formulaire in page.</br>
+[contact-from-mcplayer]</br>
 
 ## Screenshot
 <img style="max-width: 100%;" src="https://i.ibb.co/x7wRzmX/screencapture-192-168-2-110-artists-2024-02-19-11-26-22.png" />
@@ -123,6 +126,7 @@ Show suggested songs with the playlist songs genres</br>
 <img style="max-width: 100%;" src="https://i.ibb.co/R6G5xTt/bulk-add-album.png" />
 
 ## Changelog
+2.3 - Add score for single song and made a calcul on every single song score for summary of the albums.</br>
 2.2 - fix various things, add Chart JS in admin taxonomy private page, add Paypal sandbox integration in admin taxonomy private page.</br>
 2.0 - Add genre widget and shortcode to show suggested songs and fix various things.</br>
 1.8 - Add a earn count play, add playlist time length to title, various fix.</br>
