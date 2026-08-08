@@ -1028,13 +1028,15 @@ add_shortcode('get_count_music', 'mcplayer_get_count_music_loop');
 
 function contact_from_mcplayer_function($atts) {
 
-	echo '<br>';
-	echo 'To get in touch with me. Send me a contact form.';
-	echo '<br>';
-	echo '<br>';
-	echo 'If you want a account and add music contact me by the contact form below and I will make you a special account to upload only and you can add all the music you want.';
-	echo '<br>';
-	echo '<br>';
+	echo '<div class="send-form-text" style="width: 75%; margin: 0 12.5%;">';
+		echo '<br>';
+		echo 'To get in touch with me. Send me a contact form.';
+		echo '<br>';
+		echo '<br>';
+		echo 'If you want a account and add music contact me by the contact form below and I will make you a special account to upload only and you can add all the music you want.';
+		echo '<br>';
+		echo '<br>';
+	echo '</div>';
 	echo '<div class="send_form">';
 		echo '<label for="fullname" style="width: 75%; margin: 0 12.5%;">First name and last name</label>';
 		echo '<br>';
