@@ -1,4 +1,4 @@
-function save_score<?php
+<?php
 
 /* Enqueue Script */
 add_action( 'wp_enqueue_scripts', 'wp_playlist_ajax_scripts' );
@@ -1182,6 +1182,7 @@ function memory_usage_ajax() {
 	return wp_send_json ( $mem_usage );
 }
 
+/* AJAX action callback */
 add_action( 'wp_ajax_search_ajax_get', 'search_ajax_get' );
 add_action( 'wp_ajax_nopriv_search_ajax_get', 'search_ajax_get' );
 
@@ -1294,8 +1295,10 @@ function search_ajax_get() {
 	return wp_send_json ( implode($html) );
 }
 
+/* AJAX action callback */
 add_action( 'wp_ajax_add_comment', 'add_comment' );
 add_action( 'wp_ajax_nopriv_add_comment', 'add_comment' );
+
 function add_comment() {
 	$text = $_POST['text'];
 	$postId = $_POST['postid'];
@@ -1320,8 +1323,10 @@ function add_comment() {
 	return wp_send_json ( $comment_id );
 }
 
+/* AJAX action callback */
 add_action( 'wp_ajax_delete_comment', 'delete_comment' );
 add_action( 'wp_ajax_nopriv_delete_comment', 'delete_comment' );
+
 function delete_comment() {
 	$postId = $_POST['postid'];
 
@@ -1330,8 +1335,10 @@ function delete_comment() {
 	return wp_send_json ( $postId );
 }
 
+/* AJAX action callback */
 add_action( 'wp_ajax_get_comment_ajax', 'get_comment_ajax' );
 add_action( 'wp_ajax_nopriv_get_comment_ajax', 'get_comment_ajax' );
+
 function get_comment_ajax() {
 	$postId = $_POST['postid'];
 
@@ -1361,6 +1368,7 @@ function get_comment_ajax() {
 
 add_action( 'wp_ajax_save_score', 'save_score' );
 add_action( 'wp_ajax_nopriv_save_score', 'save_score' );
+
 function save_score() {
 
 	$allready = 0;
@@ -1412,8 +1420,11 @@ function save_score() {
 	return wp_send_json ( $new_array );
 }
 
+
+/* AJAX action callback */
 add_action( 'wp_ajax_send_form', 'send_form' );
 add_action( 'wp_ajax_nopriv_send_form', 'send_form' );
+
 function send_form() {
 
 	$fullname = $_POST['fullname'];
@@ -1440,8 +1451,10 @@ function send_form() {
 	return wp_send_json ( 'The feedback has been sent to the administrator.' );
 }
 
+/* AJAX action callback */
 add_action( 'wp_ajax_album_count_play', 'album_count_play' );
 add_action( 'wp_ajax_nopriv_album_count_play', 'album_count_play' );
+
 function album_count_play() {
 
 	$albumid = $_POST['albumid'];
@@ -1472,8 +1485,10 @@ function album_count_play() {
 	return wp_send_json ( $new_array );
 }
 
+/* AJAX action callback */
 add_action( 'wp_ajax_album_score', 'album_score' );
 add_action( 'wp_ajax_nopriv_album_score', 'album_score' );
+
 function album_score() {
 
 	$albumid = $_POST['albumid'];
