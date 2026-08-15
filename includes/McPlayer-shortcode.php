@@ -349,7 +349,7 @@ add_shortcode('get_already_played', 'woocommerce_get_already_played_loop');
 
 function woocommerce_get_cover_id($atts) {
     
-	//
+	echo '<div class"testplayer">test</div>';
 		
 }
 add_shortcode('get_cover_id', 'woocommerce_get_cover_id');
