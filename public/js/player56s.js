@@ -13,32 +13,32 @@ var splitFilenameToTrackAndAuthor = function(filename) {
     var delimeter = ' || ';
     if (filename.indexOf(' \u2014 ') > -1) { delimeter = ' \u2014 '; }
     return filename.toString().split(delimeter);
-}
+};
 
 var getTrackTitle = function(filename) {
     var parts = splitFilenameToTrackAndAuthor(filename);
-    return parts.length > 1 ? parts[2] : parts[0]
-}
+    return parts.length > 1 ? parts[2] : parts[0];
+};
 
 var getTrackAuthor = function(filename) {
     var parts = splitFilenameToTrackAndAuthor(filename);
-    return parts.length > 1 ? ('' + parts[1]) : ""
-}
+    return parts.length > 1 ? ('' + parts[1]) : "";
+};
 
 var getTrackAlbum = function(filename) {
     var parts = splitFilenameToTrackAndAuthor(filename);
-    return parts.length > 1 ? ('' + parts[0]) : ""
-}
+    return parts.length > 1 ? ('' + parts[0]) : "";
+};
 
 var getTrackAlbumImg = function(filename) {
     var parts = splitFilenameToTrackAndAuthor(filename);
-    return parts.length > 1 ? ('' + parts[3]) : ""
-}
+    return parts.length > 1 ? ('' + parts[3]) : "";
+};
 
 var getTrackID = function(filename) {
     var parts = splitFilenameToTrackAndAuthor(filename);
-    return parts.length > 1 ? ('' + parts[4]) : ""
-}
+    return parts.length > 1 ? ('' + parts[4]) : "";
+};
 
 var formatTime = function(rawSeconds) {
     if (typeof rawSeconds !== "number") {
@@ -207,19 +207,19 @@ var initMediaSession = function(filename) {
 };
 
 function shuffle(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
+  for (var i = array.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
     [array[i], array[j]] = [array[j], array[i]]; // Swap elements
   }
   return array;
 }
 
+var totalSeconds = 0;
 var player56splaytimer = Cookies.get('Player56sPlayTimer');
 jQuery( function player56s($) {
-    var totalSeconds = 0;
     var Clock = {
         start: function () {
-	        if(player56splaytimer == 0 || player56splaytimer == '' || isNaN(player56splaytimer) || player56splaytimer == null){
+	        if(parseInt(player56splaytimer) === 0 || parseInt(player56splaytimer) === '' || isNaN(player56splaytimer)){
 			totalSeconds = 0;
 		}
 		if (parseInt(player56splaytimer) > 0){
@@ -228,7 +228,6 @@ jQuery( function player56s($) {
 		var self = this; this.interval = setInterval(function () { 
 			totalSeconds += 1;
 			jQuery("#player56s-play-timer").html(parseInt(totalSeconds)); 
-			jQuery("#player56s-ajax-wrap").css('display', 'none');
 		}, 1000); 
         },         
         pause: function () {
@@ -241,12 +240,12 @@ jQuery( function player56s($) {
         stop: function () { 
 		totalSeconds = 0;
 		jQuery("#player56s-play-timer").html(parseInt(totalSeconds));
-		Cookies.remove('Player56sPlayTimer', { path: '' });
+		Cookies.remove('Player56sPlayTimer', { path: '/' });
 		clearInterval(this.interval); 
 		delete this.interval;
         } 
     }; 
-    $.fn.player56s = function(options) {
+    jQuery.fn.player56s = function(options) {
         var relGroups = [];
         return this.each(function() {
             var $this = jQuery(this),
@@ -389,8 +388,8 @@ jQuery( function player56s($) {
                         player56sInstance.removeAll();
                     }
 
+                  	var currentTrack = player56sInstance.tracks[player56sInstance.currentTrack];
                     if (playlist_shuffle[0].innerText === "1") {
-                        var currentTrack = player56sInstance.tracks[player56sInstance.currentTrack];
                         shuffle(player56sInstance.tracks);
                         player56sInstance.tracks.forEach(function(element, index) {
                             if (element == currentTrack) {
@@ -400,9 +399,8 @@ jQuery( function player56s($) {
                     }
 
                     if (playlist_shuffle[0].innerText === "0") {
-                        var tracks = [],               
-                        currentTrack = player56sInstance.tracks[player56sInstance.currentTrack];
-                        player56sInstance.tracks.forEach(function(element_, index) {
+                        var tracks = [];
+                      	player56sInstance.tracks.forEach(function(element_, index) {
                             player56sInstance.tracks.forEach(function(element, index_) {
                                 if (playlist_no_shuffle[index_] !== null) {
                                     if ( playlist_no_shuffle[index_].innerHTML == player56sInstance.tracks[index].postid ) {                                 
@@ -439,7 +437,7 @@ jQuery( function player56s($) {
         });
     };
 
-    $.fn.player56s.defaults = {
+    jQuery.fn.player56s.defaults = {
         swfPath: "",
         swfFilename: "",
         solution: "html",
@@ -624,24 +622,19 @@ jQuery( function player56s($) {
                     status = 1;
                 }
 
-                this.pseudoPause();
-                this.pause();
-
                 var player56splaytimer = jQuery("#player56s-play-timer");
                 var currentTracklength = this.tracks[this.currentTrack].length;
                 var currentTracklengthsechalf = parseInt(currentTracklength) * 0.65;
-                if(player56splaytimer[0].innerText >= parseInt(currentTracklengthsechalf)){
+                if(parseInt(player56splaytimer[0].innerText) >= parseInt(currentTracklengthsechalf)) {
                     count_playlist(this.tracks[this.currentTrack].postid);
                 }
 
+                this.pseudoPause();
+                this.pause();
                 this.stop();
-
-                if (index == -1){
-                    var track = this.tracks[this.currentTrack];
-                } else {
-                    this.currentTrack = index;
-                    var track = this.tracks[this.currentTrack];
-                }
+                
+                this.currentTrack = index;
+              	var track = this.tracks[this.currentTrack];
                 jQuery("#player56s-currenttrack").html(track.postid);
 
                 this.$jPlayer.jPlayer("setMedia", {
@@ -683,16 +676,15 @@ jQuery( function player56s($) {
                     status = 1;
                 }
 
-                this.pseudoPause();
-                this.pause();
-
                 var player56splaytimer = jQuery("#player56s-play-timer");
                 var currentTracklength = this.tracks[this.currentTrack].length;
                 var currentTracklengthsechalf = parseInt(currentTracklength) * 0.65;
-                if(player56splaytimer[0].innerText >= parseInt(currentTracklengthsechalf)){
+                if(parseInt(player56splaytimer[0].innerText) >= parseInt(currentTracklengthsechalf)) {
                     count_playlist(this.tracks[this.currentTrack].postid);
-                       }
-
+                }
+                
+                this.pseudoPause();
+                this.pause();
                 this.stop();
 
                 if (!to_next && (parseInt(timelinedone) > 5)) {

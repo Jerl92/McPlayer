@@ -348,8 +348,8 @@ add_shortcode('get_already_played', 'woocommerce_get_already_played_loop');
 /******************** Short code to display single music *******************/
 
 function woocommerce_get_cover_id($atts) {
-    
-	// NULL
+
+	// null
 		
 }
 add_shortcode('get_cover_id', 'woocommerce_get_cover_id');
