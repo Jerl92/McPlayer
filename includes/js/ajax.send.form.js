@@ -13,7 +13,7 @@ function send_form($){
 		if(fullname.length < 3) { 
 			error = 1;
 			jQuery('#fullname').css('border', '0.5px solid red');
-			jQuery('.mcplayer-contact-from-error-fullname').html('You need at least 3 characters for the full name.<br>');
+			jQuery('.mcplayer-contact-from-error-fullname').html('You need at least 3 characters for the full name.');
 		} else  {'' 
 			jQuery('#fullname').css('border', '0.5px solid gray');
 			jQuery('.mcplayer-contact-from-error-fullname').html('');
@@ -23,7 +23,7 @@ function send_form($){
 		if (!regex.test(email)) {
 			error = 1;
 			jQuery('#email').css('border', '0.5px solid red');
-			jQuery('.mcplayer-contact-from-error-email').html('Not a valid Email adresse.<br>');
+			jQuery('.mcplayer-contact-from-error-email').html('Not a valid Email adresse.');
 		} else { 
 			jQuery('#email').css('border', '0.5px solid gray');
 			jQuery('.mcplayer-contact-from-error-email').html('');
@@ -32,7 +32,7 @@ function send_form($){
 		if(feedback.length < 15) { 
 			error = 1;
 			jQuery('#feedback').css('border', '0.5px solid red');
-			jQuery('.mcplayer-contact-from-error-feedback').html('You need at least 15 characters for the feedback.<br>');
+			jQuery('.mcplayer-contact-from-error-feedback').html('You need at least 15 characters for the feedback.');
 		} else  { 
 			jQuery('#feedback').css('border', '0.5px solid gray');
 			jQuery('.mcplayer-contact-from-error-feedback').html('');

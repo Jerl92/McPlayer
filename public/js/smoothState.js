@@ -154,6 +154,10 @@ function frame($) {
 				save_score($);
 				
 				send_form($);
+				
+				album_count_play($);
+				
+				album_score($);
 
 				interval = setInterval(function(){sidebarheight($);},250);
 

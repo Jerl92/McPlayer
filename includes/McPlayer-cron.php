@@ -200,6 +200,80 @@ function album_score_function() {
 		'taxonomy'   => 'artist',
 		'hide_empty' => true,
 	) );
+
+    	foreach($terms as $term){
+	        $get_songs_args = array(
+	            'post_type' => 'music',
+	            'posts_per_page' => -1,
+	            'order' => 'ASC',
+	            'tax_query' => array(
+	                array(
+	                    'taxonomy' => 'artist',
+	                    'field'    => 'slug',
+	                    'terms'    => $term->slug
+	                )
+	            )
+	        );
+
+       		$get_songs[$term->slug] = get_posts($get_songs_args);
+        }
+
+	$i = 0;
+	foreach($get_songs as $get_song){
+		foreach($get_song as $get_song_unique){
+			$cover_media_id = get_post_meta( $get_song_unique->ID, "meta-box-media-cover_", true );
+			$cover_media_ids[$cover_media_id][$i] = get_post_meta($get_song_unique->ID, 'song_score_unique', true);
+			$i++;
+		}
+	}
+	
+	foreach($cover_media_ids as $key => $value){
+		$i = 0;
+		$calc_value_album = 0;
+		foreach($value as $value_){
+			foreach($value_ as $value__){
+				if($value__[1] != ''){
+					$calc_value_album = $calc_value_album + $value__[1];
+					$i++;
+				}
+			}
+		}
+		$album_score_unique = get_post_meta( $key, "album_score_unique", true );
+		if(is_array($album_score_unique)){
+			$current_time = current_time( 'timestamp' );
+			$calc_value_sum_album = $calc_value_album / $i;
+			$calc_value_sum_album_round = number_format($calc_value_sum_album, 2);
+			$new_array = array($current_time, $calc_value_sum_album_round);
+			array_push($album_score_unique, $new_array);
+			update_post_meta( $key, "album_score_unique", $album_score_unique );	
+		} else {
+			$current_time = current_time( 'timestamp' );
+			$calc_value_sum_album = $calc_value_album / $i;
+			$calc_value_sum_album_round = number_format($calc_value_sum_album, 2);
+			$new_array = array($current_time, $calc_value_sum_album_round);
+			update_post_meta( $key, "album_score_unique", [$new_array] );	
+		}
+	}
+}
+
+add_action( 'init', function () {
+
+    ///Hook into that action that'll fire every six hours
+    add_action( 'album_count_hook', 'album_count_function' );
+
+    //Schedule an action if it's not already scheduled
+    if ( ! wp_next_scheduled( 'album_count_hook' ) ) {
+        wp_schedule_event( time(), 'every_week', 'album_count_hook' );
+    }
+});
+
+//create your function, that runs on cron
+function album_count_function() {
+
+$terms = get_terms( array(
+		'taxonomy'   => 'artist',
+		'hide_empty' => true,
+	) );
 	
 	$i = 0;
     	foreach($terms as $term){
@@ -221,38 +295,50 @@ function album_score_function() {
        		$i++;
         
         }
-
-	foreach($get_songs as $get_song){
-		foreach($get_song as $get_song_unique){
-			$cover_media_id = get_post_meta( $get_song_unique->ID, "meta-box-media-cover_", true );
-			$cover_media_ids[$cover_media_id][] = get_post_meta($get_song_unique->ID, 'song_score_unique', true);
+        
+        $i = 0;
+	foreach($get_songs as $get_song_){
+        	foreach($get_song_ as $get_song){
+	        
+	        	$get_cover_id = get_post_meta($get_song->ID, 'meta-box-media-cover_', true);
+	        	$get_cover_ids[$get_cover_id][$i] = $get_song->ID;
+	        	$i++;
+	        	
+        	}
+        }
+        
+        $i = 0;
+        foreach($get_cover_ids as $key => $value){
+        	foreach($value as $value_){
+			$count_play_loops[$key][$i] = get_post_meta( $value_, "count_play_loop", true);
+			$i++;
 		}
+		        
+        }
+        
+        foreach($count_play_loops as $key => $value){
+
+		$count_play_sum = array_sum($value);
+		$count_play_loop_sum[$key] = $count_play_sum;
+
 	}
 	
-	foreach($cover_media_ids as $key => $value){
-		$i = 0;
-		$calc_value_album = 0;
-		foreach($value as $value_){
-			foreach($value_ as $value__){
-				if($value__[1] != ''){
-					$calc_value_album = $calc_value_album + $value__[1];
-					$i++;
-				}
-			}
-		}
+	foreach($count_play_loop_sum as $key => $value){
+	
 		$current_time = current_time( 'timestamp' );
-		$calc_value_sum_album = $calc_value_album / $i;
-		$calc_value_sum_album_round = number_format($calc_value_sum_album, 2);
-		$new_array = array($current_time, $calc_value_sum_album_round);
-		$album_score_unique = get_post_meta( $key, "album_score_unique", true );
-		if(is_array($album_score_unique)){
-			array_push($album_score_unique, $new_array);
-			update_post_meta( $key, "album_score_unique", $album_score_unique );	
+	
+		$album_count_play_loop = get_post_meta($key, 'album_count_play_loop', true);
+	
+		if(is_array($album_count_play_loop)){
+			$new_array = array($current_time, $value);
+			array_push($album_count_play_loop, $new_array);
+			update_post_meta($key, 'album_count_play_loop', $album_count_play_loop);
 		} else {
-			update_post_meta( $key, "album_score_unique", [$new_array] );	
+			$new_array = array($current_time, $value);
+			update_post_meta($key, 'album_count_play_loop', [$new_array]);
 		}
-	}
-
+		       
+	}   
 }
 
 

@@ -104,6 +104,10 @@ class Mcplayer_Public
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
+		 
+		wp_enqueue_script('chart',  plugin_dir_url(__FILE__) . 'js/chart.js', array('jquery'), $this->version, false);
+		
+		wp_enqueue_script('loader',  plugin_dir_url(__FILE__) . 'js/loader.js', array('jquery'), $this->version, false);
 
 	   	wp_enqueue_script('js.cookie',  plugin_dir_url(__FILE__) . 'js/js.cookie.min.js', array('jquery'), $this->version, false);
 

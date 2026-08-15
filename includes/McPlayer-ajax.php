@@ -126,6 +126,16 @@ function wp_playlist_ajax_scripts() {
 	wp_register_script( 'wp-ajax-send-form', $url . "js/ajax.send.form.js", array( 'jquery' ), '1.0.0', true );
 	wp_localize_script( 'wp-ajax-send-form', 'send_form_ajax_url', admin_url( 'admin-ajax.php' ) );
 	wp_enqueue_script( 'wp-ajax-send-form' );
+	
+	/* Album count play */
+	wp_register_script( 'wp-ajax-album-count-play', $url . "js/ajax.album.count.play.js", array( 'jquery' ), '1.0.0', true );
+	wp_localize_script( 'wp-ajax-album-count-play', 'album_count_play_ajax_url', admin_url( 'admin-ajax.php' ) );
+	wp_enqueue_script( 'wp-ajax-album-count-play' );
+	
+	/* Album scores */
+	wp_register_script( 'wp-ajax-album-score', $url . "js/ajax.album.score.js", array( 'jquery' ), '1.0.0', true );
+	wp_localize_script( 'wp-ajax-album-score', 'album_score_ajax_url', admin_url( 'admin-ajax.php' ) );
+	wp_enqueue_script( 'wp-ajax-album-score' );
 
 }
 
@@ -1108,10 +1118,8 @@ function count_play($post) {
 
 	$term_obj_lists = get_the_terms( $object_id, 'artist' );
 
-	$i = 0;
 	foreach($term_obj_lists as $term){
-		$termid[$i] = $term->term_id;
-		$i++;
+		$termid[] = $term->term_id;
 	}
 	
 	$get_term_earn = get_term_meta( $termid[0], 'meta_count_earn', true );
@@ -1378,7 +1386,7 @@ function save_score() {
 		
 		if($allready == 0){
 			$new_array = array($userid, $value_score);
-			array_push($song_score_uniques, $new_array);
+			array_unshift($song_score_uniques, $new_array);
 		}
 		
 		update_post_meta($postid, 'song_score_unique', $song_score_uniques);
@@ -1430,6 +1438,67 @@ function send_form() {
 	wp_mail($admin_email, $subject, implode($message), $headers);
 	
 	return wp_send_json ( 'The feedback has been sent to the administrator.' );
+}
+
+add_action( 'wp_ajax_album_count_play', 'album_count_play' );
+add_action( 'wp_ajax_nopriv_album_count_play', 'album_count_play' );
+function album_count_play() {
+
+	$albumid = $_POST['albumid'];
+	
+	$album_count_play_loops = get_post_meta($albumid, 'album_count_play_loop', true);
+	
+	$i = 0;
+	foreach($album_count_play_loops as $album_count_play_loop) {
+		if($i <= 20) {
+			$album_count_play_loops_array[$i] = $album_count_play_loop;
+			$i++;
+		}
+	}
+	
+	$i = 0;
+	foreach($album_count_play_loops_array as $album_count_play_loop_) {
+	
+		$date_cron = $album_count_play_loop_[0];
+		$formate_date[$i] = date('m/d/Y', $date_cron);
+		$album_counts[$i] = $album_count_play_loop_[1];
+		
+		$i++;
+		
+	}
+	
+	$new_array = array($formate_date, $album_counts);
+	
+	return wp_send_json ( $new_array );
+}
+
+add_action( 'wp_ajax_album_score', 'album_score' );
+add_action( 'wp_ajax_nopriv_album_score', 'album_score' );
+function album_score() {
+
+	$albumid = $_POST['albumid'];
+	
+	$album_score_uniques = get_post_meta( $albumid , "album_score_unique", true );
+	
+	$i = 0;
+	foreach($album_score_uniques as $album_score_unique) {
+		if($i <= 20) {
+			$album_score_unique_array[$i] = $album_score_unique;
+			$i++;
+		}
+	}
+	
+	$i = 0;		
+	foreach($album_score_unique_array as $album_score_unique_) {
+			$formate_date = date('m/d/Y', $album_score_unique_[0]);
+			$date_array[$i] = $formate_date;		
+			$score_array[$i] = $album_score_unique_[1];					
+			$i++;		
+	}
+	
+	$new_array = array($date_array, $score_array);
+	
+	return wp_send_json ( $new_array );
 }
 
 ?>

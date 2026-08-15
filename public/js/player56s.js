@@ -219,7 +219,7 @@ jQuery( function player56s($) {
     var player56sisRefresh = jQuery("#player56s-isRefresh");
     var Clock = {
         start: function () { 
-            if(isNaN(parseInt(player56splaytimer))){
+            if(isNaN(player56splaytimer)){
                 var totalSeconds = 0;
             } else {
                 var totalSeconds = parseInt(player56splaytimer);

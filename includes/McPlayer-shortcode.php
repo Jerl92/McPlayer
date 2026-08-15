@@ -343,6 +343,18 @@ function woocommerce_get_already_played_loop($atts) {
 }
 add_shortcode('get_already_played', 'woocommerce_get_already_played_loop');
 
+/***************************************************************************/
+/***************************************************************************/
+/******************** Short code to display single music *******************/
+
+function woocommerce_get_cover_id($atts) {
+    
+	//
+		
+}
+add_shortcode('get_cover_id', 'woocommerce_get_cover_id');
+
+
 add_filter( 'terms_clauses', 'terms_clauses_47840519', 10, 3 );
 function terms_clauses_47840519( $clauses, $taxonomies, $args ){
     global $wpdb;
@@ -1037,7 +1049,7 @@ function contact_from_mcplayer_function($atts) {
 		echo '<br>';
 		echo '<br>';
 	echo '</div>';
-	echo '<div class="send_form" style="width: 75%; margin: 0 12.5%;">';
+	echo '<div class="send_form" style="width: 75%; margin: 0 12.5%; padding-bottom: 50px;">';
 		echo '<label for="fullname">First name and last name</label>';
 		echo '<br>';
 		echo '<input type="text" id="fullname" name="fullname" style="width: 100%; border: 1px solid gray;">';
