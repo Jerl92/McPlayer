@@ -22,14 +22,7 @@ function album_score($){
                             data: data[1],
                         }]
                     },
-                    options: {
-                        responsive: true,
-                        scales: {
-                            y: {
-                                beginAtZero: true
-                            }
-                        }
-                    }
+                    options: {}
                 });
             },
             error: function(errorThrown){

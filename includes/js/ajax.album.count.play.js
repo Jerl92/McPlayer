@@ -22,14 +22,7 @@ function album_count_play($){
                             data: data[1],
                         }]
                     },
-                    options: {
-                        responsive: true,
-                        scales: {
-                            y: {
-                                beginAtZero: true
-                            }
-                        }
-                    }
+                    options: {}
                 });
             },
             error: function(errorThrown){

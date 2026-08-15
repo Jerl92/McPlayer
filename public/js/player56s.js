@@ -624,9 +624,9 @@ jQuery( function player56s($) {
 
                 var player56splaytimer = jQuery("#player56s-play-timer");
                 var currentTracklength = this.tracks[this.currentTrack].length;
-                var currentTracklengthsechalf = parseInt(currentTracklength) * 0.65;
-                if(parseInt(player56splaytimer[0].innerText) >= parseInt(currentTracklengthsechalf)) {
-                    count_playlist(this.tracks[this.currentTrack].postid);
+                var currentTracklengthsechalf = currentTracklength * 0.65;
+                if(player56splaytimer[0].innerText >= currentTracklengthsechalf) {
+                	count_playlist(this.tracks[this.currentTrack].postid);
                 }
 
                 this.pseudoPause();
@@ -678,9 +678,9 @@ jQuery( function player56s($) {
 
                 var player56splaytimer = jQuery("#player56s-play-timer");
                 var currentTracklength = this.tracks[this.currentTrack].length;
-                var currentTracklengthsechalf = parseInt(currentTracklength) * 0.65;
-                if(parseInt(player56splaytimer[0].innerText) >= parseInt(currentTracklengthsechalf)) {
-                    count_playlist(this.tracks[this.currentTrack].postid);
+                var currentTracklengthsechalf = currentTracklength * 0.65;
+                if(player56splaytimer[0].innerText >= currentTracklengthsechalf) {
+                	count_playlist(this.tracks[this.currentTrack].postid);
                 }
                 
                 this.pseudoPause();

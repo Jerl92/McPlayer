@@ -1464,14 +1464,14 @@ function album_count_play() {
 	$album_count_play_loops = get_post_meta($albumid, 'album_count_play_loop', true);
 	
 	$i = 0;
-	foreach($album_count_play_loops as $album_count_play_loop) {
-		if($i <= 20) {
-			$album_count_play_loops_array[$i] = $album_count_play_loop;
-			$i++;
-		}
+	$last_ = array_slice($album_count_play_loops, -30);
+	foreach($last_ as $album_count_play_loop) {
+		$album_count_play_loops_array[$i] = $album_count_play_loop;
+		$i++;
 	}
 	
 	$i = 0;
+
 	foreach($album_count_play_loops_array as $album_count_play_loop_) {
 	
 		$date_cron = $album_count_play_loop_[0];
@@ -1498,11 +1498,10 @@ function album_score() {
 	$album_score_uniques = get_post_meta( $albumid , "album_score_unique", true );
 	
 	$i = 0;
-	foreach($album_score_uniques as $album_score_unique) {
-		if($i <= 20) {
-			$album_score_unique_array[$i] = $album_score_unique;
-			$i++;
-		}
+	$last_ = array_slice($album_score_uniques, -30);
+	foreach($last_ as $album_score_unique) {
+		$album_score_unique_array[$i] = $album_score_unique;
+		$i++;
 	}
 	
 	$i = 0;		
