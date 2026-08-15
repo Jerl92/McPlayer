@@ -17,7 +17,8 @@ function album_score($){
                     data: {
                         labels: data[0],
                         datasets: [{
-                            label: 'Album Scores',
+                            label: 'Album score',
+                            backgroundColor: ['#000'],
                             data: data[1],
                         }]
                     },
