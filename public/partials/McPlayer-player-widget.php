@@ -129,7 +129,7 @@ class MCPlayer_bottom_player_widget extends WP_Widget {
 	
 		echo '</div>';
 
-		echo '<div id="player56s-ajax-wrap" style="display: block;">';
+		echo '<div id="player56s-ajax-wrap" style="display: none;">';
 			echo '<div id="player56s-currenttrack"></div>';
 			echo '<div id="player56s-addtrack"></div>';
 			echo '<div id="player56s-removetrack"></div>';
