@@ -133,11 +133,11 @@ jQuery(document).ready(function($){
 
 jQuery( window ).bind('beforeunload', function(){
     var Player56sCurrentTrack = jQuery("#player56s-currenttrack");
-    Cookies.set('Player56sCurrentTrack', Number(Player56sCurrentTrack[0].innerText));
+    Cookies.set('Player56sCurrentTrack', parseInt(Player56sCurrentTrack[0].innerText));
     var Player56sCurrentSeek = jQuery("#player56s-seek-current-percent");
-    Cookies.set('Player56sSeek', Number(Player56sCurrentSeek[0].innerText));
+    Cookies.set('Player56sSeek', parseInt(Player56sCurrentSeek[0].innerText));
     var Player56sPlayTimer = jQuery("#player56s-play-timer");
-    Cookies.set('Player56sPlayTimer', Number(Player56sPlayTimer[0].innerText));
+    Cookies.set('Player56sPlayTimer', parseInt(Player56sPlayTimer[0].innerText));
 });
 
 var id;
