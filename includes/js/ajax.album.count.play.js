@@ -18,6 +18,7 @@ function album_count_play($){
                         labels: data[0],
                         datasets: [{
                             label: 'Count Plays',
+                            backgroundColor: ['#000'],
                             data: data[1],
                         }]
                     },
