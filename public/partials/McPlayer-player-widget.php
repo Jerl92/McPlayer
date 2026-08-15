@@ -130,17 +130,17 @@ class MCPlayer_bottom_player_widget extends WP_Widget {
 		echo '</div>';
 
 		echo '<div id="player56s-ajax-wrap" style="display: none;">';
-			echo '<div id="player56s-currenttrack"></div>';
-			echo '<div id="player56s-addtrack"></div>';
-			echo '<div id="player56s-removetrack"></div>';
-			echo '<div id="player56s-removetracks-all"></div>';
-			echo '<div id="player56s-playnow"></div>';
-			echo '<div id="player56s-seek-percent"></div>';
-			echo '<div id="player56s-seek-current-percent"></div>';
-			echo '<div id="player56s-play-timer"></div>';
-			echo '<div id="player56s-shuffle"></div>';
-			echo '<div id="player56s-no-shuffle"></div>';
-			echo '<div id="player56s-pause"></div>';
+			echo '<span id="player56s-currenttrack"></span>';
+			echo '<span id="player56s-addtrack"></span>';
+			echo '<span id="player56s-removetrack"></span>';
+			echo '<span id="player56s-removetracks-all"></span>';
+			echo '<span id="player56s-playnow"></span>';
+			echo '<span id="player56s-seek-percent"></span>';
+			echo '<span id="player56s-seek-current-percent"></span>';
+			echo '<span id="player56s-play-timer"></span>';
+			echo '<span id="player56s-shuffle"></span>';
+			echo '<span id="player56s-no-shuffle"></span>';
+			echo '<span id="player56s-pause"></span>';
 		echo '</div>';
 
 		echo $args['after_widget']; 
