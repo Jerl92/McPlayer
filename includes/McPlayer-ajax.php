@@ -1,4 +1,4 @@
-<?php
+function save_score<?php
 
 /* Enqueue Script */
 add_action( 'wp_enqueue_scripts', 'wp_playlist_ajax_scripts' );
@@ -1386,7 +1386,7 @@ function save_score() {
 		
 		if($allready == 0){
 			$new_array = array($userid, $value_score);
-			array_unshift($song_score_uniques, $new_array);
+			array_push($song_score_uniques, $new_array);
 		}
 		
 		update_post_meta($postid, 'song_score_unique', $song_score_uniques);
