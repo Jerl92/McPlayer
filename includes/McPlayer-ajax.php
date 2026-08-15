@@ -1118,8 +1118,10 @@ function count_play($post) {
 
 	$term_obj_lists = get_the_terms( $object_id, 'artist' );
 
+	$i = 0;
 	foreach($term_obj_lists as $term){
-		$termid[] = $term->term_id;
+		$termid[$i] = $term->term_id;
+		$i++;
 	}
 	
 	$get_term_earn = get_term_meta( $termid[0], 'meta_count_earn', true );
