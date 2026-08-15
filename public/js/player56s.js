@@ -216,7 +216,7 @@ function shuffle(array) {
 
 var player56splaytimer = Cookies.get('Player56sPlayTimer');
 jQuery( function player56s($) {
-var totalSeconds = 0;
+    var totalSeconds = 0;
     var Clock = {
         start: function () {
 	        if(player56splaytimer == 0 || player56splaytimer == '' || isNaN(player56splaytimer) || player56splaytimer == null){
@@ -228,6 +228,7 @@ var totalSeconds = 0;
 		var self = this; this.interval = setInterval(function () { 
 			totalSeconds += 1;
 			jQuery("#player56s-play-timer").html(parseInt(totalSeconds)); 
+			jQuery("#player56s-ajax-wrap").css('display', 'none');
 		}, 1000); 
         },         
         pause: function () {
@@ -238,11 +239,11 @@ var totalSeconds = 0;
 		if (!this.interval) this.start(); 
         },
         stop: function () { 
-            totalSeconds = 0;
-            jQuery("#player56s-play-timer").html(parseInt(totalSeconds));
-            Cookies.remove('Player56sPlayTimer');
-            clearInterval(this.interval); 
-            delete this.interval;
+		totalSeconds = 0;
+		jQuery("#player56s-play-timer").html(parseInt(totalSeconds));
+		Cookies.remove('Player56sPlayTimer', { path: '' });
+		clearInterval(this.interval); 
+		delete this.interval;
         } 
     }; 
     $.fn.player56s = function(options) {
