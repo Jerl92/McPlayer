@@ -1118,13 +1118,11 @@ function count_play($post) {
 
 	$term_obj_lists = get_the_terms( $object_id, 'artist' );
 
-	$i = 0;
 	foreach($term_obj_lists as $term){
-		$termid[$i] = $term->term_id;
-		$i++;
+		$termid[] = $term->term_id;
 	}
 	
-	$get_term_earn = get_term_meta( $termid[0], 'meta_count_earn', true );
+	$get_term_earn = get_term_meta( implode($termid), 'meta_count_earn', true );
 	
 	$current_time = current_time( 'timestamp' );
 	
@@ -1145,12 +1143,12 @@ function count_play($post) {
 		update_post_meta($object_id, 'count_play_earn_loop', [$get_count_play_term]);
 	}
 	
-	if(is_numeric($get_count_play)) {
-		$get_count_play = $get_count_play + 1;
-		update_post_meta($object_id, 'count_play_loop', $get_count_play);
+	if(isset($get_count_play)) {
+		$countplay = intval($get_count_play) + 1;
+		update_post_meta($object_id, 'count_play_loop', $countplay);
 	} else {
-		$get_count_play = 1;
-		update_post_meta($object_id, 'count_play_loop', $get_count_play);
+		$countplay = 1;
+		update_post_meta($object_id, 'count_play_loop', $countplay);
 	}
 	
 	$rs_saved_played = get_user_meta( user_if_login(), 'rs_saved_played', true );
@@ -1164,7 +1162,7 @@ function count_play($post) {
 		update_user_meta( user_if_login(), 'rs_saved_played', [$new_array] );
 	}
 
-	return wp_send_json ($get_count_play);
+	return wp_send_json ($countplay);
 }
 
 // @see http://fr2.php.net/manual/en/function.mb-convert-encoding.php#103300
