@@ -118,9 +118,7 @@ function sidebarheight($) {
 }
 
 jQuery(document).ready(function($){
-	intervalSideBar = setInterval(function(){
-	    sidebarheight($);
-	}, 250);
+	sidebarheight($);
 });
 
 jQuery(document).ready(function($){	

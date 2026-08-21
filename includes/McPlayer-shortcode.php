@@ -397,11 +397,11 @@ function artist_get_loop($atts) {
 		) );
 	}
 
-	if(isset($_GET['char'])){
+	if($_GET['char']){
+	
+		?><div style="display: block;"><?php
 	
 		if ($terms) {
-		
-			?><div style="display: block;"><?php
 		
 			foreach ($terms as $term) {
 
@@ -495,10 +495,10 @@ function artist_get_loop($atts) {
 				</div>
 				<?php
 			}
-			
-			?></div><?php
 
 		}
+		
+		?></div><?php
 
 	}
 

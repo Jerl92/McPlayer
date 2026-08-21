@@ -160,16 +160,14 @@ var intervalSideBar;
 				
 				update_wakelock($);
 				
+				sidebarheight($);
+				
 				jQuery(".player56s").player56s($);
 				
-				intervalSideBar = setInterval(function(){
-				    sidebarheight($);
-				}, 250);
-				
-                jQuery(document).on('visibilitychange', function() {
-                    doVisualUpdates = !document.hidden;
-                    update_wakelock();
-                });
+		                jQuery(document).on('visibilitychange', function() {
+		                    doVisualUpdates = !document.hidden;
+		                    update_wakelock();
+		                });
 
 				if (jQuery.isFunction($.fn.theiaStickySidebar)){ 
 					if ( jQuery.browser.mobile && !mystickyside_name.device_mobile) {
