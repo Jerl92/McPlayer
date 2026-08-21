@@ -385,8 +385,6 @@ function artist_get_loop($atts) {
 	?></div>
 	<br>
 	
-	<div style="display: inline-table; height: auto; padding-bottom: 25px;">
-	
 	<?php if($_GET['char']) {
 		$terms = get_terms( array(
 			'taxonomy' => 'artist',
@@ -402,6 +400,9 @@ function artist_get_loop($atts) {
 	if(isset($_GET['char'])){
 	
 		if ($terms) {
+		
+			?><div style="display: block;"><?php
+		
 			foreach ($terms as $term) {
 
 				$get_albums_args = array(
@@ -455,7 +456,7 @@ function artist_get_loop($atts) {
 						$i++;
 					}
 				}
-?><div style="list-style: none; text-align: center; width: 50%; float: left; border-bottom: 0.25px solid rgba(0,0,0,.75); border-right: 0.25px solid rgba(0,0,0,.75); padding: 10px 0;"><a href="<?php echo esc_attr(get_term_link($term, $taxonomy)); ?>" title="<?php echo sprintf(__("View all posts in %s"), $term->name); ?>"><img style="height: 150px; display: flex; margin-left: auto; margin-right: auto;" src="<?php echo z_taxonomy_image_url($term->term_id); ?>"><p style="margin: 0;"><?php echo $term->name; ?></p></img></a><?php
+?><div class="artist-wrapper-box" style="list-style: none; text-align: center; width: 50%; float: left; border-bottom: 0.25px solid rgba(0,0,0,.75); border-right: 0.25px solid rgba(0,0,0,.75); padding: 10px 0;"><a href="<?php echo esc_attr(get_term_link($term, $taxonomy)); ?>" title="<?php echo sprintf(__("View all posts in %s"), $term->name); ?>"><img style="height: 150px; display: flex; margin-left: auto; margin-right: auto;" src="<?php echo z_taxonomy_image_url($term->term_id); ?>"><p style="margin: 0;"><?php echo $term->name; ?></p></img></a><?php
 				?><div class="artist-wrapper-box-flex">
 				<span class="artist-wrapper-box-info" style="margin: 0; float: left; padding-left: 2.5%;">
 				<?php echo count($get_albums); ?>
@@ -494,6 +495,8 @@ function artist_get_loop($atts) {
 				</div>
 				<?php
 			}
+			
+			?></div><?php
 
 		}
 
@@ -501,6 +504,9 @@ function artist_get_loop($atts) {
 
 	if(!$_GET['char']){
 		if ($terms) {
+		
+			?><div style="display: table; padding-bottom: 25px;"><?php
+		
 			$i = 0;
 			$terms_count_plays = array();
 			foreach ($terms as $term) {
@@ -570,7 +576,7 @@ function artist_get_loop($atts) {
 					}
 				}
 			
-?><div style="list-style: none; text-align: center; width: 50%; float: left; border-bottom: 0.25px solid rgba(0,0,0,.75); border-right: 0.25px solid rgba(0,0,0,.75); padding: 10px 0;"><a href="<?php echo esc_attr(get_term_link($term, $taxonomy)); ?>" title="<?php echo sprintf(__("View all posts in %s"), $term->name); ?>"><img style="height: 150px; display: flex; margin-left: auto; margin-right: auto;" src="<?php echo z_taxonomy_image_url($term->term_id); ?>"><p style="margin: 0;"><?php echo $term->name; ?></p></img></a><?php
+?><div class="artist-wrapper-box" style="list-style: none; text-align: center; width: 50%; float: left; border-bottom: 0.25px solid rgba(0,0,0,.75); border-right: 0.25px solid rgba(0,0,0,.75); padding: 10px 0;"><a href="<?php echo esc_attr(get_term_link($term, $taxonomy)); ?>" title="<?php echo sprintf(__("View all posts in %s"), $term->name); ?>"><img style="height: 150px; display: flex; margin-left: auto; margin-right: auto;" src="<?php echo z_taxonomy_image_url($term->term_id); ?>"><p style="margin: 0;"><?php echo $term->name; ?></p></img></a><?php
 				?><div class="artist-wrapper-box-flex">
 				<span class="artist-wrapper-box-info" style="margin: 0; float: left; padding-left: 2.5%;">
 				<?php echo count($get_albums); ?>
@@ -609,10 +615,10 @@ function artist_get_loop($atts) {
 				</div>
 				<?php
 			}
+			
+		?></div><?php
 
 	}
-	
-	?></div><?php
 
 }
 
