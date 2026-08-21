@@ -55,14 +55,23 @@ class MCPlayer_bottom_player_widget extends WP_Widget {
 		echo '<div id="player-container">';
 
 		if ( ! empty( $matches ) ) {
-			$saved_args = array(
-				'post_type'      => 'music',
-				'posts_per_page' => -1,
-				'orderby' => 'post__in',
-				'post__in'       => array_reverse( $matches, true )
-			);
+            if ( $shuffle == 1 ) {
+				$saved_args = array(
+					'post_type'      => 'music',
+					'posts_per_page' => -1,
+					'orderby' => 'rand',
+					'post__in'       => array_reverse( $matches, true )
+				);
+			} else {
+				$saved_args = array(
+					'post_type'      => 'music',
+					'posts_per_page' => -1,
+					'orderby' => 'post__in',
+					'post__in'       => array_reverse( $matches, true )
+				);
+			}
 		} else {
-			$saved_args = NULL;
+			$saved_args = null;
 		}
 
 		$saved_loop = new WP_Query( $saved_args );
