@@ -38,14 +38,11 @@ class MCPlayer_bottom_player_widget extends WP_Widget {
 
 		$btn_toggle_down = "<div id='btn_player_toggle' class='player_widget_name_hide_btn' style='padding-right: 5px' ><i class='material-icons'>keyboard_arrow_down</i></div>";	
 
-		$title_toggle = "<div id='title_player_toggle' class='player_widget_name' style='margin-left: auto; margin-right: auto;	display: inline;'>$title</div>";
-
 		$add_count_toggle = "<div id='add_count' style='display: inline;right: 105px;position: absolute;'></div>";
 
 		// before and after widget arguments are defined by themes
-		echo $args['before_widget'];
-		if ( ! empty( $title ) )
-		echo $args['before_title'] . $title_toggle  .  '<div class="widget_after_title" style="display: inline;">' . $add_count_toggle . $btn_toggle_down .  $btn_toggle_up . $shuffle_toggle . '</div>' . $args['after_title'];
+		echo $args['before_widget']; 
+		echo $args['before_title'] . '<div style="display: flex;"><div class="player-widget-title">' .$title .  '</div><div class="widget_after_title" style="margin-left: auto;">' . $add_count_toggle . $timer_track . $btn_toggle_down .  $btn_toggle_up . $shuffle_toggle . '</div></div>' . $args['after_title'];
 
 		global $post;
 
@@ -141,6 +138,7 @@ class MCPlayer_bottom_player_widget extends WP_Widget {
 			echo '<div id="player56s-shuffle"></div>';
 			echo '<div id="player56s-no-shuffle"></div>';
 			echo '<div id="player56s-pause"></div>';
+			echo '<div id="player56s-userid">' . user_if_login() . '</div>';
 		echo '</div>';
 
 		echo $args['after_widget']; 

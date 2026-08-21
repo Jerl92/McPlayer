@@ -222,7 +222,11 @@ function album_score_function() {
 	foreach($get_songs as $get_song){
 		foreach($get_song as $get_song_unique){
 			$cover_media_id = get_post_meta( $get_song_unique->ID, "meta-box-media-cover_", true );
-			$cover_media_ids[$cover_media_id][$i] = get_post_meta($get_song_unique->ID, 'song_score_unique', true);
+            $get_songs_scores_ = get_post_meta($get_song_unique->ID , 'song_score_unique' , true );
+            if($get_songs_scores_ == ''){
+                $get_songs_scores_ = array(1, 0);
+            }
+			$cover_media_ids[$cover_media_id][$i] = $get_songs_scores_;
 			$i++;
 		}
 	}
@@ -232,10 +236,8 @@ function album_score_function() {
 		$calc_value_album = 0;
 		foreach($value as $value_){
 			foreach($value_ as $value__){
-				if($value__[1] != ''){
-					$calc_value_album = $calc_value_album + $value__[1];
-					$i++;
-				}
+				$calc_value_album = $calc_value_album + $value__[1];
+				$i++;
 			}
 		}
 		$album_score_unique = get_post_meta( $key, "album_score_unique", true );

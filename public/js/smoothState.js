@@ -34,7 +34,7 @@ function frame($) {
 }
 
 var doVisualUpdates = true;
-function update_wakelock($) {
+function update_wakelock() {
     if (!doVisualUpdates) {
         console.log("Tab not visible");
     }
@@ -47,21 +47,22 @@ function update_wakelock($) {
     }
 }
 
+var intervalSideBar;
 ( function( $ ) {
 
 	jQuery( function() {
-
+	    
 		var settings = { 
 			anchors: "a",
 			cache: false,
 			cacheLength: 0,
 			prefetch: true,
-			prefetchOn: "mouseover touchstart",
+			prefetchOn: "mouseover",
 			scroll: true,
 			locationHeader: "X-SmoothState-Location",
-			blacklist: '.no-smoothState',
+			blacklist: ".no-smoothState",
 			onStart: {
-				duration: 500, // Duration of our animation
+				duration: 250, // Duration of our animation
 				render: function ($container) {
 
 					// Remove your CSS animation reversing class
@@ -83,7 +84,7 @@ function update_wakelock($) {
 				}
 	        },
 			onReady: {
-				duration: 500,
+				duration: 250,
 				render: function ($container, $newContent) {
 									
 					// Inject the new content
@@ -159,19 +160,16 @@ function update_wakelock($) {
 				
 				update_wakelock($);
 				
-                jQuery(document).on('visibilitychange', function(event) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                    event.stopImmediatePropagation();
-                    doVisualUpdates = !document.hidden;
-                    update_wakelock($);
-                });
-
+				jQuery(".player56s").player56s($);
+				
 				intervalSideBar = setInterval(function(){
 				    sidebarheight($);
 				}, 250);
 				
-				jQuery(".player56s").player56s($);
+                jQuery(document).on('visibilitychange', function() {
+                    doVisualUpdates = !document.hidden;
+                    update_wakelock();
+                });
 
 				if (jQuery.isFunction($.fn.theiaStickySidebar)){ 
 					if ( jQuery.browser.mobile && !mystickyside_name.device_mobile) {

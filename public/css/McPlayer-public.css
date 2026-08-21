@@ -267,7 +267,7 @@ ul.rs-saved-for-later {
 
 #playlist-btn {
     display: flex;
-    padding-bottom: 15px;
+    padding-bottom: 0px;
     padding-top: 12.5px;
 }
 
@@ -426,6 +426,15 @@ a.rs-save-for-later-button.saved:after, a.rs-save-for-later-button-album.saved:a
     overflow-y: auto;
 }
 
+.artist-wrapper-box-flex {
+	display: flex;
+}
+
+.player-widget-title {
+	text-align: center;
+	width: calc(100% - 125px);
+}
+
 /*
 .music {
     width: 25% !important;
@@ -477,6 +486,26 @@ a.rs-save-for-later-button.saved:after, a.rs-save-for-later-button-album.saved:a
         padding: 0%;
         list-style: none;
         margin: 15px 0.5% 15px 0.5%;
+    }
+    
+    .artist-wrapper-box-info {
+    	width: 100%;
+	margin-left: auto;
+	margin-right: auto;	
+    }
+    
+    .artist-wrapper-box-year {
+    	width: 100%;
+	margin-left: auto;
+	margin-right: auto;	
+    }
+    .artist-wrapper-box-flex {
+	display: block;
+    }
+    
+    .player-widget-title {
+	text-align: center;
+	width: calc(100% - 100px);
     }
 
 }

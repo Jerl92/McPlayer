@@ -214,6 +214,7 @@ function shuffle(array) {
   return array;
 }
 
+var Refersh;
 var pause = 0;
 var stop = 0;
 var totalSeconds = 0;
@@ -994,13 +995,13 @@ jQuery( function player56s($) {
         }
         bindEvents() {
             var self = this, uniqueID = self.$container.attr("id");
-
+            
             var Player56sTrack = Cookies.get('Player56sCurrentTrack');
             var Player56sSeek = Cookies.get('Player56sSeek');
             var player56scurrenttrack = jQuery("#player56s-currenttrack");
             var player56scurrentseek = jQuery("#player56s-seek-current-percent");
             if(Player56sTrack && Player56sSeek){
-                var Refersh = setInterval(function(){
+            	Refersh = setInterval(function(){
                     self.tracks.forEach(function(element, index) {
                         if(parseInt(element.postid) === parseInt(Player56sTrack)){
                             self.playNowBind(parseInt(index));
@@ -1013,17 +1014,14 @@ jQuery( function player56s($) {
                         Cookies.remove('Player56sCurrentTrack');
                         Cookies.remove('Player56sSeek');
                     }
-                }, 50);
+                }, 25);
             }
             
-            update_wakelock($);
+            update_wakelock();
             
-            jQuery(document).on('visibilitychange', function(event) {
-                event.preventDefault();
-                event.stopPropagation();
-                event.stopImmediatePropagation();
+            jQuery(document).on('visibilitychange', function() {
 		doVisualUpdates = !document.hidden;
-		update_wakelock($);
+		update_wakelock();
 	    });
            
             jQuery(document).on("player56s-pause." + uniqueID, function (event, triggeredPlayer56s) {

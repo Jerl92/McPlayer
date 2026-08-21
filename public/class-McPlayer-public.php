@@ -105,9 +105,11 @@ class Mcplayer_Public
 		 * class.
 		 */
 		 
+		wp_enqueue_script('smoothState',  plugin_dir_url(__FILE__) . 'js/jquery.smoothState.js', array('jquery'), $this->version, false);
+
+		wp_enqueue_script('smoothStatejs',  plugin_dir_url(__FILE__) . 'js/smoothState.js', array('smoothState'), $this->version, false);
+		 
 		wp_enqueue_script('chart',  plugin_dir_url(__FILE__) . 'js/chart.js', array('jquery'), $this->version, false);
-		
-		wp_enqueue_script('loader',  plugin_dir_url(__FILE__) . 'js/loader.js', array('jquery'), $this->version, false);
 
 	   	wp_enqueue_script('js.cookie',  plugin_dir_url(__FILE__) . 'js/js.cookie.min.js', array('jquery'), $this->version, false);
 
@@ -117,8 +119,5 @@ class Mcplayer_Public
 
 		wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/McPlayer-public.js', array('jquery'), $this->version, false);
 
-		wp_enqueue_script('smoothState',  plugin_dir_url(__FILE__) . 'js/jquery.smoothState.js', array('jquery'), $this->version, false);
-
-		wp_enqueue_script('smoothStatejs',  plugin_dir_url(__FILE__) . 'js/smoothState.js', array('smoothState'), $this->version, false);
 	}
 }

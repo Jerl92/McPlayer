@@ -110,16 +110,37 @@ function seconds_from_time($time) {
 } 
 
 function time_from_seconds($seconds) {
-	if ($seconds >= 3600) {
+	if($seconds >= 3600) {
 		$h = floor($seconds / 3600);
 		$m = floor(($seconds % 3600) / 60);
 		$s = $seconds - ($h * 3600) - ($m * 60);
-		return sprintf('%01dh%01dm%01ds', $h, $m, $s);
+		if($m < 10 && $m >= 0){
+			$m_ = '0'.$m;
+		} else {
+			$m_ = $m;
+		} 
+		if($s < 10 && $s >= 0){
+			$s_ = '0'.$s;
+		} else {
+			$s_ = $s;
+		}
+		return $h.':'.$m_.':'.$s_;
 	} else {
+		$h = 0;
 		$m = floor(($seconds % 3600) / 60);
 		$s = $seconds - ($h * 3600) - ($m * 60);
-		return sprintf('%01dm%01ds', $m, $s);
-	} 
+		if($m < 10 && $m >= 0){
+			$m_ = '0'.$m;
+		} else {
+			$m_ = $m;
+		} 
+		if($s < 10 && $s >= 0){
+			$s_ = '0'.$s;
+		} else {
+			$s_ = $s;
+		}
+		return $m_.':'.$s_;
+	}
 } 
 
 function user_if_login() {
