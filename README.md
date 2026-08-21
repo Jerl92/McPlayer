@@ -29,21 +29,12 @@ https://github.com/dymio/player-56s/</br>
 Simplicity Save for Later will add a button to your posts/pages/custom post types so users can save that content so they can access it later.</br>
 https://WordPress.org/plugins/rs-save-for-later/</br>
 
-Interactions and Widgets for the web. jQuery UI is a curated set of user interface interactions, effects, widgets, and themes built on top of jQuery.</br>
-https://github.com/jquery/jquery-ui/</br>
-
 ## Depend on this theme and plugins
 MCPlayer child theme based on Chichi</br>
 https://github.com/Jerl92/McPlayer-Child-Theme/</br>
 
 The Categories Images Plugin allow you to add image with category</br>
 https://WordPress.org/plugins/categories-images/</br>
-
-This plugin is needed if you want the scroll bar to be sticky</br>
-https://wordpress.org/plugins/mystickysidebar/</br>
-
-This plugin is needed to avoid jQuery error</br>
-https://fr-ca.wordpress.org/plugins/jquery-updater/</br>
 
 ## Installation
 This plugin have been designed on:</br>
@@ -66,7 +57,8 @@ This section describes how to install the plugin and get it working.</br>
 11. Upload cover and set the artist and the year, of the cover</br>
 12. Add new music, set title, set mp3 file, set track number, set artist, set album.</br>
 13. <b>Use the same album cover picture for all the tracks in the album.</b></br>
-14. Add the player and playlist widget in the customization menu.</br>
+14. <b>Set the artist for the image album, in the edit page of the media gallery.</b></br>
+15. Add the player and playlist widget in the customization menu.</br>
 16. Set shortcode in page.</br>
 
 ## Advandced installation
