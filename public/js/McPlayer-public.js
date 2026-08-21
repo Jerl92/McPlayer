@@ -91,9 +91,11 @@ function sleep(milliseconds) {
     }
 }
 
-var interval;
+var intervalSideBar;
 jQuery(document).ready(function($){
-    interval = setInterval(function($){sidebarheight($);}, 100);
+	intervalSideBar = setInterval(function(){
+	    sidebarheight($);
+	}, 250);
 });
 
 function sidebarheight($) {
@@ -107,7 +109,7 @@ function sidebarheight($) {
 	        jQuery('#secondary').css('height', primaryheight);
         }
         if (primaryheight < windowheight){
-            var windowheight_ = windowheight - 250;
+            var windowheight_ = parseInt(windowheight) - 250;
             jQuery('#primary').css('height', windowheight_);
             jQuery('#secondary').css('height', primaryheight);
         }
@@ -118,6 +120,29 @@ function sidebarheight($) {
         jQuery('#primary').css('height', '100%');
         jQuery('#secondary').css('height', '100%');
     }
+    
+	if (jQuery.isFunction($.fn.theiaStickySidebar)){ 
+		if ( jQuery.browser.mobile && !mystickyside_name.device_mobile) {
+			return false;
+		} else if ( !jQuery.browser.mobile && !mystickyside_name.device_desktop) {
+			return false;
+		}
+		var mysticky_sidebar_id = document.querySelector(mystickyside_name.mystickyside_string),
+		mystickyside_content_id = (mystickyside_name.mystickyside_content_string),
+		mystickyside_margin_top = parseInt(mystickyside_name.mystickyside_margin_top_string),
+		mystickyside_margin_bot = parseInt(mystickyside_name.mystickyside_margin_bot_string),
+		mystickyside_update_sidebar_height = Boolean(mystickyside_name.mystickyside_update_sidebar_height_string),
+		mystickyside_min_width = parseInt(mystickyside_name.mystickyside_min_width_string);
+	
+		jQuery(mysticky_sidebar_id).theiaStickySidebar({
+			containerSelector: mystickyside_content_id,
+			additionalMarginTop: mystickyside_margin_top,
+			additionalMarginBottom: mystickyside_margin_bot,
+			updateSidebarHeight: mystickyside_update_sidebar_height,
+			minWidth: mystickyside_min_width
+		});  
+	}
+    
     footer_stick($);
 }
 
@@ -136,7 +161,7 @@ jQuery( window ).bind('beforeunload', function(){
     var Player56sCurrentTrack = jQuery("#player56s-currenttrack");
     Cookies.set('Player56sCurrentTrack', parseInt(Player56sCurrentTrack[0].innerText), { path: '/' });
     var Player56sCurrentSeek = jQuery("#player56s-seek-current-percent");
-    Cookies.set('Player56sSeek', parseInt(Player56sCurrentSeek[0].innerText), { path: '/' });
+    Cookies.set('Player56sSeek', parseInt(Player56sCurrentSeek[0].innerText) + 1, { path: '/' });
     var Player56sPlayTimer = jQuery("#player56s-play-timer");
     Cookies.set('Player56sPlayTimer', parseInt(Player56sPlayTimer[0].innerText), { path: '/' });
 });

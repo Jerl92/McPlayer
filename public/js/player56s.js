@@ -1002,8 +1002,8 @@ jQuery( function player56s($) {
             if(Player56sTrack && Player56sSeek){
                 var Refersh = setInterval(function(){
                     self.tracks.forEach(function(element, index) {
-                        if(element.postid == Player56sTrack){
-                            self.playNowBind(index);
+                        if(parseInt(element.postid) === parseInt(Player56sTrack)){
+                            self.playNowBind(parseInt(index));
                             willSeekTo(self, parseInt(Player56sSeek));
                         }
                     });
@@ -1015,7 +1015,17 @@ jQuery( function player56s($) {
                     }
                 }, 50);
             }
-
+            
+            update_wakelock($);
+            
+            jQuery(document).on('visibilitychange', function(event) {
+                event.preventDefault();
+                event.stopPropagation();
+                event.stopImmediatePropagation();
+		doVisualUpdates = !document.hidden;
+		update_wakelock($);
+	    });
+           
             jQuery(document).on("player56s-pause." + uniqueID, function (event, triggeredPlayer56s) {
                 if (self != triggeredPlayer56s) {
                     self.pause();

@@ -33,35 +33,30 @@ function frame($) {
     }
 }
 
+var doVisualUpdates = true;
+function update_wakelock($) {
+    if (!doVisualUpdates) {
+        console.log("Tab not visible");
+    }
+    if(doVisualUpdates) {
+        navigator.wakeLock.request('screen')
+        .then((wakeLock) => {
+            console.log(wakeLock);
+            console.log('acquired');
+        })
+    }
+}
+
 ( function( $ ) {
 
 	jQuery( function() {
-	    
-            var doVisualUpdates = true;
-            function update() {
-                if (!doVisualUpdates) {
-                    console.log("Tab not visible");
-                }
-                if (doVisualUpdates) {
-	                navigator.wakeLock.request('screen')
-	                .then((wakeLock) => {
-	                    console.log(wakeLock);
-	                    console.log('acquired');
-	                })
-                }
-            }
-        
-            document.addEventListener('visibilitychange', function(){
-                doVisualUpdates = !document.hidden;
-                update();
-            });
 
 		var settings = { 
 			anchors: "a",
 			cache: false,
 			cacheLength: 0,
 			prefetch: true,
-			prefetchOn: 'mouseover touchstart',
+			prefetchOn: "mouseover touchstart",
 			scroll: true,
 			locationHeader: "X-SmoothState-Location",
 			blacklist: '.no-smoothState',
@@ -161,8 +156,22 @@ function frame($) {
 				album_count_play($);
 				
 				album_score($);
+				
+				update_wakelock($);
+				
+                jQuery(document).on('visibilitychange', function(event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    event.stopImmediatePropagation();
+                    doVisualUpdates = !document.hidden;
+                    update_wakelock($);
+                });
 
-				interval = setInterval(function(){sidebarheight($);},100);
+				intervalSideBar = setInterval(function(){
+				    sidebarheight($);
+				}, 250);
+				
+				jQuery(".player56s").player56s($);
 
 				if (jQuery.isFunction($.fn.theiaStickySidebar)){ 
 					if ( jQuery.browser.mobile && !mystickyside_name.device_mobile) {
