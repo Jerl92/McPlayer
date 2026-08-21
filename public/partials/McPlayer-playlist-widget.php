@@ -22,10 +22,6 @@ class MCPlayer_bottom_playlist_widget extends WP_Widget {
 
 	}
 
-	function sort_cb($a, $b) {
-		return count($b) - count($a);
-	}
-
 	function widget( $args, $instance ) {
 
 		$title = apply_filters( 'widget_title', $instance['title'] );
@@ -53,7 +49,8 @@ class MCPlayer_bottom_playlist_widget extends WP_Widget {
 
 		$i = 0;
 		foreach($posts as $post){
-			$songs_length_calc[$i++] = seconds_from_time(get_post_meta($post->ID, 'meta-box-track-length', true));
+			$songs_length_calc[$i] = seconds_from_time(get_post_meta($post->ID, 'meta-box-track-length', true));
+			$i++;
 		}
 
 		echo $args['before_widget'];
@@ -61,18 +58,28 @@ class MCPlayer_bottom_playlist_widget extends WP_Widget {
 		echo $args['before_title'] . $title . ' - <span class="playlist_matches_count">' . $matches_count . '</span> - <span class="playlist_matches_length">' .  time_from_seconds(array_sum($songs_length_calc)) . '</span>' . $args['after_title'];
 		
 		if ( ! empty( $matches ) ) {
-			$args = array( 
-				'posts_per_page' => -1,	
-				'post_type' => 'music',
-				'post__in' => $matches,
-				'order'   => 'DESC',
-				'orderby'   => 'post__in',
-			);
+			if ( $shuffle == 1 ) {
+				$saved_args = array(
+					'post_type'      => 'music',
+					'posts_per_page' => -1,
+					'orderby' => 'rand',
+					'post__in'       => array_reverse( $matches, true )
+				);
+			} else {
+				$saved_args = array(
+					'post_type'      => 'music',
+					'posts_per_page' => -1,
+					'orderby' => 'post__in',
+					'post__in'       => array_reverse( $matches, true )
+				);
+			}
 		} else {
-			$args = 0;
+			$saved_args = 0;
 		}
 		
 		$the_query = new WP_Query( $args );
+		
+		echo '<div id="rs-saved-for-later-playlist">';
 
 		if ( $the_query->have_posts() ) {
 			echo '<div id="rs-saved-for-later-wrapper" class="noselect"><ul id="rs-saved-for-later" class="rs-saved-for-later">' ;
@@ -86,37 +93,46 @@ class MCPlayer_bottom_playlist_widget extends WP_Widget {
 		}
 
 		wp_reset_postdata();
-
-		echo "<div id='subnav-content-save'>
-			<span style='margin: 0px; width: 100%; display: table;'>
-				<input type='text' id='lnamesave' name='lname' aria-labelledby='Save playlist'></input>
-				<button class='save-playlist'>save</button>
-			<span>
-		</div>";
-
-		$args = array( 
-            'posts_per_page' => -1,
-			'post_status' => 'publish',
-			'post_type' => 'playlist'
-        );
 		
-		$posts = get_posts( $args );
-
-		echo "<div id='subnav-content-load'>";
-
-		foreach ($posts as $post) {
-			echo "<div class='playlist-load-loop' data-id='".$post->ID."'>".get_the_title($post->ID)."</div>";
-		}
-
-		echo "</div>";
-			
-		echo '<div id="playlist-btn">';
-		
-		echo '<div class="rs-save-for-later-save-playlist" data-nonce="' . wp_create_nonce( 'rs_save_for_later_save_playlist' ) . '">Save</div>';
-
-		echo '<div class="rs-save-for-later-load-playlist" data-nonce="' . wp_create_nonce( 'rs_save_for_later_load_playlist' ) . '">Load</div></div>';
 
 		echo '<div id="remove-all-btn"><a href="#" class="rs-save-for-later-remove-all" data-nonce="' . wp_create_nonce( 'rs_save_for_later_remove_all' ) . '">Flush Playlist</a></div>';
+		
+		echo '</div>';
+		
+		echo '<div class="playlist-save-load-wrapper">';
+			
+			echo '<div id="subnav-content-save">';
+				echo '<div style="margin: 0px; width: 100%; display: flex;">';
+					echo '<input type="text" class="save-playlist-text" style="margin: 0px; width: 75%; display: flex;"></input>';
+					echo '<button class="save-playlist">save</button>';
+				echo '</div>';
+			echo '</div>';
+	
+			$args = array( 
+	            		'posts_per_page' => -1,
+				'post_status' => 'publish',
+				'post_type' => 'playlist'
+	       		);
+			
+			$posts = get_posts( $args );
+	
+			echo '<div id="subnav-content-load">';
+	
+				foreach ($posts as $post) {
+					echo '<div class="playlist-load-loop" data-id="'.$post->ID.'">'.get_the_title($post->ID).'</div>';
+				}
+	
+			echo '</div>';
+				
+			echo '<div id="playlist-btn">';
+			
+				echo '<div class="rs-save-for-later-save-playlist">Save</div>';
+		
+				echo '<div class="rs-save-for-later-load-playlist">Load</div>';
+			
+			echo '</div>';
+		
+		echo '</div>';
 		
 		echo $args['after_widget'];		
 

@@ -93,7 +93,7 @@ function sleep(milliseconds) {
 
 var interval;
 jQuery(document).ready(function($){
-    interval = setInterval(function($){sidebarheight($);}, 250);
+    interval = setInterval(function($){sidebarheight($);}, 100);
 });
 
 function sidebarheight($) {
@@ -103,12 +103,13 @@ function sidebarheight($) {
 
     if (windowwidth >= 720) {
         if(primaryheight >= windowheight){
-            jQuery('#primary').height('100%');
-            jQuery('#secondary').height(primaryheight);
+	        jQuery('#primary').css('height', '100%');
+	        jQuery('#secondary').css('height', primaryheight);
         }
         if (primaryheight < windowheight){
-            jQuery('#primary').height(windowheight-250);
-            jQuery('#secondary').height(windowheight-250);
+            var windowheight_ = windowheight - 250;
+            jQuery('#primary').css('height', windowheight_);
+            jQuery('#secondary').css('height', primaryheight);
         }
         if(jQuery('#hwm-area')){
             jQuery('#primary').css('height', '100%');

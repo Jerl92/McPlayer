@@ -214,16 +214,23 @@ function shuffle(array) {
   return array;
 }
 
+var pause = 0;
+var stop = 0;
 var totalSeconds = 0;
 var player56splaytimer = Cookies.get('Player56sPlayTimer');
 jQuery( function player56s($) {
     var Clock = {
         start: function () {
-	        if(parseInt(player56splaytimer) === 0 || parseInt(player56splaytimer) === '' || isNaN(player56splaytimer)){
-			totalSeconds = 0;
+        	if(pause === 0 && stop === 0){
+		        if(parseInt(player56splaytimer) === 0 || parseInt(player56splaytimer) === '' || isNaN(player56splaytimer)){
+				totalSeconds = 0;
+			}
+			if (parseInt(player56splaytimer) > 0){
+				totalSeconds = parseInt(player56splaytimer);
+			}
 		}
-		if (parseInt(player56splaytimer) > 0){
-			totalSeconds = parseInt(player56splaytimer);
+		if(stop === 1){
+			totalSeconds = 0;
 		}
 		var self = this; this.interval = setInterval(function () { 
 			totalSeconds += 1;
@@ -231,6 +238,8 @@ jQuery( function player56s($) {
 		}, 1000); 
         },         
         pause: function () {
+        	pause = 1;
+        	stop = 0;
 		clearInterval(this.interval); 
 		delete this.interval; 
         },
@@ -238,6 +247,8 @@ jQuery( function player56s($) {
 		if (!this.interval) this.start(); 
         },
         stop: function () { 
+        	pause = 0;
+        	stop = 1;
 		totalSeconds = 0;
 		jQuery("#player56s-play-timer").html(parseInt(totalSeconds));
 		Cookies.remove('Player56sPlayTimer', { path: '/' });
@@ -562,6 +573,16 @@ jQuery( function player56s($) {
             }
             return this;
         }
+        stopBind() {
+            if (typeof this.$jPlayer !== "undefined" && this.$jPlayer.jPlayer) {
+                jQuery("#rs-item-" + this.tracks[this.currentTrack].postid + "").removeClass('playing');
+                this.$jPlayer.jPlayer( "stop" );
+                this.$jPlayer.jPlayer("setMedia", {
+                    mp3: '#'
+                });
+            }
+            return this;
+        }
         pseudoPause() {
             if (this.tracks[this.currentTrack] !== "undefined") {
                 jQuery(document).trigger("player56s-play", this);
@@ -622,16 +643,68 @@ jQuery( function player56s($) {
                     status = 1;
                 }
 
+                this.pseudoPause();
+                this.pause();
+                
                 var player56splaytimer = jQuery("#player56s-play-timer");
                 var currentTracklength = this.tracks[this.currentTrack].length;
                 var currentTracklengthsechalf = parseInt(currentTracklength) * 0.65;
                 if(player56splaytimer[0].innerText >= parseInt(currentTracklengthsechalf)) {
                 	count_playlist(this.tracks[this.currentTrack].postid);
                 }
+                
+                this.stop();
+                
+                this.currentTrack = index;
+              	var track = this.tracks[this.currentTrack];
+                jQuery("#player56s-currenttrack").html(track.postid);
+
+                this.$jPlayer.jPlayer("setMedia", {
+                    mp3: track.audiofileLink
+                });
+
+                this.$container.find(".player56s-title").html('<span>' + getTrackTitle(track.filename) + '</span>');
+                this.$container.find(".player56s-author").html('<span>' + getTrackAuthor(track.filename) + '</span>');
+                this.$container.find(".player56s-album").html('<span>' + getTrackAlbum(track.filename) + '</span>');
+                this.$container.find(".player56s-time").html(track.length ? formatTime(makeSeconds(track.length)) : "");
+                this.$container.find(".player56s-album-img").html('<span><img src="' + getTrackAlbumImg(track.filename) + '"></img></span>');
+
+                if (status == 1) {
+                    this.pseudoPlay();
+                    this.play();
+                }
+
+                initMediaSession(track.filename);
+
+                checkAndRunTicker(this);
+                checkAndRunTickerAlbum(this);
+
+            }
+        }
+        playNowBind(index) {
+            if (this.tracks[this.currentTrack] === undefined) {
+                this.currentTrack = 0;
+            }
+            if (typeof this.$jPlayer !== "undefined" && this.$jPlayer.jPlayer && this.tracks[this.currentTrack] !== undefined) {
+                var status = null;
+                if (this.$container.hasClass("status-onpause")) {
+                    status = 0;
+                }
+                if (this.$container.hasClass("status-playing")) {
+                    status = 1;
+                }
 
                 this.pseudoPause();
                 this.pause();
-                this.stop();
+                
+                var player56splaytimer = jQuery("#player56s-play-timer");
+                var currentTracklength = this.tracks[this.currentTrack].length;
+                var currentTracklengthsechalf = parseInt(currentTracklength) * 0.65;
+                if(player56splaytimer[0].innerText >= parseInt(currentTracklengthsechalf)) {
+                	count_playlist(this.tracks[this.currentTrack].postid);
+                }
+                
+                this.stopBind();
                 
                 this.currentTrack = index;
               	var track = this.tracks[this.currentTrack];
@@ -675,7 +748,10 @@ jQuery( function player56s($) {
                 if (this.$container.hasClass("status-playing")) {
                     status = 1;
                 }
-
+                
+                this.pseudoPause();
+                this.pause();                
+                
                 var player56splaytimer = jQuery("#player56s-play-timer");
                 var currentTracklength = this.tracks[this.currentTrack].length;
                 var currentTracklengthsechalf = parseInt(currentTracklength) * 0.65;
@@ -683,8 +759,6 @@ jQuery( function player56s($) {
                 	count_playlist(this.tracks[this.currentTrack].postid);
                 }
                 
-                this.pseudoPause();
-                this.pause();
                 this.stop();
 
                 if (!to_next && (parseInt(timelinedone) > 5)) {
@@ -929,7 +1003,7 @@ jQuery( function player56s($) {
                 var Refersh = setInterval(function(){
                     self.tracks.forEach(function(element, index) {
                         if(element.postid == Player56sTrack){
-                            self.playNow(index);
+                            self.playNowBind(index);
                             willSeekTo(self, parseInt(Player56sSeek));
                         }
                     });

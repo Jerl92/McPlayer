@@ -902,8 +902,8 @@ function save_playlist($post) {
 	$post_id = wp_insert_post($new_post);
 	$playlist = get_user_meta( user_if_login(), 'rs_saved_for_later', true);
 	$playlist_album = get_user_meta( user_if_login(), 'rs_saved_for_later_album', true);
-	add_post_meta($post_id, 'rs_saved_for_later', array_values($playlist));
-	add_post_meta($post_id, 'rs_saved_for_later_album', array_values($playlist_album));
+	update_post_meta($post_id, 'rs_saved_for_later', $playlist);
+	update_post_meta($post_id, 'rs_saved_for_later_album', $playlist_album);
 
 	$return = array(
 		'playlist'   => $playlist,
@@ -923,19 +923,11 @@ function load_playlist($post) {
 
 	$matches = get_post_meta($object_id, 'rs_saved_for_later', true);
 
-	if ( empty( $matches ) ) {
-		$matches = array();
-	}
-
-	update_user_meta( user_if_login(), 'rs_saved_for_later', $matches );
-
 	$matches_albums = get_post_meta($object_id, 'rs_saved_for_later_album', true);
-
-	if ( empty( $matches_albums ) ) {
-		$matches_albums = array();
-	}
-
-	update_user_meta( user_if_login(), 'rs_saved_for_later_album', $matches_albums );
+	
+	update_user_meta( user_if_login(), 'rs_saved_for_later', $matches);
+	
+	update_user_meta( user_if_login(), 'rs_saved_for_later_album', $matches_albums);
 
 	if ( ! empty( $matches ) ) {
 		$argv = array( 
@@ -953,7 +945,8 @@ function load_playlist($post) {
 
 	$i = 0;
 	foreach($posts as $post){
-		$songs_length_calc[$i++] = seconds_from_time(get_post_meta($post->ID, 'meta-box-track-length', true));
+		$songs_length_calc[$i] = get_post_meta($post->ID, 'meta-box-track-length', true);
+		$i++;
 	}
 
 	$x = 0;
@@ -987,7 +980,7 @@ function load_playlist($post) {
 	$return = array(
 		'playlist'   => $matches,
 		'playlist_album'   => $matches_albums,
-		'length' => time_from_seconds(array_sum($songs_length_calc)),
+		'length' => $songs_length_calc,
 		'genres' => $arraykey
 	);
 
@@ -1096,6 +1089,7 @@ add_action( 'wp_ajax_nopriv_count_play', 'count_play' );
 function count_play($post) {
 	
 	$object_id = $_POST['object_id'];
+	
 	$get_count_play = get_post_meta($object_id, 'count_play_loop', true);
 
 	$term_obj_lists = get_the_terms( $object_id, 'artist' );
@@ -1109,7 +1103,7 @@ function count_play($post) {
 		update_post_meta($object_id, 'count_play_loop', $countplay);
 	} else {
 		$countplay = 1;
-		add_post_meta($object_id, 'count_play_loop', $countplay);
+		update_post_meta($object_id, 'count_play_loop', $countplay);
 	}
 
 	if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
@@ -1129,33 +1123,35 @@ function count_play($post) {
 	
 	$date = current_time( 'timestamp' );
 	
-	$get_term_color = get_term_meta( implode($termid), 'meta_count_earn', true );
+	$get_term_earn = get_term_meta( implode($termid), 'meta_count_earn', true );
 	
-	$get_count_play_term = get_term_meta(implode($termid), 'earn_play_loop', true );
+	$get_count_play_array = get_post_meta($object_id, 'earn_play_loop', true);
 
-	$get_count_play_term_ = array(
-		'earn'   => $get_term_color,
+	$get_play_array = array(
+		'earn'   => $get_term_earn,
 		'userid' => user_if_login(),
 		'ipv4'	=> $ip,
 		'loc'	=> $loc,
 		'postid' => $object_id,
-		'datetime' => $date
+		'datetime' => $date,
+		'ifpay' => false
 	);
 
-	if(is_array($get_count_play_term)) {
-		array_push($get_count_play_term, $get_count_play_term_);
-		update_term_meta(implode($termid), 'earn_play_loop', $get_count_play_term );
+	if(is_array($get_count_play_array)) {
+		array_push($get_count_play_array, $get_play_array);
+		update_post_meta($object_id, 'earn_play_loop', $get_count_play_array );
 	} else {
-		update_term_meta(implode($termid), 'earn_play_loop', [$get_count_play_term_] );
+		update_post_meta($object_id, 'earn_play_loop', [$get_play_array] );
 	}
 	
 	$rs_saved_played = get_user_meta( user_if_login(), 'rs_saved_played', true );
 	
+	$new_array[$date] = $object_id;
 	if(is_array($rs_saved_played)) {
-		array_push($rs_saved_played, $object_id);
+		array_push($rs_saved_played, $new_array);
 		update_user_meta( user_if_login(), 'rs_saved_played', $rs_saved_played );
 	} else {	
-		update_user_meta( user_if_login(), 'rs_saved_played', [$object_id] );
+		update_user_meta( user_if_login(), 'rs_saved_played', [$new_array] );
 	}
 
 	return wp_send_json ($countplay);
@@ -1458,7 +1454,7 @@ function album_count_play() {
 	$album_count_play_loops = get_post_meta($albumid, 'album_count_play_loop', true);
 	
 	$i = 0;
-	$last_ = array_slice($album_count_play_loops, -30);
+	$last_ = array_slice($album_count_play_loops, -25);
 	foreach($last_ as $album_count_play_loop) {
 		$album_count_play_loops_array[$i] = $album_count_play_loop;
 		$i++;
@@ -1492,7 +1488,7 @@ function album_score() {
 	$album_score_uniques = get_post_meta( $albumid , "album_score_unique", true );
 	
 	$i = 0;
-	$last_ = array_slice($album_score_uniques, -30);
+	$last_ = array_slice($album_score_uniques, -25);
 	foreach($last_ as $album_score_unique) {
 		$album_score_unique_array[$i] = $album_score_unique;
 		$i++;

@@ -53,13 +53,31 @@ function mcplayer_load_playlist($) {
                 jQuery(".player56s").player56s($);
                 jQuery("#player56s-removetracks-all").html(null);
                 links = data.playlist.reverse();
+                var length = 0;
+                var formattedHours = 0;
+                var formattedMinutes = 0;
+                var formattedSeconds = 0;
                 links.forEach(function(element, index) {
                     setTimeout(function() {
                         ajax_playlist($, element);
                         ajax_playlist_add_sidebar($, element);
                         jQuery('.genre_widget').html(data.genres);
                         jQuery('.playlist_matches_count').html(index+1);
-                        jQuery(".playlist_matches_length").html(data.length);
+                        var timeParts = 0;
+                        var totalSeconds = 0;
+                        var hours = 0;
+                        var minutes = 0;
+                        var seconds = 0;
+                        timeParts = data.length[index].split(':');
+                        totalSeconds = (parseInt(timeParts[0]) * 60) + parseInt(timeParts[1]);
+                        length = parseInt(length) + parseInt(totalSeconds);
+                        hours = Math.floor(parseInt(length) / 3600);
+                        minutes = Math.floor((parseInt(length) % 3600) / 60);
+                        seconds = parseInt(length) % 60;
+                        formattedHours = String(hours).padStart(2, '0');
+                        formattedMinutes = String(minutes).padStart(2, '0');
+                        formattedSeconds = String(seconds).padStart(2, '0');
+                        jQuery(".playlist_matches_length").html(formattedHours + ':' + formattedMinutes + ':' + formattedSeconds);
                         
                         jQuery('.rs-save-for-later-button').each(function(){
                             if(jQuery(this).data('object-id') === element){
@@ -78,7 +96,7 @@ function mcplayer_load_playlist($) {
                         }
                     }); 
                 }, this);
-
+                
                 if (jQuery.isFunction(jQuery.fn.theiaStickySidebar)){ 
 					if ( jQuery.browser.mobile && !mystickyside_name.device_mobile) {
 						return false;
@@ -111,6 +129,5 @@ function mcplayer_load_playlist($) {
 }
 
 jQuery(document).ready(function($) {
-    mcplayer_load_playlist($);
     mcplayer_load_saved_playlist($);
 });

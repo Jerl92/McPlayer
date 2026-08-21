@@ -316,6 +316,11 @@ ul.rs-saved-for-later > li.rs-item-saved-for-later > .rs-item-content > .rs-item
 .rs-save-for-later-load-playlist a {
 	color: #fff !important;
 }
+#rs-saved-for-later-playlist {
+	height: 100%;
+	width: 100%;
+	z-index: 10;
+}
 @media only screen and (max-width: 767px) {
 	ul.rs-saved-for-later > li.rs-item-saved-for-later > .rs-item-content > a > .rs-item-image,
 	ul.rs-saved-for-later > li.rs-item-saved-for-later > .rs-item-content > a > .rs-item-float {

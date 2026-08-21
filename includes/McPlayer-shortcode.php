@@ -266,26 +266,22 @@ function woocommerce_get_already_played_loop($atts) {
 		$i++;
 	}
 
-	$i = 0;
 	foreach ( $users_id as $user_id ) {
 		$get_saved_played[$user_id] = get_user_meta( $user_id, 'rs_saved_played', true );
 		foreach ( $get_saved_played as $key => $value) {
 			foreach ( $value as $key_ => $value_) {
 				$get_saved_played_[$key_] = $value_;
-				$i++;
 			}
 		}
 	}
-
-	sort($get_saved_played_);
 	
-	$i = 0;
 	foreach ( $get_saved_played_ as $key => $value ) {
 	    foreach ( $value as $key_ => $value_ ) {
-    		$get_saved_played_list[$i] = $value_;
-    		$i++;
+    		$get_saved_played_list[$key_] = $value_;
 	    }
 	}
+	
+	krsort($get_saved_played_list);
 
 	$atts = shortcode_atts(array(
 		'per_page' => '12',
@@ -400,10 +396,13 @@ function artist_get_loop($atts) {
 			'hide_empty'    => true,
 		) );
 	}
+	
+	echo '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0px;">';
 
 	if($_GET['char']){
 
 		if ($terms) {
+			
 			foreach ($terms as $term) {
 
 				$get_albums_args = array(
@@ -450,7 +449,7 @@ function artist_get_loop($atts) {
 					}
 				}
 
-				echo '<li class="artist-wrapper-box" style="list-style: none; text-align: center; width: 50%; float: left; border-bottom: .25px solid rgba(0,0,0,.75); border-right: .25px solid rgba(0,0,0,.75); padding: 10px 0;"><a href="' . esc_attr(get_term_link($term, $taxonomy)) . '" title="' . sprintf(__("View all posts in %s"), $term->name) . '" ' . '><img style="height: 150px; display: flex; margin-left: auto; margin-right: auto;" src="' . z_taxonomy_image_url($term->term_id) . '"><p style="margin: 0;">' . $term->name . '</p></img></a>';
+				echo '<div class="artist-wrapper-box" style="list-style: none; text-align: center; width: 1000%; float: left; border-bottom: .25px solid rgba(0,0,0,.75); border-right: .25px solid rgba(0,0,0,.75); padding: 10px 0;"><a href="' . esc_attr(get_term_link($term, $taxonomy)) . '" title="' . sprintf(__("View all posts in %s"), $term->name) . '" ' . '><img style="height: 150px; display: flex; margin-left: auto; margin-right: auto;" src="' . z_taxonomy_image_url($term->term_id) . '"><p style="margin: 0;">' . $term->name . '</p></img></a>';
 				echo '<p style="margin: 0; float: left; padding-left: 2.5%;">';
 				echo count($get_albums);
 				echo ' albums - ';
@@ -464,11 +463,11 @@ function artist_get_loop($atts) {
 				echo ' - ';
 				echo get_post_meta($get_albums[count($get_albums) - 1]->ID,  "meta-box-year", true);
 
-				echo '</p></li>';
+				echo '</p></div>';
 			}
 
 		}
-
+		
 	}
 
 	if(!$_GET['char']){
@@ -486,7 +485,7 @@ function artist_get_loop($atts) {
 		rsort($terms_count_plays);
 	
 		$outputs = array_slice($terms_count_plays, 0, 100); 
-	
+		
 		foreach($outputs as $output){
 			$term = get_term($output['id']);
 			$artist_slug_name = $term->name; // Added a space between the slugs with . ' '
@@ -533,7 +532,7 @@ function artist_get_loop($atts) {
 				}
 			}
 		
-			echo '<li class="artist-wrapper-box" style="list-style: none; text-align: center; width: 50%; float: left; border-bottom: .25px solid rgba(0,0,0,.75); border-right: .25px solid rgba(0,0,0,.75); padding: 10px 0;"><a href="' . esc_attr(get_term_link($term, $taxonomy)) . '" title="' . sprintf(__("View all posts in %s"), $term->name) . '" ' . '><img style="height: 150px; display: flex; margin-left: auto; margin-right: auto;" src="' . z_taxonomy_image_url($term->term_id) . '"><p style="margin: 0;">' . $term->name . '</p></img></a>';
+			echo '<div class="artist-wrapper-box" style="list-style: none; text-align: center; width: 100%; float: left; border-bottom: .25px solid rgba(0,0,0,.75); border-right: .25px solid rgba(0,0,0,.75); padding: 10px 0;"><a href="' . esc_attr(get_term_link($term, $taxonomy)) . '" title="' . sprintf(__("View all posts in %s"), $term->name) . '" ' . '><img style="height: 150px; display: flex; margin-left: auto; margin-right: auto;" src="' . z_taxonomy_image_url($term->term_id) . '"><p style="margin: 0;">' . $term->name . '</p></img></a>';
 			echo '<p style="margin: 0; float: left; padding-left: 2.5%;">';
 			echo count($get_albums);
 			echo ' albums - ';
@@ -547,10 +546,12 @@ function artist_get_loop($atts) {
 			echo ' - ';
 			echo get_post_meta($get_albums[count($get_albums) - 1]->ID,  "meta-box-year", true);
 		
-			echo '</p></li>';
+			echo '</p></div>';
 		}
-
+		
 	}
+	
+	echo '</div>';
 
 }
 

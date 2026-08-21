@@ -94,6 +94,72 @@ class Meta_Box_audio_Upload {
             $post_title = $metadata['title'];
 
         echo '<br />';
+        
+        echo '<ul style="display: flex; text-align: center;">';
+            echo '<li style="padding-right: 10px;">';
+                
+                wp_nonce_field('artist-dropdown', 'dropdown-artist-nonce');
+                $terms = get_terms( 'artist', 'hide_empty=0');
+                if ( is_a( $terms, 'WP_Error' ) ) {
+                    $terms = array();
+                }
+
+                $object_terms = wp_get_object_terms( $post->ID, 'artist' );
+                if ( is_a( $object_terms, 'WP_Error' ) ) {
+                    $object_terms = array();
+                }
+
+                echo "Artist:";
+                echo '</br>';
+                echo "<select id='artistoptions' name='customartist[]'>";
+                $getslugid = get_the_terms(get_the_id(), 'artist');
+
+                $userid = get_current_user_id();                
+                $terms = get_terms("artist", "orderby=name&hide_empty=0");
+                $artist = get_user_meta( $userid, '_artist_role_set', true );
+                if ( !is_wp_error( $terms ) ) {
+                    if($artist){
+                        foreach ( $terms as $term ) {
+                            if($artist == $term->term_id) {
+                                echo '<option value="'.$term->term_id.'">';
+                                echo $term->name . ' '; // Added a space between the slugs with . ' '
+                                echo "</option>";
+                            }
+                        }
+                    } else {
+
+                        foreach( $getslugid as $thisslug ) {
+                            echo '<option value="'.$thisslug->term_id.'">';
+                            echo $thisslug->name . ' '; // Added a space between the slugs with . ' '
+                            echo '</option>';
+                        }
+        
+                        foreach ( $terms as $term ) {
+                            if ( $term->parent == 0) {
+                                if ( in_array($term->term_id, $object_terms) ) {
+                                    $parent_id = $term->term_id;
+                                    echo '<option value="'.$term->term_id.'" selected="selected">'.$term->name.'</option>';
+                                } else {
+                                    echo '<option value="'.$term->term_id.'">'.$term->name.'</option>';
+                                }
+                            }
+                        }
+
+                    }
+                }
+
+                echo "</select><br />";
+
+	echo '</li>';
+	echo '<li style="margin-left: auto;">';
+	
+	        $count_play_loop = get_post_meta(get_the_id(), 'count_play_loop', true);
+	        echo '<label for="meta-box-count-play">Count Play</label>';
+	        echo '<br />';
+	        echo '<input type="number" id="meta-box-count-play" class="text" name="meta-box-count-play"  value="'.$count_play_loop.'" />';
+        
+	echo '</li>';
+	echo '</ul>';
     }
 
 
@@ -130,6 +196,21 @@ class Meta_Box_audio_Upload {
             return; 
         
         update_post_meta( $post_id, "meta-box-track-number", $_POST['meta-box-track-number'] );
+	
+	if ( !wp_verify_nonce($_POST['dropdown-artist-nonce'], 'artist-dropdown'))
+		return;
+	$artist = array_map('intval', $_POST['customartist']);
+	wp_set_object_terms($post_id, $artist, 'artist');
+	
+	$term_obj_list = get_the_terms( $post_id, 'artist' );
+	foreach ($term_obj_list as $taxonomy) {
+		update_post_meta($post_id, 'meta-box-artist', $taxonomy->slug);
+	}
+        
+        if( ! isset( $_POST['meta-box-count-play'] ) )
+            return; 
+        
+        update_post_meta( $post_id, "count_play_loop", $_POST['meta-box-count-play'] );
         
 	}
 }
@@ -227,132 +308,6 @@ class meta_box_cover_upload {
 		}
 	}
 }
-
-
-///////////////////////////////////
-//
-//  custom_meta_box_markup
-//  
-//  
-//
-///////////////////////////////////
-function custom_meta_box_markup($object)
-{
-
-wp_nonce_field(basename(__FILE__), "meta-box-nonce");
-
-?>
-    <div>
-        <ul style="display: flex; text-align: center;">
-            <li style="padding-right: 10px;">
-                
-                <?php
-                wp_nonce_field('artist-dropdown', 'dropdown-artist-nonce');
-                $terms = get_terms( 'artist', 'hide_empty=0');
-                if ( is_a( $terms, 'WP_Error' ) ) {
-                    $terms = array();
-                }
-
-                $object_terms = wp_get_object_terms( $post->ID, 'artist' );
-                if ( is_a( $object_terms, 'WP_Error' ) ) {
-                    $object_terms = array();
-                }
-
-                echo "Artist:";
-                echo '</br>';
-                echo "<select id='artistoptions' name='customartist[]'>";
-                $getslugid = wp_get_post_terms( $object->ID, 'artist', $args );
-
-                $userid = get_current_user_id();                
-                $terms = get_terms("artist", "orderby=name&hide_empty=0");
-                $artist = get_user_meta( $userid, '_artist_role_set', true );
-                if ( !is_wp_error( $terms ) ) {
-                    if($artist){
-                        foreach ( $terms as $term ) {
-                            if($artist == $term->term_id) {
-                                echo "<option value='$term->term_id'>";
-                                echo $term->name . ' '; // Added a space between the slugs with . ' '
-                                echo "</option>";
-                            }
-                        }
-                    } else {
-
-                        foreach( $getslugid as $thisslug ) {
-                            echo "<option value='$thisslug->term_id'>";
-                            echo $thisslug->name . ' '; // Added a space between the slugs with . ' '
-                            echo "</option>";
-                        }
-        
-                        foreach ( $terms as $term ) {
-                            if ( $term->parent == 0) {
-                                if ( in_array($term->term_id, $object_terms) ) {
-                                    $parent_id = $term->term_id;
-                                    echo "<option value='{$term->term_id}' selected='selected'>{$term->name}</option>";
-                                } else {
-                                    echo "<option value='{$term->term_id}'>{$term->name}</option>";
-                                }
-                            }
-                        }
-
-                    }
-                }
-
-                echo "</select><br />"; ?>
-
-            </li>
-
-            <li>
-                Feat
-                </br>
-                <input name="meta-box-artist-feat" type="text" id="meta-box-artist-feat" value="<?php echo get_post_meta($object->ID, "meta-box-artist-feat", true); ?>" size="30">
-            </li>
-
-        </ul>
-
-    </div>
-
-<?php  
-}
-
-function add_custom_meta_box()
-{
-    add_meta_box("demo-meta-box", "Music Information", "custom_meta_box_markup", "music", "normal", "low", null);
-}
-
-add_action("add_meta_boxes", "add_custom_meta_box");
-
-
-function save_custom_meta_box($post_id, $post, $update) {
-    if (!isset($_POST["meta-box-nonce"]) || !wp_verify_nonce($_POST["meta-box-nonce"], basename(__FILE__)))
-    return $post_id;
-
-    if(!current_user_can("edit_post", $post_id))
-        return $post_id;
-
-    if(defined("DOING_AUTOSAVE") && DOING_AUTOSAVE)
-        return $post_id;
-
-    $slug = "music";
-    if($slug != $post->post_type)
-        return $post_id;
-
-    if( ! isset( $_POST['meta-box-artist-feat'] ) )
-    return; 
-    
-    update_post_meta( $post_id, "meta-box-artist-feat", $_POST['meta-box-artist-feat'] );
-
-    if ( !wp_verify_nonce($_POST['dropdown-artist-nonce'], 'artist-dropdown'))
-        return;
-    $artist = array_map('intval', $_POST['customartist']);
-    wp_set_object_terms($post_id, $artist, 'artist');
-
-    $term_obj_list = get_the_terms( $post_id, 'artist' );
-    foreach ($term_obj_list as $taxonomy) {
-        update_post_meta($post_id, 'meta-box-artist', $taxonomy->slug);
-    }
-}
-
-add_action("save_post", "save_custom_meta_box", 10, 3);
 
 ///////////////////////////////////
 //

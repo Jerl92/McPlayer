@@ -268,14 +268,16 @@ ul.rs-saved-for-later {
 #playlist-btn {
     display: flex;
     padding-bottom: 15px;
+    padding-top: 12.5px;
 }
 
 #subnav-content-save {
     display: none;
-    height: 75px !important;
+    height: auto !important;
+    margin: 0px;
 }
 
-.subnav-content-save span {
+.subnav-content-save div {
     margin: auto;
     display: table;
     text-align: center;
@@ -290,6 +292,11 @@ ul.rs-saved-for-later {
     display: block !important;
     height: 250px;
     overflow-y: scroll;
+}
+
+.playlist-save-load-wrapper{
+    height: auto !important;
+    padding-top: 12.5px;
 }
 
 .playlist-load-loop {

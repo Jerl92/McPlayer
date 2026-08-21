@@ -42,11 +42,13 @@ function frame($) {
                 if (!doVisualUpdates) {
                     console.log("Tab not visible");
                 }
-                navigator.wakeLock.request('screen')
-                .then((wakeLock) => {
-                    console.log(wakeLock);
-                    console.log('acquired');
-                })
+                if (doVisualUpdates) {
+	                navigator.wakeLock.request('screen')
+	                .then((wakeLock) => {
+	                    console.log(wakeLock);
+	                    console.log('acquired');
+	                })
+                }
             }
         
             document.addEventListener('visibilitychange', function(){
@@ -62,6 +64,7 @@ function frame($) {
 			prefetchOn: 'mouseover touchstart',
 			scroll: true,
 			locationHeader: "X-SmoothState-Location",
+			blacklist: '.no-smoothState',
 			onStart: {
 				duration: 500, // Duration of our animation
 				render: function ($container) {
@@ -159,7 +162,7 @@ function frame($) {
 				
 				album_score($);
 
-				interval = setInterval(function(){sidebarheight($);},250);
+				interval = setInterval(function(){sidebarheight($);},100);
 
 				if (jQuery.isFunction($.fn.theiaStickySidebar)){ 
 					if ( jQuery.browser.mobile && !mystickyside_name.device_mobile) {
