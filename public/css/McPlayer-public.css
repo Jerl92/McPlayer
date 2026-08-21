@@ -225,6 +225,10 @@ ul.rs-saved-for-later {
     width: 100%;
 }
 
+#secondary {
+   overflow: scroll !important;
+}
+
 /* width */
 #secondary::-webkit-scrollbar {
     width: 2.5px;

@@ -91,17 +91,17 @@ function sleep(milliseconds) {
     }
 }
 
-function sidebarheight($) {
+function sidebarheight() {
     var windowwidth = jQuery(window).width();
-    var windowheight = jQuery(window).outerHeight();
-    var primaryheight = jQuery("#primary").outerHeight();
+    var windowheight = jQuery(window).height();
+    var primaryheight = jQuery("#primary").height();
 
     if (windowwidth >= 720) {
-        if(primaryheight >= windowheight){
+        if(primaryheight > windowheight){
 	        jQuery("#primary").css("height", "100%");
 	        jQuery("#secondary").css("height", primaryheight);
         }
-        if (primaryheight < windowheight){
+        if (primaryheight <= windowheight){
             var windowheight_ = parseInt(windowheight) - 275;
             jQuery("#primary").css("height", windowheight_);
             jQuery("#secondary").css("height", windowheight_);
@@ -114,11 +114,14 @@ function sidebarheight($) {
         jQuery("#secondary").css("height", "100%");
     }
        
-    footer_stick($);
+    footer_stick();
 }
 
-jQuery(document).ready(function($){
-	sidebarheight($);
+var intervalSideBar;
+jQuery(document).ready(function($){	
+	intervalSideBar = setInterval(function(){
+	    sidebarheight();
+	}, 250);
 });
 
 jQuery(document).ready(function($){	

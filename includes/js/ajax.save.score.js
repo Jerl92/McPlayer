@@ -27,7 +27,7 @@ function save_score($){
 			jQuery('.newarray').html('Score need to be below 0.');
 		}
 		
-	        if(input.val() == ''){
+	    if(input.val() === ''){
 			error = 1;
 			jQuery('.song-unique-score-input').css('border', '0.5px solid red');
 			jQuery('.newarray').html('Score need to be a number between 0 and 5.');
@@ -65,4 +65,4 @@ function save_score($){
 
 jQuery(document).ready(function($) {
     save_score($);
-});t
+});

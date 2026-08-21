@@ -105,6 +105,8 @@ class Mcplayer_Public
 		 * class.
 		 */
 		 
+		wp_enqueue_script('aim',  plugin_dir_url(__FILE__) . 'js/jquery.aim.js', array('jquery'), $this->version, false);
+		 
 		wp_enqueue_script('smoothState',  plugin_dir_url(__FILE__) . 'js/jquery.smoothState.js', array('jquery'), $this->version, false);
 
 		wp_enqueue_script('smoothStatejs',  plugin_dir_url(__FILE__) . 'js/smoothState.js', array('smoothState'), $this->version, false);

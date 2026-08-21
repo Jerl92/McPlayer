@@ -47,7 +47,11 @@ function update_wakelock() {
     }
 }
 
-var intervalSideBar;
+jQuery(document).on('visibilitychange', function() {
+    doVisualUpdates = !document.hidden;
+    update_wakelock();
+});
+
 ( function( $ ) {
 
 	jQuery( function() {
@@ -57,7 +61,7 @@ var intervalSideBar;
 			cache: false,
 			cacheLength: 0,
 			prefetch: true,
-			prefetchOn: "mouseover",
+			prefetchOn: 'aim',
 			scroll: true,
 			locationHeader: "X-SmoothState-Location",
 			blacklist: ".no-smoothState",
@@ -159,15 +163,10 @@ var intervalSideBar;
 				album_score($);
 				
 				update_wakelock($);
-				
-				sidebarheight($);
-				
-				jQuery(".player56s").player56s($);
-				
-		                jQuery(document).on('visibilitychange', function() {
-		                    doVisualUpdates = !document.hidden;
-		                    update_wakelock();
-		                });
+
+				intervalSideBar = setInterval(function(){
+				    sidebarheight();
+				}, 250);
 
 			}
 		};
