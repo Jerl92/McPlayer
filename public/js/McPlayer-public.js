@@ -102,7 +102,7 @@ function sidebarheight($) {
 	        jQuery("#secondary").css("height", primaryheight);
         }
         if (primaryheight < windowheight){
-            var windowheight_ = parseInt(windowheight) - 225;
+            var windowheight_ = parseInt(windowheight) - 275;
             jQuery("#primary").css("height", windowheight_);
             jQuery("#secondary").css("height", windowheight_);
         }
@@ -138,7 +138,7 @@ jQuery( window ).bind("beforeunload", function(){
     var Player56sCurrentTrack = jQuery("#player56s-currenttrack");
     Cookies.set("Player56sCurrentTrack", parseInt(Player56sCurrentTrack[0].innerText), { path: "/" });
     var Player56sCurrentSeek = jQuery("#player56s-seek-current-percent");
-    Cookies.set("Player56sSeek", parseInt(Player56sCurrentSeek[0].innerText) + 1, { path: "/" });
+    Cookies.set("Player56sSeek", parseInt(Player56sCurrentSeek[0].innerText), { path: "/" });
     var Player56sPlayTimer = jQuery("#player56s-play-timer");
     Cookies.set("Player56sPlayTimer", parseInt(Player56sPlayTimer[0].innerText), { path: "/" });
     var Player56sUserID = jQuery("#player56s-userid");

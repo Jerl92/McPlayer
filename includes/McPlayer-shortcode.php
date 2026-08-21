@@ -371,23 +371,23 @@ function terms_clauses_47840519( $clauses, $taxonomies, $args ){
 
 function artist_get_loop($atts) {
 
-	echo '<div style="display: block; height: 100%;">';
-
 	$curenturl = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
 
 	?><div class='letterartistwrap'><?php
 	foreach (range('0', '9') as $number) {
-		echo "<a class='letterartist' href='" . $curenturl . "?char=" . $number . "'>" . strtoupper($number) . "</a>";
+		?><a class="letterartist" href="<?php echo $curenturl; ?>?char=<?php echo $number; ?>"><?php echo strtoupper($number); ?></a><?php
 	}
-	?></div><?php
-	?><div class='letterartistwrap'><?php
+	?></div>
+	<div class='letterartistwrap'><?php
 	foreach (range('a', 'z') as $alphabet) {
-		echo "<a class='letterartist' href='" . $curenturl . "?char=" . $alphabet . "'>" . strtoupper($alphabet) . "</a>";
+		?><a class="letterartist" href="<?php echo $curenturl; ?>?char=<?php echo $alphabet; ?>"><?php echo strtoupper($alphabet); ?></a><?php
 	}
-	?></div><?php
-	echo "<br />";
+	?></div>
+	<br>
 	
-	if($_GET['char']) {
+	<div style="display: inline-table; height: auto; padding-bottom: 25px;">
+	
+	<?php if($_GET['char']) {
 		$terms = get_terms( array(
 			'taxonomy' => 'artist',
 			'__first_letter' => $_GET['char']
@@ -399,7 +399,7 @@ function artist_get_loop($atts) {
 		) );
 	}
 
-	if($_GET['char']){
+	if(isset($_GET['char'])){
 	
 		if ($terms) {
 			foreach ($terms as $term) {
@@ -455,17 +455,17 @@ function artist_get_loop($atts) {
 						$i++;
 					}
 				}
-				echo '<div class="artist-wrapper-box" style="list-style: none; text-align: center; width: 50%; float: left; border-bottom: .25px solid rgba(0,0,0,.75); border-right: .25px solid rgba(0,0,0,.75); padding: 10px 0;"><a href="' . esc_attr(get_term_link($term, $taxonomy)) . '" title="' . sprintf(__("View all posts in %s"), $term->name) . '" ' . '><img style="height: 150px; display: flex; margin-left: auto; margin-right: auto;" src="' . z_taxonomy_image_url($term->term_id) . '"><p style="margin: 0;">' . $term->name . '</p></img></a>';
-				echo '<div class="artist-wrapper-box-flex">';
-				echo '<span class="artist-wrapper-box-info" style="margin: 0; float: left; padding-left: 2.5%;">';
-				echo count($get_albums);
-				echo ' albums - ';
-				echo count($get_songs);
-				echo ' songs - ';
-				echo time_from_seconds(array_sum($get_songs_calc));
-				echo ' - ';
-	
-	            		$i = 0;
+?><div style="list-style: none; text-align: center; width: 50%; float: left; border-bottom: 0.25px solid rgba(0,0,0,.75); border-right: 0.25px solid rgba(0,0,0,.75); padding: 10px 0;"><a href="<?php echo esc_attr(get_term_link($term, $taxonomy)); ?>" title="<?php echo sprintf(__("View all posts in %s"), $term->name); ?>"><img style="height: 150px; display: flex; margin-left: auto; margin-right: auto;" src="<?php echo z_taxonomy_image_url($term->term_id); ?>"><p style="margin: 0;"><?php echo $term->name; ?></p></img></a><?php
+				?><div class="artist-wrapper-box-flex">
+				<span class="artist-wrapper-box-info" style="margin: 0; float: left; padding-left: 2.5%;">
+				<?php echo count($get_albums); ?>
+				albums -
+				<?php echo count($get_songs); ?>
+				songs -
+				<?php echo time_from_seconds(array_sum($get_songs_calc)); ?>
+				-
+					
+	            		<?php $i = 0;
 			    	$calcvalue = 0;
 				foreach ($get_songs_scores as $score_song) {
 					foreach ($score_song as $score) {
@@ -476,22 +476,23 @@ function artist_get_loop($atts) {
 				$get_songs_scores_calc = $calcvalue / $i;
 				$get_songs_scores_calc_round = number_format($get_songs_scores_calc, 2);
 				echo $get_songs_scores_calc_round.'/5';
-				
+				?>
 								
-				echo ' - ';
+				-
 				
-				echo array_sum($get_count_played).' Plays';
+				<?php echo array_sum($get_count_played); ?> Plays
 				
-				echo '</span>';
-				echo '<span class="artist-wrapper-box-year" style="margin-left: auto; padding-right: 2.5%;">';
+				</span>
+				<span class="artist-wrapper-box-year" style="margin-left: auto; padding-right: 2.5%;">
 			
-				echo get_post_meta($get_albums[0]->ID,  "meta-box-year", true);
-				echo ' - ';
-				echo get_post_meta($get_albums[count($get_albums) - 1]->ID,  "meta-box-year", true);
+				<?php echo get_post_meta($get_albums[0]->ID,  "meta-box-year", true); ?>
+				-
+				<?php echo get_post_meta($get_albums[count($get_albums) - 1]->ID,  "meta-box-year", true); ?>
 			
-				echo '</span>';
-				echo '</div>';
-				echo '</div>';
+				</span>
+				</div>
+				</div>
+				<?php
 			}
 
 		}
@@ -569,17 +570,17 @@ function artist_get_loop($atts) {
 					}
 				}
 			
-				echo '<div class="artist-wrapper-box" style="list-style: none; text-align: center; width: 50%; float: left; border-bottom: .25px solid rgba(0,0,0,.75); border-right: .25px solid rgba(0,0,0,.75); padding: 10px 0;"><a href="' . esc_attr(get_term_link($term, $taxonomy)) . '" title="' . sprintf(__("View all posts in %s"), $term->name) . '" ' . '><img style="height: 150px; display: flex; margin-left: auto; margin-right: auto;" src="' . z_taxonomy_image_url($term->term_id) . '"><p style="margin: 0;">' . $term->name . '</p></img></a>';
-				echo '<div class="artist-wrapper-box-flex">';
-				echo '<span class="artist-wrapper-box-info" style="margin: 0; float: left; padding-left: 2.5%;">';
-				echo count($get_albums);
-				echo ' albums - ';
-				echo count($get_songs);
-				echo ' songs - ';
-				echo time_from_seconds(array_sum($get_songs_calc));
-				echo ' - ';
-	
-	            		$i = 0;
+?><div style="list-style: none; text-align: center; width: 50%; float: left; border-bottom: 0.25px solid rgba(0,0,0,.75); border-right: 0.25px solid rgba(0,0,0,.75); padding: 10px 0;"><a href="<?php echo esc_attr(get_term_link($term, $taxonomy)); ?>" title="<?php echo sprintf(__("View all posts in %s"), $term->name); ?>"><img style="height: 150px; display: flex; margin-left: auto; margin-right: auto;" src="<?php echo z_taxonomy_image_url($term->term_id); ?>"><p style="margin: 0;"><?php echo $term->name; ?></p></img></a><?php
+				?><div class="artist-wrapper-box-flex">
+				<span class="artist-wrapper-box-info" style="margin: 0; float: left; padding-left: 2.5%;">
+				<?php echo count($get_albums); ?>
+				albums -
+				<?php echo count($get_songs); ?>
+				songs -
+				<?php echo time_from_seconds(array_sum($get_songs_calc)); ?>
+				-
+					
+	            		<?php $i = 0;
 			    	$calcvalue = 0;
 				foreach ($get_songs_scores as $score_song) {
 					foreach ($score_song as $score) {
@@ -590,27 +591,28 @@ function artist_get_loop($atts) {
 				$get_songs_scores_calc = $calcvalue / $i;
 				$get_songs_scores_calc_round = number_format($get_songs_scores_calc, 2);
 				echo $get_songs_scores_calc_round.'/5';
-				
+				?>
 								
-				echo ' - ';
+				-
 				
-				echo array_sum($get_count_played).' Plays';
+				<?php echo array_sum($get_count_played); ?> Plays
 				
-				echo '</span>';
-				echo '<span class="artist-wrapper-box-year" style="margin-left: auto; padding-right: 2.5%;">';
+				</span>
+				<span class="artist-wrapper-box-year" style="margin-left: auto; padding-right: 2.5%;">
 			
-				echo get_post_meta($get_albums[0]->ID,  "meta-box-year", true);
-				echo ' - ';
-				echo get_post_meta($get_albums[count($get_albums) - 1]->ID,  "meta-box-year", true);
+				<?php echo get_post_meta($get_albums[0]->ID,  "meta-box-year", true); ?>
+				-
+				<?php echo get_post_meta($get_albums[count($get_albums) - 1]->ID,  "meta-box-year", true); ?>
 			
-				echo '</span>';
-				echo '</div>';
-				echo '</div>';
+				</span>
+				</div>
+				</div>
+				<?php
 			}
 
 	}
 	
-	echo '</div>';
+	?></div><?php
 
 }
 

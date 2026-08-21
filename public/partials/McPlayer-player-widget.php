@@ -42,7 +42,7 @@ class MCPlayer_bottom_player_widget extends WP_Widget {
 
 		// before and after widget arguments are defined by themes
 		echo $args['before_widget']; 
-		echo $args['before_title'] . '<div style="display: flex;"><div class="player-widget-title">' .$title .  '</div><div class="widget_after_title" style="margin-left: auto;">' . $add_count_toggle . $timer_track . $btn_toggle_down .  $btn_toggle_up . $shuffle_toggle . '</div></div>' . $args['after_title'];
+		echo $args['before_title'] . '<span style="display: flex;"><span class="player-widget-title">' .$title .  '</span><span class="widget_after_title" style="margin-left: auto;">' . $add_count_toggle . $timer_track . $btn_toggle_down .  $btn_toggle_up . $shuffle_toggle . '</span></span>' . $args['after_title'];
 
 		global $post;
 
