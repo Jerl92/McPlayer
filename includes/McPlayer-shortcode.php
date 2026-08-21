@@ -505,7 +505,7 @@ function artist_get_loop($atts) {
 	if(!$_GET['char']){
 		if ($terms) {
 		
-			?><div style="display: table; padding-bottom: 25px;"><?php
+			?><div style="display: table; height: 100%; padding-bottom: 25px;"><?php
 		
 			$i = 0;
 			$terms_count_plays = array();
