@@ -136,6 +136,16 @@ function wp_playlist_ajax_scripts() {
 	wp_register_script( 'wp-ajax-album-score', $url . "js/ajax.album.score.js", array( 'jquery' ), '1.0.0', true );
 	wp_localize_script( 'wp-ajax-album-score', 'album_score_ajax_url', admin_url( 'admin-ajax.php' ) );
 	wp_enqueue_script( 'wp-ajax-album-score' );
+	
+	/* Unique song count play */
+	wp_register_script( 'wp-ajax-unique-count-play', $url . "js/ajax.unique.count.play.js", array( 'jquery' ), '1.0.0', true );
+	wp_localize_script( 'wp-ajax-unique-count-play', 'unique_count_play_ajax_url', admin_url( 'admin-ajax.php' ) );
+	wp_enqueue_script( 'wp-ajax-unique-count-play' );
+	
+	/* Unique scores */
+	wp_register_script( 'wp-ajax-unique-score', $url . "js/ajax.unique.score.js", array( 'jquery' ), '1.0.0', true );
+	wp_localize_script( 'wp-ajax-unique-score', 'unique_score_ajax_url', admin_url( 'admin-ajax.php' ) );
+	wp_enqueue_script( 'wp-ajax-unique-score' );
 
 }
 
@@ -1499,6 +1509,69 @@ function album_score() {
 			$formate_date = date('m/d/Y', $album_score_unique_[0]);
 			$date_array[$i] = $formate_date;		
 			$score_array[$i] = $album_score_unique_[1];					
+			$i++;		
+	}
+	
+	$new_array = array($date_array, $score_array);
+	
+	return wp_send_json ( $new_array );
+}
+
+/* AJAX action callback */
+add_action( 'wp_ajax_unique_count_play', 'unique_count_play' );
+add_action( 'wp_ajax_nopriv_unique_count_play', 'unique_count_play' );
+
+function unique_count_play() {
+
+	$postid = $_POST['postid'];
+	
+	$unique_count_play_loops = get_post_meta($postid, 'unique_count_play_loop', true);
+	
+	$i = 0;
+	$last_ = array_slice($unique_count_play_loops, -25);
+	foreach($last_ as $unique_count_play_loop) {
+		$unique_count_play_loops_array[$i] = $unique_count_play_loop;
+		$i++;
+	}
+	
+	$i = 0;
+	foreach($unique_count_play_loops_array as $unique_count_play_loop_) {
+	
+		$date_cron = $unique_count_play_loop_[0];
+		$formate_date[$i] = date('m/d/Y', $date_cron);
+		$unique_counts[$i] = $unique_count_play_loop_[1];
+		$i++;
+		
+	}
+	
+	$new_array = array($formate_date, $unique_counts);
+	
+	return wp_send_json ( $new_array );
+}
+
+
+/* AJAX action callback */
+add_action( 'wp_ajax_unique_score', 'unique_score' );
+add_action( 'wp_ajax_nopriv_unique_score', 'unique_score' );
+
+function unique_score() {
+
+	$postid = $_POST['postid'];
+	
+	$unique_score_uniques = get_post_meta( $postid , "unique_score_array", true );
+	
+	$i = 0;
+	$last_ = array_slice($unique_score_uniques, -25);
+	foreach($last_ as $unique_score_unique) {
+		$unique_score_unique_array[$i] = $unique_score_unique;
+		$i++;
+	}
+	
+	$i = 0;		
+	foreach($unique_score_unique_array as $unique_score_unique_) {
+			$formate_date = date('m/d/Y', $unique_score_unique_[0]);
+			$date_array[$i] = $formate_date;		
+			$score_array[$i] = $unique_score_unique_[1];					
 			$i++;		
 	}
 	

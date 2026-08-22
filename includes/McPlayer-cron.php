@@ -343,5 +343,93 @@ $terms = get_terms( array(
 	}   
 }
 
+add_action( 'init', function () {
+
+    ///Hook into that action that'll fire every six hours
+    add_action( 'unique_score_hook', 'unique_score_function' );
+
+    //Schedule an action if it's not already scheduled
+    if ( ! wp_next_scheduled( 'unique_score_hook' ) ) {
+        wp_schedule_event( time(), 'every_week', 'unique_score_hook' );
+    }
+});
+
+//create your function, that runs on cron
+function unique_score_function() {
+
+        $get_songs_args = array(
+            'post_type' => 'music',
+            'posts_per_page' => -1,
+            'order' => 'ASC',
+        );
+
+        $get_songs = get_posts($get_songs_args);
+
+	foreach($get_songs as $get_song){
+		$i = 0;
+		$calcvalue = 0;
+		$unique_score_unique = get_post_meta( $get_song->ID , "unique_score_array", true );
+		$song_score_uniques = get_post_meta($get_song->ID, 'song_score_unique', true);
+		foreach($song_score_uniques as $key => $value){
+			$calcvalue = $calcvalue + $value[1];
+			$i++;
+		}
+		if($i == 0){
+			$calcvaluemoyenne = 0;
+		} else {
+			$calcvaluemoyenne = $calcvalue / $i;
+		}
+		$calcvaluemoyenne_format = number_format($calcvaluemoyenne, 2);
+		$current_time = current_time( 'timestamp' );
+		$new_array = array($current_time, $calcvaluemoyenne_format);
+		if(is_array($unique_score_unique)){
+			array_push($unique_score_unique, $new_array);
+			update_post_meta( $get_song->ID , "unique_score_array", $unique_score_unique );
+		} else {
+			update_post_meta( $get_song->ID , "unique_score_array", [$new_array] );
+		}
+	}
+}
+
+add_action( 'init', function () {
+
+    ///Hook into that action that'll fire every six hours
+    add_action( 'unique_count_hook', 'unique_count_function' );
+
+    //Schedule an action if it's not already scheduled
+    if ( ! wp_next_scheduled( 'unique_count_hook' ) ) {
+        wp_schedule_event( time(), 'every_week', 'unique_count_hook' );
+    }
+});
+
+//create your function, that runs on cron
+function unique_count_function() {
+
+	$get_songs_args = array(
+            'post_type' => 'music',
+            'posts_per_page' => -1,
+            'order' => 'ASC',
+        );
+
+        $get_songs = get_posts($get_songs_args);
+
+	foreach($get_songs as $get_song){
+	
+		$unique_count_play_loop = get_post_meta($get_song->ID, 'unique_count_play_loop', true);
+		$count_play_loop = get_post_meta($get_song->ID, 'count_play_loop', true);
+		$current_time = current_time( 'timestamp' );
+		
+		$new_array = array($current_time, $count_play_loop);
+		if(is_array($unique_count_play_loop)) {
+			array_push($unique_count_play_loop, $new_array);
+			update_post_meta($get_song->ID, 'unique_count_play_loop', $unique_count_play_loop);
+		} else {
+			update_post_meta($get_song->ID, 'unique_count_play_loop', [$new_array]);
+		}
+	
+	}
+	
+}
+
 
 ?>

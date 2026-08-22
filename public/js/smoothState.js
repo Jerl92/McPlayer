@@ -162,6 +162,10 @@ jQuery(document).on('visibilitychange', function() {
 				
 				album_score($);
 				
+				unique_score($);
+				
+				unique_count_play($);
+				
 				update_wakelock($);
 
 				intervalSideBar = setInterval(function(){
