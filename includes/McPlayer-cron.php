@@ -431,5 +431,139 @@ function unique_count_function() {
 	
 }
 
+add_action( 'init', function () {
+
+    ///Hook into that action that'll fire every six hours
+    add_action( 'artist_score_hook', 'artist_score_function' );
+
+    //Schedule an action if it's not already scheduled
+    if ( ! wp_next_scheduled( 'artist_score_hook' ) ) {
+        wp_schedule_event( time(), 'every_week', 'artist_score_hook' );
+    }
+});
+
+//create your function, that runs on cron
+function artist_score_function() {
+	
+	$terms = get_terms( array(
+		'taxonomy'      => 'artist',
+		'hide_empty'    => true,
+	) );
+
+	foreach($terms as $term) {
+		$args = array(
+			'post_type' => 'music',
+			'posts_per_page' =>  -1,
+			'tax_query' => array(
+				array(
+					'taxonomy' => 'artist',
+					'field'    => 'name',
+					'terms'    => $term->name,
+				),
+			
+			),
+		);
+		
+		$get_artists_posts[$term->term_id] = get_posts($args);	
+	}
+	
+	foreach($get_artists_posts as $key => $value) {
+		$i = 0;
+		$get_songs_scores = [];
+		foreach($value as $get_song) {
+	                $get_songs_scores_ = get_post_meta($get_song->ID , 'song_score_unique' , true );
+	                if($get_songs_scores_ == ''){
+	                    $get_songs_scores_ = array(0, 0);
+	                }
+			$get_songs_scores[$i] = $get_songs_scores_;
+			$i++;
+		}
+		$x = 0;
+	    	$calcvalue = 0;
+		foreach ($get_songs_scores as $score_song) {
+			foreach ($score_song as $score) {
+				$calcvalue = $calcvalue + $score[1];
+				$x++;
+			}
+		}
+		$artist_score_unique = get_term_meta( $key , "artist_score_array", true );
+		$get_songs_scores_calc = $calcvalue / $x;
+		$get_songs_scores_calc_round = number_format($get_songs_scores_calc, 2);
+		$current_time = current_time( 'timestamp' );
+		$new_array = array($current_time, $get_songs_scores_calc_round);
+		if(is_array($artist_score_unique)){
+			array_push($artist_score_unique, $new_array);
+			update_term_meta( $key , "artist_score_array", $artist_score_unique );
+		} else {
+			update_term_meta( $key , "artist_score_array", [$new_array] );
+		}
+	}
+
+}
+
+add_action( 'init', function () {
+
+    ///Hook into that action that'll fire every six hours
+    add_action( 'artist_count_hook', 'artist_count_function' );
+
+    //Schedule an action if it's not already scheduled
+    if ( ! wp_next_scheduled( 'artist_count_hook' ) ) {
+        wp_schedule_event( time(), 'every_week', 'artist_count_hook' );
+    }
+});
+
+//create your function, that runs on cron
+function artist_count_function() {
+
+	$terms = get_terms( array(
+		'taxonomy'      => 'artist',
+		'hide_empty'    => true,
+	) );
+
+	foreach($terms as $term) {
+		$args = array(
+			'post_type' => 'music',
+			'posts_per_page' =>  -1,
+			'tax_query' => array(
+				array(
+					'taxonomy' => 'artist',
+					'field'    => 'name',
+					'terms'    => $term->name,
+				),
+			
+			),
+		);
+		
+		$get_artists_posts[$term->term_id] = get_posts($args);	
+	}
+	
+	foreach($get_artists_posts as $key => $value) {
+		$i = 0;
+		$get_songs_count_play = [];
+		foreach($value as $get_song) {
+	                $get_songs_count_play_ = get_post_meta($get_song->ID , 'count_play_loop' , true );
+	                if($get_songs_count_play_ == ''){
+	                    $get_songs_count_play_ = 0;
+	                }
+			$get_songs_count_play[$i] = $get_songs_count_play_;
+			$i++;
+		}
+	    	$countplay = 0;
+		foreach ($get_songs_count_play as $count_play) {
+			$countplay = $countplay + $count_play;
+		}
+		$artist_count_play = get_term_meta( $key , "artist_count_play_loop", true );
+		$current_time = current_time( 'timestamp' );
+		$new_array = array($current_time, $countplay);
+		if(is_array($artist_count_play)){
+			array_push($artist_count_play, $new_array);
+			update_term_meta( $key , "artist_count_play_loop", $artist_count_play );
+		} else {
+			update_term_meta( $key , "artist_count_play_loop", [$new_array] );
+		}
+	}
+	
+}
+
 
 ?>

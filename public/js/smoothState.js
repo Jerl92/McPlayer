@@ -166,6 +166,10 @@ jQuery(document).on('visibilitychange', function() {
 				
 				unique_count_play($);
 				
+				artist_score($);
+				
+				artist_count_play($);
+				
 				update_wakelock($);
 
 				intervalSideBar = setInterval(function(){

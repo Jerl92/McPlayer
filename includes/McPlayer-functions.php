@@ -405,4 +405,18 @@ function rpt_remove_role_caps() {
 }
 add_action('admin_menu','rpt_remove_role_caps', 100);
 
+add_filter( 'terms_clauses', 'terms_clauses_47840519', 10, 3 );
+function terms_clauses_47840519( $clauses, $taxonomies, $args ){
+    global $wpdb;
+
+    if( !isset( $args['__first_letter'] ) ){
+        return $clauses;
+    }
+
+    $clauses['where'] .= ' AND ' . $wpdb->prepare( "t.name LIKE %s", $wpdb->esc_like( $args['__first_letter'] ) . '%' );
+
+    return $clauses;
+
+}
+
 ?>

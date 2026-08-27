@@ -146,6 +146,16 @@ function wp_playlist_ajax_scripts() {
 	wp_register_script( 'wp-ajax-unique-score', $url . "js/ajax.unique.score.js", array( 'jquery' ), '1.0.0', true );
 	wp_localize_script( 'wp-ajax-unique-score', 'unique_score_ajax_url', admin_url( 'admin-ajax.php' ) );
 	wp_enqueue_script( 'wp-ajax-unique-score' );
+	
+	/* Artist song count play */
+	wp_register_script( 'wp-ajax-artist-count-play', $url . "js/ajax.artist.count.play.js", array( 'jquery' ), '1.0.0', true );
+	wp_localize_script( 'wp-ajax-artist-count-play', 'artist_count_play_ajax_url', admin_url( 'admin-ajax.php' ) );
+	wp_enqueue_script( 'wp-ajax-artist-count-play' );
+	
+	/* Artist scores */
+	wp_register_script( 'wp-ajax-artist-score', $url . "js/ajax.artist.score.js", array( 'jquery' ), '1.0.0', true );
+	wp_localize_script( 'wp-ajax-artist-score', 'artist_score_ajax_url', admin_url( 'admin-ajax.php' ) );
+	wp_enqueue_script( 'wp-ajax-artist-score' );
 
 }
 
@@ -495,7 +505,10 @@ function save_unsave_for_later() {
 				$arraykey .= '<a href="'.get_term_link( intval(key($taxid_count)), 'genre' ).'">'.key($taxname_count).'</a>'.' ';
 				next($taxname_count);
 				next($taxid_count);
-			}
+			} 
+			if($value == ''){
+				$arraykey = '<li style="text-align: center; padding:15px 0; list-style-type:none;">No genres selected</li>';
+			} 
 		}
 	} else {
 		$arraykey = '<li style="text-align: center; padding:15px 0; list-style-type:none;">Nothing in the playlist</li>';
@@ -591,6 +604,9 @@ function save_and_play_now() {
 				next($taxname_count);
 				next($taxid_count);
 			}
+			if($value == ''){
+				$arraykey = '<li style="text-align: center; padding:15px 0; list-style-type:none;">No genres selected</li>';
+			} 
 		}
 	} else {
 		$arraykey = '<li style="text-align: center; padding:15px 0; list-style-type:none;">Nothing in the playlist</li>';
@@ -734,6 +750,9 @@ function save_unsave_for_later_album($post) {
 					next($taxname_count);
 					next($taxid_count);
 				}
+				if($value == ''){
+					$arraykey = '<li style="text-align: center; padding:15px 0; list-style-type:none;">No genres selected</li>';
+				} 
 			}
 		} else {
 			$arraykey = '<li style="text-align: center; padding:15px 0; list-style-type:none;">Nothing in the playlist</li>';
@@ -982,6 +1001,9 @@ function load_playlist($post) {
 				next($taxname_count);
 				next($taxid_count);
 			}
+			if($value == ''){
+				$arraykey = '<li style="text-align: center; padding:15px 0; list-style-type:none;">No genres selected</li>';
+			} 
 		}
 	} else {
 		$arraykey = '<li style="text-align: center; padding:15px 0; list-style-type:none;">Nothing in the playlist</li>';
@@ -1572,6 +1594,69 @@ function unique_score() {
 			$formate_date = date('m/d/Y', $unique_score_unique_[0]);
 			$date_array[$i] = $formate_date;		
 			$score_array[$i] = $unique_score_unique_[1];					
+			$i++;		
+	}
+	
+	$new_array = array($date_array, $score_array);
+	
+	return wp_send_json ( $new_array );
+}
+
+/* AJAX action callback */
+add_action( 'wp_ajax_artist_count_play', 'artist_count_play' );
+add_action( 'wp_ajax_nopriv_artist_count_play', 'artist_count_play' );
+
+function artist_count_play() {
+
+	$artistid = $_POST['artistid'];
+	
+	$artist_count_play_loops = get_term_meta( $artistid, 'artist_count_play_loop' , true );
+	
+	$i = 0;
+	$last_ = array_slice($artist_count_play_loops, -25);
+	foreach($last_ as $artist_count_play_loop) {
+		$artist_count_play_loops_array[$i] = $artist_count_play_loop;
+		$i++;
+	}
+	
+	$i = 0;
+	foreach($artist_count_play_loops_array as $artist_count_play_loop_) {
+	
+		$date_cron = $artist_count_play_loop_[0];
+		$formate_date[$i] = date('m/d/Y', $date_cron);
+		$artist_counts[$i] = $artist_count_play_loop_[1];
+		$i++;
+		
+	}
+	
+	$new_array = array($formate_date, $artist_counts);
+	
+	return wp_send_json ( $new_array );
+}
+
+
+/* AJAX action callback */
+add_action( 'wp_ajax_artist_score', 'artist_score' );
+add_action( 'wp_ajax_nopriv_artist_score', 'artist_score' );
+
+function artist_score() {
+
+	$artistid = $_POST['artistid'];
+	
+	$artist_score_artists = get_term_meta( $artistid , "artist_score_array", true );
+	
+	$i = 0;
+	$last_ = array_slice($artist_score_artists, -25);
+	foreach($last_ as $artist_score_artist) {
+		$artist_score_artist_array[$i] = $artist_score_artist;
+		$i++;
+	}
+	
+	$i = 0;		
+	foreach($artist_score_artist_array as $artist_score_artist_) {
+			$formate_date = date('m/d/Y', $artist_score_artist_[0]);
+			$date_array[$i] = $formate_date;		
+			$score_array[$i] = $artist_score_artist_[1];					
 			$i++;		
 	}
 	

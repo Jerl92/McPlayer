@@ -344,26 +344,11 @@ add_shortcode('get_already_played', 'woocommerce_get_already_played_loop');
 /******************** Short code to display single music *******************/
 
 function woocommerce_get_cover_id($atts) {
-
+	
 	// null
 		
 }
 add_shortcode('get_cover_id', 'woocommerce_get_cover_id');
-
-
-add_filter( 'terms_clauses', 'terms_clauses_47840519', 10, 3 );
-function terms_clauses_47840519( $clauses, $taxonomies, $args ){
-    global $wpdb;
-
-    if( !isset( $args['__first_letter'] ) ){
-        return $clauses;
-    }
-
-    $clauses['where'] .= ' AND ' . $wpdb->prepare( "t.name LIKE %s", $wpdb->esc_like( $args['__first_letter'] ) . '%' );
-
-    return $clauses;
-
-}
 
 /***************************************************************************/
 /***************************************************************************/
@@ -374,7 +359,7 @@ function artist_get_loop($atts) {
 	$curenturl = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
 
 	?><div class='letterartistwrap'><?php
-	foreach (range('0', '9') as $number) {
+	foreach (range('1', '9') as $number) {
 		?><a class="letterartist" href="<?php echo $curenturl; ?>?char=<?php echo $number; ?>"><?php echo strtoupper($number); ?></a><?php
 	}
 	?></div>
@@ -456,7 +441,7 @@ function artist_get_loop($atts) {
 						$i++;
 					}
 				}
-?><div class="artist-wrapper-box" style="list-style: none; text-align: center; width: 50%; float: left; border-bottom: 0.25px solid rgba(0,0,0,.75); border-right: 0.25px solid rgba(0,0,0,.75); padding: 10px 0;"><a href="<?php echo esc_attr(get_term_link($term, $taxonomy)); ?>" title="<?php echo sprintf(__("View all posts in %s"), $term->name); ?>"><img style="height: 150px; display: flex; margin-left: auto; margin-right: auto;" src="<?php echo z_taxonomy_image_url($term->term_id); ?>"><p style="margin: 0;"><?php echo $term->name; ?></p></img></a><?php
+?><div class="artist-wrapper-box" style="list-style: none; text-align: center; width: 50%; float: left; border-bottom: 0.25px solid rgba(0,0,0,.75); border-right: 0.25px solid rgba(0,0,0,.75); padding: 10px 0;"><a href="<?php echo esc_attr(get_term_link($term, $taxonomy)); ?>" title="<?php echo sprintf(__("View all posts in %s"), $term->name); ?>"><img style="height: 325px; width: 100%; display: flex; margin-left: auto; margin-right: auto;" src="<?php echo z_taxonomy_image_url($term->term_id); ?>"><p style="margin: 0;"><?php echo $term->name; ?></p></img></a><?php
 				?><div class="artist-wrapper-box-flex">
 				<span class="artist-wrapper-box-info" style="margin: 0; float: left; padding-left: 2.5%;">
 				<?php echo count($get_albums); ?>
@@ -576,7 +561,7 @@ function artist_get_loop($atts) {
 					}
 				}
 			
-?><div class="artist-wrapper-box" style="list-style: none; text-align: center; width: 50%; float: left; border-bottom: 0.25px solid rgba(0,0,0,.75); border-right: 0.25px solid rgba(0,0,0,.75); padding: 10px 0;"><a href="<?php echo esc_attr(get_term_link($term, $taxonomy)); ?>" title="<?php echo sprintf(__("View all posts in %s"), $term->name); ?>"><img style="height: 150px; display: flex; margin-left: auto; margin-right: auto;" src="<?php echo z_taxonomy_image_url($term->term_id); ?>"><p style="margin: 0;"><?php echo $term->name; ?></p></img></a><?php
+?><div class="artist-wrapper-box" style="list-style: none; text-align: center; width: 50%; float: left; border-bottom: 0.25px solid rgba(0,0,0,.75); border-right: 0.25px solid rgba(0,0,0,.75); padding: 10px 0;"><a href="<?php echo esc_attr(get_term_link($term, $taxonomy)); ?>" title="<?php echo sprintf(__("View all posts in %s"), $term->name); ?>"><img style="height: 325px; width: 100%; display: flex; margin-left: auto; margin-right: auto;" src="<?php echo z_taxonomy_image_url($term->term_id); ?>"><p style="margin: 0;"><?php echo $term->name; ?></p></img></a><?php
 				?><div class="artist-wrapper-box-flex">
 				<span class="artist-wrapper-box-info" style="margin: 0; float: left; padding-left: 2.5%;">
 				<?php echo count($get_albums); ?>
@@ -596,14 +581,12 @@ function artist_get_loop($atts) {
 				}
 				$get_songs_scores_calc = $calcvalue / $i;
 				$get_songs_scores_calc_round = number_format($get_songs_scores_calc, 2);
-				echo $get_songs_scores_calc_round.'/5';
-				?>
-								
+				?><a href="<?php echo esc_attr(get_term_link($term, $taxonomy)).'?chart=scores'; ?>"><span class="calcvaluemoyenne"><?php echo $get_songs_scores_calc_round.'/5'; ?></span></a>								
 				-
-				
-				<?php echo array_sum($get_count_played); ?> Plays
+				<a href="<?php echo esc_attr(get_term_link($term, $taxonomy)).'?chart=count'; ?>"><?php echo '<span class="count-play-loop-album-'.get_the_id().'">'?><?php echo array_sum($get_count_played); ?></span> Plays</a>
 				
 				</span>
+				
 				<span class="artist-wrapper-box-year" style="margin-left: auto; padding-right: 2.5%;">
 			
 				<?php echo get_post_meta($get_albums[0]->ID,  "meta-box-year", true); ?>
@@ -1063,11 +1046,50 @@ function get_save_for_later_album_button_display($atts)
 
 add_shortcode('simplicity-save-for-later-loop-album', 'get_save_for_later_album_button_display');
 
-/***************************************************************************/
-/***************************************************************************/
-/******************** Short code to display single music *******************/
 
-function mcplayer_get_count_music_loop($atts) {
+/***************************************************************************/
+/***************************************************************************/
+/******************** Short code to display contact from *******************/
+
+function contact_from_mcplayer_function($atts) {
+
+	echo '<div class="send-form-text" style="width: 75%; margin: 0 12.5%;">';
+		echo '<br>';
+		echo 'To get in touch with me. Send me a contact form.';
+		echo '<br>';
+		echo '<br>';
+		echo 'If you want a account and add music contact me by the contact form below and I will make you a special account to upload only and you can add all the music you want.';
+		echo '<br>';
+		echo '<br>';
+	echo '</div>';
+	echo '<div class="send_form" style="width: 75%; margin: 0 12.5%; padding-bottom: 50px;">';
+		echo '<label for="fullname">First name and last name</label>';
+		echo '<br>';
+		echo '<input type="text" id="fullname" name="fullname" style="width: 100%; border: 1px solid gray;">';
+		echo '<span class="mcplayer-contact-from-error-fullname"></span>';
+		echo '<br>';
+		echo '<label for="email">Adress E-mail</label>';
+		echo '<br>';
+		echo '<input type="text" id="email" name="email" style="width: 100%; border: 1px solid gray;">';
+		echo '<span class="mcplayer-contact-from-error-email"></span>';
+		echo '<br>';
+		echo '<label for="feedback">Your Feedback</label>';
+		echo '<br>';
+		echo '<textarea id="feedback" name="feedback" rows="4" cols="50" style="width: 100%; border: 1px solid gray;">';
+		echo '</textarea>';
+		echo '<span class="mcplayer-contact-from-error-feedback"></span>';
+		echo '<br>';
+		echo '<button class="mcplayer-contact-from" style="width: 150px;">Send</button>';
+	echo '</div>';
+	
+}
+add_shortcode('contact-from-mcplayer', 'contact_from_mcplayer_function');
+
+/***************************************************************************/
+/***************************************************************************/
+/******************** Short code to most played songs *******************/
+
+function most_played_song_function($atts) {
 
 	$atts = shortcode_atts(array(
 		'per_page' => '12',
@@ -1118,46 +1140,8 @@ function mcplayer_get_count_music_loop($atts) {
 	wp_reset_postdata();
 
 	return '<div class="columns-' . $columns . '">' . ob_get_clean() . '</div>';
-}
-add_shortcode('get_count_music', 'mcplayer_get_count_music_loop');
-
-
-/***************************************************************************/
-/***************************************************************************/
-/******************** Short code to display contact from *******************/
-
-function contact_from_mcplayer_function($atts) {
-
-	echo '<div class="send-form-text" style="width: 75%; margin: 0 12.5%;">';
-		echo '<br>';
-		echo 'To get in touch with me. Send me a contact form.';
-		echo '<br>';
-		echo '<br>';
-		echo 'If you want a account and add music contact me by the contact form below and I will make you a special account to upload only and you can add all the music you want.';
-		echo '<br>';
-		echo '<br>';
-	echo '</div>';
-	echo '<div class="send_form" style="width: 75%; margin: 0 12.5%; padding-bottom: 50px;">';
-		echo '<label for="fullname">First name and last name</label>';
-		echo '<br>';
-		echo '<input type="text" id="fullname" name="fullname" style="width: 100%; border: 1px solid gray;">';
-		echo '<span class="mcplayer-contact-from-error-fullname"></span>';
-		echo '<br>';
-		echo '<label for="email">Adress E-mail</label>';
-		echo '<br>';
-		echo '<input type="text" id="email" name="email" style="width: 100%; border: 1px solid gray;">';
-		echo '<span class="mcplayer-contact-from-error-email"></span>';
-		echo '<br>';
-		echo '<label for="feedback">Your Feedback</label>';
-		echo '<br>';
-		echo '<textarea id="feedback" name="feedback" rows="4" cols="50" style="width: 100%; border: 1px solid gray;">';
-		echo '</textarea>';
-		echo '<span class="mcplayer-contact-from-error-feedback"></span>';
-		echo '<br>';
-		echo '<button class="mcplayer-contact-from" style="width: 150px;">Send</button>';
-	echo '</div>';
 	
 }
-add_shortcode('contact-from-mcplayer', 'contact_from_mcplayer_function');
+add_shortcode('most_played_song', 'most_played_song_function');
 
 ?>
