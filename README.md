@@ -98,6 +98,9 @@ Show the lasted played songs</br>
 Show suggested songs with the playlist songs genres</br>
 [genres_products per_page="50" columns="5" order="rand" orderby="rand"]</br>
 </br>
+Show the most played songs</br>
+[most_played_song per_page="50" columns="5" order="DESC" orderby="meta_value_num"]
+</br>
 Show the contact formulaire in page.</br>
 [contact-from-mcplayer]</br>
 
