@@ -1101,8 +1101,8 @@ function most_played_song_function($atts) {
 	$args = array(
 		'post_type' => 'music',
 		'meta_key' => 'count_play_loop',
-		'orderby'    => $atts['orderby'],
-		'order'      => $atts['order'],
+        'orderby'    => $atts['orderby'], // Treat the value as a number
+        'order'      => $atts['order'],
 		'columns'  => $atts['columns'],
 		'posts_per_page'  => $atts['per_page']
 	);
