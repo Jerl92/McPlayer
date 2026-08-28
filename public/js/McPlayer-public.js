@@ -91,17 +91,17 @@ function sleep(milliseconds) {
     }
 }
 
-function sidebarheight() {
+function sidebarheight($) {
     var windowwidth = jQuery(window).width();
     var windowheight = jQuery(window).height();
     var primaryheight = jQuery("#primary").height();
 
     if (windowwidth >= 720) {
-        if(primaryheight > windowheight){
+        if(primaryheight >= windowheight){
 	        jQuery("#primary").css("height", "100%");
 	        jQuery("#secondary").css("height", primaryheight);
         }
-        if (primaryheight <= windowheight){
+        if (primaryheight < windowheight){
             jQuery("#primary").css("height", windowheight);
             jQuery("#secondary").css("height", windowheight);
         }
@@ -117,9 +117,9 @@ function sidebarheight() {
 }
 
 var intervalSideBar;
-jQuery(document).ready(function($){	
-	intervalSideBar = setInterval(function(){
-	    sidebarheight();
+jQuery(document).ready(function($){
+	intervalSideBar = setInterval(function($){
+	    sidebarheight($);
 	}, 1000);
 });
 
