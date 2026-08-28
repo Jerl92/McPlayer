@@ -105,6 +105,7 @@ function artist_count_taxonomy_custom_fields($tag) {
 		        $postid = $earn_play_loop_['postid'];
 		        $ifpay[$postid] = $earn_play_loop_['ifpay'];
 		        $earn[$postid] = $earn_play_loop_['earn'];
+		        $earn_[$i] = $earn_play_loop_['earn'];
 		        $ip[$i] = $earn_play_loop_['ip'];
 		        $i++;
 	        }
@@ -126,8 +127,10 @@ function artist_count_taxonomy_custom_fields($tag) {
 	
     $userid_count = array_count_values($userid);
     $ip_count = array_count_values($ip);
+    $earn_count = array_count_values($earn_);
     arsort($userid_count);
     arsort($ip_count);
+    arsort($earn_count);
     foreach ($userid_count as $key => $value){
         $user = get_user_by( 'id', $key );
         if ( $user ) {
@@ -149,6 +152,11 @@ function artist_count_taxonomy_custom_fields($tag) {
     }
     echo '<br>';
     foreach ($ip_count as $key => $value){
+    	echo $key . ' - ' . $value . ' Plays';
+    	echo '<br>';
+    }
+    echo '<br>';
+    foreach ($earn_count as $key => $value){
     	echo $key . ' - ' . $value . ' Plays';
     	echo '<br>';
     }
