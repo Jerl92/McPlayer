@@ -33,6 +33,9 @@ https://github.com/Jerl92/McPlayer-Child-Theme/</br>
 The Categories Images Plugin allow you to add image with category</br>
 https://WordPress.org/plugins/categories-images/</br>
 
+This plugin is needed if you want the sside bar to be sticky</br>
+https://wordpress.org/plugins/mystickysidebar/</br>
+
 ## Installation
 This plugin have been designed on:</br>
     -   Ubuntu Server</br>
