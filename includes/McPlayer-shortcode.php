@@ -1146,9 +1146,9 @@ add_shortcode('most_played_song', 'most_played_song_function');
 
 /***************************************************************************/
 /***************************************************************************/
-/******************** Short code to most scores songs *******************/
+/******************** Short code to higer scores songs *******************/
 
-function most_score_song_function($atts) {
+function higer_score_song_function($atts) {
 
 	$args = array(
 		'post_type' => 'music',
@@ -1237,14 +1237,14 @@ function most_score_song_function($atts) {
 	
 	
 }
-add_shortcode('most_score_song', 'most_score_song_function');
+add_shortcode('higer_score_song', 'higer_score_song_function');
 
 
 /***************************************************************************/
 /***************************************************************************/
-/******************** Short code to less scores songs *******************/
+/******************** Short code to lower scores songs *******************/
 
-function less_score_song_function($atts) {
+function lower_score_song_function($atts) {
 
 	$args = array(
 		'post_type' => 'music',
@@ -1333,6 +1333,6 @@ function less_score_song_function($atts) {
 	
 	
 }
-add_shortcode('less_score_song', 'less_score_song_function');
+add_shortcode('lower_score_song', 'lower_score_song_function');
 
 ?>
