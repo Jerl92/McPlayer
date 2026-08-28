@@ -113,6 +113,7 @@ Show the contact formulaire in page.</br>
 <img style="max-width: 100%;" src="https://i.ibb.co/ngzD0Dh/screencapture-173-179-89-179-artist-taktika-2023-11-18-00-16-55.png" />
 <img style="max-width: 100%;" src="https://i.ibb.co/MxhyqD3W/mcplayer10.png" />
 <img style="max-width: 100%;" src="https://i.ibb.co/LzC5ZfHc/mcplayer7.png" />
+<img style="max-width: 100%;" src="https://i.ibb.co/VWcMTXzX/mcplayer04.png" />
 <img style="max-width: 100%;" src="https://i.ibb.co/9G1DDFm/mcplayeradmin0.jpg" />
 <img style="max-width: 100%;" src="https://i.ibb.co/rdL9T5S/mcplayeradmin1.jpg" />
 <img style="max-width: 100%;" src="https://i.ibb.co/LJFCh3h/mcplayeradmin2.jpg" />
