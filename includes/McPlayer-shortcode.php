@@ -1146,9 +1146,9 @@ add_shortcode('most_played_song', 'most_played_song_function');
 
 /***************************************************************************/
 /***************************************************************************/
-/******************** Short code to higer scores songs *******************/
+/******************** Short code to higher scores songs *******************/
 
-function higer_score_song_function($atts) {
+function higher_score_song_function($atts) {
 
 	$args = array(
 		'post_type' => 'music',
@@ -1237,7 +1237,7 @@ function higer_score_song_function($atts) {
 	
 	
 }
-add_shortcode('higer_score_song', 'higer_score_song_function');
+add_shortcode('higher_score_song', 'higher_score_song_function');
 
 
 /***************************************************************************/
