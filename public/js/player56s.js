@@ -1014,15 +1014,10 @@ jQuery( function player56s($) {
                         Cookies.remove('Player56sCurrentTrack');
                         Cookies.remove('Player56sSeek');
                     }
-                }, 25);
+                }, 100);
             }
             
             update_wakelock();
-            
-            jQuery(document).on('visibilitychange', function() {
-		doVisualUpdates = !document.hidden;
-		update_wakelock();
-	    });
            
             jQuery(document).on("player56s-pause." + uniqueID, function (event, triggeredPlayer56s) {
                 if (self != triggeredPlayer56s) {
@@ -1077,6 +1072,12 @@ jQuery( function player56s($) {
         }
     }
 
+});
+
+            
+jQuery(document).on('visibilitychange', function() {
+	doVisualUpdates = !document.hidden;
+	update_wakelock();
 });
 
 jQuery(document).ready(function($) {

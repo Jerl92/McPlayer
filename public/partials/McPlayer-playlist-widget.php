@@ -26,24 +26,15 @@ class MCPlayer_bottom_playlist_widget extends WP_Widget {
 
 		$title = apply_filters( 'widget_title', $instance['title'] );
 		$matches = get_user_meta( user_if_login(), 'rs_saved_for_later', true );
-		$matches = array_filter($matches);
-		if ( ! empty( $matches ) ) {
-			$matches_count = count($matches);
-		} else {
-			$matches_count = '0';
-		}
+		$matches_count = count($matches);
 
-		if ( ! empty( $matches ) ) {
-			$argv = array( 
-				'posts_per_page' => -1,	
-				'post_type' => 'music',
-				'post__in' => $matches,
-				'order'   => 'DESC',
-				'orderby'   => 'post__in',
-			);
-		} else {
-			$argv = null;
-		}
+		$argv = array( 
+			'posts_per_page' => -1,	
+			'post_type' => 'music',
+			'post__in' => $matches,
+			'order'   => 'DESC',
+			'orderby'   => 'post__in',
+		);
 
 		$posts = get_posts($argv);
 
@@ -57,44 +48,30 @@ class MCPlayer_bottom_playlist_widget extends WP_Widget {
 		if ( ! empty( $title ) )
 		echo $args['before_title'] . $title . ' - <span class="playlist_matches_count">' . $matches_count . '</span> - <span class="playlist_matches_length">' .  time_from_seconds(array_sum($songs_length_calc)) . '</span>' . $args['after_title'];
 		
-		if ( ! empty( $matches ) ) {
-			if ( $shuffle == 1 ) {
-				$saved_args = array(
-					'post_type'      => 'music',
-					'posts_per_page' => -1,
-					'orderby' => 'rand',
-					'post__in'       => array_reverse( $matches, true )
-				);
-			} else {
-				$saved_args = array(
-					'post_type'      => 'music',
-					'posts_per_page' => -1,
-					'orderby' => 'post__in',
-					'post__in'       => array_reverse( $matches, true )
-				);
-			}
-		} else {
-			$saved_args = 0;
-		}
+		$saved_args = array(
+			'post_type'      => 'music',
+			'posts_per_page' => -1,
+			'orderby' 	=> 'post__in',
+			'order' 	=> 'DESC',
+			'post__in'       => $matches, 
+		);
 		
-		$the_query = new WP_Query( $args );
+		$loop = new WP_Query( $saved_args );
 		
 		echo '<div id="rs-saved-for-later-playlist">';
 
-		if ( $the_query->have_posts() ) {
+		if ($loop->have_posts()) :
 			echo '<div id="rs-saved-for-later-wrapper" class="noselect"><ul id="rs-saved-for-later" class="rs-saved-for-later">' ;
-			while ( $the_query->have_posts() ) {
-				$the_query->the_post();
-				echo get_template_part( 'template-parts/page-music-archive-sidebar', get_post_format() );
-			}
+				while ($loop->have_posts()) : $loop->the_post();
+					echo get_template_part('template-parts/page-music-archive-sidebar', get_post_format());
+				endwhile;
 			echo '</ul></div>';
-		} else {
+		else:
 			echo '<div id="rs-saved-for-later-wrapper" class="noselect"><ul id="rs-saved-for-later" class="rs-saved-for-later"><li id="rs-saved-for-later-nothing" style="text-align: center; padding:15px 0;">Nothing in the playlist</li></ul></div>';
-		}
+		endif;
 
 		wp_reset_postdata();
 		
-
 		echo '<div id="remove-all-btn"><a href="#" class="rs-save-for-later-remove-all" data-nonce="' . wp_create_nonce( 'rs_save_for_later_remove_all' ) . '">Flush Playlist</a></div>';
 		
 		echo '</div>';

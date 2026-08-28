@@ -1124,13 +1124,14 @@ function count_play($post) {
 	
 	$get_count_play = get_post_meta($object_id, 'count_play_loop', true);
 
-	$term_obj_lists = get_the_terms( $object_id, 'artist' );
+	$term_obj_lists = get_the_terms($object_id, 'artist');
 
 	foreach($term_obj_lists as $term){
-		$termid[] = $term->term_id;
+		$termid = $term->term_id;
 	}
 
-	if($get_count_play != '' && $get_count_play != null) {
+    	$countplay = 0;
+	if(isset($get_count_play)) {
 		$countplay = $get_count_play + 1;
 		update_post_meta($object_id, 'count_play_loop', $countplay);
 	} else {
@@ -1147,33 +1148,33 @@ function count_play($post) {
 	} else {
 		$ip = $_SERVER['REMOTE_ADDR'];
 	}
-
-	$details = json_decode(file_get_contents("http://ip-api.com/json/' . $ip . '"), true);
-	$loc['city'] = $details['city'];
-	$loc['regionName'] = $details['regionName'];
+	
+    $details = json_decode(file_get_contents("https://api.ipinfo.io/lite/'. $ip .'?token=893d07136d53a0"), true);
+	$loc['as_name'] = $details['as_name'];
 	$loc['country'] = $details['country'];
 	
 	$date = current_time( 'timestamp' );
 	
-	$get_term_earn = get_term_meta( implode($termid), 'meta_count_earn', true );
+	$get_term_earn = get_term_meta($termid, 'meta_count_earn', true);
 	
 	$get_count_play_array = get_post_meta($object_id, 'earn_play_loop', true);
 
 	$get_play_array = array(
 		'earn'   => $get_term_earn,
 		'userid' => user_if_login(),
-		'ipv4'	=> $ip,
+		'ip'	=> $ip,
 		'loc'	=> $loc,
 		'postid' => $object_id,
 		'datetime' => $date,
-		'ifpay' => false
+		'ifpay' => 'no',
+		'ifpaydatetime' => '',
 	);
 
 	if(is_array($get_count_play_array)) {
 		array_push($get_count_play_array, $get_play_array);
-		update_post_meta($object_id, 'earn_play_loop', $get_count_play_array );
+		update_post_meta($object_id, 'earn_play_loop', $get_count_play_array);
 	} else {
-		update_post_meta($object_id, 'earn_play_loop', [$get_play_array] );
+		update_post_meta($object_id, 'earn_play_loop', [$get_play_array]);
 	}
 	
 	$rs_saved_played = get_user_meta( user_if_login(), 'rs_saved_played', true );
@@ -1181,9 +1182,9 @@ function count_play($post) {
 	$new_array[$date] = $object_id;
 	if(is_array($rs_saved_played)) {
 		array_push($rs_saved_played, $new_array);
-		update_user_meta( user_if_login(), 'rs_saved_played', $rs_saved_played );
+		update_user_meta(user_if_login(), 'rs_saved_played', $rs_saved_played);
 	} else {	
-		update_user_meta( user_if_login(), 'rs_saved_played', [$new_array] );
+		update_user_meta(user_if_login(), 'rs_saved_played', [$new_array]);
 	}
 
 	return wp_send_json ($countplay);

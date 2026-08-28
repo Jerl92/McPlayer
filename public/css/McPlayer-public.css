@@ -485,6 +485,10 @@ a.rs-save-for-later-button.saved:after, a.rs-save-for-later-button-album.saved:a
         width: 100% !important;
     }
 
+    .artist-wrapper-box img {
+        height: 200px !important;
+    }
+    
     #album-class-year {
         width: 48.5%;
         padding: 0%;

@@ -115,7 +115,7 @@ function time_from_seconds($seconds) {
 		$m = floor(($seconds % 3600) / 60);
 		$s = $seconds - ($h * 3600) - ($m * 60);
 		if($m < 10 && $m >= 0){
-			$m_ = '0'.$m;
+			$m_ = $m;
 		} else {
 			$m_ = $m;
 		} 
@@ -130,7 +130,7 @@ function time_from_seconds($seconds) {
 		$m = floor(($seconds % 3600) / 60);
 		$s = $seconds - ($h * 3600) - ($m * 60);
 		if($m < 10 && $m >= 0){
-			$m_ = '0'.$m;
+			$m_ = $m;
 		} else {
 			$m_ = $m;
 		} 
