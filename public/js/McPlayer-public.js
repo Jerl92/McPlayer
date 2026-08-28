@@ -102,8 +102,9 @@ function sidebarheight($) {
 	        jQuery("#secondary").css("height", primaryheight);
         }
         if (primaryheight < windowheight){
-            jQuery("#primary").css("height", windowheight);
-            jQuery("#secondary").css("height", windowheight);
+            var windowheight_ = parseInt(windowheight) - 75;
+            jQuery("#primary").css("height", windowheight_);
+            jQuery("#secondary").css("height", windowheight_);
         }
         if(jQuery("#hwm-area")){
             jQuery("#primary").css("height", "100%");
