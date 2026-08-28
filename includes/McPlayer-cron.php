@@ -13,16 +13,16 @@ add_filter( 'cron_schedules', 'every_week_cron_schedule' );
 add_action( 'init', function () {
 
     ///Hook into that action that'll fire every six hours
-    add_action( 'artist_count_cron_hook', 'artist_count_cron_function' );
+    add_action( 'artist_count_shortcode_hook', 'artist_count_shortcode_function' );
 
     //Schedule an action if it's not already scheduled
-    if ( ! wp_next_scheduled( 'artist_count_cron_hook' ) ) {
-        wp_schedule_event( time(), 'every_week', 'artist_count_cron_hook' );
+    if ( ! wp_next_scheduled( 'artist_count_shortcode_hook' ) ) {
+        wp_schedule_event( time(), 'every_week', 'artist_count_shortcode_hook' );
     }
 });
 
 //create your function, that runs on cron
-function artist_count_cron_function() {
+function artist_count_shortcode_function() {
 
 	$terms = get_terms( array(
 		'taxonomy'   => 'artist',
