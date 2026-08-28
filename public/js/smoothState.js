@@ -59,21 +59,15 @@ jQuery(document).on('visibilitychange', function() {
 		var settings = { 
 			anchors: "a",
 			cache: false,
-			cacheLength: 0,
+			cacheLength: false,
 			prefetch: true,
-			prefetchOn: 'aim',
+			prefetchOn: 'mouseover touchstart',
 			scroll: true,
 			locationHeader: "X-SmoothState-Location",
 			blacklist: ".no-smoothState",
 			onStart: {
 				duration: 250, // Duration of our animation
 				render: function ($container) {
-
-					// Remove your CSS animation reversing class
-					// jQuery('body').removeClass('on-scroll');
-
-					// Add your CSS animation reversing class
-					// jQuery('body').addClass('no-scroll');
 
 					// Add your CSS animation reversing class
 					jQuery('#main').removeClass('is-onready');
@@ -97,11 +91,7 @@ jQuery(document).on('visibilitychange', function() {
 
 					// Add your CSS animation reversing class
 					jQuery('#main').addClass('is-onready');
-					
-					// jQuery('body').removeClass('no-scroll');
-	
-					// jQuery('body').addClass('on-scroll');
-	
+						
 					// Trigger load functions
 					jQuery(document).ready();
                 			jQuery(window).trigger('load');

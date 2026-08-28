@@ -105,12 +105,6 @@ class Mcplayer_Public
 		 * class.
 		 */
 		 
-		wp_enqueue_script('aim',  plugin_dir_url(__FILE__) . 'js/jquery.aim.js', array('jquery'), $this->version, false);
-		 
-		wp_enqueue_script('smoothState',  plugin_dir_url(__FILE__) . 'js/jquery.smoothState.js', array('jquery'), $this->version, false);
-
-		wp_enqueue_script('smoothStatejs',  plugin_dir_url(__FILE__) . 'js/smoothState.js', array('smoothState'), $this->version, false);
-		 
 		wp_enqueue_script('chart',  plugin_dir_url(__FILE__) . 'js/chart.js', array('jquery'), $this->version, false);
 
 	   	wp_enqueue_script('js.cookie',  plugin_dir_url(__FILE__) . 'js/js.cookie.min.js', array('jquery'), $this->version, false);
@@ -118,6 +112,10 @@ class Mcplayer_Public
 		wp_enqueue_script('jplayer',  plugin_dir_url(__FILE__) . 'js/jplayer.js', array('jquery'), $this->version, false);
 
 		wp_enqueue_script('player56s',  plugin_dir_url(__FILE__) . 'js/player56s.js', array('jplayer'), $this->version, false);
+		
+		wp_enqueue_script('smoothState',  plugin_dir_url(__FILE__) . 'js/jquery.smoothState.js', array('jquery'), $this->version, false);
+
+		wp_enqueue_script('smoothStatejs',  plugin_dir_url(__FILE__) . 'js/smoothState.js', array('jquery'), $this->version, false);
 
 		wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/McPlayer-public.js', array('jquery'), $this->version, false);
 
