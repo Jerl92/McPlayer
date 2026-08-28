@@ -148,7 +148,7 @@ jQuery( window ).bind("beforeunload", function(){
 var id;
 var timer = 0;
 
-function countdown() {
+function countdown($) {
     jQuery("a").click(function($){
         timer = 0;
         if(id){
@@ -184,11 +184,12 @@ function frame($) {
 }
 
 jQuery(document).ready(function(){	
-    countdown();
+    countdown($);
 });
 
+var intervalAJAXwrap;
 jQuery(document).ready(function(){	
-    var intervalAJAXwrap = setInterval(function() {
+    intervalAJAXwrap = setInterval(function() {
     	jQuery("#player56s-ajax-wrap").css("display", "none");
     }, 500);
 });
