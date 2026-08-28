@@ -1,4 +1,4 @@
-function countdown() {
+function countdown($) {
     jQuery('a').click(function($){
         timer = 0;
         if(id){
@@ -167,6 +167,8 @@ jQuery(document).on('visibilitychange', function() {
 				artist_count_play($);
 				
 				update_wakelock($);
+				
+				countdown($);
 
 				intervalSideBar = setInterval(function(){
 				    sidebarheight();
