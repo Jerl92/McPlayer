@@ -81,8 +81,6 @@ jQuery(document).on('visibilitychange', function() {
 					// Add your CSS animation reversing class
 					jQuery('#main').addClass('is-onstart');
 
-					// jQuery('.loader').css('display', 'table');
-
 					// Restart your animation
 					// smoothState.restartCSSAnimations();
 				}
@@ -99,8 +97,6 @@ jQuery(document).on('visibilitychange', function() {
 
 					// Add your CSS animation reversing class
 					jQuery('#main').addClass('is-onready');
-
-					// jQuery('.loader').css('display', 'none');
 
 					// Trigger load functions
 					jQuery(document).ready();

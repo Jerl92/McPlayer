@@ -98,6 +98,15 @@ Show suggested songs with the playlist songs genres</br>
 Show the most played songs</br>
 [most_played_song per_page="50" columns="5" order="DESC" orderby="meta_value_num"]
 </br>
+Show the less played songs</br>
+[most_played_song per_page="100" columns="5" order="ASC" orderby="meta_value_num"]</br>
+</br>
+Show the most higher score songs</br>
+[most_score_song per_page="100" columns="5" order="DESC" orderby="meta_value_num"]</br>
+</br>
+Show the less lower score songs</br>
+[less_score_song per_page="100" columns="5" order="ASC" orderby="post__in"]</br>
+</br>
 Show the contact formulaire in page.</br>
 [contact-from-mcplayer]</br>
 

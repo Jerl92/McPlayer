@@ -421,16 +421,16 @@ function artist_count_function() {
 	                if($get_songs_count_play_ == ''){
 	                    $get_songs_count_play_ = 0;
 	                }
-			$get_songs_count_play[$i] = $get_songs_count_play_;
+			$get_songs_count_play[$i] = intval($get_songs_count_play_);
 			$i++;
 		}
 	    	$countplay = 0;
 		foreach ($get_songs_count_play as $count_play) {
-			$countplay = $countplay + $count_play;
+			$countplay = $countplay + intval($count_play);
 		}
 		$artist_count_play = get_term_meta( $key , "artist_count_play_loop", true );
 		$current_time = current_time( 'timestamp' );
-		$new_array = array($current_time, $countplay);
+		$new_array = array($current_time, intval($countplay));
 		if(is_array($artist_count_play)){
 			array_push($artist_count_play, $new_array);
 			update_term_meta( $key , "artist_count_play_loop", $artist_count_play );

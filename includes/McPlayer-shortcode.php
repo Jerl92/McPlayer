@@ -1144,4 +1144,195 @@ function most_played_song_function($atts) {
 }
 add_shortcode('most_played_song', 'most_played_song_function');
 
+/***************************************************************************/
+/***************************************************************************/
+/******************** Short code to most scores songs *******************/
+
+function most_score_song_function($atts) {
+
+	$args = array(
+		'post_type' => 'music',
+		'posts_per_page'  => -1
+	);
+
+	$get_posts = get_posts($args);
+	
+	$get_songs_scores = [];
+	foreach ($get_posts as $post) {
+                $get_songs_scores_ = get_post_meta($post->ID , 'song_score_unique' , true );
+                if($get_songs_scores_ == ''){
+                    $get_songs_scores_ = array(0, 0);
+                }
+		$get_songs_scores[$post->ID] = $get_songs_scores_;
+	}
+	
+    	$get_songs_scores_calc_round = [];
+	foreach ($get_songs_scores as $key => $value) {
+		$x = 0;
+		$calcvalue = 0;
+		foreach ($value as $score) {
+			$calcvalue = $calcvalue + $score[1];
+			$x++;
+		}
+		$get_songs_scores_calc = $calcvalue / $x;
+		$get_songs_scores_calc_round[$key] = $get_songs_scores_calc;
+	}
+	
+	arsort($get_songs_scores_calc_round, SORT_NUMERIC);
+	
+	$get_songs_post_in = [];
+	foreach ($get_songs_scores_calc_round as $key => $value) {
+		$get_songs_post_in[] = $key;
+	}
+	
+	$atts = shortcode_atts(array(
+		'per_page' => '100',
+		'columns'  => '4',
+		'orderby'  => 'post__in',
+		'order'    => 'ASC'
+	), $atts);
+	
+	$argv = array( 
+		'posts_per_page' => $atts['per_page'],	
+		'post_type' => 'music',
+		'columns'  => $atts['columns'],
+		'post__in' => $get_songs_post_in,
+		'orderby'  => 'post__in',
+		'order'      => $atts['order']
+	);
+	
+	$loop = new WP_Query($argv);
+	$columns = absint($args['columns']);
+	$woocommerce_loop['columns'] = $columns;
+
+	ob_start();
+
+	if ($loop->have_posts()) : ?>
+
+		<?php // do_action( "woocommerce_shortcode_before_featured_products_loop" ); 
+		?>
+
+		<?php // woocommerce_product_loop_start(); 
+		?>
+
+		<?php while ($loop->have_posts()) : $loop->the_post(); ?>
+
+			<?php get_template_part('template-parts/page-music-archive', get_post_format()); ?>
+
+		<?php endwhile; // end of the loop. 
+		?>
+
+		<?php // woocommerce_product_loop_end(); 
+		?>
+
+		<?php  // do_action( "woocommerce_shortcode_after_featured_products_loop" ); 
+		?>
+
+	<?php endif;
+
+	// woocommerce_reset_loop();
+	wp_reset_postdata();
+
+	return '<div class="columns-' . $columns . '">' . ob_get_clean() . '</div>';
+	
+	
+}
+add_shortcode('most_score_song', 'most_score_song_function');
+
+
+/***************************************************************************/
+/***************************************************************************/
+/******************** Short code to less scores songs *******************/
+
+function less_score_song_function($atts) {
+
+	$args = array(
+		'post_type' => 'music',
+		'posts_per_page'  => -1
+	);
+
+	$get_posts = get_posts($args);
+	
+	$get_songs_scores = [];
+	foreach ($get_posts as $post) {
+                $get_songs_scores_ = get_post_meta($post->ID , 'song_score_unique' , true );
+                if($get_songs_scores_ == ''){
+                    $get_songs_scores_ = array(0, 0);
+                }
+		$get_songs_scores[$post->ID] = $get_songs_scores_;
+	}
+	
+    	$get_songs_scores_calc_round = [];
+	foreach ($get_songs_scores as $key => $value) {
+		$x = 0;
+		$calcvalue = 0;
+		foreach ($value as $score) {
+			$calcvalue = $calcvalue + $score[1];
+			$x++;
+		}
+		$get_songs_scores_calc = $calcvalue / $x;
+		$get_songs_scores_calc_round[$key] = $get_songs_scores_calc;
+	}
+	
+	asort($get_songs_scores_calc_round, SORT_NUMERIC);
+	
+	$get_songs_post_in = [];
+	foreach ($get_songs_scores_calc_round as $key => $value) {
+		$get_songs_post_in[] = $key;
+	}
+	
+	$atts = shortcode_atts(array(
+		'per_page' => '100',
+		'columns'  => '4',
+		'orderby'  => 'post__in',
+		'order'    => 'ASC'
+	), $atts);
+	
+	$argv = array( 
+		'posts_per_page' => $atts['per_page'],	
+		'post_type' => 'music',
+		'columns'  => $atts['columns'],
+		'post__in' => $get_songs_post_in,
+		'orderby'  => 'post__in',
+		'order'      => $atts['order']
+	);
+	
+	$loop = new WP_Query($argv);
+	$columns = absint($args['columns']);
+	$woocommerce_loop['columns'] = $columns;
+
+	ob_start();
+
+	if ($loop->have_posts()) : ?>
+
+		<?php // do_action( "woocommerce_shortcode_before_featured_products_loop" ); 
+		?>
+
+		<?php // woocommerce_product_loop_start(); 
+		?>
+
+		<?php while ($loop->have_posts()) : $loop->the_post(); ?>
+
+			<?php get_template_part('template-parts/page-music-archive', get_post_format()); ?>
+
+		<?php endwhile; // end of the loop. 
+		?>
+
+		<?php // woocommerce_product_loop_end(); 
+		?>
+
+		<?php  // do_action( "woocommerce_shortcode_after_featured_products_loop" ); 
+		?>
+
+	<?php endif;
+
+	// woocommerce_reset_loop();
+	wp_reset_postdata();
+
+	return '<div class="columns-' . $columns . '">' . ob_get_clean() . '</div>';
+	
+	
+}
+add_shortcode('less_score_song', 'less_score_song_function');
+
 ?>
