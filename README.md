@@ -110,7 +110,7 @@ Show the most higher score songs</br>
 Show the less lower score songs</br>
 [lower_score_song per_page="100" columns="5" order="ASC" orderby="post__in"]</br>
 </br>
-Show the contact formulaire in page.</br>
+Show the contact formulaire in page</br>
 [contact-from-mcplayer]</br>
 
 ## Screenshot
