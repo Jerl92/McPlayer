@@ -495,7 +495,7 @@ function artist_get_loop($atts) {
 			$i = 0;
 			$terms_count_plays = array();
 			foreach ($terms as $term) {
-				$terms_count_plays[$i]['count'] = get_term_meta( $term->term_id, 'count_play_loop_' , true );
+				$terms_count_plays[$i]['count'] = get_term_meta( $term->term_id, 'count_play_loop' , true );
 				$terms_count_plays[$i]['id'] = $term->term_id;
 				$i++;
 			}

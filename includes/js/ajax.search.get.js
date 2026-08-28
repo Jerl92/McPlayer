@@ -22,7 +22,7 @@ function mcplayer_search_ajax($) {
                     jQuery("#widget-mcplayer-search-result").css("margin-top","15px");
                     jQuery("#widget-mcplayer-search-result").css("border","0.05px solid #000");
                     jQuery("#widget-mcplayer-search-result").css("background","#fff");
-                    jQuery("#widget-mcplayer-search-result").css("width","98%");
+                    jQuery("#widget-mcplayer-search-result").css("width","auto");
                     jQuery("#widget-mcplayer-search-result").css("overflow-y","scroll");
                     jQuery("#widget-mcplayer-search-result").css("overflow-x","none");
                     jQuery("#widget-mcplayer-search-result").html(data);
@@ -76,7 +76,7 @@ function mcplayer_search_ajax($) {
                         jQuery("#widget-mcplayer-search-result").css("margin-top","15px");
                         jQuery("#widget-mcplayer-search-result").css("border","0.05px solid #000");
                         jQuery("#widget-mcplayer-search-result").css("background","#fff");
-                        jQuery("#widget-mcplayer-search-result").css("width","98%");
+                        jQuery("#widget-mcplayer-search-result").css("width","auto");
                         jQuery("#widget-mcplayer-search-result").css("overflow-y","scroll");
                         jQuery("#widget-mcplayer-search-result").css("overflow-x","none");
                         jQuery("#widget-mcplayer-search-result").html(data);

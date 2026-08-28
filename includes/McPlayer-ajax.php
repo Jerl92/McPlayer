@@ -1277,7 +1277,7 @@ function search_ajax_get() {
 		'post_type' => 'music',
 		'post_status' => 'publish',
 		'posts_per_page' => -1,
-		's'    			 => $inputVal
+		's' => $inputVal
 	);
 	
 	$posts = get_posts( $argc );
