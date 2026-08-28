@@ -171,7 +171,7 @@ function ajax_add_track($post) {
 		$matche = $_POST['object_id'];
 		$posts = wp_get_attachment_url( get_post_meta( $matche , 'music_link_', true) );
 		$urllocal = realpath(ABSPATH.explode(site_url(), $posts )[1]);
-        $plugin_dir = site_url().'/wp-content/plugins/McPlayer/includes/download.php';
+        	$plugin_dir = site_url().'/wp-content/plugins/McPlayer/includes/download.php';
 
 		$terms = wp_get_post_terms( $matche, 'artist' );
 
@@ -188,11 +188,14 @@ function ajax_add_track($post) {
 
 		$get_music_meta_length_str_seconde = $get_music_meta_length_str[1];
 
-		$get_music_meta_length_str__ = $get_music_meta_length_str_minute+$get_music_meta_length_str_seconde;
+		$get_music_meta_length_str_full = $get_music_meta_length_str_minute+$get_music_meta_length_str_seconde;
 		
-		foreach($terms as $term) {
-			$html[] = '<ul><li>' . $plugin_dir.'?path='.$urllocal . '</li><li>' . $attachment_title . $delimeter_player56s . $term->name . $delimeter_player56s . get_the_title( $matche ) . $delimeter_player56s . wp_get_attachment_image_url( $value , 'full' ) . '</li><li>' . $matche . '</li><li>' . $get_music_meta_length_str__ . '</li></ul>';
+		if(is_user_logged_in()){
+			$html = '<ul><li>' . $plugin_dir.'?path='.$urllocal . '</li><li>' . $attachment_title . $delimeter_player56s . $terms[0]->name . $delimeter_player56s . get_the_title( $matche ) . $delimeter_player56s . wp_get_attachment_image_url( $value , 'full' ) . '</li><li>' . $matche . '</li><li>' . $get_music_meta_length_str_full . '</li></ul>';
+		} else {
+			$html = null;
 		}
+	
 		return wp_send_json ( $html );	 
 }	
 

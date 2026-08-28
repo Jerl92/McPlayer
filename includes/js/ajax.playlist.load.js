@@ -85,7 +85,7 @@ function mcplayer_load_playlist($) {
                                 jQuery(this).attr('data-original-title', 'Remove');
                             }
                         });
-                    }, index*125);
+                    }, index*150);
                 }, this);  
                 data.playlist_album.forEach(function(element) {
                     jQuery('.rs-save-for-later-button-album').each(function() {

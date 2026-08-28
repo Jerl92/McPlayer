@@ -1,49 +1,49 @@
 <?php 
 
-	/////////////////////////////
-	//
-	//	Produces cleaner filenames for uploads
-	//	@param  string $filename
-	//	@return string
-	//
-	///////////////////////////////
-	function wpartisan_sanitize_file_name( $filename ) {
+/////////////////////////////
+//
+//	Produces cleaner filenames for uploads
+//	@param  string $filename
+//	@return string
+//
+///////////////////////////////
+function wpartisan_sanitize_file_name( $filename ) {
 
-		$sanitized_filename = remove_accents( $filename ); // Convert to ASCII
+	$sanitized_filename = remove_accents( $filename ); // Convert to ASCII
 
-		// Standard replacements
-		$invalid = array(
-			' '   => '-',
-			'%20' => '-',
-			'_'   => '-',
-		);
-		$sanitized_filename = str_replace( array_keys( $invalid ), array_values( $invalid ), $sanitized_filename );
+	// Standard replacements
+	$invalid = array(
+		' '   => '-',
+		'%20' => '-',
+		'_'   => '-',
+	);
+	$sanitized_filename = str_replace( array_keys( $invalid ), array_values( $invalid ), $sanitized_filename );
 
-		$sanitized_filename = preg_replace('/[^A-Za-z0-9-\. ]/', '', $sanitized_filename); // Remove all non-alphanumeric except .
-		$sanitized_filename = preg_replace('/\.(?=.*\.)/', '', $sanitized_filename); // Remove all but last .
-		$sanitized_filename = preg_replace('/-+/', '-', $sanitized_filename); // Replace any more than one - in a row
-		$sanitized_filename = str_replace('-.', '.', $sanitized_filename); // Remove last - if at the end
-		$sanitized_filename = strtolower( $sanitized_filename ); // Lowercase
+	$sanitized_filename = preg_replace('/[^A-Za-z0-9-\. ]/', '', $sanitized_filename); // Remove all non-alphanumeric except .
+	$sanitized_filename = preg_replace('/\.(?=.*\.)/', '', $sanitized_filename); // Remove all but last .
+	$sanitized_filename = preg_replace('/-+/', '-', $sanitized_filename); // Replace any more than one - in a row
+	$sanitized_filename = str_replace('-.', '.', $sanitized_filename); // Remove last - if at the end
+	$sanitized_filename = strtolower( $sanitized_filename ); // Lowercase
 
-		return $sanitized_filename;
+	return $sanitized_filename;
+}
+add_filter( 'sanitize_file_name', 'wpartisan_sanitize_file_name', 10, 1 );
+
+/**
+* Prevent duplicates
+*
+* http://codex.wordpress.org/Plugin_API/Filter_Reference/posts_distinct
+*/
+function cf_search_distinct( $where ) {
+	global $wpdb;
+
+	if ( is_search() ) {
+		return "DISTINCT";
 	}
-	add_filter( 'sanitize_file_name', 'wpartisan_sanitize_file_name', 10, 1 );
-	
-	/**
-	* Prevent duplicates
-	*
-	* http://codex.wordpress.org/Plugin_API/Filter_Reference/posts_distinct
-	*/
-	function cf_search_distinct( $where ) {
-		global $wpdb;
 
-		if ( is_search() ) {
-			return "DISTINCT";
-		}
-
-		return $where;
-	}
-	add_filter( 'posts_distinct', 'cf_search_distinct' );
+	return $where;
+}
+add_filter( 'posts_distinct', 'cf_search_distinct' );
 
 // http://www.webdeveloper.com/forum/showthread.php?212775-Converting-03-45-54-format-time-into-seconds-quick-way-to-do-it
 
@@ -141,7 +141,7 @@ function set_userid_cookie() {
 		$ip = $_SERVER['REMOTE_ADDR'];
 	}
     $output = rand(1,9);
-    for($i=0; $i<12; $i++) {
+    for($i=0; $i<36; $i++) {
         $output .= rand(0,9);
     }
 	$isValid = filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4);

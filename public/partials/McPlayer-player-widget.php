@@ -49,71 +49,83 @@ class MCPlayer_bottom_player_widget extends WP_Widget {
 
 		echo '<div id="player-container">';
 
+        if(is_user_logged_in()){
     		if ( $shuffle == 1 ) {
-			$saved_args = array(
-				'post_type'      => 'music',
-				'posts_per_page' => -1,
-				'orderby' 	=> 'rand',
-				'order' 	=> 'rand',
-				'post__in'       => $matches,
-			);
-		} else {
-			$saved_args = array(
-				'post_type'      => 'music',
-				'posts_per_page' => -1,
-				'orderby' 	=> 'post__in',
-				'order' 	=> 'DESC',
-				'post__in'       => $matches,
-			);
-		}
+    			$saved_args = array(
+    				'post_type'      => 'music',
+    				'posts_per_page' => -1,
+    				'orderby' 	=> 'rand',
+    				'order' 	=> 'rand',
+    				'post__in'       => $matches,
+    			);
+    		} else {
+    			$saved_args = array(
+    				'post_type'      => 'music',
+    				'posts_per_page' => -1,
+    				'orderby' 	=> 'post__in',
+    				'order' 	=> 'DESC',
+    				'post__in'       => $matches,
+    			);
+    		}
+        } else {
+            $saved_args = 'not-connected';
+        }
 
-		$loop = new WP_Query( $saved_args );
-
-		if ($loop->have_posts()) :
-
-			while ($loop->have_posts()) : $loop->the_post();
-
-				$music_playlist = wp_get_attachment_url(get_post_meta( get_the_ID(), 'music_link_', true ));
-
-				$urllocal = realpath(ABSPATH.explode(site_url(), $music_playlist )[1]); 
-
-				$plugin_dir = site_url().'/wp-content/plugins/McPlayer/includes/download.php';
-	
-				$terms = wp_get_post_terms( get_the_ID(), 'artist' );
-
-				$name = esc_attr( 'meta-box-media-cover_' );
-				$value = $rawvalue = get_post_meta( get_the_ID(), $name, true );
-				$attachment_title = get_the_title($value);
-				$delimeter_player56s = esc_attr(' || ');
-
-				$get_music_meta_length = get_post_meta( get_the_ID(), "meta-box-track-length", true );
-
-				$get_music_meta_length_str = explode(":", $get_music_meta_length);
-
-				$get_music_meta_length_str_minute = $get_music_meta_length_str[0]*60;
+        if($saved_args != 'not-connected'){
+        
+        	$loop = new WP_Query( $saved_args );
+        
+    		if ($loop->have_posts()) :
+    
+    			while ($loop->have_posts()) : $loop->the_post();
+    
+    				$music_playlist = wp_get_attachment_url(get_post_meta( get_the_ID(), 'music_link_', true ));
+    
+    				$urllocal = realpath(ABSPATH.explode(site_url(), $music_playlist )[1]); 
+    
+    				$plugin_dir = site_url().'/wp-content/plugins/McPlayer/includes/download.php';
+    	
+    				$terms = wp_get_post_terms( get_the_ID(), 'artist' );
+    
+    				$name = esc_attr( 'meta-box-media-cover_' );
+    				$value = $rawvalue = get_post_meta( get_the_ID(), $name, true );
+    				$attachment_title = get_the_title($value);
+    				$delimeter_player56s = esc_attr(' || ');
+    
+    				$get_music_meta_length = get_post_meta( get_the_ID(), "meta-box-track-length", true );
+    
+    				$get_music_meta_length_str = explode(":", $get_music_meta_length);
+    
+    				$get_music_meta_length_str_minute = $get_music_meta_length_str[0]*60;
+    		
+    				$get_music_meta_length_str_seconde = $get_music_meta_length_str[1];
+    		
+    				$get_music_meta_length_str_full = $get_music_meta_length_str_minute+$get_music_meta_length_str_seconde;
+    				
+    				?><audio href="<?php echo $plugin_dir.'?path='.$urllocal; ?>" class="player56s" rel="playlist" data-length="<?php echo $get_music_meta_length_str_full; ?>" postid="<?php echo get_the_ID(); ?>"><?php
+    					echo $attachment_title;
+    					echo $delimeter_player56s;
+    					echo $terms[0]->name;
+    					echo $delimeter_player56s;
+    					echo get_the_title();
+    					echo $delimeter_player56s;
+    					echo wp_get_attachment_image_url( $value , 'full' );
+    				?></audio><?php 
+    									
+    			endwhile;
+    			
+    		else:
+    			echo '<audio href="#" class="player56s" rel="playlist" data-length="0" postid="0">Just another WordPress site || McPlayer || Nothing in the playlist || https://'. $_SERVER['SERVER_NAME'] .'/wp-content/plugins/McPlayer/public/css/blue-note.png</audio>';
+    		
+    		endif;
+    		
+    		wp_reset_postdata();
+    		
+        } else {
+            
+            echo '<audio href="#" class="player56s" rel="playlist" data-length="0" postid="0"> McPlayer || You need to be logged in to play music || Please Register || https://'. $_SERVER['SERVER_NAME'] .'/wp-content/plugins/McPlayer/public/css/blue-note.png</audio>';
 		
-				$get_music_meta_length_str_seconde = $get_music_meta_length_str[1];
-		
-				$get_music_meta_length_str_full = $get_music_meta_length_str_minute+$get_music_meta_length_str_seconde;
-				
-				?><audio href="<?php echo $plugin_dir.'?path='.$urllocal; ?>" class="player56s" rel="playlist" data-length="<?php echo $get_music_meta_length_str_full; ?>" postid="<?php echo get_the_ID(); ?>"><?php
-					echo $attachment_title;
-					echo $delimeter_player56s;
-					echo $terms[0]->name;
-					echo $delimeter_player56s;
-					echo get_the_title();
-					echo $delimeter_player56s;
-					echo wp_get_attachment_image_url( $value , 'full' );
-				?></audio><?php 
-									
-			endwhile;
-			
-		else:
-			echo '<audio href="#" class="player56s" rel="playlist" data-length="0" postid="0">Just another WordPress site || McPlayer || Nothing in the playlist || https://'. $_SERVER['SERVER_NAME'] .'/wp-content/plugins/McPlayer/public/css/blue-note.png</audio>';
-		
-		endif;
-		
-		wp_reset_postdata();
+        }
 	
 		echo '</div>';
 

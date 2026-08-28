@@ -535,9 +535,16 @@ jQuery( function player56s($) {
             this.addTrack('#', '', '0', '0');
             this.currentTrack = 0;
             this.seekTime = 0;
-            this.$container.find(".player56s-title").html('<span>Nothing in the playlist</span>');
-            this.$container.find(".player56s-author").html('<span>Music Player</span>');
-            this.$container.find(".player56s-album").html('<span>Just another WordPress site</span>');
+            var player56s_userid = jQuery("#player56s-userid").html().length;
+            if (player56s_userid < 40) {
+	            this.$container.find(".player56s-title").html('<span>Nothing in the playlist</span>');
+	            this.$container.find(".player56s-author").html('<span>Music Player</span>');
+	            this.$container.find(".player56s-album").html('<span>Just another WordPress site</span>');
+            } else {
+	            this.$container.find(".player56s-title").html('<span>Please Register</span>');
+	            this.$container.find(".player56s-author").html('<span>You need to be logged in to play music</span>');
+	            this.$container.find(".player56s-album").html('<span>McPlayer</span>');
+            }
             this.$container.find(".player56s-album-img").html('<img src="' + window.location.origin + '/wp-content/plugins/McPlayer/public/css/blue-note.png"></img>');
             jQuery("#rs-saved-for-later").html('<li id="rs-saved-for-later-nothing" style="text-align: center; padding:15px 0px;">Nothing in the playlist</li>');
             this.$container.find(".player56s-track-next").css('display', 'none');

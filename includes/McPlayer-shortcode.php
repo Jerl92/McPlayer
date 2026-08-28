@@ -950,7 +950,11 @@ add_shortcode('simplicity-save-for-later-remove-sidebar', 'btn_remove_sidebar_lo
 /******************** Short code to play now ********************/
 
 function play_now_sidebar_loop($atts) {
-	return '<a href="#" id="play-now-id-' . $atts['id'] . '" class="play-now-button onpause" data-toggle="tooltip" data-placement="top" data-title="' . esc_attr("Play now") . '" data-nonce="' . wp_create_nonce('play_now_object') . '" data-object-id="' . $atts['id'] . '"></a>';
+	if(is_user_logged_in()){
+		return '<a href="#" id="play-now-id-' . $atts['id'] . '" class="play-now-button onpause" data-toggle="tooltip" data-placement="top" data-title="' . esc_attr("Play now") . '" data-nonce="' . wp_create_nonce('play_now_object') . '" data-object-id="' . $atts['id'] . '"></a>';
+	} else {
+		return null;
+	}
 }
 
 add_shortcode('play-now', 'play_now_sidebar_loop');
@@ -961,7 +965,11 @@ add_shortcode('play-now', 'play_now_sidebar_loop');
 /******************** Short code to add and play now ********************/
 
 function add_play_now_loop($atts) {
-	return '<a href="#" id="add-play-now-id-' . $atts['id'] . '" class="add-play-now-button onpause" data-toggle="tooltip" data-placement="top" data-title="' . esc_attr("Play now") . '" data-nonce="' . wp_create_nonce('add_play_now_object') . '" data-object-id="' . $atts['id'] . '"></a>';
+	if(is_user_logged_in()){
+		return '<a href="#" id="add-play-now-id-' . $atts['id'] . '" class="add-play-now-button onpause" data-toggle="tooltip" data-placement="top" data-title="' . esc_attr("Play now") . '" data-nonce="' . wp_create_nonce('add_play_now_object') . '" data-object-id="' . $atts['id'] . '"></a>';
+	} else {
+		return null;
+	}
 }
 
 add_shortcode('add-play-now', 'add_play_now_loop');
