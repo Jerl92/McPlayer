@@ -89,9 +89,6 @@ Show all the years of all album</br>
 Show the lasted added songs</br>
 [get_new_shortcode]</br>
 </br>
-Show the most played songs</br>
-[get_count_music per_page="175" columns="5" order="DESC" orderby="meta_value_num"]</br>
-</br>
 Show the lasted played songs</br>
 [get_already_played per_page="10" columns="5" order="ASC" orderby="post__in"]</br>
 </br>
