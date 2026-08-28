@@ -102,9 +102,8 @@ function sidebarheight() {
 	        jQuery("#secondary").css("height", primaryheight);
         }
         if (primaryheight <= windowheight){
-            var windowheight_ = parseInt(windowheight) - 275;
-            jQuery("#primary").css("height", windowheight_);
-            jQuery("#secondary").css("height", windowheight_);
+            jQuery("#primary").css("height", windowheight);
+            jQuery("#secondary").css("height", windowheight);
         }
         if(jQuery("#hwm-area")){
             jQuery("#primary").css("height", "100%");
@@ -122,28 +121,6 @@ jQuery(document).ready(function($){
 	intervalSideBar = setInterval(function(){
 	    sidebarheight();
 	}, 1000);
-	
-	if (jQuery.isFunction(jQuery.fn.theiaStickySidebar)){
-		if ( jQuery.browser.mobile && !mystickyside_name.device_mobile) {
-			return false;
-		} else if ( !jQuery.browser.mobile && !mystickyside_name.device_desktop) {
-			return false;
-		}
-		var mysticky_sidebar_id = document.querySelector(mystickyside_name.mystickyside_string),
-		mystickyside_content_id = (mystickyside_name.mystickyside_content_string),
-		mystickyside_margin_top = parseInt(mystickyside_name.mystickyside_margin_top_string),
-		mystickyside_margin_bot = parseInt(mystickyside_name.mystickyside_margin_bot_string),
-		mystickyside_update_sidebar_height = Boolean(mystickyside_name.mystickyside_update_sidebar_height_string),
-		mystickyside_min_width = parseInt(mystickyside_name.mystickyside_min_width_string);
-
-		jQuery(mysticky_sidebar_id).theiaStickySidebar({
-			containerSelector: mystickyside_content_id,
-			additionalMarginTop: mystickyside_margin_top,
-			additionalMarginBottom: mystickyside_margin_bot,
-			updateSidebarHeight: mystickyside_update_sidebar_height,
-			minWidth: mystickyside_min_width
-		});  
-	}
 });
 
 jQuery(document).ready(function($){	

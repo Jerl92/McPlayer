@@ -70,10 +70,10 @@ jQuery(document).on('visibilitychange', function() {
 				render: function ($container) {
 
 					// Remove your CSS animation reversing class
-					jQuery('body').removeClass('on-scroll');
+					// jQuery('body').removeClass('on-scroll');
 
 					// Add your CSS animation reversing class
-					jQuery('body').addClass('no-scroll');
+					// jQuery('body').addClass('no-scroll');
 
 					// Add your CSS animation reversing class
 					jQuery('#main').removeClass('is-onready');
@@ -97,7 +97,11 @@ jQuery(document).on('visibilitychange', function() {
 
 					// Add your CSS animation reversing class
 					jQuery('#main').addClass('is-onready');
-
+					
+					// jQuery('body').removeClass('no-scroll');
+	
+					// jQuery('body').addClass('on-scroll');
+	
 					// Trigger load functions
 					jQuery(document).ready();
                 			jQuery(window).trigger('load');
@@ -105,10 +109,6 @@ jQuery(document).on('visibilitychange', function() {
 				}
 		    },
 			onAfter: function( $container , $newcontainer ) {
-
-				jQuery('body').removeClass('no-scroll');
-
-				jQuery('body').addClass('on-scroll');
 
 				scrolltosecondary($);
                     
