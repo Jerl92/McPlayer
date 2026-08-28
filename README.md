@@ -26,9 +26,6 @@ https://github.com/jplayer/jPlayer/</br>
 Web audio-player with playlist and minimalistic view as option.</br>
 https://github.com/dymio/player-56s/</br>
 
-Simplicity Save for Later will add a button to your posts/pages/custom post types so users can save that content so they can access it later.</br>
-https://WordPress.org/plugins/rs-save-for-later/</br>
-
 ## Depend on this theme and plugins
 MCPlayer child theme based on Chichi</br>
 https://github.com/Jerl92/McPlayer-Child-Theme/</br>
