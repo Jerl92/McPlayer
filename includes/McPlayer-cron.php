@@ -10,6 +10,16 @@ function every_week_cron_schedule( $schedules ) {
 }
 add_filter( 'cron_schedules', 'every_week_cron_schedule' );
 
+ 
+function every_day_cron_schedule( $schedules ) {
+    $schedules['every_day'] = array(
+        'interval' => 86400, // Every week
+        'display'  => __( 'Every day' ),
+    );
+    return $schedules;
+}
+add_filter( 'cron_schedules', 'every_day_cron_schedule' );
+
 add_action( 'init', function () {
 
     ///Hook into that action that'll fire every six hours
@@ -17,7 +27,7 @@ add_action( 'init', function () {
 
     //Schedule an action if it's not already scheduled
     if ( ! wp_next_scheduled( 'artist_count_shortcode_hook' ) ) {
-        wp_schedule_event( time(), 'every_week', 'artist_count_shortcode_hook' );
+        wp_schedule_event( time(), 'every_day', 'artist_count_shortcode_hook' );
     }
 });
 
