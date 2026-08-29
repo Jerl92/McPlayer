@@ -76,17 +76,19 @@ function artist_count_taxonomy_custom_fields($tag) {
 	
 	$get_posts = get_posts($args);
 	
+	$i = 0;
 	$earn_play_loops = [];
 	foreach($get_posts as $post){
        		$earn_play_loops_array = get_post_meta($post->ID, 'earn_play_loop', true );
 	        if($earn_play_loops_array != '' || $earn_play_loops_array != null){
-	            $earn_play_loops[] = get_post_meta($post->ID, 'earn_play_loop', true );
+	            $earn_play_loops[$i] = get_post_meta($post->ID, 'earn_play_loop', true );
+	            $i++;
 	        }
 	}
 	
 	$loop = 0;
-	foreach($earn_play_loops as $earn_play_loop){
-		foreach ($earn_play_loop as $earn_play_loop_){
+	foreach ($earn_play_loops as $earn_play_loop_){
+		foreach ($earn_play_loop_ as $earn_play_loop){
 			$loop++;
 		}
 	}
@@ -98,30 +100,44 @@ function artist_count_taxonomy_custom_fields($tag) {
 	$userid = [];
 	$ifpay = [];
 	$earn = [];
+	$earn_ = [];
 	$ip = [];
-	foreach ($earn_play_loops as $earn_play_loop){
-	        foreach ($earn_play_loop as $earn_play_loop_){
-		        $userid[$i] = $earn_play_loop_['userid'];
-		        $postid = $earn_play_loop_['postid'];
-		        $ifpay[$postid] = $earn_play_loop_['ifpay'];
-		        $earn[$postid] = $earn_play_loop_['earn'];
-		        $earn_[$i] = $earn_play_loop_['earn'];
-		        $ip[$i] = $earn_play_loop_['ip'];
+	foreach ($earn_play_loops as $earn_play_loop_){
+		foreach ($earn_play_loop_ as $earn_play_loop){
+		        $userid[$i] = $earn_play_loop['userid'];
+		        $postid = $earn_play_loop['postid'];
+		        $ifpay[$i] = array($postid, $earn_play_loop['ifpay']);
+		        $earn[$i] = array($postid, $earn_play_loop['earn']);
+		        $earn_[$i] = $earn_play_loop['earn'];
+		        $ip[$i] = $earn_play_loop['ip'];
 		        $i++;
 	        }
-	}
+        }
 	
     $x = 0;
+    $i = 0;
     $count_earn = 0;
+    $count_earn_ = 0;
     foreach ($ifpay as $key => $value){
-        if($value == 'no'){
-            $count_earn = $count_earn + $earn[$key];
-            //$earn_play_loops[$x][0]['ifpay'] = 'yes';
+        if($value[1] == 'no'){
+            $count_earn = $count_earn + $earn[$key][1];
+            $x++;
         }
-        $x++;
+        if($value[1] == 'yes'){
+            $count_earn_ = $count_earn_ + $earn[$key][1];
+            $i++;
+        }
     }
     
+    echo $x . ' Plays';
+    echo '<br>';
     echo $count_earn.'$';
+    echo '<br>';
+    echo '<br>';
+    
+    echo $i . ' Plays';
+    echo '<br>';
+    echo $count_earn_.'$';
     echo '<br>';
     echo '<br>';
 	
@@ -157,7 +173,7 @@ function artist_count_taxonomy_custom_fields($tag) {
     }
     echo '<br>';
     foreach ($earn_count as $key => $value){
-    	echo $key . ' - ' . $value . ' Plays';
+    	echo $key . '$ - ' . $value . ' Plays';
     	echo '<br>';
     }
   }	
